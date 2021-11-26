@@ -15,7 +15,6 @@ export default function App() {
       </View>
     </Provider>
   );
-
 }
 
 const styles = StyleSheet.create({
