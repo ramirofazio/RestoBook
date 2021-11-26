@@ -1,9 +1,9 @@
 // ESTA ES LA CONEXIÓN A FIREBASE BASADO EN EL VIDEO DE FAZT PERO SE AÑADE LAS LÍNEAS 3,4,5,22,24
 
 // Import the functions you need from the SDKs you need
-import firebase from 'firebase/compat/app';
-import 'firebase/compat/auth';
-import 'firebase/compat/firestore';
+import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
+import "firebase/compat/firestore";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -16,20 +16,19 @@ const firebaseConfig = {
   storageBucket: "henry-restobook.appspot.com",
   messagingSenderId: "96924806240",
   appId: "1:96924806240:web:9bd43698b9913454a3a705",
-  measurementId: "G-Y6E3NYDYVW"
+  measurementId: "G-Y6E3NYDYVW",
 };
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 // const analytics = getAnalytics(app);
 const db = firebase.firestore();
-
+const fireAuth = firebase.auth();
 export default {
   firebase,
   db,
+  fireAuth,
 };
-
-
 
 // ESTO SERÍA LA CONEXIÓN A FIREBASE ACTUALIZADA PERO COMO NO FUNCIONA VOY A COLOCAR EL DEL VIDEO DE FAZT
 
