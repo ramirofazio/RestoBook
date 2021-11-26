@@ -1,4 +1,4 @@
-export const ADD_TASK = 'ADD_TASK';
+import { ADD_TASK } from "./Constants"
 
 export function addTask(task) {
     return {
