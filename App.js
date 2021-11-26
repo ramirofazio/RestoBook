@@ -25,10 +25,10 @@ export default function App() {
             name={"Resto Book"}
             component={Home}
           />
-          {/* <Stack.Screen
+          <Stack.Screen
             name="Register User"
             component={AddUserScreen}
-          /> */}
+          />
           <Stack.Screen
             name="Register Resto"
             component={AddRestoScreen}

@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import { ScrollView, View, Text, StyleSheet, Button } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
-import { addTask } from '../Redux/Actions/AddTask';
 
 
 export default function Home({ navigation }) {
@@ -11,7 +9,7 @@ export default function Home({ navigation }) {
             <Button
                 style={styles.btn}
                 title="Register"
-                onPress={() => navigation.navigate('Register User')}
+                onPress={() => navigation.navigate("Register User")}
             />
         </View>
     )
