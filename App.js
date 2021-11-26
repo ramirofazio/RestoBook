@@ -38,6 +38,7 @@ export default function App() {
     </Provider>
   );
 
+
 }
 
 const styles = StyleSheet.create({
