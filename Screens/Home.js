@@ -1,28 +1,33 @@
 import React, { useState } from 'react';
-import { View, Text } from 'react-native';
-import { Button } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
-import { addTask } from '../Redux/Actions';
+import { ScrollView, View, Text, StyleSheet, Button } from 'react-native';
 
 
-
-export default function Home() {
-
-    const dispatch = useDispatch();
-    const state = useSelector((state) => state.task)
-
-    const onPress = () => {
-        dispatch(addTask('Franco'))
-    }
+export default function Home({ navigation }) {
 
     return (
-        <View>
+        <View style={styles.container}>
             <Button
-                title="cambiar estado"
-                onPress={onPress}
+                style={styles.btn}
+                title="Register"
+                onPress={() => navigation.navigate("Register User")}
             />
-
-            <Text>{state}</Text>
+            <Button
+                style={styles.btn}
+                title="Agregar Menu Resto"
+                onPress={() => navigation.navigate("Menu Resto")}
+            />
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+    container: {
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        width: "40%",
+        height: "10%",
+    },
+    btn: {
+    }
+});

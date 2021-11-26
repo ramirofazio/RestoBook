@@ -1,4 +1,4 @@
-import { ADD_TASK } from './Actions.js'
+import { ADD_TASK } from './Actions/Constants.js'
 
 let initialState = {
     task: 'No funcione'
