@@ -1,44 +1,21 @@
+import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Provider } from 'react-redux';
 import { store } from './Redux/Store.js'
-import 'react-native-gesture-handler';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import Navigator from './routes/homeStack';
 
-//----------IMP SCREENS-----------
-import Home from './Screens/Home.js'
-import AddRestoScreen from './Screens/RegisterResto.js';
-import AddUserScreen from './Screens/RegisterUser.js';
-import AddMenuRestoScreen from './Screens/menuResto.js'
-
-
-
-const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
     <Provider store={store}>
-      <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen
-            name={"Resto Book"}
-            component={Home}
-          />
-          <Stack.Screen
-            name="Register User"
-            component={AddUserScreen}
-          />
-          <Stack.Screen
-            name="Register Resto"
-            component={AddRestoScreen}
-          />
-          <Stack.Screen
-            name="Menu Resto"
-            component={AddMenuRestoScreen}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <SafeAreaProvider>
+        <View style={styles.container}>
+          <Navigator/>
+          <StatusBar style="auto" />
+        </View>
+      </SafeAreaProvider>
     </Provider>
   );
 

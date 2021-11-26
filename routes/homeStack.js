@@ -10,8 +10,6 @@ const Navigator = () => {
         <NavigationContainer>
             <Stack.Navigator>
                 <Stack.Screen name='DetailsResto' component={DetailsResto} options={{ title: 'Overview'}}/>
-            </Stack.Navigator>
-            <Stack.Navigator>
                 <Stack.Screen name='Home' component={Home}/>
             </Stack.Navigator>
         </NavigationContainer>
