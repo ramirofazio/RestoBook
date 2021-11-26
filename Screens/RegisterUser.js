@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { View, Button, Text, TextInput, ScrollView, TouchableOpacity } from "react-native";
 import { MaterialCommunityIcons as Icon } from "@expo/vector-icons";
+import Btn from './Helpers/Btns.js';
 
 const AddUserScreen = ({ navigation }) => {
     const [users, setUsers] = useState({
@@ -27,9 +28,7 @@ const AddUserScreen = ({ navigation }) => {
         <View>
             <ScrollView >
                 <View>
-                    <Button title="Soy una Empresa" onPress={() =>
-                        navigation.navigate("Register Resto")
-                    } />
+                    <Btn nombre="Soy una Empresa" ruta="Register Resto" navigation={navigation} />
                 </View>
                 <View >
                     <TextInput

@@ -1,33 +1,28 @@
 import React, { useState } from 'react';
-import { ScrollView, View, Text, StyleSheet, Button } from 'react-native';
+import { ScrollView, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import Btn from './Helpers/Btns.js'
 
 
 export default function Home({ navigation }) {
 
     return (
-        <View style={styles.container}>
-            <Button
-                style={styles.btn}
-                title="Register"
-                onPress={() => navigation.navigate("Register User")}
-            />
-            <Button
-                style={styles.btn}
-                title="Agregar Menu Resto"
-                onPress={() => navigation.navigate("Menu Resto")}
-            />
+        <View style={{ display: "flex", flexDirection: "column" }}>
+
+            <View style={styles.btnContainer}>
+                <Btn nombre="Ciudad" ruta="#" navigation={navigation} />
+                <Btn nombre="Categorias" ruta="#" navigation={navigation} />
+            </View>
+
+
         </View>
     )
 }
 
 const styles = StyleSheet.create({
-    container: {
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        width: "40%",
-        height: "10%",
-    },
-    btn: {
+    btnContainer: {
+        marginTop: 20,
+        width: 100,
+        height: 50,
     }
 });
+
