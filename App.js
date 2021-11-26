@@ -5,12 +5,14 @@ import { StyleSheet, Text, View } from 'react-native';
 import AddRestoScreen from "./screens/registerResto"
 
 
+
 export default function App() {
   return (
     <View style={styles.container}>
       <AddRestoScreen/>
       <StatusBar style="auto" />
     </View>
+ 
   )
 }
 
