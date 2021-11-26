@@ -11,6 +11,11 @@ export default function Home({ navigation }) {
                 title="Register"
                 onPress={() => navigation.navigate("Register User")}
             />
+            <Button
+                style={styles.btn}
+                title="Agregar Menu Resto"
+                onPress={() => navigation.navigate("Menu Resto")}
+            />
         </View>
     )
 }
@@ -18,12 +23,11 @@ export default function Home({ navigation }) {
 const styles = StyleSheet.create({
     container: {
         display: "flex",
-        flexDirection: "row",
-        justifyContent: "center",
+        flexDirection: "column",
+        alignItems: "center",
         width: "40%",
         height: "10%",
     },
     btn: {
-
     }
 });

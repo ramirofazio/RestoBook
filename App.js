@@ -11,6 +11,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Home from './Screens/Home.js'
 import AddRestoScreen from './Screens/RegisterResto.js';
 import AddUserScreen from './Screens/RegisterUser.js';
+import AddMenuRestoScreen from './Screens/menuResto.js'
 
 
 
@@ -32,6 +33,10 @@ export default function App() {
           <Stack.Screen
             name="Register Resto"
             component={AddRestoScreen}
+          />
+          <Stack.Screen
+            name="Menu Resto"
+            component={AddMenuRestoScreen}
           />
         </Stack.Navigator>
       </NavigationContainer>

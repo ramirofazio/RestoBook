@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, Button, Text, TextInput, ScrollView, TouchableOpacity } from "react-native";
 import { MaterialCommunityIcons as Icon } from "@expo/vector-icons";
 
-export default AddUserScreen = ({ navigation }) => {
+const AddUserScreen = ({ navigation }) => {
     const [users, setUsers] = useState({
         name: "",
         email: "",
@@ -58,3 +58,5 @@ export default AddUserScreen = ({ navigation }) => {
         </View>
     )
 }
+
+export default AddUserScreen;
