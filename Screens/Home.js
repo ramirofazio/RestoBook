@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { ScrollView, View, Text, StyleSheet } from 'react-native';
-import { Button } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { addTask } from '../Redux/Actions';
-
+import AddRestoScreen from './RegisterResto.js';
 
 
 export default function Home() {
@@ -17,16 +16,7 @@ export default function Home() {
 
     return (
         <ScrollView style={styles.container}>
-            <View style={styles.button}>
-
-                <Button
-
-                    title="cambiar estado"
-                    onPress={onPress}
-                />
-            </View>
-
-            <Text>{state}</Text>
+            <AddRestoScreen />
         </ScrollView>
     )
 }
@@ -36,6 +26,5 @@ const styles = StyleSheet.create({
         display: "flex",
         width: "100%",
         height: "100%",
-        backgroundColor: "#000",
     },
 });
