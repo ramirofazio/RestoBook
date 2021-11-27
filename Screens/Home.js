@@ -4,16 +4,13 @@ import Btn from './Helpers/Btns.js'
 
 
 export default function Home({ navigation }) {
-
   return (
     <View style={{ display: "flex", flexDirection: "column" }}>
-
       <View style={styles.btnContainer}>
         <Btn nombre="Ciudad" ruta="#" navigation={navigation} />
         <Btn nombre="Categorias" ruta="#" navigation={navigation} />
+        <Btn nombre="DetailsResto" ruta="detailsResto" navigation={navigation} />
       </View>
-
-
     </View>
   )
 }
