@@ -10,9 +10,9 @@ import AddUserScreen from '../Screens/RegisterUser.js';
 import AddMenuRestoScreen from '../Screens/menuResto.js'
 import { DetailsResto } from "../Screens/DetailsResto";
 import Nav from "../Screens/Nav.js"
-import GlobalLogin from "./Screens/GlobalLogin.js";
-import LoginResto from "./Screens/LoginResto.js";
-import AwaitEmail from "./Screens/AwaitEmail.js";
+import GlobalLogin from "../Screens/GlobalLogin.js";
+import LoginResto from "../Screens/LoginResto.js";
+import AwaitEmail from "../Screens/AwaitEmail.js";
 
 export default Navigator = () => {
     const Stack = createNativeStackNavigator();
