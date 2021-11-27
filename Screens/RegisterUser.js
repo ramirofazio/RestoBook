@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Button, Text, TextInput, ScrollView, TouchableOpacity } from "react-native";
+import { View, TextInput, ScrollView, TouchableOpacity } from "react-native";
 import { MaterialCommunityIcons as Icon } from "@expo/vector-icons";
 import Btn from './Helpers/Btns.js';
 

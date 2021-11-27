@@ -7,7 +7,7 @@ export default function Nav({ title, navigation }) {
         <View style={{ display: "flex", flexDirection: "row" }}>
             <Image source={require('../assets/icon.png')} style={{ width: 30, height: 30 }} />
             <Text>{title}</Text>
-            <Btn nombre="Login" ruta="Register User" navigation={navigation} />
+            <Btn nombre="Login" ruta="GlobalLogin" navigation={navigation} />
 
             <Btn nombre="Reservas" ruta="#" navigation={navigation} />
 

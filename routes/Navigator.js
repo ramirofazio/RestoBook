@@ -10,6 +10,9 @@ import AddUserScreen from '../Screens/RegisterUser.js';
 import AddMenuRestoScreen from '../Screens/menuResto.js'
 import { DetailsResto } from "../Screens/DetailsResto";
 import Nav from "../Screens/Nav.js"
+import GlobalLogin from "./Screens/GlobalLogin.js";
+import LoginResto from "./Screens/LoginResto.js";
+import AwaitEmail from "./Screens/AwaitEmail.js";
 
 export default Navigator = () => {
     const Stack = createNativeStackNavigator();
@@ -17,28 +20,41 @@ export default Navigator = () => {
         <NavigationContainer>
             <Stack.Navigator>
                 <Stack.Screen
-                    name={"Resto Book"}
+                    name={"RestoBook"}
                     component={Home}
                     options={({ navigation }) => ({
-                    headerTitle: () => <Nav title="Resto Book" navigation={navigation} />,
+                        headerTitle: () => <Nav title="Resto Book" navigation={navigation} />,
                     })}
                 />
                 <Stack.Screen
-                    name="Register User"
+                    name="RegisterUser"
                     component={AddUserScreen}
                 />
                 <Stack.Screen
-                    name="Register Resto"
+                    name="RegisterResto"
                     component={AddRestoScreen}
                 />
                 <Stack.Screen
-                    name="Menu Resto"
+                    name="MenuResto"
                     component={AddMenuRestoScreen}
                 />
                 <Stack.Screen
-                    name="Details Resto"
+                    name="DetailsResto"
                     component={DetailsResto}
                 />
+                <Stack.Screen
+                    name="GlobalLogin"
+                    component={GlobalLogin}
+                />
+                <Stack.Screen
+                    name="LoginResto"
+                    component={LoginResto}
+                />
+                <Stack.Screen
+                    name="AwaitEmail"
+                    component={AwaitEmail}
+                />
+
             </Stack.Navigator>
         </NavigationContainer>
     )
