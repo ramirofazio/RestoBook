@@ -36,7 +36,7 @@ export default Navigator = () => {
                     component={AddMenuRestoScreen}
                 />
                 <Stack.Screen
-                    name="Details Resto"
+                    name="detailsResto"
                     component={DetailsResto}
                 />
             </Stack.Navigator>
