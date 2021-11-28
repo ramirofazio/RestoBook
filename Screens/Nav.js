@@ -54,7 +54,7 @@ export default function Nav({ title, navigation }) {
               logged ? signOutAndAlert() : navigation.navigate("GlobalLogin")
             }
           >
-            <Text>{logged ? "Cerrar Sesion" : "Login"}</Text>
+            <Text>{logged ? "Log Out" : "Login"}</Text>
           </TouchableOpacity>
           <Btn nombre={<TagOutlined name='tag' color="#392c28" size={15} />} ruta="#" navigation={navigation} />
           <Btn nombre={<UserOutlined name='user' color="#392c28" size={15} />} ruta="#" navigation={navigation} />
