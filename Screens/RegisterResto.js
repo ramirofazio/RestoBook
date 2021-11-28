@@ -3,13 +3,16 @@
 //    X           mail y pass             todos los datos de este form    anidamos/linkeamos menu
 
 import React, { useState } from "react";
-import { View, TextInput, ScrollView, StyleSheet } from "react-native";
+import { useDispatch } from "react-redux";
+
+import { Button, View, TextInput, ScrollView, StyleSheet } from "react-native";
 
 import firebase from "../database/firebase";
-
+import { addEmpresa } from "../Redux/Actions/AddTask";
 import BtnFuncional from './Helpers/BtnFuncional.js';
 
 const RegisterResto = (props) => {
+  let dispatch = useDispatch();
   const initalState = {
     name: "",
     fantasyName: "",
@@ -29,30 +32,35 @@ const RegisterResto = (props) => {
     setState({ ...state, [name]: value });
   };
 
-  const saveNewResto = async () => {
-    if (state.name === "") {
-      alert("Complete sus datos por favor");
-    } else {
-      try {
-        await firebase.db.collection("usersResto").add({
-          name: state.name,
-          fantasyName: state.fantasyName,
-          cuit: state.cuit,
-          phone: state.phone,
-          phone2: state.phone2,
-          email: state.email,
-          provincia: state.provincia,
-          ciudad: state.ciudad,
-          direction: state.direction,
-          horarios: state.horarios,
-        });
-
-        props.navigation.navigate("UsersList");
-      } catch (error) {
-        console.log(error);
-      }
-    }
+  const saveNewResto = () => {
+    dispatch(addEmpresa(state));
+    props.navigation.navigate("RestoBook");
   };
+
+  // const saveNewResto = async () => {
+  //   if (state.name === "") {
+  //     alert("Complete sus datos por favor");
+  //   } else {
+  //     try {
+  //       await firebase.db.collection("usersResto").add({
+  //         name: state.name,
+  //         fantasyName: state.fantasyName,
+  //         cuit: state.cuit,
+  //         phone: state.phone,
+  //         phone2: state.phone2,
+  //         email: state.email,
+  //         provincia: state.provincia,
+  //         ciudad: state.ciudad,
+  //         direction: state.direction,
+  //         horarios: state.horarios,
+  //       });
+
+  //       props.navigation.navigate("UsersList");
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }
+  // };
 
   return (
     <ScrollView style={styles.container}>
