@@ -3,7 +3,7 @@ import { Button, View, TextInput, ScrollView, StyleSheet } from "react-native";
 
 import firebase from "../database/firebase";
 
-const AddMenuRestoScreen = (props) => {
+const MenuResto = (props) => {
   const initalState = {
     foodName: "",
     description: "",
@@ -78,4 +78,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AddMenuRestoScreen;
+export default MenuResto;

@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { View, Text, StyleSheet, Image } from 'react-native';
 import { FlatList, ScrollView } from 'react-native-gesture-handler';
+import MapView from 'react-native-maps';
 import CardMenu from '../components/CardMenu';
 
-export const DetailsResto = () => {
+const DetailsResto = () => {
     const Menus = [
         {
             Id: 1,
@@ -76,11 +77,21 @@ export const DetailsResto = () => {
             </View>
             <View style={styles.content}>
                 <View style={styles.categoriesContainer}>
-                    <Text style={styles.categoriesText}>Comida Rapida</Text>
-                    <Text style={styles.categoriesText}>Pastas</Text>
-                    <Text style={styles.categoriesText}>Carnes</Text>
-                    <Text style={styles.categoriesText}>Postres</Text>
-                    <Text style={styles.categoriesText}>Bebidas</Text>
+                    <View style={styles.categoriesView}>
+                        <Text style={styles.categoriesText}>Comida Rapida</Text>
+                    </View>
+                    <View style={styles.categoriesView}>
+                        <Text style={styles.categoriesText}>Pastas Caseras</Text>
+                    </View>
+                    <View style={styles.categoriesView}>
+                        <Text style={styles.categoriesText}>Carnes</Text>
+                    </View>
+                    <View style={styles.categoriesView}>
+                        <Text style={styles.categoriesText}>Postres</Text>
+                    </View>
+                    <View style={styles.categoriesView}>
+                        <Text style={styles.categoriesText}>Bebida</Text>
+                    </View>
                 </View>
                 <ScrollView style={styles.showMenu}>
                     {Menus.map(menu => {
@@ -90,10 +101,20 @@ export const DetailsResto = () => {
                     }
                     )}
                 </ScrollView>
+                <View style={styles.googleMapsContainer}>
+                    <MapView
+                        style={styles.googleMaps}
+                        initialRegion={{
+                            latitude: 37.78825,
+                            longitude: -122.4324,
+                            latitudeDelta: 0.0922,
+                            longitudeDelta: 0.0421
+                        }}
+                    >
+                    </MapView>
+                </View>
             </View>
-            <View style={styles.googleMapsContainer}>
-                <Image style={styles.googleMaps} source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVeQ_o5QXt-k1vH2LUIx6vToiFBfh9DZDdjA&usqp=CAU' }} />
-            </View>
+
         </View>
     )
 }
@@ -115,35 +136,39 @@ const styles = StyleSheet.create({
         letterSpacing: 1
     },
     content: {
-        padding: 20,
+        padding: 10,
     },
     categoriesContainer: {
         height: 33,
         alignItems: 'center',
-        backgroundColor: 'white',
         flexDirection: 'row',
         justifyContent: 'space-around',
-        borderWidth: 0.3,
-        //borderRadius: 20,
+        borderRadius: 20,
         marginBottom: 5
     },
+    categoriesView: {
+        backgroundColor: 'white',
+        borderRadius: 10,
+        padding: 2
+    },
     categoriesText: {
-        flexDirection: 'row',
         fontWeight: 'bold',
         fontSize: 13,
         padding: 1,
     },
     showMenu: {
-        padding: 4,
-        height: 400,
+        height: 300,
+        padding: 10,
         borderWidth: 0.5,
         //borderRadius: 50
     },
     googleMapsContainer: {
         padding: 15,
-        flex: 1
     },
     googleMaps: {
-        flex: 1
+        height: 200,
+        borderRadius: 20,
     }
 })
+
+export default DetailsResto;

@@ -1,13 +1,12 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import globalStyles from '../GlobalStyles';
 
-export default function Btn({ nombre, ruta, navigation }) {
-
+export default function BtnFuncional({ nombre, onPress }) {
     return (
         <View style={globalStyles.Container}>
             <TouchableOpacity
-                onPress={() => navigation.navigate(ruta)}
+                obPress={() => onPress}
                 style={globalStyles.btn}
             >
                 <Text style={globalStyles.btnText}>
