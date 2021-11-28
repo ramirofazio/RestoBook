@@ -5,9 +5,9 @@ import { NavigationContainer } from '@react-navigation/native';
 
 //----------IMP SCREENS-----------
 import Home from '../Screens/Home'
-import AddRestoScreen from '../Screens/RegisterResto.js';
+import RegisterResto from '../Screens/RegisterResto.js';
 import AddUserScreen from '../Screens/RegisterUser.js';
-import AddMenuRestoScreen from '../Screens/menuResto.js'
+import MenuResto from '../Screens/MenuResto.js'
 import DetailsResto from "../Screens/DetailsResto";
 import Nav from "../Screens/Nav.js"
 import GlobalLogin from "../Screens/GlobalLogin.js";
@@ -35,11 +35,11 @@ export default Navigator = () => {
                 />
                 <Stack.Screen
                     name="RegisterResto"
-                    component={AddRestoScreen}
+                    component={RegisterResto}
                 />
                 <Stack.Screen
                     name="MenuResto"
-                    component={AddMenuRestoScreen}
+                    component={MenuResto}
                 />
                 <Stack.Screen
                     name="DetailsResto"

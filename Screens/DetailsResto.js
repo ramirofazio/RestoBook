@@ -1,13 +1,8 @@
 import React from 'react'
 import { View, Text, StyleSheet, Image } from 'react-native';
-<<<<<<< HEAD
-import { ScrollView } from 'react-native-gesture-handler';
-import CardMenu from '../components/CardMenu.js';
-=======
 import { FlatList, ScrollView } from 'react-native-gesture-handler';
 import MapView from 'react-native-maps';
 import CardMenu from '../components/CardMenu';
->>>>>>> 3b869c54ae6d1be426ab32fec0d0d2fd6a6b6d1a
 
 const DetailsResto = () => {
     const Menus = [

@@ -3,11 +3,13 @@
 //    X           mail y pass             todos los datos de este form    anidamos/linkeamos menu
 
 import React, { useState } from "react";
-import { Button, View, TextInput, ScrollView, StyleSheet } from "react-native";
+import { View, TextInput, ScrollView, StyleSheet } from "react-native";
 
 import firebase from "../database/firebase";
 
-const AddRestoScreen = (props) => {
+import BtnFuncional from './Helpers/BtnFuncional.js';
+
+const RegisterResto = (props) => {
   const initalState = {
     name: "",
     fantasyName: "",
@@ -54,13 +56,13 @@ const AddRestoScreen = (props) => {
 
   return (
     <ScrollView style={styles.container}>
-      <View style={styles.inputGroup}>
+      {/* <View style={styles.inputGroup}>
         <TextInput
           placeholder="Razón social"
           onChangeText={(value) => handleChangeText(value, "name")}
           value={state.name}
         />
-      </View>
+      </View> */}
 
       <View style={styles.inputGroup}>
         <TextInput
@@ -70,13 +72,13 @@ const AddRestoScreen = (props) => {
         />
       </View>
 
-      <View style={styles.inputGroup}>
+      {/* <View style={styles.inputGroup}>
         <TextInput
           placeholder="Cuit"
           onChangeText={(value) => handleChangeText(value, "cuit")}
           value={state.cuit}
         />
-      </View>
+      </View> */}
 
       <View style={styles.inputGroup}>
         <TextInput
@@ -86,56 +88,56 @@ const AddRestoScreen = (props) => {
         />
       </View>
 
-      <View style={styles.inputGroup}>
+      {/* <View style={styles.inputGroup}>
         <TextInput
           placeholder="Teléfono 2"
           onChangeText={(value) => handleChangeText(value, "phone2")}
           value={state.phone2}
         />
-      </View>
+      </View> */}
 
-      <View style={styles.inputGroup}>
+      {/* <View style={styles.inputGroup}>
         <TextInput
           placeholder="Email"
           onChangeText={(value) => handleChangeText(value, "email")}
           value={state.email}
         />
-      </View>
+      </View> */}
 
-      <View style={styles.inputGroup}>
+      {/* <View style={styles.inputGroup}>
         <TextInput
           placeholder="Provincia"
           onChangeText={(value) => handleChangeText(value, "provincia")}
           value={state.provincia}
         />
-      </View>
+      </View> */}
 
-      <View style={styles.inputGroup}>
+      {/* <View style={styles.inputGroup}>
         <TextInput
           placeholder="Ciudad"
           onChangeText={(value) => handleChangeText(value, "ciudad")}
           value={state.ciudad}
         />
-      </View>
+      </View> */}
 
-      <View style={styles.inputGroup}>
+      {/* <View style={styles.inputGroup}>
         <TextInput
           placeholder="Dirección"
           onChangeText={(value) => handleChangeText(value, "direction")}
           value={state.direction}
         />
-      </View>
+      </View> */}
 
-      <View style={styles.inputGroup}>
+      {/* <View style={styles.inputGroup}>
         <TextInput
           placeholder="Horarios"
           onChangeText={(value) => handleChangeText(value, "horarios")}
           value={state.horarios}
         />
-      </View>
+      </View> */}
 
       <View>
-        <Button title="Crear" onPress={() => saveNewResto()} />
+        <BtnFuncional nombre="Crear" onPress={() => saveNewResto()} />
       </View>
     </ScrollView>
   );
@@ -164,4 +166,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AddRestoScreen;
+export default RegisterResto;

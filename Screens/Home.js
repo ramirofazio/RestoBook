@@ -3,6 +3,8 @@ import { View, ScrollView, Text } from 'react-native';
 import Btn from './Helpers/Btns.js'
 import globalStyles from './GlobalStyles.js';
 import CardHome from '../components/CardHome.js'
+import BtnFuncional from './Helpers/BtnFuncional.js';
+import { NavigationHelpersContext } from '@react-navigation/core';
 
 export default function Home({ navigation }) {
 
@@ -32,9 +34,11 @@ export default function Home({ navigation }) {
     <ScrollView style={globalStyles.Home}>
 
       <View style={globalStyles.btnHome}>
-        <Btn nombre="Ciudad" ruta="#" navigation={navigation} />
-        <Btn nombre='Buscar' ruta='#' navigation={navigation} />
-        <Btn nombre="Categorias" ruta="#" navigation={navigation} />
+        {/* <Btn nombre="Ciudad" ruta="#" navigation={navigation} /> */}
+        {/* <Btn nombre='Buscar' ruta='#' navigation={navigation} /> */}
+        {/* <Btn nombre="Categorias" ruta="#" navigation={navigation} /> */}
+        <Btn nombre="Register Resto" ruta="RegisterResto" navigation={navigation} />
+
       </View>
 
       <ScrollView style={{ overflow: "scroll" }}>
