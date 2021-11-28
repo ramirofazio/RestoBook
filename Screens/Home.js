@@ -57,8 +57,8 @@ export default function Home({ navigation }) {
         {/* <Btn nombre="Ciudad" ruta="#" navigation={navigation} /> */}
         {/* <Btn nombre='Buscar' ruta='#' navigation={navigation} /> */}
         {/* <Btn nombre="Categorias" ruta="#" navigation={navigation} /> */}
-        { /*logged ? <Btn nombre="Create your Resto!" ruta="RegisterResto" navigation={navigation} /> : null */}
-        <Btn nombre="Create your Resto!" ruta="RegisterResto" navigation={navigation} />
+        {logged ? <Btn nombre="Create your Resto!" ruta="RegisterResto" navigation={navigation} /> : null}
+        {/* <Btn nombre="Create your Resto!" ruta="RegisterResto" navigation={navigation} /> */}
       </View>
 
       <ScrollView style={{ overflow: "scroll" }}>
