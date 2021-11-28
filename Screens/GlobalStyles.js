@@ -21,7 +21,7 @@ const globalStyles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-around",
-        width: 200
+        width: 160,
     },
     Container: {
         alignItems: "center",
@@ -36,14 +36,14 @@ const globalStyles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#b39138',
     },
-    img : {
+    img: {
         // alignSelf: 'center',
         height: 40,
         width: 40,
         marginTop: 5,
         alignItems: "center",
         resizeMode: 'contain' // esta linea es para que se adapte al tam;o de la imagen
-      },
+    },
     title: {
         fontSize: 25,
         fontWeight: "bold",
