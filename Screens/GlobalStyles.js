@@ -22,6 +22,7 @@ const globalStyles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "space-around",
         width: 160,
+        //backgroundColor: "red",
     },
     Container: {
         alignItems: "center",
@@ -52,10 +53,13 @@ const globalStyles = StyleSheet.create({
         color: '#392c28'
     },
     containerTitle: {
+        //backgroundColor: "red",
         flexDirection: "row",
     },
     navHome: {
         flexDirection: "row",
+        //backgroundColor: "blue",
+        width: "100%",
     },
 
 });

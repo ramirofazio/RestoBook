@@ -41,22 +41,27 @@ export default function Nav({ title, navigation }) {
 
   return (
     <View style={globalStyles.navHome}>
-      <View style={globalStyles.containerTitle}>
-        <Image source={require('../assets/icon.png')} style={globalStyles.img} />
-        <Text style={globalStyles.title}>{title}</Text>
+      <View style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", width: "100%", paddingHorizontal: 15, marginHorizontal: -13 }}>
+
+        <View style={globalStyles.containerTitle}>
+          <Image source={require('../assets/icon.png')} style={globalStyles.img} />
+          <Text style={globalStyles.title}>{title}</Text>
+        </View>
+        <View style={globalStyles.btnContainer}>
+          {/* <Btn nombre="Login" ruta="GlobalLogin" navigation={navigation} /> */}
+          <TouchableOpacity
+            onPress={() =>
+              logged ? signOutAndAlert() : navigation.navigate("GlobalLogin")
+            }
+          >
+            <Text>{logged ? "Cerrar Sesion" : "Login"}</Text>
+          </TouchableOpacity>
+          <Btn nombre={<TagOutlined name='tag' color="#392c28" size={15} />} ruta="#" navigation={navigation} />
+          <Btn nombre={<UserOutlined name='user' color="#392c28" size={15} />} ruta="#" navigation={navigation} />
+        </View>
+
       </View>
-      <View style={globalStyles.btnContainer}>
-        {/* <Btn nombre="Login" ruta="GlobalLogin" navigation={navigation} /> */}
-        <TouchableOpacity
-          onPress={() =>
-            logged ? signOutAndAlert() : navigation.navigate("GlobalLogin")
-          }
-        >
-          <Text>{logged ? "Cerrar Sesion" : "Login"}</Text>
-        </TouchableOpacity>
-        <Btn nombre={<TagOutlined name='tag' color="#392c28" size={15} />} ruta="#" navigation={navigation} />
-        <Btn nombre={<UserOutlined name='user' color="#392c28" size={15} />} ruta="#" navigation={navigation} />
-      </View>
+
     </View>
   )
 }

@@ -24,7 +24,7 @@ export default Navigator = () => {
           options={({ navigation }) => ({
             headerTitle: () => <Nav navigation={navigation} title={'Resto Book'} />,
             headerStyle: {
-              backgroundColor: '#f6efd2'
+              backgroundColor: '#f6efd2',
             },
           })}
         />
