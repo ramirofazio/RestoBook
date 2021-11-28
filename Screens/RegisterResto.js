@@ -14,16 +14,19 @@ import BtnFuncional from './Helpers/BtnFuncional.js';
 const RegisterResto = (props) => {
   let dispatch = useDispatch();
   const initalState = {
-    name: "",
-    fantasyName: "",
-    cuit: "",
-    phone: "",
-    phone2: "",
-    email: "",
-    provincia: "",
-    ciudad: "",
-    direction: "",
-    horarios: "",
+    // name: "",
+    // fantasyName: "",
+    // cuit: "",
+    // phone: "",
+    // phone2: "",
+    // email: "",
+    // provincia: "",
+    // ciudad: "",
+    // direction: "",
+    // horarios: "",
+    Title: "",
+    Description: "",
+    Img: "",
   };
 
   const [state, setState] = useState(initalState);
@@ -72,13 +75,13 @@ const RegisterResto = (props) => {
         />
       </View> */}
 
-      <View style={styles.inputGroup}>
+      {/* <View style={styles.inputGroup}>
         <TextInput
           placeholder="Nombre de fantasía"
           onChangeText={(value) => handleChangeText(value, "fantasyName")}
           value={state.fantasyName}
         />
-      </View>
+      </View> */}
 
       {/* <View style={styles.inputGroup}>
         <TextInput
@@ -88,13 +91,13 @@ const RegisterResto = (props) => {
         />
       </View> */}
 
-      <View style={styles.inputGroup}>
+      {/* <View style={styles.inputGroup}>
         <TextInput
           placeholder="Teléfono"
           onChangeText={(value) => handleChangeText(value, "phone")}
           value={state.phone}
         />
-      </View>
+      </View> */}
 
       {/* <View style={styles.inputGroup}>
         <TextInput
@@ -143,9 +146,30 @@ const RegisterResto = (props) => {
           value={state.horarios}
         />
       </View> */}
+      <View style={styles.inputGroup}>
+        <TextInput
+          placeholder="Title"
+          onChangeText={(value) => handleChangeText(value, "Title")}
+          value={state.Title}
+        />
+      </View>
+      <View style={styles.inputGroup}>
+        <TextInput
+          placeholder="Descripcion"
+          onChangeText={(value) => handleChangeText(value, "Description")}
+          value={state.Description}
+        />
+      </View>
+      <View style={styles.inputGroup}>
+        <TextInput
+          placeholder="Image"
+          onChangeText={(value) => handleChangeText(value, "Img")}
+          value={state.Img}
+        />
+      </View>
 
       <View>
-        <BtnFuncional nombre="Crear" onPress={() => saveNewResto()} />
+        <Button title="Crear" onPress={() => saveNewResto()} />
       </View>
     </ScrollView>
   );
