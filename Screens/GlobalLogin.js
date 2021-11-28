@@ -9,8 +9,8 @@ import {
   StyleSheet,
 } from "react-native";
 import { MaterialCommunityIcons as Icon } from "@expo/vector-icons";
-// import firebase from "../database/firebase";
-// import fireAuth from "../database/firebase";
+import firebase from "../database/firebase";
+import fireAuth from "../database/firebase";
 import {
   getAuth,
   signInWithEmailAndPassword,
@@ -49,7 +49,7 @@ const GlobalLogin = ({ navigation }) => {
       const newUser = await signInWithRedirect(auth, googleProvider);
       if (auth.currentUser) {
         console.log("works");
-        props.navigation.navigate("Home");
+        props.navigation.navigate("RestoBook");
       } else {
         console.log("NO works");
       }
@@ -64,7 +64,7 @@ const GlobalLogin = ({ navigation }) => {
       const newUser = await signInWithEmailAndPassword(auth, email, pass);
       if (auth.currentUser.emailVerified) {
         alert("verified");
-        navigation.navigate("Home");
+        navigation.navigate("RestoBook");
       } else {
         navigation.navigate("AwaitEmail");
       }

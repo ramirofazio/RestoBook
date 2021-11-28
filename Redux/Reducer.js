@@ -1,19 +1,19 @@
-import { ADD_TASK } from './Actions/Constants.js'
+import { ADD_EMPRESA } from "./Actions/Constants.js";
 
 let initialState = {
-    task: 'No funcione'
-}
+  empresas: [],
+};
 
 const RootReducer = (state = initialState, action) => {
-    switch (action.type) {
-        case ADD_TASK:
-            return {
-                ...state,
-                task: action.payload
-            }
-        default:
-            return state
-    }
-}
+  switch (action.type) {
+    case ADD_EMPRESA:
+      return {
+        ...state,
+        empresas: [...state.empresas, action.payload],
+      };
+    default:
+      return state;
+  }
+};
 
 export default RootReducer;

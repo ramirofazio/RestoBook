@@ -1,8 +1,8 @@
-import { ADD_TASK } from "./Constants"
+import { ADD_EMPRESA } from "./Constants";
 
-export function addTask(task) {
-    return {
-        type: ADD_TASK,
-        payload: task,
-    }
+export function addEmpresa(empresa) {
+  return {
+    type: ADD_EMPRESA,
+    payload: empresa,
+  };
 }
