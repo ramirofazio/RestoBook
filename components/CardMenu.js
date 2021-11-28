@@ -2,7 +2,7 @@ import React from "react";
 import { Card, Text } from "react-native-elements";
 import { View, Image, StyleSheet } from "react-native";
 
-export default ({ menu }) => {
+const CardMenu = ({ menu }) => {
   return (
     <Card containerStyle={{ /*borderRadius: '25%',*/ height: 230 }} wrapperStyle={{}}>
       <Card.Title>{menu.Title}</Card.Title>
@@ -28,3 +28,5 @@ const styles = StyleSheet.create({
     //borderRadius: 25
   },
 })
+
+export default CardMenu;

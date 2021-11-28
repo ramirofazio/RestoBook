@@ -8,7 +8,7 @@ import Home from '../Screens/Home'
 import AddRestoScreen from '../Screens/RegisterResto.js';
 import AddUserScreen from '../Screens/RegisterUser.js';
 import AddMenuRestoScreen from '../Screens/menuResto.js'
-import { DetailsResto } from "../Screens/DetailsResto";
+import DetailsResto from "../Screens/DetailsResto";
 import Nav from "../Screens/Nav.js"
 import GlobalLogin from "../Screens/GlobalLogin.js";
 import LoginResto from "../Screens/LoginResto.js";

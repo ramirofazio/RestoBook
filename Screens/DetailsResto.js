@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Image } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import CardMenu from '../components/CardMenu.js';
 
-export const DetailsResto = () => {
+const DetailsResto = () => {
     const Menus = [
         {
             Id: 1,
@@ -147,3 +147,5 @@ const styles = StyleSheet.create({
         flex: 1
     }
 })
+
+export default DetailsResto;

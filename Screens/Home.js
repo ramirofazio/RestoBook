@@ -9,7 +9,7 @@ export default function Home({ navigation }) {
       <View style={styles.btnContainer}>
         <Btn nombre="Ciudad" ruta="#" navigation={navigation} />
         <Btn nombre="Categorias" ruta="#" navigation={navigation} />
-        <Btn nombre="DetailsResto" ruta="DetailsResto" navigation={navigation} />
+        <Btn nombre="Details Resto" ruta="DetailsResto" navigation={navigation} />
       </View>
     </View>
   )
@@ -20,7 +20,8 @@ const styles = StyleSheet.create({
     marginTop: 20,
     width: 100,
     height: 50,
-  }
+  },
+
 });
 
 
