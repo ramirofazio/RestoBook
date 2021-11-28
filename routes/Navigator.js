@@ -23,7 +23,10 @@ export default Navigator = () => {
                     name={"RestoBook"}
                     component={Home}
                     options={({ navigation }) => ({
-                        headerTitle: () => <Nav title="Resto Book" navigation={navigation} />,
+                        headerTitle: () => <Nav navigation={navigation} title={'Resto Book'} />,
+                        headerStyle: {
+                            backgroundColor: '#f6efd2'
+                        },
                     })}
                 />
                 <Stack.Screen
