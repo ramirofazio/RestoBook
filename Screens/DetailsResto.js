@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { View, Text, StyleSheet, Image } from 'react-native';
-import { FlatList, ScrollView } from 'react-native-gesture-handler';
-import CardMenu from '../components/CardMenu';
+import { ScrollView } from 'react-native-gesture-handler';
+import CardMenu from '../components/CardMenu.js';
 
 export const DetailsResto = () => {
     const Menus = [
@@ -70,42 +70,43 @@ export const DetailsResto = () => {
         },
     ]
     return (
-            <View style={styles.container}>
-                <View style={styles.titleContainer}>
-                    <Text style={styles.title}>Los Pollos Hermanos</Text>
-                </View>
-                <View style={styles.content}>
-                    <View style={styles.categoriesContainer}>
-                        <Text style={styles.categoriesText}>Comida Rapida</Text>
-                        <Text style={styles.categoriesText}>Pastas</Text>
-                        <Text style={styles.categoriesText}>Carnes</Text>
-                        <Text style={styles.categoriesText}>Postres</Text>
-                        <Text style={styles.categoriesText}>Bebidas</Text>
-                    </View>
-                    <ScrollView style={styles.showMenu}>
-                        {Menus.map(menu => { 
-                            return (
-                                <CardMenu key={menu.Id} menu={menu}> </CardMenu>
-                            )}
-                        )}
-                    </ScrollView>
-                </View>
-                <View style={styles.googleMapsContainer}>
-                    <Image style={styles.googleMaps} source={{uri:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVeQ_o5QXt-k1vH2LUIx6vToiFBfh9DZDdjA&usqp=CAU'}}/>
-                </View>
+        <View style={styles.container}>
+            <View style={styles.titleContainer}>
+                <Text style={styles.title}>Los Pollos Hermanos</Text>
             </View>
+            <View style={styles.content}>
+                <View style={styles.categoriesContainer}>
+                    <Text style={styles.categoriesText}>Comida Rapida</Text>
+                    <Text style={styles.categoriesText}>Pastas</Text>
+                    <Text style={styles.categoriesText}>Carnes</Text>
+                    <Text style={styles.categoriesText}>Postres</Text>
+                    <Text style={styles.categoriesText}>Bebidas</Text>
+                </View>
+                <ScrollView style={styles.showMenu}>
+                    {Menus.map(menu => {
+                        return (
+                            <CardMenu key={menu.Id} menu={menu}> </CardMenu>
+                        )
+                    }
+                    )}
+                </ScrollView>
+            </View>
+            <View style={styles.googleMapsContainer}>
+                <Image style={styles.googleMaps} source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVeQ_o5QXt-k1vH2LUIx6vToiFBfh9DZDdjA&usqp=CAU' }} />
+            </View>
+        </View>
     )
 }
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor:'pink',
+        backgroundColor: 'pink',
     },
-    titleContainer:{
+    titleContainer: {
         justifyContent: 'center',
         flexDirection: 'row',
-        backgroundColor:'skyblue'
-    },  
+        backgroundColor: 'skyblue'
+    },
     title: {
         padding: 10,
         fontWeight: 'bold',
@@ -123,12 +124,12 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',
         borderWidth: 0.3,
-        borderRadius: 20,
+        //borderRadius: 20,
         marginBottom: 5
     },
     categoriesText: {
         flexDirection: 'row',
-        fontWeight:'bold',
+        fontWeight: 'bold',
         fontSize: 13,
         padding: 1,
     },
@@ -136,7 +137,7 @@ const styles = StyleSheet.create({
         padding: 4,
         height: 400,
         borderWidth: 0.5,
-        borderRadius: 50
+        //borderRadius: 50
     },
     googleMapsContainer: {
         padding: 15,

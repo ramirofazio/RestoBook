@@ -100,7 +100,7 @@ const LoginResto = ({ navigation }) => {
         <View>
           <TextInput
             placeholder="Email"
-            onChange={(value) => handleChangeMail(value)}
+            onChangeText={(value) => handleChangeMail(value)}
           />
         </View>
         <View>

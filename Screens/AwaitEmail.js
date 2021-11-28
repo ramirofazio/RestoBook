@@ -34,7 +34,7 @@ const AwaitEmail = ({ navigation }) => {
         <View style={styles.buttons}>
           <Button
             title="ir a Login"
-            onPress={() => navigation.navigate("Login")}
+            onPress={() => navigation.navigate("GlobalLogin")}
           />
         </View>
       </ScrollView>

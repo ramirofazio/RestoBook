@@ -9,7 +9,7 @@ export default function Home({ navigation }) {
       <View style={styles.btnContainer}>
         <Btn nombre="Ciudad" ruta="#" navigation={navigation} />
         <Btn nombre="Categorias" ruta="#" navigation={navigation} />
-        <Btn nombre="DetailsResto" ruta="detailsResto" navigation={navigation} />
+        <Btn nombre="DetailsResto" ruta="DetailsResto" navigation={navigation} />
       </View>
     </View>
   )
