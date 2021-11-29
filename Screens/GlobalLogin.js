@@ -9,8 +9,6 @@ import {
   StyleSheet,
 } from "react-native";
 import { MaterialCommunityIcons as Icon } from "@expo/vector-icons";
-import firebase from "../database/firebase";
-import fireAuth from "../database/firebase";
 import {
   getAuth,
   signInWithEmailAndPassword,
@@ -20,9 +18,11 @@ import {
   sendEmailVerification,
   onAuthStateChanged,
 } from "firebase/auth";
-import { getFocusedRouteNameFromRoute } from "@react-navigation/core";
-import { color } from "react-native-elements/dist/helpers";
-// import { useScrollToTop } from "@react-navigation/native";
+// ESTA import { getFocusedRouteNameFromRoute } from "@react-navigation/core";
+// ESTA import { baseProps } from "react-native-gesture-handler/lib/typescript/handlers/gestureHandlers";
+//import { useScrollToTop } from "@react-navigation/native";
+
+//ERAN ESSAS 2 LIBRERIAS LAS DEL ERROR 505
 
 const auth = getAuth();
 const googleProvider = new GoogleAuthProvider();
@@ -108,7 +108,7 @@ const GlobalLogin = ({ navigation }) => {
 
   return (
     <View style={styles.Container}>
-      <ScrollView contentContainerStyle={{flex: 1}}>
+      <ScrollView contentContainerStyle={{ flex: 1 }}>
         <View style={styles.inputContainer}>
           <View style={styles.inputComponent}>
             <TextInput
@@ -125,7 +125,7 @@ const GlobalLogin = ({ navigation }) => {
               secureTextEntry={user.secureTextEntry}
               placeholder="Password"
               value={user.password}
-              onChangeText={(value) => handleChangeUser("password", value)} 
+              onChangeText={(value) => handleChangeUser("password", value)}
             />
             <TouchableOpacity
               onPress={onIconPress}
@@ -179,18 +179,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 6,
     alignItems: "center",
-    // backgroundColor: "blue",
   },
   texts: {
     fontSize: 14.5,
     fontWeight: "bold",
   },
   inputContainer: {
-    // height: "100%",
     flex: 2,
     alignItems: "center",
     justifyContent: "space-evenly",
-    // backgroundColor: "red"
   },
   inputComponent: {
     alignItems: "center",
