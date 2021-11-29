@@ -13,16 +13,10 @@ const auth = getAuth();
 
 export default function NavHome({ title, navigation }) {
 
-  const [usuarioGlobal, setUsuarioGlobal] = useState("");
   const [logged, setLogged] = useState(false);
 
   onAuthStateChanged(auth, (usuarioFirebase) => {
-    if (usuarioFirebase) {
-      if (usuarioFirebase.displayName) {
-        setUsuarioGlobal(usuarioFirebase.displayName);
-      } else {
-        setUsuarioGlobal(usuarioFirebase.email);
-      }
+    if (usuarioFirebase?.emailVerified) {
       setLogged(true);
       //   console.log("userFirebase", usuarioFirebase);
     } else {
@@ -50,7 +44,7 @@ export default function NavHome({ title, navigation }) {
         <View style={globalStyles.btnContainer}>
           {/* <Btn nombre="Login" ruta="GlobalLogin" navigation={navigation} /> */}
           <TouchableOpacity
-          style={globalStyles.btn}
+            style={globalStyles.btn}
             onPress={() =>
               logged ? signOutAndAlert() : navigation.navigate("GlobalLogin")
             }
