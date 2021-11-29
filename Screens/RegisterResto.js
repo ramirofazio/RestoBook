@@ -9,7 +9,7 @@ import { Button, View, TextInput, ScrollView, StyleSheet } from "react-native";
 import firebase from "../database/firebase";
 
 //------SCREENS----------
-import { addEmpresa } from "../Redux/Actions/addEmpresa";
+import addEmpresa from "../Redux/Actions/addEmpresa";
 import BtnFuncional from './Helpers/BtnFuncional.js';
 
 const RegisterResto = (props) => {

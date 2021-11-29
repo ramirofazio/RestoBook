@@ -90,10 +90,10 @@ const GlobalLogin = ({ navigation }) => {
   };
 
   const buttonText = [
-    "Ingresar",
-    "Registrate",
-    "Aun no tengo cuenta",
-    "Ya tengo cuenta",
+    "Log In",
+    "Sign In",
+    "I don't have an account yet",
+    "I already have an account",
   ];
 
   const onIconPress = () => {
@@ -159,7 +159,7 @@ const GlobalLogin = ({ navigation }) => {
             style={styles.touchLog}
             onPress={() => logUserWithGoogle()}
           >
-            <Text style={styles.fontLog}>Ingresa con Google</Text>
+            <Text style={styles.fontLog}>Sign In With Google</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
