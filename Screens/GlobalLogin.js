@@ -110,30 +110,32 @@ const GlobalLogin = ({ navigation }) => {
   return (
     <View style={globalStyles.Home}>
       <ScrollView contentContainerStyle={{ flex: 1 }}>
-        <View style={styles.inputContainer}>
-          <View style={styles.inputComponent}>
+        <View style={globalStyles.inputContainer}>
+          <View style={globalStyles.inputComponent}>
             <TextInput
-              style={styles.texts}
+              style={globalStyles.texts}
               placeholder="Email"
               value={user.mail}
               onChangeText={(value) => handleChangeUser("mail", value)}
             />
           </View>
-          <View style={styles.inputComponent}>
+          <View style={globalStyles.inputComponent}>
             <TextInput
-              style={styles.texts}
+              style={globalStyles.texts}
               onPress={onIconPress}
               secureTextEntry={user.secureTextEntry}
               placeholder="Password"
               value={user.password}
               onChangeText={(value) => handleChangeUser("password", value)}
             />
-            <TouchableOpacity
-              onPress={onIconPress}
-              style={styles.inputComponent}
-            >
-              <Icon name={user.iconName} size={20} />
-            </TouchableOpacity>
+            {/* <View>
+              <TouchableOpacity
+                onPress={onIconPress}
+                style={styles.inputComponent}
+              >
+                <Icon name={user.iconName} size={20} />
+              </TouchableOpacity>
+            </View> */}
           </View>
         </View>
 
@@ -163,7 +165,7 @@ const GlobalLogin = ({ navigation }) => {
             style={globalStyles.touchLog}
             onPress={() => logUserWithGoogle()}
           >
-            <Text style={globalStyles.fontLog}>Sing in with Google</Text>
+            <Text style={globalStyles.fontLog}>Sign In With Google</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -172,23 +174,8 @@ const GlobalLogin = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  texts: {
-    fontSize: 14.5,
-    fontWeight: "bold",
-  },
-  inputContainer: {
-    flex: 2,
-    alignItems: "center",
-    justifyContent: "space-evenly",
-  },
-  inputComponent: {
-    alignItems: "center",
-    borderRadius: 10,
-    backgroundColor: "#e8b595",
-    maxWidth: '100%',
-    width: '60%',
-    borderRadius: 10,
-  },
   
+  
+
 });
 export default GlobalLogin;

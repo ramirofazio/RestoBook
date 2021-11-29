@@ -78,24 +78,24 @@ export default function Home({ navigation }) {
 }
 
 
-const styles = StyleSheet.create ({
-    textContainer: {
-        flex: 1,
-        alignSelf: 'center',
-        justifyContent: 'center',
-        width:"90%",
-        borderColor: '#bd967e',
-        borderRadius: 10,
-        borderWidth: 3,
-        marginTop: 10
-    },
-    text: {
-        fontSize: 20,
-        width: "100%",
-        textAlign: 'center',
-        paddingVertical: 5,
-        fontWeight: 'bold',
-        color: '#392c28'
-      },
+const styles = StyleSheet.create({
+  textContainer: {
+    flex: 1,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    width: "90%",
+    borderColor: '#bd967e',
+    borderRadius: 10,
+    borderWidth: 3,
+    marginTop: 10
+  },
+  text: {
+    fontSize: 20,
+    width: "100%",
+    textAlign: 'center',
+    paddingVertical: 5,
+    fontWeight: 'bold',
+    color: '#392c28'
+  },
 })
 

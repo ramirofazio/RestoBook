@@ -37,6 +37,19 @@ export default Navigator = () => {
         <Stack.Screen
           name="RegisterResto"
           component={RegisterResto}
+          options={{
+            headerTitle: "RegisterResto",
+            title: 'Register Resto',
+            headerTitleAlign: "center",
+            headerStyle: {
+              backgroundColor: '#f6efd2',
+            },
+            headerTintColor: '#392c28',
+            headerTitleStyle: {
+              fontSize: 25
+            },
+        
+          }}
         />
         <Stack.Screen
           name="AddMenuResto"

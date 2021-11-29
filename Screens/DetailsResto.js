@@ -15,9 +15,6 @@ const DetailsResto = () => {
 
     return (
         <View style={styles.container}>
-            <View style={styles.titleContainer}>
-                <Text style={styles.title}>{ }</Text>
-            </View>
             <View style={styles.content}>
                 <View style={styles.categoriesContainer}>
                     <View style={styles.categoriesView}>

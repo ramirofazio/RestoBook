@@ -88,11 +88,30 @@ const globalStyles = StyleSheet.create({
         fontSize: 20,
         width: "100%",
       },
+      texts: {
+        textAlign: "center",
+        width: "100%",
+        fontSize: 14.5,
+        fontWeight: "bold",
+      },
       textContainer: {
         flex: 1,
         alignSelf: "center",
         justifyContent: "center",
         width:"70%",
+      },
+      inputContainer: {
+        flex: 2,
+        alignItems: "center",
+        justifyContent: "space-evenly",
+      },
+      inputComponent: {
+        alignSelf: "center",
+        borderRadius: 10,
+        backgroundColor: "#e8b595",
+        maxWidth: '100%',
+        width: '60%',
+        borderRadius: 10,
       },
 });
 
