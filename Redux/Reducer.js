@@ -1,4 +1,4 @@
-import { ADD_EMPRESA } from "./Actions/Constants.js";
+import { ADD_EMPRESA, EMPRESA_DETAIL, ADD_MENU } from "./Actions/Constants.js";
 
 let initialState = {
   empresas: [
@@ -21,10 +21,28 @@ let initialState = {
       Img: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Burger_King_2020.svg/800px-Burger_King_2020.svg.png",
     }
   ],
+  empresaDetail: [],
+  menus: [],
 };
 
 const RootReducer = (state = initialState, action) => {
   switch (action.type) {
+    case ADD_MENU:
+      const menu = action.payload
+      return {
+        ...state,
+        menus: [...state.menus, menu]
+      }
+    case EMPRESA_DETAIL:
+      const IdEmpresa = action.payload;
+      const empresas = state.empresas
+      const dataEmpresa = empresas.find((empresa) => empresa.Id === IdEmpresa)
+      //console.log(dataEmpresa[0])
+      return {
+        ...state,
+        empresaDetail: dataEmpresa,
+      }
+
     case ADD_EMPRESA:
       return {
         ...state,

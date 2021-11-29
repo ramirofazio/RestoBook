@@ -4,8 +4,8 @@ import Btn from './Helpers/Btns.js'
 import globalStyles from './GlobalStyles.js';
 import UserOutlined from 'react-native-vector-icons/AntDesign';
 import TagOutlined from 'react-native-vector-icons/AntDesign';
-import firebase from "../database/firebase";
-import fireAuth from "../database/firebase";
+// import firebase from "../database/firebase";
+// import fireAuth from "../database/firebase";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 
 const auth = getAuth();

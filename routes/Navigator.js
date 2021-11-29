@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
 
@@ -6,12 +6,14 @@ import { NavigationContainer } from "@react-navigation/native";
 import Home from '../Screens/Home'
 import RegisterResto from '../Screens/RegisterResto.js';
 import AddUserScreen from '../Screens/RegisterUser.js';
-import MenuResto from '../Screens/MenuResto.js'
+import AddMenuResto from '../Screens/AddMenuResto.js'
 import DetailsResto from "../Screens/DetailsResto";
-import Nav from "../Screens/Nav.js"
 import GlobalLogin from "../Screens/GlobalLogin.js";
 import LoginResto from "../Screens/LoginResto.js";
 import AwaitEmail from "../Screens/AwaitEmail.js";
+import NavHome from "../Screens/NavHome.js"
+import NavDetail from "../Screens/NavDetail";
+import { useSelector } from "react-redux";
 
 export default Navigator = () => {
   const Stack = createNativeStackNavigator();
@@ -22,7 +24,7 @@ export default Navigator = () => {
           name={"RestoBook"}
           component={Home}
           options={({ navigation }) => ({
-            headerTitle: () => <Nav navigation={navigation} title={'Resto Book'} />,
+            headerTitle: () => <NavHome navigation={navigation} title={'Resto Book'} />,
             headerStyle: {
               backgroundColor: '#f6efd2',
             },
@@ -37,12 +39,18 @@ export default Navigator = () => {
           component={RegisterResto}
         />
         <Stack.Screen
-          name="MenuResto"
-          component={MenuResto}
+          name="AddMenuResto"
+          component={AddMenuResto}
         />
         <Stack.Screen
           name="DetailsResto"
           component={DetailsResto}
+          options={({ navigation }) => ({
+            headerTitle: () => <NavDetail navigation={navigation} />,
+            headerStyle: {
+              backgroundColor: '#f6efd2',
+            },
+          })}
         />
         <Stack.Screen
           name="GlobalLogin"

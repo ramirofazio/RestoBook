@@ -6,16 +6,19 @@ import {
   TouchableOpacity,
   Text,
   StyleSheet,
+  Button,
 
 } from 'react-native';
-import CardHome from '../components/CardHome.js'
-import BtnFuncional from './Helpers/BtnFuncional.js';
-import Btn from './Helpers/Btns.js'
 
 //----------FIREBASE-----------
 import firebase from "../database/firebase";
 import fireAuth from "../database/firebase";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+
+//---------SCREENS---------------
+import CardHome from '../components/CardHome.js'
+import BtnFuncional from './Helpers/BtnFuncional.js';
+import Btn from './Helpers/Btns.js'
 
 //-------STYLES-------
 import globalStyles from './GlobalStyles.js';
@@ -28,7 +31,7 @@ export default function Home({ navigation }) {
   const [usuarioGlobal, setUsuarioGlobal] = useState("");
   const [logged, setLogged] = useState(false);
   const empresas = useSelector((state) => state.empresas);
-  console.log("empresas", empresas);
+  //console.log("empresas", empresas);
 
   // window.location.reload
   onAuthStateChanged(auth, (usuarioFirebase) => {
@@ -57,8 +60,8 @@ export default function Home({ navigation }) {
         {/* <Btn nombre="Ciudad" ruta="#" navigation={navigation} /> */}
         {/* <Btn nombre='Buscar' ruta='#' navigation={navigation} /> */}
         {/* <Btn nombre="Categorias" ruta="#" navigation={navigation} /> */}
-        {logged ? <Btn nombre="Create your Resto!" ruta="RegisterResto" navigation={navigation} /> : null}
-        {/* <Btn nombre="Create your Resto!" ruta="RegisterResto" navigation={navigation} /> */}
+        {/* {logged ? <Btn nombre="Create your Resto!" ruta="RegisterResto" navigation={navigation} /> : null} */}
+        <Btn nombre="Create your Resto!" ruta="RegisterResto" navigation={navigation} />
       </View>
 
       <ScrollView style={{ overflow: "scroll" }}>
