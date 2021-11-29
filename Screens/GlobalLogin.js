@@ -18,6 +18,7 @@ import {
   sendEmailVerification,
   onAuthStateChanged,
 } from "firebase/auth";
+import globalStyles from "./GlobalStyles";
 // ESTA import { getFocusedRouteNameFromRoute } from "@react-navigation/core";
 // ESTA import { baseProps } from "react-native-gesture-handler/lib/typescript/handlers/gestureHandlers";
 //import { useScrollToTop } from "@react-navigation/native";
@@ -107,7 +108,7 @@ const GlobalLogin = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.Container}>
+    <View style={globalStyles.Home}>
       <ScrollView contentContainerStyle={{ flex: 1 }}>
         <View style={styles.inputContainer}>
           <View style={styles.inputComponent}>
@@ -136,23 +137,22 @@ const GlobalLogin = ({ navigation }) => {
           </View>
         </View>
 
-        <View style={styles.container}>
+        <View style={globalStyles.container}>
           <TouchableOpacity
-            style={styles.touchLog}
+            style={globalStyles.touchLog}
             onPress={() => (registered ? logEmpresa() : saveEmpresa())}
           >
-            <Text style={styles.fontLog}>
+            <Text style={globalStyles.fontLog}>
               {registered ? buttonText[0] : buttonText[1]}
             </Text>
           </TouchableOpacity>
-
           <TouchableOpacity
-            style={styles.touchFlag}
+            style={globalStyles.touchFlag}
             onPress={() =>
               registered ? setRegistered(false) : setRegistered(true)
             }
           >
-            <Text style={styles.fontFlag}>
+            <Text style={globalStyles.fontLog}>
               {registered ? buttonText[2] : buttonText[3]}
             </Text>
           </TouchableOpacity>
@@ -160,10 +160,10 @@ const GlobalLogin = ({ navigation }) => {
           <Text>O</Text>
 
           <TouchableOpacity
-            style={styles.touchLog}
+            style={globalStyles.touchLog}
             onPress={() => logUserWithGoogle()}
           >
-            <Text style={styles.fontLog}>Ingresa con Google</Text>
+            <Text style={globalStyles.fontLog}>Ingresa con Google</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -172,14 +172,6 @@ const GlobalLogin = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  Container: {
-    flex: 1,
-    backgroundColor: '#ffdfcb'
-  },
-  container: {
-    flex: 6,
-    alignItems: "center",
-  },
   texts: {
     fontSize: 14.5,
     fontWeight: "bold",
@@ -197,33 +189,6 @@ const styles = StyleSheet.create({
     width: '60%',
     borderRadius: 10,
   },
-  touchLog: {
-    marginTop: 10,
-    maxWidth: "100%",
-    width: '50%',
-    alignItems: "center",
-    borderRadius: 10,
-    backgroundColor: "#bd967e",
-    padding: 10,
-  },
-  touchFlag: {
-    marginTop: 10,
-    maxWidth: "100%",
-    width: '50%',
-    alignItems: "center",
-    borderRadius: 10,
-    backgroundColor: "#ffdfcb",
-    borderWidth: 2,
-    borderColor: "#bd967e",
-    padding: 10,
-  },
-  fontLog: {
-    color: "#392c28",
-    fontWeight: "bold"
-  },
-  fontFlag: {
-    color: "#392c28",
-    fontWeight: "bold"
-  },
+  
 });
 export default GlobalLogin;

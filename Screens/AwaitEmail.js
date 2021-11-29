@@ -7,7 +7,11 @@ import {
   StyleSheet,
   Text,
 } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 import firebase from "../database/firebase.js";
+import globalStyles from "./GlobalStyles.js";
+// import { Alert } from 'antd';
+
 
 // import {
 //   getAuth,
@@ -17,43 +21,61 @@ import firebase from "../database/firebase.js";
 
 const AwaitEmail = ({ navigation }) => {
   return (
-    <View>
-      <ScrollView>
-        <View>
-          <Text>Revisa tu correo, si no llega hace click abajo</Text>
-        </View>
-        <View style={styles.buttons}>
-          <Button
+    <View style={globalStyles.Home}>
+      <View style={styles.textContainer}>
+        <Text style={styles.text}> Please check your inbox, if it's empty click below</Text>
+      </View>
+        <View style={globalStyles.container} >
+          {/* <Button
             title="Reenviar"
             onPress={() => {
               firebase.fireAuth.currentUser.sendEmailVerification();
               alert("Mail enviado. Revisa en spam!!");
             }}
-          />
-        </View>
-        <View style={styles.buttons}>
-          <Button
+          /> */}
+          <TouchableOpacity 
+            style={globalStyles.touchLog}
+            onPress={() => {
+              firebase.fireAuth.currentUser.sendEmailVerification();
+              alert("Email sent. Check unwanted section!!");
+              // <Alert
+              //   message="Informational Notes"
+              //   description="Additional description and information about copywriting."
+              //   type="info"
+              //   showIcon
+              //   closable
+              // />
+            }}
+          >
+            <Text style={globalStyles.fontLog}>Resend</Text>
+          </TouchableOpacity>
+       
+          {/* <Button
             title="ir a Login"
             onPress={() => navigation.navigate("GlobalLogin")}
-          />
+          /> */}
+          <TouchableOpacity 
+            style={globalStyles.touchFlag}
+             onPress={() => navigation.navigate("GlobalLogin")}
+          >
+            <Text style={globalStyles.fontLog}>Go back to Login</Text>
+          </TouchableOpacity>
         </View>
-      </ScrollView>
+      
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  buttons: {
+  text: {
+    fontSize: 20,
+    width: "100%"
+  },
+  textContainer: {
     flex: 1,
-    marginBottom: 15,
-    marginLeft: 150,
-    marginRight: 150,
-    overflow: "hidden",
-    borderRadius: 40,
-    // flexDirection: "row",
-    // justifyContent: "center",
-    // alignItems: "center",
-    // alignSelf: "flex-start",
+    alignSelf: "center",
+    justifyContent: "center",
+    width:"70%"
   },
 });
 export default AwaitEmail;
