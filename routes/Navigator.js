@@ -18,7 +18,7 @@ import { useSelector } from "react-redux";
 export default Navigator = () => {
 
 
-  
+
   const Stack = createNativeStackNavigator();
   return (
     <NavigationContainer>
@@ -51,12 +51,23 @@ export default Navigator = () => {
             headerTitleStyle: {
               fontSize: 25
             },
-        
           }}
         />
         <Stack.Screen
           name="AddMenuResto"
           component={AddMenuResto}
+          options={{
+            headerTitle: "AddMenuResto",
+            title: 'Add Your Menu',
+            headerTitleAlign: "center",
+            headerStyle: {
+              backgroundColor: '#f6efd2',
+            },
+            headerTintColor: '#392c28',
+            headerTitleStyle: {
+              fontSize: 25
+            },
+          }}
         />
         <Stack.Screen
           name="DetailsResto"
