@@ -1,18 +1,25 @@
 //Creo que no se puede autenticar un usuario con todos los datos completos. El sign up con mail solo admite mail y password,
 // usuario >> se registra como empresa >> le permitimos cargar un local >> ese local tiene menus
 //    X           mail y pass             todos los datos de este form    anidamos/linkeamos menu
-
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-
+import { useDispatch, useSelector } from "react-redux";
 import { Button, View, TextInput, ScrollView, StyleSheet } from "react-native";
 
+//-------FIREBASE--------
 import firebase from "../database/firebase";
-import { addEmpresa } from "../Redux/Actions/AddTask";
+
+//------SCREENS----------
+import { addEmpresa } from "../Redux/Actions/addEmpresa";
 import BtnFuncional from './Helpers/BtnFuncional.js';
 
 const RegisterResto = (props) => {
+
   let dispatch = useDispatch();
+
+  const empresas = useSelector((state) => state.empresas)
+  const Id = empresas.length + 1;
+  //console.log("soy ID", Id)
+
   const initalState = {
     // name: "",
     // fantasyName: "",
@@ -24,6 +31,7 @@ const RegisterResto = (props) => {
     // ciudad: "",
     // direction: "",
     // horarios: "",
+    Id: Id,
     Title: "",
     Description: "",
     Img: "",

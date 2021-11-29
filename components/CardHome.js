@@ -1,9 +1,14 @@
 import React from "react";
 import { Card, Text } from "react-native-elements";
 import { View, Image, StyleSheet } from "react-native"; 4
-import Btn from '../Screens/Helpers/Btns.js'
+import BtnFuncional from "../Screens/Helpers/BtnFuncional.js";
 
 const CardMenu = ({ resto, navigation }) => {
+
+    const handleOnPress = () => {
+        
+    }
+
     return (
         <Card style={styles.container}>
             <View style={{}}>
@@ -18,7 +23,7 @@ const CardMenu = ({ resto, navigation }) => {
                     />
                     <Text style={{ padding: 5 }}>{resto.Description}</Text>
                     <View style={{}}>
-                        <Btn nombre="About" ruta="DetailsResto" navigation={navigation} />
+                        <BtnFuncional nombre="About" onPress={handleOnPress()} navigation={navigation} />
                     </View>
                 </View>
             </View>
