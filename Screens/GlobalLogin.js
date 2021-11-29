@@ -72,7 +72,19 @@ const GlobalLogin = ({ navigation }) => {
         navigation.navigate("AwaitEmail");
       }
     } catch (error) {
-      alert("error!!");
+      const errorCode = error.code;
+      console.log("errorCode", errorCode);
+      switch (errorCode) {
+        case "auth/wrong-password":
+          alert("Wrong password");
+          break;
+        case "auth/user-not-found":
+          alert("User not found");
+        case "auth/internal-error":
+          alert("Enter your password!");
+        default:
+          alert("Error");
+      }
     }
   };
 
@@ -88,7 +100,19 @@ const GlobalLogin = ({ navigation }) => {
         }
       });
     } catch (error) {
-      alert("error en save", error);
+      const errorCode = error.code;
+      console.log("errorCode", errorCode);
+      switch (errorCode) {
+        case "auth/invalid-email":
+          alert("Invalid Email");
+          break;
+        case "auth/weak-password":
+          alert("password must be at least 6 characters");
+        case "auth/email-already-in-use":
+          alert("Email already in-use");
+        default:
+          break;
+      }
     }
   };
 
@@ -189,10 +213,9 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     borderRadius: 10,
     backgroundColor: "#e8b595",
-    maxWidth: '100%',
-    width: '60%',
+    maxWidth: "100%",
+    width: "60%",
     borderRadius: 10,
   },
-
 });
 export default GlobalLogin;

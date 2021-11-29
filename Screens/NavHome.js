@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import Btn from './Helpers/Btns.js'
-import globalStyles from './GlobalStyles.js';
-import UserOutlined from 'react-native-vector-icons/AntDesign';
-import TagOutlined from 'react-native-vector-icons/AntDesign';
+import React, { useState, useEffect } from "react";
+import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
+import Btn from "./Helpers/Btns.js";
+import globalStyles from "./GlobalStyles.js";
+import UserOutlined from "react-native-vector-icons/AntDesign";
+import TagOutlined from "react-native-vector-icons/AntDesign";
 import firebase from "../database/firebase";
 import fireAuth from "../database/firebase";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 
 const auth = getAuth();
-
 
 export default function NavHome({ title, navigation }) {
 
@@ -17,6 +16,7 @@ export default function NavHome({ title, navigation }) {
 
   onAuthStateChanged(auth, (usuarioFirebase) => {
     if (usuarioFirebase?.emailVerified) {
+
       setLogged(true);
       //   console.log("userFirebase", usuarioFirebase);
     } else {
@@ -35,10 +35,21 @@ export default function NavHome({ title, navigation }) {
 
   return (
     <View style={globalStyles.navHome}>
-      <View style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", width: "100%", paddingHorizontal: 15, marginHorizontal: -13 }}>
-
+      <View
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          width: "100%",
+          paddingHorizontal: 15,
+          marginHorizontal: -13,
+        }}
+      >
         <View style={globalStyles.containerTitle}>
-          <Image source={require('../assets/icon.png')} style={globalStyles.img} />
+          <Image
+            source={require("../assets/icon.png")}
+            style={globalStyles.img}
+          />
           <Text style={globalStyles.title}>{title}</Text>
         </View>
         <View style={globalStyles.btnContainer}>
@@ -51,13 +62,18 @@ export default function NavHome({ title, navigation }) {
           >
             <Text>{logged ? "Log out" : "Log in"}</Text>
           </TouchableOpacity>
-          <Btn nombre={<TagOutlined name='tag' color="#392c28" size={15} />} ruta="#" navigation={navigation} />
-          <Btn nombre={<UserOutlined name='user' color="#392c28" size={15} />} ruta="#" navigation={navigation} />
+          <Btn
+            nombre={<TagOutlined name="tag" color="#392c28" size={15} />}
+            ruta="#"
+            navigation={navigation}
+          />
+          <Btn
+            nombre={<UserOutlined name="user" color="#392c28" size={15} />}
+            ruta="#"
+            navigation={navigation}
+          />
         </View>
-
       </View>
-
     </View>
-  )
+  );
 }
-
