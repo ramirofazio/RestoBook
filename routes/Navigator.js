@@ -47,6 +47,19 @@ export default Navigator = () => {
         <Stack.Screen
           name="GlobalLogin"
           component={GlobalLogin}
+          options={{
+            headerTitle: "Login",
+            title: 'Login',
+            headerTitleAlign: "center",
+            headerStyle: {
+              backgroundColor: '#f6efd2',
+            },
+            headerTintColor: '#392c28',
+            headerTitleStyle: {
+              fontSize: 25
+            },
+
+          }}
         />
         <Stack.Screen
           name="LoginResto"

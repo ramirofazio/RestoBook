@@ -20,6 +20,8 @@ import {
   sendEmailVerification,
   onAuthStateChanged,
 } from "firebase/auth";
+import { getFocusedRouteNameFromRoute } from "@react-navigation/core";
+import { baseProps } from "react-native-gesture-handler/lib/typescript/handlers/gestureHandlers";
 // import { useScrollToTop } from "@react-navigation/native";
 
 const auth = getAuth();
@@ -105,8 +107,8 @@ const GlobalLogin = ({ navigation }) => {
   };
 
   return (
-    <View>
-      <ScrollView>
+    <View style={styles.Container}>
+      <ScrollView contentContainerStyle={{flex: 1}}>
         <View style={styles.inputContainer}>
           <View style={styles.inputComponent}>
             <TextInput
@@ -121,7 +123,7 @@ const GlobalLogin = ({ navigation }) => {
               secureTextEntry={user.secureTextEntry}
               placeholder="Password"
               value={user.password}
-              onChangeText={(value) => handleChangeUser("password", value)}
+              onChangeText={(value) => handleChangeUser("password", value)} 
             />
             <TouchableOpacity
               onPress={onIconPress}
@@ -168,29 +170,34 @@ const GlobalLogin = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
+  Container: {
     flex: 1,
-    marginTop: 50,
-    justifyContent: "center",
+    backgroundColor: '#ffdfcb'
+  },
+  container: {
+    flex: 6,
     alignItems: "center",
+    // backgroundColor: "blue",
   },
   inputContainer: {
-    flex: 1,
+    // height: "100%",
+    flex: 2,
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-evenly",
+    // backgroundColor: "red"
   },
-
   inputComponent: {
-    marginTop: 15,
-    backgroundColor: "#cacbcf",
-    width: 300,
-    borderRadius: 5,
+    alignItems: "center",
+    borderRadius: 10,
+    backgroundColor: "#bd967e",
+    maxWidth: '100%',
+    width: '60%',
+    borderRadius: 10,
   },
-
   touchLog: {
     marginTop: 10,
     width: 200,
-    flex: 1,
+    // flex: 1,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 5,
@@ -201,7 +208,7 @@ const styles = StyleSheet.create({
   touchFlag: {
     marginTop: 10,
     width: 200,
-    flex: 1,
+    // flex: 1,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 5,

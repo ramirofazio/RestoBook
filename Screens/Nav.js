@@ -50,11 +50,12 @@ export default function Nav({ title, navigation }) {
         <View style={globalStyles.btnContainer}>
           {/* <Btn nombre="Login" ruta="GlobalLogin" navigation={navigation} /> */}
           <TouchableOpacity
+          style={globalStyles.btn}
             onPress={() =>
               logged ? signOutAndAlert() : navigation.navigate("GlobalLogin")
             }
           >
-            <Text>{logged ? "Cerrar Sesion" : "Login"}</Text>
+            <Text>{logged ? "Cerrar Sesion" : "Log in"}</Text>
           </TouchableOpacity>
           <Btn nombre={<TagOutlined name='tag' color="#392c28" size={15} />} ruta="#" navigation={navigation} />
           <Btn nombre={<UserOutlined name='user' color="#392c28" size={15} />} ruta="#" navigation={navigation} />
