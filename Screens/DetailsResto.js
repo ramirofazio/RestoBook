@@ -4,6 +4,7 @@ import { FlatList, ScrollView } from 'react-native-gesture-handler';
 import MapView from 'react-native-maps';
 import { useSelector } from 'react-redux';
 import CardMenu from '../components/CardMenu';
+import globalStyles from './GlobalStyles';
 
 const DetailsResto = () => {
 
@@ -14,7 +15,7 @@ const DetailsResto = () => {
     //console.log(thisMenu)
 
     return (
-        <View style={styles.container}>
+        <View style={globalStyles.Home}>
             <View style={styles.content}>
                 <View style={styles.categoriesContainer}>
                     <View style={styles.categoriesView}>
@@ -87,12 +88,18 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',
         borderRadius: 20,
-        marginBottom: 5
+        marginBottom: 5,
+        paddingHorizontal: 2
     },
     categoriesView: {
-        backgroundColor: 'white',
+        marginTop: 10,
+        width: '17%',
+        alignItems: "center",
         borderRadius: 10,
-        padding: 2
+        backgroundColor: "#ffdfcb",
+        borderWidth: 2,
+        borderColor: "#bd967e",
+        marginHorizontal: 5,
     },
     categoriesText: {
         fontWeight: 'bold',
