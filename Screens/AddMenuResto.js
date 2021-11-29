@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Button, View, TextInput, ScrollView, StyleSheet } from "react-native";
+import { Button, View, TextInput, ScrollView, StyleSheet, TouchableOpacity, Text } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import AddMenu from "../Redux/Actions/AddMenu";
+import globalStyles from "./GlobalStyles";
 
 import firebase from "../database/firebase";
 
@@ -49,63 +50,56 @@ const AddMenuResto = ({ navigation }) => {
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.inputGroup}>
-        <TextInput
-          placeholder="Food Name"
-          onChangeText={(value) => handleChangeText(value, "foodName")}
-          value={state.foodName} /
+    <View style={globalStyles.Home}>
+      <View style={globalStyles.inputContainer}>
+        <View style={globalStyles.inputComponent}>
+          <TextInput
+            style={globalStyles.texts}
+            placeholder="Food Name"
+            onChangeText={(value) => handleChangeText(value, "foodName")}
+            value={state.foodName} /
+          >
+        </View>
+        <View style={globalStyles.inputComponent}>
+          <TextInput
+            style={globalStyles.texts}
+            placeholder="Description"
+            onChangeText={(value) => handleChangeText(value, "description")}
+            value={state.description}
+          />
+        </View>
+        <View style={globalStyles.inputComponent}>
+          <TextInput
+            style={globalStyles.texts}
+            placeholder="Price"
+            onChangeText={(value) => handleChangeText(value, "price")}
+            value={state.price}
+          />
+        </View>
+        <View style={globalStyles.inputComponent}>
+          <TextInput
+            style={globalStyles.texts}
+            placeholder="Image"
+            onChangeText={(value) => handleChangeText(value, "img")}
+            value={state.img}
+          />
+        </View>
+      </View>
+      <View style={globalStyles.container}>
+        {/* <Button title="Add Food" onPress={() => saveMenuResto()} /> */}
+        <TouchableOpacity
+          style={globalStyles.touchLog}
+          onPress={() => saveMenuResto()}
         >
+          <Text style={globalStyles.fontLog}>Add Food</Text>
+        </TouchableOpacity>
       </View>
-      <View style={styles.inputGroup}>
-        <TextInput
-          placeholder="Description"
-          onChangeText={(value) => handleChangeText(value, "description")}
-          value={state.description}
-        />
-      </View>
-      <View style={styles.inputGroup}>
-        <TextInput
-          placeholder="Price"
-          onChangeText={(value) => handleChangeText(value, "price")}
-          value={state.price}
-        />
-      </View>
-      <View style={styles.inputGroup}>
-        <TextInput
-          placeholder="Image"
-          onChangeText={(value) => handleChangeText(value, "img")}
-          value={state.img}
-        />
-      </View>
-      <View>
-        <Button title="Add Food" onPress={() => saveMenuResto()} />
-      </View>
-    </ScrollView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 35,
-  },
-  inputGroup: {
-    flex: 1,
-    padding: 0,
-    marginBottom: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: "#cccccc",
-  },
-  loader: {
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
-    position: "absolute",
-    alignItems: "center",
-    justifyContent: "center",
-  },
+  
 });
 
 export default AddMenuResto;
