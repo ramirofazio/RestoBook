@@ -22,8 +22,8 @@ import globalStyles from "./GlobalStyles.js";
 const AwaitEmail = ({ navigation }) => {
   return (
     <View style={globalStyles.Home}>
-      <View style={styles.textContainer}>
-        <Text style={styles.text}> Please check your inbox, if it's empty click below</Text>
+      <View style={globalStyles.textContainer}>
+        <Text style={globalStyles.text}> Please check your inbox, if it's empty click below</Text>
       </View>
         <View style={globalStyles.container} >
           {/* <Button
@@ -67,15 +67,6 @@ const AwaitEmail = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  text: {
-    fontSize: 20,
-    width: "100%"
-  },
-  textContainer: {
-    flex: 1,
-    alignSelf: "center",
-    justifyContent: "center",
-    width:"70%"
-  },
+  
 });
 export default AwaitEmail;

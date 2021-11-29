@@ -84,7 +84,16 @@ const globalStyles = StyleSheet.create({
         flex: 6,
         alignItems: "center",
       },
-      
+      text: {
+        fontSize: 20,
+        width: "100%",
+      },
+      textContainer: {
+        flex: 1,
+        alignSelf: "center",
+        justifyContent: "center",
+        width:"70%",
+      },
 });
 
 export default globalStyles;

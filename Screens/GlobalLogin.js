@@ -66,7 +66,7 @@ const GlobalLogin = ({ navigation }) => {
     try {
       const newUser = await signInWithEmailAndPassword(auth, email, pass);
       if (auth.currentUser.emailVerified) {
-        alert("verified");
+        alert("Welcome");
         navigation.navigate("RestoBook");
       } else {
         navigation.navigate("AwaitEmail");
