@@ -48,10 +48,10 @@ export default function Home({ navigation }) {
 
   return (
     <ScrollView style={globalStyles.Home}>
-      <View>
+      <View style={styles.textContainer}>
         {usuarioGlobal !== "" ? (
-          <Text>{`Bienvenido ${usuarioGlobal}`}</Text>
-        ) : null}
+          <Text style={styles.text}>{` Welcome ${usuarioGlobal}`}</Text>
+        ) : <Text style={styles.text}>Welcome to Resto Book</Text>}
       </View>
       <View style={globalStyles.btnHome}>
         {/* <Btn nombre="Ciudad" ruta="#" navigation={navigation} /> */}
@@ -75,5 +75,24 @@ export default function Home({ navigation }) {
 }
 
 
-
+const styles = StyleSheet.create ({
+    textContainer: {
+        flex: 1,
+        alignSelf: 'center',
+        justifyContent: 'center',
+        width:"90%",
+        borderColor: '#bd967e',
+        borderRadius: 10,
+        borderWidth: 3,
+        marginTop: 10
+    },
+    text: {
+        fontSize: 20,
+        width: "100%",
+        textAlign: 'center',
+        paddingVertical: 5,
+        fontWeight: 'bold',
+        color: '#392c28'
+      },
+})
 
