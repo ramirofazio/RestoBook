@@ -55,15 +55,41 @@ export default Navigator = () => {
         <Stack.Screen
           name="GlobalLogin"
           component={GlobalLogin}
+          options={{
+            headerTitle: "Login",
+            title: 'Login',
+            headerTitleAlign: "center",
+            headerStyle: {
+              backgroundColor: '#f6efd2',
+            },
+            headerTintColor: '#392c28',
+            headerTitleStyle: {
+              fontSize: 25
+            },
+            
+          }}
         />
         <Stack.Screen
           name="LoginResto"
           component={LoginResto}
         />
-        <Stack.Screen
-          name="AwaitEmail"
-          component={AwaitEmail}
-        />
+          <Stack.Screen
+            name="AwaitEmail"
+            component={AwaitEmail}
+            options={{
+              headerTitle: "Verify Email",
+              title: 'Verify Email',
+              headerTitleAlign: "center",
+              headerStyle: {
+                backgroundColor: '#f6efd2',
+              },
+              headerTintColor: '#392c28',
+              headerTitleStyle: {
+                fontSize: 25
+              },
+          
+            }}
+          />
       </Stack.Navigator>
     </NavigationContainer>
   )

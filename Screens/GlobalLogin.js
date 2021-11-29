@@ -9,8 +9,6 @@ import {
   StyleSheet,
 } from "react-native";
 import { MaterialCommunityIcons as Icon } from "@expo/vector-icons";
-import firebase from "../database/firebase";
-import fireAuth from "../database/firebase";
 import {
   getAuth,
   signInWithEmailAndPassword,
@@ -20,7 +18,12 @@ import {
   sendEmailVerification,
   onAuthStateChanged,
 } from "firebase/auth";
-// import { useScrollToTop } from "@react-navigation/native";
+import globalStyles from "./GlobalStyles";
+// ESTA import { getFocusedRouteNameFromRoute } from "@react-navigation/core";
+// ESTA import { baseProps } from "react-native-gesture-handler/lib/typescript/handlers/gestureHandlers";
+//import { useScrollToTop } from "@react-navigation/native";
+
+//ERAN ESSAS 2 LIBRERIAS LAS DEL ERROR 505
 
 const auth = getAuth();
 const googleProvider = new GoogleAuthProvider();
@@ -63,7 +66,7 @@ const GlobalLogin = ({ navigation }) => {
     try {
       const newUser = await signInWithEmailAndPassword(auth, email, pass);
       if (auth.currentUser.emailVerified) {
-        alert("verified");
+        alert("Welcome");
         navigation.navigate("RestoBook");
       } else {
         navigation.navigate("AwaitEmail");
@@ -105,11 +108,12 @@ const GlobalLogin = ({ navigation }) => {
   };
 
   return (
-    <View>
-      <ScrollView>
+    <View style={globalStyles.Home}>
+      <ScrollView contentContainerStyle={{ flex: 1 }}>
         <View style={styles.inputContainer}>
           <View style={styles.inputComponent}>
             <TextInput
+              style={styles.texts}
               placeholder="Email"
               value={user.mail}
               onChangeText={(value) => handleChangeUser("mail", value)}
@@ -117,6 +121,7 @@ const GlobalLogin = ({ navigation }) => {
           </View>
           <View style={styles.inputComponent}>
             <TextInput
+              style={styles.texts}
               onPress={onIconPress}
               secureTextEntry={user.secureTextEntry}
               placeholder="Password"
@@ -132,23 +137,22 @@ const GlobalLogin = ({ navigation }) => {
           </View>
         </View>
 
-        <View style={styles.container}>
+        <View style={globalStyles.container}>
           <TouchableOpacity
-            style={styles.touchLog}
+            style={globalStyles.touchLog}
             onPress={() => (registered ? logEmpresa() : saveEmpresa())}
           >
-            <Text style={styles.fontLog}>
+            <Text style={globalStyles.fontLog}>
               {registered ? buttonText[0] : buttonText[1]}
             </Text>
           </TouchableOpacity>
-
           <TouchableOpacity
-            style={styles.touchFlag}
+            style={globalStyles.touchFlag}
             onPress={() =>
               registered ? setRegistered(false) : setRegistered(true)
             }
           >
-            <Text style={styles.fontFlag}>
+            <Text style={globalStyles.fontLog}>
               {registered ? buttonText[2] : buttonText[3]}
             </Text>
           </TouchableOpacity>
@@ -156,10 +160,10 @@ const GlobalLogin = ({ navigation }) => {
           <Text>O</Text>
 
           <TouchableOpacity
-            style={styles.touchLog}
+            style={globalStyles.touchLog}
             onPress={() => logUserWithGoogle()}
           >
-            <Text style={styles.fontLog}>Sign In With Google</Text>
+            <Text style={globalStyles.fontLog}>Sign In With Google</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -168,51 +172,23 @@ const GlobalLogin = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    marginTop: 50,
-    justifyContent: "center",
-    alignItems: "center",
+  texts: {
+    fontSize: 14.5,
+    fontWeight: "bold",
   },
   inputContainer: {
-    flex: 1,
+    flex: 2,
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-evenly",
   },
-
   inputComponent: {
-    marginTop: 15,
-    backgroundColor: "#cacbcf",
-    width: 300,
-    borderRadius: 5,
+    alignItems: "center",
+    borderRadius: 10,
+    backgroundColor: "#e8b595",
+    maxWidth: '100%',
+    width: '60%',
+    borderRadius: 10,
   },
 
-  touchLog: {
-    marginTop: 10,
-    width: 200,
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 5,
-    color: "#9b9ba3",
-    backgroundColor: "#4951de",
-    padding: 10,
-  },
-  touchFlag: {
-    marginTop: 10,
-    width: 200,
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 5,
-    backgroundColor: "#cacbcf",
-    padding: 10,
-  },
-  fontLog: {
-    color: "#cacbcf",
-  },
-  fontFlag: {
-    color: "#4951de",
-  },
 });
 export default GlobalLogin;
