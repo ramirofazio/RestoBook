@@ -29,7 +29,6 @@ export default function Home({ navigation }) {
   const [logged, setLogged] = useState(false);
   const empresas = useSelector((state) => state.empresas);
   //console.log("empresas", empresas);
-
   // window.location.reload
   onAuthStateChanged(auth, (usuarioFirebase) => {
     if (usuarioFirebase?.emailVerified) {
