@@ -16,6 +16,9 @@ import NavDetail from "../Screens/NavDetail";
 import { useSelector } from "react-redux";
 
 export default Navigator = () => {
+
+
+  
   const Stack = createNativeStackNavigator();
   return (
     <NavigationContainer>
@@ -66,30 +69,30 @@ export default Navigator = () => {
             headerTitleStyle: {
               fontSize: 25
             },
-            
+
           }}
         />
         <Stack.Screen
           name="LoginResto"
           component={LoginResto}
         />
-          <Stack.Screen
-            name="AwaitEmail"
-            component={AwaitEmail}
-            options={{
-              headerTitle: "Verify Email",
-              title: 'Verify Email',
-              headerTitleAlign: "center",
-              headerStyle: {
-                backgroundColor: '#f6efd2',
-              },
-              headerTintColor: '#392c28',
-              headerTitleStyle: {
-                fontSize: 25
-              },
-          
-            }}
-          />
+        <Stack.Screen
+          name="AwaitEmail"
+          component={AwaitEmail}
+          options={{
+            headerTitle: "Verify Email",
+            title: 'Verify Email',
+            headerTitleAlign: "center",
+            headerStyle: {
+              backgroundColor: '#f6efd2',
+            },
+            headerTintColor: '#392c28',
+            headerTitleStyle: {
+              fontSize: 25
+            },
+
+          }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   )

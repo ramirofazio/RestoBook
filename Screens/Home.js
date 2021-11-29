@@ -72,6 +72,7 @@ export default function Home({ navigation }) {
           ruta="RegisterResto"
           navigation={navigation}
         /> */}
+
       </View>
 
       <ScrollView style={{ overflow: "scroll" }}>

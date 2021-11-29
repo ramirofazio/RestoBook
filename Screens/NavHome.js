@@ -11,16 +11,12 @@ import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 const auth = getAuth();
 
 export default function NavHome({ title, navigation }) {
-  const [usuarioGlobal, setUsuarioGlobal] = useState("");
+
   const [logged, setLogged] = useState(false);
 
   onAuthStateChanged(auth, (usuarioFirebase) => {
     if (usuarioFirebase?.emailVerified) {
-      if (usuarioFirebase.displayName) {
-        setUsuarioGlobal(usuarioFirebase.displayName);
-      } else {
-        setUsuarioGlobal(usuarioFirebase.email);
-      }
+
       setLogged(true);
       //   console.log("userFirebase", usuarioFirebase);
     } else {
