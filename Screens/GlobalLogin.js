@@ -128,12 +128,14 @@ const GlobalLogin = ({ navigation }) => {
               value={user.password}
               onChangeText={(value) => handleChangeUser("password", value)}
             />
-            <TouchableOpacity
-              onPress={onIconPress}
-              style={styles.inputComponent}
-            >
-              <Icon name={user.iconName} size={20} />
-            </TouchableOpacity>
+            {/* <View>
+              <TouchableOpacity
+                onPress={onIconPress}
+                style={styles.inputComponent}
+              >
+                <Icon name={user.iconName} size={20} />
+              </TouchableOpacity>
+            </View> */}
           </View>
         </View>
 
@@ -173,6 +175,8 @@ const GlobalLogin = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   texts: {
+    textAlign: "center",
+    width: "100%",
     fontSize: 14.5,
     fontWeight: "bold",
   },
@@ -182,7 +186,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
   },
   inputComponent: {
-    alignItems: "center",
+    alignSelf: "center",
     borderRadius: 10,
     backgroundColor: "#e8b595",
     maxWidth: '100%',
