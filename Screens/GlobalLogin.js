@@ -134,18 +134,18 @@ const GlobalLogin = ({ navigation }) => {
   return (
     <View style={globalStyles.Home}>
       <ScrollView contentContainerStyle={{ flex: 1 }}>
-        <View style={styles.inputContainer}>
-          <View style={styles.inputComponent}>
+        <View style={globalStyles.inputContainer}>
+          <View style={globalStyles.inputComponent}>
             <TextInput
-              style={styles.texts}
+              style={globalStyles.texts}
               placeholder="Email"
               value={user.mail}
               onChangeText={(value) => handleChangeUser("mail", value)}
             />
           </View>
-          <View style={styles.inputComponent}>
+          <View style={globalStyles.inputComponent}>
             <TextInput
-              style={styles.texts}
+              style={globalStyles.texts}
               onPress={onIconPress}
               secureTextEntry={user.secureTextEntry}
               placeholder="Password"
@@ -198,24 +198,8 @@ const GlobalLogin = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  texts: {
-    textAlign: "center",
-    width: "100%",
-    fontSize: 14.5,
-    fontWeight: "bold",
-  },
-  inputContainer: {
-    flex: 2,
-    alignItems: "center",
-    justifyContent: "space-evenly",
-  },
-  inputComponent: {
-    alignSelf: "center",
-    borderRadius: 10,
-    backgroundColor: "#e8b595",
-    maxWidth: "100%",
-    width: "60%",
-    borderRadius: 10,
-  },
+  
+  
+
 });
 export default GlobalLogin;
