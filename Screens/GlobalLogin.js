@@ -21,7 +21,7 @@ import {
   onAuthStateChanged,
 } from "firebase/auth";
 import { getFocusedRouteNameFromRoute } from "@react-navigation/core";
-import { baseProps } from "react-native-gesture-handler/lib/typescript/handlers/gestureHandlers";
+import { color } from "react-native-elements/dist/helpers";
 // import { useScrollToTop } from "@react-navigation/native";
 
 const auth = getAuth();
@@ -112,6 +112,7 @@ const GlobalLogin = ({ navigation }) => {
         <View style={styles.inputContainer}>
           <View style={styles.inputComponent}>
             <TextInput
+              style={styles.texts}
               placeholder="Email"
               value={user.mail}
               onChangeText={(value) => handleChangeUser("mail", value)}
@@ -119,6 +120,7 @@ const GlobalLogin = ({ navigation }) => {
           </View>
           <View style={styles.inputComponent}>
             <TextInput
+              style={styles.texts}
               onPress={onIconPress}
               secureTextEntry={user.secureTextEntry}
               placeholder="Password"
@@ -179,6 +181,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     // backgroundColor: "blue",
   },
+  texts: {
+    fontSize: 14.5,
+    fontWeight: "bold",
+  },
   inputContainer: {
     // height: "100%",
     flex: 2,
@@ -189,37 +195,38 @@ const styles = StyleSheet.create({
   inputComponent: {
     alignItems: "center",
     borderRadius: 10,
-    backgroundColor: "#bd967e",
+    backgroundColor: "#e8b595",
     maxWidth: '100%',
     width: '60%',
     borderRadius: 10,
   },
   touchLog: {
     marginTop: 10,
-    width: 200,
-    // flex: 1,
-    justifyContent: "center",
+    maxWidth: "100%",
+    width: '50%',
     alignItems: "center",
-    borderRadius: 5,
-    color: "#9b9ba3",
-    backgroundColor: "#4951de",
+    borderRadius: 10,
+    backgroundColor: "#bd967e",
     padding: 10,
   },
   touchFlag: {
     marginTop: 10,
-    width: 200,
-    // flex: 1,
-    justifyContent: "center",
+    maxWidth: "100%",
+    width: '50%',
     alignItems: "center",
-    borderRadius: 5,
-    backgroundColor: "#cacbcf",
+    borderRadius: 10,
+    backgroundColor: "#ffdfcb",
+    borderWidth: 2,
+    borderColor: "#bd967e",
     padding: 10,
   },
   fontLog: {
-    color: "#cacbcf",
+    color: "#392c28",
+    fontWeight: "bold"
   },
   fontFlag: {
-    color: "#4951de",
+    color: "#392c28",
+    fontWeight: "bold"
   },
 });
 export default GlobalLogin;
