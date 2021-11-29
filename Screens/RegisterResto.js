@@ -155,7 +155,7 @@ const RegisterResto = (props) => {
             value={state.horarios}
           />
         </View> */}
-        <View styles={styles.inputContainer}>
+        <View style={globalStyles.inputContainer}>
                   <View style={globalStyles.inputComponent}>
                     <TextInput
                     style={globalStyles.texts}
@@ -197,12 +197,6 @@ const RegisterResto = (props) => {
 };
 
 const styles = StyleSheet.create({
-  inputContainer: {
-    flex: 2,
-    alignItems: "center",
-    justifyContent: "space-evenly",
-    backgroundColor: 'red'
-  },
 });
 
 export default RegisterResto;
