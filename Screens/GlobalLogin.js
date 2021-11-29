@@ -20,9 +20,11 @@ import {
   sendEmailVerification,
   onAuthStateChanged,
 } from "firebase/auth";
-import { getFocusedRouteNameFromRoute } from "@react-navigation/core";
-import { baseProps } from "react-native-gesture-handler/lib/typescript/handlers/gestureHandlers";
-// import { useScrollToTop } from "@react-navigation/native";
+// ESTA import { getFocusedRouteNameFromRoute } from "@react-navigation/core";
+// ESTA import { baseProps } from "react-native-gesture-handler/lib/typescript/handlers/gestureHandlers";
+//import { useScrollToTop } from "@react-navigation/native";
+
+//ERAN ESSAS 2 LIBRERIAS LAS DEL ERROR 505
 
 const auth = getAuth();
 const googleProvider = new GoogleAuthProvider();
@@ -108,7 +110,7 @@ const GlobalLogin = ({ navigation }) => {
 
   return (
     <View style={styles.Container}>
-      <ScrollView contentContainerStyle={{flex: 1}}>
+      <ScrollView contentContainerStyle={{ flex: 1 }}>
         <View style={styles.inputContainer}>
           <View style={styles.inputComponent}>
             <TextInput
@@ -123,7 +125,7 @@ const GlobalLogin = ({ navigation }) => {
               secureTextEntry={user.secureTextEntry}
               placeholder="Password"
               value={user.password}
-              onChangeText={(value) => handleChangeUser("password", value)} 
+              onChangeText={(value) => handleChangeUser("password", value)}
             />
             <TouchableOpacity
               onPress={onIconPress}
