@@ -13,7 +13,9 @@ import {
 import firebase from "../database/firebase";
 import fireAuth from "../database/firebase";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
-
+import { doc, getDoc } from "firebase/firestore";
+// import { getDatabase } from 'firebase/database'
+import db from "../database/firebase";
 //---------SCREENS---------------
 import CardHome from "../components/CardHome.js";
 import BtnFuncional from "./Helpers/BtnFuncional.js";
@@ -23,6 +25,10 @@ import Btn from "./Helpers/Btns.js";
 import globalStyles from "./GlobalStyles.js";
 
 const auth = getAuth();
+
+// const querySnapshot = getDocs(collection(firebase.db, "Test")).then(
+//   console.log("query: ", querySnapshot)
+// );
 export default function Home({ navigation }) {
   //------LOGIN JOSE------------
   const [usuarioGlobal, setUsuarioGlobal] = useState("");
@@ -30,6 +36,25 @@ export default function Home({ navigation }) {
   const empresas = useSelector((state) => state.empresas);
   //console.log("empresas", empresas);
   // window.location.reload
+  const getInfo = async () => {
+    const docRef = doc(firebase.db, "Test", "asdasdasdasdasd");
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      console.log("Document data:", docSnap.data());
+    } else {
+      // doc.data() will be undefined in this case
+      console.log("No such document!");
+    }
+  };
+  getInfo();
+
+  // if (docSnap.exists()) {
+  //   console.log("Document data:", docSnap.data());
+  // } else {
+  //   // doc.data() will be undefined in this case
+  //   console.log("No such document!");
+  // }
+
   onAuthStateChanged(auth, (usuarioFirebase) => {
     if (usuarioFirebase?.emailVerified) {
       if (usuarioFirebase.displayName) {
@@ -59,19 +84,18 @@ export default function Home({ navigation }) {
         {/* <Btn nombre="Ciudad" ruta="#" navigation={navigation} /> */}
         {/* <Btn nombre='Buscar' ruta='#' navigation={navigation} /> */}
         {/* <Btn nombre="Categorias" ruta="#" navigation={navigation} /> */}
-        {logged ? (
+        {/* {logged ? (
           <Btn
             nombre="Create your Resto!"
             ruta="RegisterResto"
             navigation={navigation}
           />
-        ) : null}
-        {/* <Btn
+        ) : null} */}
+        <Btn
           nombre="Create your Resto!"
           ruta="RegisterResto"
           navigation={navigation}
-        /> */}
-
+        />
       </View>
 
       <ScrollView style={{ overflow: "scroll" }}>
