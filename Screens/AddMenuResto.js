@@ -1,17 +1,45 @@
+//----------REACT UTILS-----------
 import React, { useEffect, useState } from "react";
-import { Button, View, TextInput, ScrollView, StyleSheet, TouchableOpacity, Text } from "react-native";
+//
+//
+//----------REDUX UTILS-----------
 import { useDispatch, useSelector } from "react-redux";
 import AddMenu from "../Redux/Actions/AddMenu";
+//
+//
+//----------REACT-NATIVE UTILS-----------
+import {
+  Button,
+  View,
+  TextInput,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  Text,
+} from "react-native";
+//
+//
+//----------FIREBASE UTILS-----------
+
+//
+//
+//---------SCREENS & COMPONENTS---------------
+
+//
+//
+//-------STYLES-------
 import globalStyles from "./GlobalStyles";
+//
+//
+//-------INITIALIZATIONS-------
 
-import firebase from "../database/firebase";
-
+//
+//---------------------------------------------------------------------------------------//
+//
 const AddMenuResto = ({ navigation }) => {
-
-
   const dispatch = useDispatch();
   const empresaDetail = useSelector((state) => state.empresaDetail);
-  const id = empresaDetail.Id
+  const id = empresaDetail.Id;
 
   const initalState = {
     foodName: "",
@@ -40,12 +68,10 @@ const AddMenuResto = ({ navigation }) => {
 
         // });
         navigation.navigate("DetailsResto");
-        dispatch(AddMenu(state))
-
+        dispatch(AddMenu(state));
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-
     }
   };
 
@@ -57,8 +83,8 @@ const AddMenuResto = ({ navigation }) => {
             style={globalStyles.texts}
             placeholder="Food Name"
             onChangeText={(value) => handleChangeText(value, "foodName")}
-            value={state.foodName} /
-          >
+            value={state.foodName}
+          />
         </View>
         <View style={globalStyles.inputComponent}>
           <TextInput
@@ -98,8 +124,6 @@ const AddMenuResto = ({ navigation }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  
-});
+const styles = StyleSheet.create({});
 
 export default AddMenuResto;

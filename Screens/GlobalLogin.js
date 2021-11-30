@@ -1,4 +1,12 @@
+//----------REACT UTILS-----------
 import React, { useState } from "react";
+//
+//
+//----------REDUX UTILS-----------
+
+//
+//
+//----------REACT-NATIVE UTILS-----------
 import {
   View,
   Button,
@@ -8,7 +16,9 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
-import { MaterialCommunityIcons as Icon } from "@expo/vector-icons";
+//
+//
+//----------FIREBASE UTILS-----------
 import {
   getAuth,
   signInWithEmailAndPassword,
@@ -18,16 +28,26 @@ import {
   sendEmailVerification,
   onAuthStateChanged,
 } from "firebase/auth";
+//
+//
+//---------SCREENS & COMPONENTS---------------
+
+//
+//
+//-------ICONS-------
+import { MaterialCommunityIcons as Icon } from "@expo/vector-icons"; //SE BORRA?
+//
+//
+//-------STYLES-------
 import globalStyles from "./GlobalStyles";
-// ESTA import { getFocusedRouteNameFromRoute } from "@react-navigation/core";
-// ESTA import { baseProps } from "react-native-gesture-handler/lib/typescript/handlers/gestureHandlers";
-//import { useScrollToTop } from "@react-navigation/native";
-
-//ERAN ESSAS 2 LIBRERIAS LAS DEL ERROR 505
-
+//
+//
+//-------INITIALIZATIONS-------
 const auth = getAuth();
 const googleProvider = new GoogleAuthProvider();
-
+//
+//---------------------------------------------------------------------------------------//
+//
 const GlobalLogin = ({ navigation }) => {
   const [user, setUser] = useState({
     mail: "",
