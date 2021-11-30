@@ -35,12 +35,11 @@ const auth = getAuth();
 export default function Home({ navigation }) {
   //------LOGIN JOSE------------
   const [usuarioGlobal, setUsuarioGlobal] = useState("");
-  const [availableCards, setavailableCards] = useState(false);
+  const [availableCommerces, setAvailableCommerces] = useState([]);
   const empresas = useSelector((state) => state.empresas);
   const loggedUser = useSelector((state) => state.currentUser);
   const loggedId = useSelector((state) => state.currentId);
   const dispatch = useDispatch();
-  let arr = [];
 
   useEffect(() => {});
   onAuthStateChanged(auth, (usuarioFirebase) => {
@@ -57,19 +56,20 @@ export default function Home({ navigation }) {
         );
         const q = query(collection(firebase.db, "Test"));
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
+          let arr = [];
           querySnapshot.forEach((doc) => {
-            arr.push(doc.data());
-
-            if (!availableCards) setavailableCards(true);
-            console.log("arr: ", arr);
+            let obj = doc.data();
+            obj.id = doc.id;
+            arr.push(obj);
           });
+          setAvailableCommerces(arr);
         });
       }
     } else {
       dispatch(CurrentUser(null));
     }
   });
-  console.log("available", availableCards);
+
   onAuthStateChanged(auth, (usuarioFirebase) => {
     if (usuarioFirebase?.emailVerified) {
       if (usuarioFirebase.displayName) {
@@ -113,21 +113,17 @@ export default function Home({ navigation }) {
           navigation={navigation}
         />
       </View>
-      {availableCards ? (
+      {availableCommerces.length ? (
         <ScrollView style={{ overflow: "scroll" }}>
-          {arr.map((resto) => {
-            console.log("resto: ", resto);
+          {availableCommerces.map((resto) => {
             return (
-              <CardHome key={resto.Id} resto={resto} navigation={navigation}>
+              <CardHome key={resto.id} resto={resto} navigation={navigation}>
                 {" "}
               </CardHome>
             );
           })}
         </ScrollView>
-      ) : (
-        console.log("fallo")
-      )}
-      {availableCards && console.log("arr de abajo", arr[0])}
+      ) : null}
     </ScrollView>
   );
 }
