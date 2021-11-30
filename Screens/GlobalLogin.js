@@ -32,6 +32,7 @@ import {
   sendEmailVerification,
   onAuthStateChanged,
 } from "firebase/auth";
+import firebase from "../database/firebase";
 //
 //
 //---------SCREENS & COMPONENTS---------------
@@ -71,20 +72,20 @@ export default GlobalLogin = ({ navigation }) => {
     });
   };
 
-  const logUserWithGoogle = async () => {
-    try {
-      const newUser = await signInWithRedirect(auth, googleProvider);
-      if (auth.currentUser) {
-        console.log("works");
-        props.navigation.navigate("RestoBook");
-      } else {
-        console.log("NO works");
-      }
-    } catch (error) {
-      alert("error!");
-      console.log(error);
-    }
-  };
+  // const logUserWithGoogle = async () => {
+  //   try {
+  //     const newUser = await signInWithRedirect(auth, googleProvider);
+  //     if (auth.currentUser) {
+  //       console.log("works");
+  //       props.navigation.navigate("RestoBook");
+  //     } else {
+  //       console.log("NO works");
+  //     }
+  //   } catch (error) {
+  //     alert("error!");
+  //     console.log(error);
+  //   }
+  // };
 
   const logEmpresa = async () => {
     try {
@@ -104,8 +105,10 @@ export default GlobalLogin = ({ navigation }) => {
           break;
         case "auth/user-not-found":
           alert("User not found");
+          break;
         case "auth/internal-error":
           alert("Enter your password!");
+          break;
         default:
           alert("Error");
       }
@@ -120,9 +123,8 @@ export default GlobalLogin = ({ navigation }) => {
           sendEmailVerification(auth.currentUser)
             .then(handleChangeUser("mail", ""))
             .then(handleChangeUser("password", ""))
-            .then(alert("hola!"))
-            .then(navigation.navigate("AwaitEmail"))
-            .then(alert("chau!"));
+            .then(alert("Sign Up!"))
+            .then(navigation.navigate("AwaitEmail"));
         }
       });
     } catch (error) {
@@ -134,8 +136,10 @@ export default GlobalLogin = ({ navigation }) => {
           break;
         case "auth/weak-password":
           alert("password must be at least 6 characters");
+          break;
         case "auth/email-already-in-use":
           alert("Email already in-use");
+          break;
         default:
           break;
       }
@@ -193,13 +197,18 @@ export default GlobalLogin = ({ navigation }) => {
         <View style={globalStyles.container}>
           <TouchableOpacity
             style={globalStyles.touchLog}
-            onPress={() => (registered ? logEmpresa() : saveEmpresa())}
+            onPress={() => logEmpresa()}
           >
-            <Text style={globalStyles.fontLog}>
-              {registered ? buttonText[0] : buttonText[1]}
-            </Text>
+            <Text style={globalStyles.fontLog}>Log In</Text>
           </TouchableOpacity>
+
           <TouchableOpacity
+            style={globalStyles.touchLog}
+            onPress={() => saveEmpresa()}
+          >
+            <Text style={globalStyles.fontLog}>Sign Up</Text>
+          </TouchableOpacity>
+          {/* <TouchableOpacity
             style={globalStyles.touchFlag}
             onPress={() =>
               registered ? setRegistered(false) : setRegistered(true)
@@ -208,16 +217,15 @@ export default GlobalLogin = ({ navigation }) => {
             <Text style={globalStyles.fontLog}>
               {registered ? buttonText[2] : buttonText[3]}
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
-          <Text>O</Text>
-
+          {/* <Text>O</Text>
           <TouchableOpacity
             style={globalStyles.touchLog}
             onPress={() => logUserWithGoogle()}
           >
             <Text style={globalStyles.fontLog}>Sign In With Google</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </ScrollView>
     </View>
@@ -225,82 +233,4 @@ export default GlobalLogin = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({});
-
-// const handleOnSubmit = () => {
-//   //handle
-// }
-
-// export default function GlobalLogin() {
-//   return (
-//     <View style={globalStyles.Home}>
-//       <ScrollView contentContainerStyle={{ flex: 1 }}>
-
-
-//         <Formik
-//           initialValues={{ email: "", password: "", secureTextEntry: true, iconName: "eye", }}
-//           onSubmit={() => handleOnSubmit()}
-//         >
-//           {(props) => (
-//             <View style={globalStyles.inputComponent}>
-//               <TextInput
-//                 style={globalStyles.texts}
-//                 placeholder="Email"
-//                 onChangeText={props.handleChange("email")}
-//                 value={props.values.email}
-//               />
-//             </View>
-//           )}
-//         </Formik>
-//       </ScrollView>
-//     </View >
-//   )
-// }
-
-/*
-{
-  Restos: [
-   0001: {
-      id: 1,
-      title: los pollos,
-      img: "",
-      description: "asdasasdsa",
-      categoria: pizzeria
-      menu: [
-         {title: nombre comida, precio: precio comida, descripcion: descripcion comida},
-         {},
-         {}
-      ]
-    },
-    0002: {
-      id:2,
-      title: los pollos 2
-      img: "",
-      descriptionL: "asjnduaiehfeafnada"
-      categoria: hamburgueseria
-      menu: [
-        01: {title: nombre comida, precio: precio comida, descripcion: descripcion comida},
-        02: {},
-        03: {}
-      ]
-    },
-    0003: {
-      id: 1,
-      title: los pollos 3,
-      img: "",
-      description: "akmdlanfkhbeaga",
-      categoria: pizzeria
-      menu: [
-        01: {title: nombre comida, precio: precio comida, descripcion: descripcion comida},
-        02: {},
-        03: {}
-      ]
-    },
-  ],
-  Categorias: [
-    ...todas las categorias,
-    pizzeria: [{0001},{0003}],
-    hamburgueseria: [{002}]
-  ]
-}
-
-*/
+export default GlobalLogin;

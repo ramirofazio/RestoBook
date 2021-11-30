@@ -13,10 +13,11 @@ import empresaDetail from "../Redux/Actions/empresaDetail.js";
 import globalStyles from "../Screens/GlobalStyles.js";
 
 const CardMenu = ({ resto, navigation }) => {
+  //console.log(resto)
   const dispatch = useDispatch();
 
   const handleOnPress = () => {
-    dispatch(empresaDetail(resto.Id));
+    dispatch(empresaDetail(resto));
     navigation.navigate("DetailsResto");
   };
 
@@ -32,8 +33,8 @@ const CardMenu = ({ resto, navigation }) => {
             source={
               resto.Img === ""
                 ? {
-                    uri: "https://images.vexels.com/media/users/3/204941/isolated/preview/d8bc6d74b3da7ee41fc99b6000c1e6a4-trazo-de-puntuacion-de-signo-de-interrogacion.png",
-                  }
+                  uri: "https://images.vexels.com/media/users/3/204941/isolated/preview/d8bc6d74b3da7ee41fc99b6000c1e6a4-trazo-de-puntuacion-de-signo-de-interrogacion.png",
+                }
                 : { uri: resto.Img }
             }
             resizeMode="contain"

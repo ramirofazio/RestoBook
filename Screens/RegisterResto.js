@@ -85,12 +85,15 @@ const RegisterResto = (props) => {
       if (id) {
         try {
           firebase.db
-            .collection("Test")
-            .doc(id)
+            .collection("Restos")
+            .doc()
             .set({
+              id,
               title: state.Title,
               Description: state.Description,
               Img: state.Img,
+              category: '',
+              menu: [],
             })
             .then(alert("creado"))
             .then(props.navigation.navigate("RestoBook"));

@@ -42,12 +42,12 @@ export default function Home({ navigation }) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const q = query(collection(firebase.db, "Test"));
+    const q = query(collection(firebase.db, "Restos"));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       let arr = [];
       querySnapshot.forEach((doc) => {
         let obj = doc.data();
-        obj.id = doc.id;
+        obj.idResto = doc.id;
         arr.push(obj);
       });
       setAvailableCommerces(arr);
@@ -58,7 +58,7 @@ export default function Home({ navigation }) {
       if (loggedId !== usuarioFirebase.uid) {
         dispatch(CurrentId(usuarioFirebase.uid));
         const unsub = onSnapshot(
-          doc(firebase.db, "Test", usuarioFirebase.uid),
+          doc(firebase.db, "Restos", usuarioFirebase.uid),
           (doc) => {
             if (doc.exists()) {
               dispatch(CurrentUser(doc.data()));
@@ -118,7 +118,7 @@ export default function Home({ navigation }) {
         <ScrollView style={{ overflow: "scroll" }}>
           {availableCommerces.map((resto) => {
             return (
-              <CardHome key={resto.id} resto={resto} navigation={navigation}>
+              <CardHome key={resto.idResto} resto={resto} navigation={navigation}>
                 {" "}
               </CardHome>
             );

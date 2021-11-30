@@ -23,13 +23,11 @@ const RootReducer = (state = initialState, action) => {
         menus: [...state.menus, menu],
       };
     case EMPRESA_DETAIL:
-      const IdEmpresa = action.payload;
-      const empresas = state.empresas;
-      const dataEmpresa = empresas.find((empresa) => empresa.Id === IdEmpresa);
+      const empresaDetail = action.payload;
       //console.log(dataEmpresa[0])
       return {
         ...state,
-        empresaDetail: dataEmpresa,
+        empresaDetail: empresaDetail,
       };
 
     case ADD_EMPRESA:

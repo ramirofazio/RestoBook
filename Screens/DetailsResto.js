@@ -31,6 +31,7 @@ import CardMenu from "../components/CardMenu";
 //
 const DetailsResto = () => {
   const empresaDetail = useSelector((state) => state.empresaDetail);
+  console.log(empresaDetail)
   const menus = useSelector((state) => state.menus);
   //console.log(menus)s
   const thisMenu = menus.filter((menu) => menu.id === empresaDetail.Id);
@@ -39,7 +40,7 @@ const DetailsResto = () => {
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
-        <Text style={styles.title}>{empresaDetail.Title}</Text>
+        <Text style={styles.title}>{empresaDetail.title}</Text>
       </View>
       <View style={styles.content}>
         <View style={styles.categoriesContainer}>
