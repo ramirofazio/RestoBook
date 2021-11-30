@@ -126,6 +126,7 @@ const GlobalLogin = ({ navigation }) => {
   const onIconPress = () => {
     let iconName = user.secureTextEntry ? "eye-off" : "eye";
     setUser({
+      ...user,
       secureTextEntry: !user.secureTextEntry,
       iconName: iconName,
     });
@@ -197,9 +198,5 @@ const GlobalLogin = ({ navigation }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  
-  
-
-});
+const styles = StyleSheet.create({});
 export default GlobalLogin;
