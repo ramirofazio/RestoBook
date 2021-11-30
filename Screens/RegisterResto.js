@@ -7,16 +7,14 @@ import { Button, View, TextInput, ScrollView, StyleSheet, TouchableOpacity, Text
 import globalStyles from "./GlobalStyles";
 
 //-------FIREBASE--------
-import firebase from "../database/firebase";
-
+import {addDoc,collection} from "firebase/firestore";
+import db from "../database/firebase";
 //------SCREENS----------
 import addEmpresa from "../Redux/Actions/addEmpresa";
 import BtnFuncional from './Helpers/BtnFuncional.js';
 
 const RegisterResto = (props) => {
-
   let dispatch = useDispatch();
-
   const empresas = useSelector((state) => state.empresas)
   const Id = empresas.length + 1;
   //console.log("soy ID", Id)
@@ -45,6 +43,12 @@ const RegisterResto = (props) => {
   };
 
   const saveNewResto = () => {
+   const ref = addDoc(collection(db, "registroResto"), {
+      Id: state.Id,
+      Title: state.Title,
+      Description: state.Description,
+      Img: state.Img,
+    });
     dispatch(addEmpresa(state));
     props.navigation.navigate("RestoBook");
   };

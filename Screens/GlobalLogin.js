@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
-import { MaterialCommunityIcons as Icon } from "@expo/vector-icons";
 import {
   getAuth,
   signInWithEmailAndPassword,
@@ -18,7 +17,9 @@ import {
   sendEmailVerification,
   onAuthStateChanged,
 } from "firebase/auth";
+import {addDoc,collection} from "firebase/firestore";
 import globalStyles from "./GlobalStyles";
+import db from "../database/firebase";
 // ESTA import { getFocusedRouteNameFromRoute } from "@react-navigation/core";
 // ESTA import { baseProps } from "react-native-gesture-handler/lib/typescript/handlers/gestureHandlers";
 //import { useScrollToTop } from "@react-navigation/native";
@@ -65,6 +66,8 @@ const GlobalLogin = ({ navigation }) => {
   const logEmpresa = async () => {
     try {
       const newUser = await signInWithEmailAndPassword(auth, email, pass);
+      const UserRef = await addDoc(collection(db, "User"), 
+        {password: user.password, email:user.mail});
       if (auth.currentUser.emailVerified) {
         alert("Welcome");
         navigation.navigate("RestoBook");
@@ -130,7 +133,6 @@ const GlobalLogin = ({ navigation }) => {
       iconName: iconName,
     });
   };
-
   return (
     <View style={globalStyles.Home}>
       <ScrollView contentContainerStyle={{ flex: 1 }}>
@@ -162,7 +164,6 @@ const GlobalLogin = ({ navigation }) => {
             </View> */}
           </View>
         </View>
-
         <View style={globalStyles.container}>
           <TouchableOpacity
             style={globalStyles.touchLog}

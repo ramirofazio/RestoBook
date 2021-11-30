@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Button, View, TextInput, ScrollView, StyleSheet, TouchableOpacity, Text } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import AddMenu from "../Redux/Actions/AddMenu";
 import globalStyles from "./GlobalStyles";
 
-import firebase from "../database/firebase";
+import {addDoc,collection} from "firebase/firestore";
+import db from "../database/firebase";
 
 const AddMenuResto = ({ navigation }) => {
 
@@ -33,19 +33,18 @@ const AddMenuResto = ({ navigation }) => {
     if (state.price === "") alert("Complete sus datos por favor");
     else {
       try {
-        // await firebase.db.collection("usersMenuResto").add({
-        //   foodName: state.foodName,
-        //   description: state.description,
-        //   price: state.price,
-
-        // });
+        const menuRef = await addDoc(collection(db, "menuResto"), {
+          foodName: state.foodName,
+          description: state.description,
+          price: state.price,
+          img: state.img,
+          id: state.id,
+        });
         navigation.navigate("DetailsResto");
         dispatch(AddMenu(state))
-
       } catch (error) {
         console.log(error)
       }
-
     }
   };
 
@@ -57,8 +56,7 @@ const AddMenuResto = ({ navigation }) => {
             style={globalStyles.texts}
             placeholder="Food Name"
             onChangeText={(value) => handleChangeText(value, "foodName")}
-            value={state.foodName} /
-          >
+            value={state.foodName} />
         </View>
         <View style={globalStyles.inputComponent}>
           <TextInput
