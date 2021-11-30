@@ -17,8 +17,8 @@ import {
   sendEmailVerification,
   onAuthStateChanged,
 } from "firebase/auth";
-import {addDoc,collection} from "firebase/firestore";
 import globalStyles from "./GlobalStyles";
+import {addDoc,collection} from "firebase/firestore";
 import db from "../database/firebase";
 // ESTA import { getFocusedRouteNameFromRoute } from "@react-navigation/core";
 // ESTA import { baseProps } from "react-native-gesture-handler/lib/typescript/handlers/gestureHandlers";
