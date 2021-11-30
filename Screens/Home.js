@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import CurrentId from "../Redux/Actions/CurrentId.js";
+import CurrentUser from "../Redux/Actions/CurrentUser.js";
+
 import {
   View,
   ScrollView,
@@ -13,7 +16,7 @@ import {
 import firebase from "../database/firebase";
 import fireAuth from "../database/firebase";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, onSnapshot, onSnapshotsInSync } from "firebase/firestore";
 // import { getDatabase } from 'firebase/database'
 import db from "../database/firebase";
 //---------SCREENS---------------
@@ -26,34 +29,33 @@ import globalStyles from "./GlobalStyles.js";
 
 const auth = getAuth();
 
-// const querySnapshot = getDocs(collection(firebase.db, "Test")).then(
-//   console.log("query: ", querySnapshot)
-// );
 export default function Home({ navigation }) {
   //------LOGIN JOSE------------
   const [usuarioGlobal, setUsuarioGlobal] = useState("");
+  const [userTest, setUserTest] = useState("");
   const [logged, setLogged] = useState(false);
   const empresas = useSelector((state) => state.empresas);
-  //console.log("empresas", empresas);
-  // window.location.reload
-  const getInfo = async () => {
-    const docRef = doc(firebase.db, "Test", "asdasdasdasdasd");
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
-      console.log("Document data:", docSnap.data());
-    } else {
-      // doc.data() will be undefined in this case
-      console.log("No such document!");
-    }
-  };
-  getInfo();
+  const loggedUser = useSelector((state) => state.currentUser);
+  const loggedId = useSelector((state) => state.currentId);
+  const dispatch = useDispatch();
 
-  // if (docSnap.exists()) {
-  //   console.log("Document data:", docSnap.data());
-  // } else {
-  //   // doc.data() will be undefined in this case
-  //   console.log("No such document!");
-  // }
+  onAuthStateChanged(auth, (usuarioFirebase) => {
+    if (usuarioFirebase) {
+      if (loggedId !== usuarioFirebase.uid) {
+        dispatch(CurrentId(usuarioFirebase.uid));
+        const unsub = onSnapshot(
+          doc(firebase.db, "Test", usuarioFirebase.uid),
+          (doc) => {
+            if (doc.exists()) {
+              dispatch(CurrentUser(doc.data()));
+            }
+          }
+        );
+      }
+    } else {
+      dispatch(CurrentUser(null));
+    }
+  });
 
   onAuthStateChanged(auth, (usuarioFirebase) => {
     if (usuarioFirebase?.emailVerified) {
@@ -64,7 +66,6 @@ export default function Home({ navigation }) {
         setUsuarioGlobal(trimmedName);
       }
       setLogged(true);
-      console.log("userFirebase", usuarioFirebase);
     } else {
       setLogged(false);
       setUsuarioGlobal("");
@@ -92,7 +93,11 @@ export default function Home({ navigation }) {
           />
         ) : null} */}
         <Btn
-          nombre="Create your Resto!"
+          nombre={
+            loggedUser
+              ? `Create your resto, ${loggedUser.Description}`
+              : `Crea tu resto.`
+          }
           ruta="RegisterResto"
           navigation={navigation}
         />
