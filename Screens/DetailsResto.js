@@ -1,5 +1,5 @@
 //----------REACT UTILS-----------
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 //
 //
 //----------REDUX UTILS-----------
@@ -13,7 +13,9 @@ import MapView from "react-native-maps";
 //
 //
 //----------FIREBASE UTILS-----------
-
+import { onAuthStateChanged, getAuth } from "firebase/auth";
+import { onSnapshot, collection, doc, query } from "firebase/firestore";
+import firebase from "../database/firebase";
 //
 //
 //---------SCREENS & COMPONENTS---------------
@@ -25,17 +27,32 @@ import CardMenu from "../components/CardMenu";
 //
 //
 //-------INITIALIZATIONS-------
-
+const auth = getAuth();
 //
 //---------------------------------------------------------------------------------------//
 //
 const DetailsResto = () => {
   const empresaDetail = useSelector((state) => state.empresaDetail);
-  console.log(empresaDetail)
   const menus = useSelector((state) => state.menus);
-  //console.log(menus)s
   const thisMenu = menus.filter((menu) => menu.id === empresaDetail.Id);
-  //console.log(thisMenu)
+
+  const [menuArr, setMenuArr] = useState([]);
+  //Tiene que desactivar el boton en los comercios que no sean del logueado
+
+  useEffect(() => {
+    const q = query(collection(firebase.db, "Restos"));
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      let menu = [];
+      querySnapshot.forEach((doc) => {
+        if (doc.id === empresaDetail.idResto) {
+          console.log("yes!");
+          let obj = doc.data();
+          menu = obj.menu;
+          setMenuArr(menu);
+        }
+      });
+    });
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -60,9 +77,9 @@ const DetailsResto = () => {
             <Text style={styles.categoriesText}>Drinks</Text>
           </View>
         </View>
-        {thisMenu.length > 0 ? (
+        {menuArr.length > 0 ? (
           <ScrollView style={styles.showMenu}>
-            {thisMenu.map((menu, index) => {
+            {menuArr.map((menu, index) => {
               return (
                 <CardMenu key={index} menu={menu}>
                   {" "}
@@ -78,7 +95,6 @@ const DetailsResto = () => {
             Add a food to see it!
           </Text>
         )}
-
         <View style={styles.googleMapsContainer}>
           <MapView
             style={styles.googleMaps}
