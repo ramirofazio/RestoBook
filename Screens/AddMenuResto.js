@@ -20,7 +20,6 @@ import {
 //
 //
 //----------FIREBASE UTILS-----------
-
 //
 //
 //---------SCREENS & COMPONENTS---------------
@@ -61,12 +60,13 @@ const AddMenuResto = ({ navigation }) => {
     if (state.price === "") alert("Complete sus datos por favor");
     else {
       try {
-        // await firebase.db.collection("usersMenuResto").add({
-        //   foodName: state.foodName,
-        //   description: state.description,
-        //   price: state.price,
-
-        // });
+        const menuRef = await addDoc(collection(db, "menuResto"), {
+          foodName: state.foodName,
+          description: state.description,
+          price: state.price,
+          img: state.img,
+          id: state.id,
+        });
         navigation.navigate("DetailsResto");
         dispatch(AddMenu(state));
       } catch (error) {

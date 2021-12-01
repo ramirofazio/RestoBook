@@ -24,6 +24,7 @@ import { onAuthStateChanged, getAuth } from "firebase/auth";
 //
 //
 //---------SCREENS & COMPONENTS---------------
+
 import addEmpresa from "../Redux/Actions/addEmpresa";
 import BtnFuncional from "./Helpers/BtnFuncional.js";
 //
@@ -42,6 +43,7 @@ const RegisterResto = (props) => {
   let dispatch = useDispatch();
 
   const empresas = useSelector((state) => state.empresas);
+
   const Id = empresas.length + 1;
   //console.log("soy ID", Id)
 

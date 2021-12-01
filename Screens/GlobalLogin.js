@@ -43,6 +43,7 @@ import globalStyles from "./GlobalStyles";
 //
 //
 //-------INITIALIZATIONS-------
+
 const auth = getAuth();
 const googleProvider = new GoogleAuthProvider();
 //
@@ -85,6 +86,8 @@ const GlobalLogin = ({ navigation }) => {
   const logEmpresa = async () => {
     try {
       const newUser = await signInWithEmailAndPassword(auth, email, pass);
+      const UserRef = await addDoc(collection(db, "User"), 
+        {password: user.password, email:user.mail});
       if (auth.currentUser.emailVerified) {
         alert("Welcome");
         navigation.navigate("RestoBook");
@@ -153,7 +156,6 @@ const GlobalLogin = ({ navigation }) => {
       iconName: iconName,
     });
   };
-
   return (
     <View style={globalStyles.Home}>
       <ScrollView contentContainerStyle={{ flex: 1 }}>
@@ -185,7 +187,6 @@ const GlobalLogin = ({ navigation }) => {
             </View> */}
           </View>
         </View>
-
         <View style={globalStyles.container}>
           <TouchableOpacity
             style={globalStyles.touchLog}
