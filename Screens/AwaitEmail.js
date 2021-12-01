@@ -20,6 +20,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 //
 //----------FIREBASE UTILS-----------
 import firebase from "../database/firebase.js";
+import { getAuth, signOut } from "firebase/auth";
 //
 //
 //---------SCREENS & COMPONENTS---------------
@@ -31,7 +32,7 @@ import globalStyles from "./GlobalStyles.js";
 //
 //
 //-------INITIALIZATIONS-------
-
+const auth = getAuth();
 // import { Alert } from 'antd'; PREGUNTAR A LAI Y LUCAS G O BORRAR :)
 
 //
@@ -58,7 +59,7 @@ const AwaitEmail = ({ navigation }) => {
           style={globalStyles.touchLog}
           onPress={() => {
             firebase.fireAuth.currentUser.sendEmailVerification();
-            alert("Email sent. Check unwanted section!!");
+            alert("Email sent. Check spam section!!");
             // <Alert
             //   message="Informational Notes"
             //   description="Additional description and information about copywriting."
@@ -77,7 +78,10 @@ const AwaitEmail = ({ navigation }) => {
           /> */}
         <TouchableOpacity
           style={globalStyles.touchFlag}
-          onPress={() => navigation.navigate("GlobalLogin")}
+          onPress={() => {
+            signOut(auth);
+            navigation.navigate("GlobalLogin");
+          }}
         >
           <Text style={globalStyles.fontLog}>Go back to Login</Text>
         </TouchableOpacity>
