@@ -28,6 +28,7 @@ import {
   sendEmailVerification,
   onAuthStateChanged,
 } from "firebase/auth";
+import firebase from "../database/firebase";
 //
 //
 //---------SCREENS & COMPONENTS---------------
@@ -67,20 +68,20 @@ const GlobalLogin = ({ navigation }) => {
     });
   };
 
-  const logUserWithGoogle = async () => {
-    try {
-      const newUser = await signInWithRedirect(auth, googleProvider);
-      if (auth.currentUser) {
-        console.log("works");
-        props.navigation.navigate("RestoBook");
-      } else {
-        console.log("NO works");
-      }
-    } catch (error) {
-      alert("error!");
-      console.log(error);
-    }
-  };
+  // const logUserWithGoogle = async () => {
+  //   try {
+  //     const newUser = await signInWithRedirect(auth, googleProvider);
+  //     if (auth.currentUser) {
+  //       console.log("works");
+  //       props.navigation.navigate("RestoBook");
+  //     } else {
+  //       console.log("NO works");
+  //     }
+  //   } catch (error) {
+  //     alert("error!");
+  //     console.log(error);
+  //   }
+  // };
 
   const logEmpresa = async () => {
     try {
@@ -116,9 +117,8 @@ const GlobalLogin = ({ navigation }) => {
           sendEmailVerification(auth.currentUser)
             .then(handleChangeUser("mail", ""))
             .then(handleChangeUser("password", ""))
-            .then(alert("hola!"))
-            .then(navigation.navigate("AwaitEmail"))
-            .then(alert("chau!"));
+            .then(alert("Sign Up!"))
+            .then(navigation.navigate("AwaitEmail"));
         }
       });
     } catch (error) {
@@ -189,13 +189,18 @@ const GlobalLogin = ({ navigation }) => {
         <View style={globalStyles.container}>
           <TouchableOpacity
             style={globalStyles.touchLog}
-            onPress={() => (registered ? logEmpresa() : saveEmpresa())}
+            onPress={() => logEmpresa()}
           >
-            <Text style={globalStyles.fontLog}>
-              {registered ? buttonText[0] : buttonText[1]}
-            </Text>
+            <Text style={globalStyles.fontLog}>Log In</Text>
           </TouchableOpacity>
+
           <TouchableOpacity
+            style={globalStyles.touchLog}
+            onPress={() => saveEmpresa()}
+          >
+            <Text style={globalStyles.fontLog}>Sign Up</Text>
+          </TouchableOpacity>
+          {/* <TouchableOpacity
             style={globalStyles.touchFlag}
             onPress={() =>
               registered ? setRegistered(false) : setRegistered(true)
@@ -204,16 +209,15 @@ const GlobalLogin = ({ navigation }) => {
             <Text style={globalStyles.fontLog}>
               {registered ? buttonText[2] : buttonText[3]}
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
-          <Text>O</Text>
-
+          {/* <Text>O</Text>
           <TouchableOpacity
             style={globalStyles.touchLog}
             onPress={() => logUserWithGoogle()}
           >
             <Text style={globalStyles.fontLog}>Sign In With Google</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </ScrollView>
     </View>

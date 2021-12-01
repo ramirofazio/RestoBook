@@ -86,11 +86,14 @@ const RegisterResto = (props) => {
         try {
           firebase.db
             .collection("Restos")
-            .doc(id)
+            .doc()
             .set({
+              id,
               title: state.Title,
               Description: state.Description,
               Img: state.Img,
+              category: '',
+              menu: [],
             })
             .then(alert("creado"))
             .then(props.navigation.navigate("RestoBook"));

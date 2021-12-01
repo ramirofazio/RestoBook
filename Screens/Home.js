@@ -47,7 +47,7 @@ export default function Home({ navigation }) {
       let arr = [];
       querySnapshot.forEach((doc) => {
         let obj = doc.data();
-        obj.id = doc.id;
+        obj.idResto = doc.id;
         arr.push(obj);
       });
       setAvailableCommerces(arr);

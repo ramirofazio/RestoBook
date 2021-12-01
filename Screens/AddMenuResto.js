@@ -20,7 +20,8 @@ import {
 //
 //
 //----------FIREBASE UTILS-----------
-
+import firebase from "../database/firebase";
+import { doc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 //
 //
 //---------SCREENS & COMPONENTS---------------
@@ -37,16 +38,22 @@ import globalStyles from "./GlobalStyles";
 //---------------------------------------------------------------------------------------//
 //
 const AddMenuResto = ({ navigation }) => {
+
+  useEffect(() => {
+
+  })
+
   const dispatch = useDispatch();
   const empresaDetail = useSelector((state) => state.empresaDetail);
-  const id = empresaDetail.Id;
+  const menu = useSelector((state) => state.empresaDetail.menu);
+
+  const idResto = empresaDetail.idResto;
 
   const initalState = {
     foodName: "",
     description: "",
     price: "",
     img: "",
-    id,
   };
 
   const [state, setState] = useState(initalState);
@@ -56,22 +63,14 @@ const AddMenuResto = ({ navigation }) => {
   };
 
   const saveMenuResto = async () => {
-    if (state.foodName === "") alert("El nombre del producto es obligatorio");
-    if (state.description === "") alert("Complete sus datos por favor");
-    if (state.price === "") alert("Complete sus datos por favor");
-    else {
-      try {
-        // await firebase.db.collection("usersMenuResto").add({
-        //   foodName: state.foodName,
-        //   description: state.description,
-        //   price: state.price,
-
-        // });
-        navigation.navigate("DetailsResto");
-        dispatch(AddMenu(state));
-      } catch (error) {
-        console.log(error);
-      }
+    try {
+      let restoRef = doc(firebase.db, "Restos", idResto);
+      await updateDoc(restoRef, {
+        menu: arrayUnion(state)
+      })
+      navigation.navigate("DetailsResto");
+    } catch (err) {
+      console.log(err);
     }
   };
 
