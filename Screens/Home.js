@@ -118,7 +118,7 @@ export default function Home({ navigation }) {
         <ScrollView style={{ overflow: "scroll" }}>
           {availableCommerces.map((resto) => {
             return (
-              <CardHome key={resto.id} resto={resto} navigation={navigation}>
+              <CardHome key={resto.idResto} resto={resto} navigation={navigation}>
                 {" "}
               </CardHome>
             );

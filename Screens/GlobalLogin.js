@@ -101,8 +101,10 @@ const GlobalLogin = ({ navigation }) => {
           break;
         case "auth/user-not-found":
           alert("User not found");
+          break;
         case "auth/internal-error":
           alert("Enter your password!");
+          break;
         default:
           alert("Error");
       }
@@ -130,8 +132,10 @@ const GlobalLogin = ({ navigation }) => {
           break;
         case "auth/weak-password":
           alert("password must be at least 6 characters");
+          break;
         case "auth/email-already-in-use":
           alert("Email already in-use");
+          break;
         default:
           break;
       }
