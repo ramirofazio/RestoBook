@@ -116,7 +116,9 @@ const GlobalLogin = ({ navigation }) => {
           sendEmailVerification(auth.currentUser)
             .then(handleChangeUser("mail", ""))
             .then(handleChangeUser("password", ""))
-            .then(navigation.navigate("AwaitEmail"));
+            .then(alert("hola!"))
+            .then(navigation.navigate("AwaitEmail"))
+            .then(alert("chau!"));
         }
       });
     } catch (error) {

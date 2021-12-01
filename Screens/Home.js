@@ -41,9 +41,20 @@ export default function Home({ navigation }) {
   const loggedId = useSelector((state) => state.currentId);
   const dispatch = useDispatch();
 
-  useEffect(() => {});
+  useEffect(() => {
+    const q = query(collection(firebase.db, "Test"));
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      let arr = [];
+      querySnapshot.forEach((doc) => {
+        let obj = doc.data();
+        obj.id = doc.id;
+        arr.push(obj);
+      });
+      setAvailableCommerces(arr);
+    });
+  }, []);
   onAuthStateChanged(auth, (usuarioFirebase) => {
-    if (usuarioFirebase) {
+    if (usuarioFirebase?.emailVerified) {
       if (loggedId !== usuarioFirebase.uid) {
         dispatch(CurrentId(usuarioFirebase.uid));
         const unsub = onSnapshot(
@@ -54,16 +65,6 @@ export default function Home({ navigation }) {
             }
           }
         );
-        const q = query(collection(firebase.db, "Test"));
-        const unsubscribe = onSnapshot(q, (querySnapshot) => {
-          let arr = [];
-          querySnapshot.forEach((doc) => {
-            let obj = doc.data();
-            obj.id = doc.id;
-            arr.push(obj);
-          });
-          setAvailableCommerces(arr);
-        });
       }
     } else {
       dispatch(CurrentUser(null));
