@@ -1,8 +1,12 @@
-//Creo que no se puede autenticar un usuario con todos los datos completos. El sign up con mail solo admite mail y password,
-// usuario >> se registra como empresa >> le permitimos cargar un local >> ese local tiene menus
-//    X           mail y pass             todos los datos de este form    anidamos/linkeamos menu
+//----------REACT UTILS-----------
 import React, { useState } from "react";
+//
+//
+//----------REDUX UTILS-----------
 import { useDispatch, useSelector } from "react-redux";
+//
+//
+//----------REACT-NATIVE UTILS-----------
 import {
   Button,
   View,
@@ -12,15 +16,28 @@ import {
   TouchableOpacity,
   Text,
 } from "react-native";
-import globalStyles from "./GlobalStyles";
-
-//-------FIREBASE--------
+//
+//
+//----------FIREBASE UTILS-----------
 import firebase from "../database/firebase";
 import { onAuthStateChanged, getAuth } from "firebase/auth";
-//------SCREENS----------
+//
+//
+//---------SCREENS & COMPONENTS---------------
 import addEmpresa from "../Redux/Actions/addEmpresa";
 import BtnFuncional from "./Helpers/BtnFuncional.js";
+//
+//
+//-------STYLES-------
+import globalStyles from "./GlobalStyles";
+//
+//
+//-------INITIALIZATIONS-------
 const auth = getAuth();
+//
+//---------------------------------------------------------------------------------------//
+//
+
 const RegisterResto = (props) => {
   let dispatch = useDispatch();
 
@@ -68,12 +85,15 @@ const RegisterResto = (props) => {
       if (id) {
         try {
           firebase.db
-            .collection("Test")
-            .doc(id)
+            .collection("Restos")
+            .doc()
             .set({
+              id,
               title: state.Title,
               Description: state.Description,
               Img: state.Img,
+              category: '',
+              menu: [],
             })
             .then(alert("creado"))
             .then(props.navigation.navigate("RestoBook"));

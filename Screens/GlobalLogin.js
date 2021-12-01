@@ -1,4 +1,12 @@
+//----------REACT UTILS-----------
 import React, { useState } from "react";
+//
+//
+//----------REDUX UTILS-----------
+
+//
+//
+//----------REACT-NATIVE UTILS-----------
 import {
   View,
   Button,
@@ -8,6 +16,9 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
+//
+//
+//----------FIREBASE UTILS-----------
 import {
   getAuth,
   signInWithEmailAndPassword,
@@ -17,18 +28,27 @@ import {
   sendEmailVerification,
   onAuthStateChanged,
 } from "firebase/auth";
+import firebase from "../database/firebase";
+//
+//
+//---------SCREENS & COMPONENTS---------------
+
+//
+//
+//-------ICONS-------
+import { MaterialCommunityIcons as Icon } from "@expo/vector-icons"; //SE BORRA?
+//
+//
+//-------STYLES-------
 import globalStyles from "./GlobalStyles";
-import {addDoc,collection} from "firebase/firestore";
-import db from "../database/firebase";
-// ESTA import { getFocusedRouteNameFromRoute } from "@react-navigation/core";
-// ESTA import { baseProps } from "react-native-gesture-handler/lib/typescript/handlers/gestureHandlers";
-//import { useScrollToTop } from "@react-navigation/native";
-
-//ERAN ESSAS 2 LIBRERIAS LAS DEL ERROR 505
-
+//
+//
+//-------INITIALIZATIONS-------
 const auth = getAuth();
 const googleProvider = new GoogleAuthProvider();
-
+//
+//---------------------------------------------------------------------------------------//
+//
 const GlobalLogin = ({ navigation }) => {
   const [user, setUser] = useState({
     mail: "",
@@ -48,26 +68,24 @@ const GlobalLogin = ({ navigation }) => {
     });
   };
 
-  const logUserWithGoogle = async () => {
-    try {
-      const newUser = await signInWithRedirect(auth, googleProvider);
-      if (auth.currentUser) {
-        console.log("works");
-        props.navigation.navigate("RestoBook");
-      } else {
-        console.log("NO works");
-      }
-    } catch (error) {
-      alert("error!");
-      console.log(error);
-    }
-  };
+  // const logUserWithGoogle = async () => {
+  //   try {
+  //     const newUser = await signInWithRedirect(auth, googleProvider);
+  //     if (auth.currentUser) {
+  //       console.log("works");
+  //       props.navigation.navigate("RestoBook");
+  //     } else {
+  //       console.log("NO works");
+  //     }
+  //   } catch (error) {
+  //     alert("error!");
+  //     console.log(error);
+  //   }
+  // };
 
   const logEmpresa = async () => {
     try {
       const newUser = await signInWithEmailAndPassword(auth, email, pass);
-      const UserRef = await addDoc(collection(db, "User"), 
-        {password: user.password, email:user.mail});
       if (auth.currentUser.emailVerified) {
         alert("Welcome");
         navigation.navigate("RestoBook");
@@ -83,8 +101,10 @@ const GlobalLogin = ({ navigation }) => {
           break;
         case "auth/user-not-found":
           alert("User not found");
+          break;
         case "auth/internal-error":
           alert("Enter your password!");
+          break;
         default:
           alert("Error");
       }
@@ -99,6 +119,7 @@ const GlobalLogin = ({ navigation }) => {
           sendEmailVerification(auth.currentUser)
             .then(handleChangeUser("mail", ""))
             .then(handleChangeUser("password", ""))
+            .then(alert("Sign Up!"))
             .then(navigation.navigate("AwaitEmail"));
         }
       });
@@ -111,8 +132,10 @@ const GlobalLogin = ({ navigation }) => {
           break;
         case "auth/weak-password":
           alert("password must be at least 6 characters");
+          break;
         case "auth/email-already-in-use":
           alert("Email already in-use");
+          break;
         default:
           break;
       }
@@ -121,7 +144,7 @@ const GlobalLogin = ({ navigation }) => {
 
   const buttonText = [
     "Log In",
-    "Sign In",
+    "Sign Up",
     "I don't have an account yet",
     "I already have an account",
   ];
@@ -134,6 +157,7 @@ const GlobalLogin = ({ navigation }) => {
       iconName: iconName,
     });
   };
+
   return (
     <View style={globalStyles.Home}>
       <ScrollView contentContainerStyle={{ flex: 1 }}>
@@ -165,16 +189,22 @@ const GlobalLogin = ({ navigation }) => {
             </View> */}
           </View>
         </View>
+
         <View style={globalStyles.container}>
           <TouchableOpacity
             style={globalStyles.touchLog}
-            onPress={() => (registered ? logEmpresa() : saveEmpresa())}
+            onPress={() => logEmpresa()}
           >
-            <Text style={globalStyles.fontLog}>
-              {registered ? buttonText[0] : buttonText[1]}
-            </Text>
+            <Text style={globalStyles.fontLog}>Log In</Text>
           </TouchableOpacity>
+
           <TouchableOpacity
+            style={globalStyles.touchLog}
+            onPress={() => saveEmpresa()}
+          >
+            <Text style={globalStyles.fontLog}>Sign Up</Text>
+          </TouchableOpacity>
+          {/* <TouchableOpacity
             style={globalStyles.touchFlag}
             onPress={() =>
               registered ? setRegistered(false) : setRegistered(true)
@@ -183,16 +213,15 @@ const GlobalLogin = ({ navigation }) => {
             <Text style={globalStyles.fontLog}>
               {registered ? buttonText[2] : buttonText[3]}
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
-          <Text>O</Text>
-
+          {/* <Text>O</Text>
           <TouchableOpacity
             style={globalStyles.touchLog}
             onPress={() => logUserWithGoogle()}
           >
             <Text style={globalStyles.fontLog}>Sign In With Google</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </ScrollView>
     </View>
