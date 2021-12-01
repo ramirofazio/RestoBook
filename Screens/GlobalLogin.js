@@ -6,6 +6,10 @@ import React, { useState } from "react";
 
 //
 //
+//----------FORMIK UTILS-----------
+import { Formik } from "formik";
+//
+//
 //----------REACT-NATIVE UTILS-----------
 import {
   View,
@@ -35,7 +39,7 @@ import {
 //
 //
 //-------ICONS-------
-import { MaterialCommunityIcons as Icon } from "@expo/vector-icons"; //SE BORRA?
+//import { MaterialCommunityIcons as Icon } from "@expo/vector-icons"; //SE BORRA?
 //
 //
 //-------STYLES-------
@@ -48,7 +52,7 @@ const googleProvider = new GoogleAuthProvider();
 //
 //---------------------------------------------------------------------------------------//
 //
-const GlobalLogin = ({ navigation }) => {
+export default GlobalLogin = ({ navigation }) => {
   const [user, setUser] = useState({
     mail: "",
     password: "",
@@ -221,4 +225,82 @@ const GlobalLogin = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({});
-export default GlobalLogin;
+
+// const handleOnSubmit = () => {
+//   //handle
+// }
+
+// export default function GlobalLogin() {
+//   return (
+//     <View style={globalStyles.Home}>
+//       <ScrollView contentContainerStyle={{ flex: 1 }}>
+
+
+//         <Formik
+//           initialValues={{ email: "", password: "", secureTextEntry: true, iconName: "eye", }}
+//           onSubmit={() => handleOnSubmit()}
+//         >
+//           {(props) => (
+//             <View style={globalStyles.inputComponent}>
+//               <TextInput
+//                 style={globalStyles.texts}
+//                 placeholder="Email"
+//                 onChangeText={props.handleChange("email")}
+//                 value={props.values.email}
+//               />
+//             </View>
+//           )}
+//         </Formik>
+//       </ScrollView>
+//     </View >
+//   )
+// }
+
+/*
+{
+  Restos: [
+   0001: {
+      id: 1,
+      title: los pollos,
+      img: "",
+      description: "asdasasdsa",
+      categoria: pizzeria
+      menu: [
+         {title: nombre comida, precio: precio comida, descripcion: descripcion comida},
+         {},
+         {}
+      ]
+    },
+    0002: {
+      id:2,
+      title: los pollos 2
+      img: "",
+      descriptionL: "asjnduaiehfeafnada"
+      categoria: hamburgueseria
+      menu: [
+        01: {title: nombre comida, precio: precio comida, descripcion: descripcion comida},
+        02: {},
+        03: {}
+      ]
+    },
+    0003: {
+      id: 1,
+      title: los pollos 3,
+      img: "",
+      description: "akmdlanfkhbeaga",
+      categoria: pizzeria
+      menu: [
+        01: {title: nombre comida, precio: precio comida, descripcion: descripcion comida},
+        02: {},
+        03: {}
+      ]
+    },
+  ],
+  Categorias: [
+    ...todas las categorias,
+    pizzeria: [{0001},{0003}],
+    hamburgueseria: [{002}]
+  ]
+}
+
+*/
