@@ -85,7 +85,7 @@ const RegisterResto = (props) => {
       if (id) {
         try {
           firebase.db
-            .collection("Test")
+            .collection("Restos")
             .doc(id)
             .set({
               title: state.Title,
