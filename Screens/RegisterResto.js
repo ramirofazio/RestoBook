@@ -1,21 +1,49 @@
-//Creo que no se puede autenticar un usuario con todos los datos completos. El sign up con mail solo admite mail y password,
-// usuario >> se registra como empresa >> le permitimos cargar un local >> ese local tiene menus
-//    X           mail y pass             todos los datos de este form    anidamos/linkeamos menu
+//----------REACT UTILS-----------
 import React, { useState } from "react";
+//
+//
+//----------REDUX UTILS-----------
 import { useDispatch, useSelector } from "react-redux";
-import { Button, View, TextInput, ScrollView, StyleSheet, TouchableOpacity, Text } from "react-native";
-import globalStyles from "./GlobalStyles";
+//
+//
+//----------REACT-NATIVE UTILS-----------
+import {
+  Button,
+  View,
+  TextInput,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  Text,
+} from "react-native";
+//
+//
+//----------FIREBASE UTILS-----------
+import firebase from "../database/firebase";
+import { onAuthStateChanged, getAuth } from "firebase/auth";
+//
+//
+//---------SCREENS & COMPONENTS---------------
 
-//-------FIREBASE--------
-import {addDoc,collection} from "firebase/firestore";
-import db from "../database/firebase";
-//------SCREENS----------
 import addEmpresa from "../Redux/Actions/addEmpresa";
-import BtnFuncional from './Helpers/BtnFuncional.js';
+import BtnFuncional from "./Helpers/BtnFuncional.js";
+//
+//
+//-------STYLES-------
+import globalStyles from "./GlobalStyles";
+//
+//
+//-------INITIALIZATIONS-------
+const auth = getAuth();
+//
+//---------------------------------------------------------------------------------------//
+//
 
 const RegisterResto = (props) => {
   let dispatch = useDispatch();
-  const empresas = useSelector((state) => state.empresas)
+
+  const empresas = useSelector((state) => state.empresas);
+
   const Id = empresas.length + 1;
   //console.log("soy ID", Id)
 
@@ -30,7 +58,6 @@ const RegisterResto = (props) => {
     // ciudad: "",
     // direction: "",
     // horarios: "",
-    Id: Id,
     Title: "",
     Description: "",
     Img: "",
@@ -42,15 +69,40 @@ const RegisterResto = (props) => {
     setState({ ...state, [name]: value });
   };
 
-  const saveNewResto = () => {
-   const ref = addDoc(collection(db, "registroResto"), {
-      Id: state.Id,
-      Title: state.Title,
-      Description: state.Description,
-      Img: state.Img,
-    });
-    dispatch(addEmpresa(state));
-    props.navigation.navigate("RestoBook");
+  // const saveNewResto = () => {
+  //   dispatch(addEmpresa(state));
+  //   props.navigation.navigate("RestoBook");
+  // };
+  let id = null;
+  onAuthStateChanged(auth, (usuarioFirebase) => {
+    if (usuarioFirebase) {
+      id = usuarioFirebase.uid;
+    }
+  });
+
+  const saveNewResto = async () => {
+    if (state.Title === "") {
+      alert("Complete sus datos por favor");
+    } else {
+      if (id) {
+        try {
+          firebase.db
+            .collection("Test")
+            .doc(id)
+            .set({
+              title: state.Title,
+              Description: state.Description,
+              Img: state.Img,
+            })
+            .then(alert("creado"))
+            .then(props.navigation.navigate("RestoBook"));
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        alert("logueate!");
+      }
+    }
   };
 
   // const saveNewResto = async () => {
@@ -80,7 +132,7 @@ const RegisterResto = (props) => {
 
   return (
     <View style={globalStyles.Home}>
-        {/* <View style={styles.inputGroup}>
+      {/* <View style={styles.inputGroup}>
           <TextInput
             placeholder="Razón social"
             onChangeText={(value) => handleChangeText(value, "name")}
@@ -88,7 +140,7 @@ const RegisterResto = (props) => {
           />
         </View> */}
 
-        {/* <View style={styles.inputGroup}>
+      {/* <View style={styles.inputGroup}>
           <TextInput
             placeholder="Nombre de fantasía"
             onChangeText={(value) => handleChangeText(value, "fantasyName")}
@@ -96,7 +148,7 @@ const RegisterResto = (props) => {
           />
         </View> */}
 
-        {/* <View style={styles.inputGroup}>
+      {/* <View style={styles.inputGroup}>
           <TextInput
             placeholder="Cuit"
             onChangeText={(value) => handleChangeText(value, "cuit")}
@@ -104,7 +156,7 @@ const RegisterResto = (props) => {
           />
         </View> */}
 
-        {/* <View style={styles.inputGroup}>
+      {/* <View style={styles.inputGroup}>
           <TextInput
             placeholder="Teléfono"
             onChangeText={(value) => handleChangeText(value, "phone")}
@@ -112,7 +164,7 @@ const RegisterResto = (props) => {
           />
         </View> */}
 
-        {/* <View style={styles.inputGroup}>
+      {/* <View style={styles.inputGroup}>
           <TextInput
             placeholder="Teléfono 2"
             onChangeText={(value) => handleChangeText(value, "phone2")}
@@ -120,7 +172,7 @@ const RegisterResto = (props) => {
           />
         </View> */}
 
-        {/* <View style={styles.inputGroup}>
+      {/* <View style={styles.inputGroup}>
           <TextInput
             placeholder="Email"
             onChangeText={(value) => handleChangeText(value, "email")}
@@ -128,7 +180,7 @@ const RegisterResto = (props) => {
           />
         </View> */}
 
-        {/* <View style={styles.inputGroup}>
+      {/* <View style={styles.inputGroup}>
           <TextInput
             placeholder="Provincia"
             onChangeText={(value) => handleChangeText(value, "provincia")}
@@ -136,7 +188,7 @@ const RegisterResto = (props) => {
           />
         </View> */}
 
-        {/* <View style={styles.inputGroup}>
+      {/* <View style={styles.inputGroup}>
           <TextInput
             placeholder="Ciudad"
             onChangeText={(value) => handleChangeText(value, "ciudad")}
@@ -144,7 +196,7 @@ const RegisterResto = (props) => {
           />
         </View> */}
 
-        {/* <View style={styles.inputGroup}>
+      {/* <View style={styles.inputGroup}>
           <TextInput
             placeholder="Dirección"
             onChangeText={(value) => handleChangeText(value, "direction")}
@@ -152,55 +204,54 @@ const RegisterResto = (props) => {
           />
         </View> */}
 
-        {/* <View style={styles.inputGroup}>
+      {/* <View style={styles.inputGroup}>
           <TextInput
             placeholder="Horarios"
             onChangeText={(value) => handleChangeText(value, "horarios")}
             value={state.horarios}
           />
         </View> */}
-        <View style={globalStyles.inputContainer}>
-                  <View style={globalStyles.inputComponent}>
-                    <TextInput
-                    style={globalStyles.texts}
-                      placeholder="Title"
-                      onChangeText={(value) => handleChangeText(value, "Title")}
-                      value={state.Title}
-                    />
-                  </View>
-                  <View style={globalStyles.inputComponent}>
-                    <TextInput
-                    style={globalStyles.texts}
-                      placeholder="Descripcion"
-                      onChangeText={(value) => handleChangeText(value, "Description")}
-                      value={state.Description}
-                    />
-                  </View>
-                  <View style={globalStyles.inputComponent}>
-                    <TextInput
-                    style={globalStyles.texts}
-                      placeholder="Image"
-                      onChangeText={(value) => handleChangeText(value, "Img")}
-                      value={state.Img}
-                    />
-                  </View>
+      <View style={globalStyles.inputContainer}>
+        <View style={globalStyles.inputComponent}>
+          <TextInput
+            style={globalStyles.texts}
+            placeholder="Title"
+            onChangeText={(value) => handleChangeText(value, "Title")}
+            value={state.Title}
+          />
         </View>
-        <View style={globalStyles.container}>
-          <TouchableOpacity
-            style={globalStyles.touchLog}
-            onPress={() => saveNewResto()}
-          >
-            <Text style={globalStyles.fontLog}>Create</Text>
-          </TouchableOpacity>
+        <View style={globalStyles.inputComponent}>
+          <TextInput
+            style={globalStyles.texts}
+            placeholder="Descripcion"
+            onChangeText={(value) => handleChangeText(value, "Description")}
+            value={state.Description}
+          />
         </View>
-        {/* <View>
+        <View style={globalStyles.inputComponent}>
+          <TextInput
+            style={globalStyles.texts}
+            placeholder="Image"
+            onChangeText={(value) => handleChangeText(value, "Img")}
+            value={state.Img}
+          />
+        </View>
+      </View>
+      <View style={globalStyles.container}>
+        <TouchableOpacity
+          style={globalStyles.touchLog}
+          onPress={() => saveNewResto()}
+        >
+          <Text style={globalStyles.fontLog}>Create</Text>
+        </TouchableOpacity>
+      </View>
+      {/* <View>
           <Button title="Crear" onPress={() => saveNewResto()} />
         </View> */}
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-});
+const styles = StyleSheet.create({});
 
 export default RegisterResto;
