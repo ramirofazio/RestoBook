@@ -1,47 +1,36 @@
-//----------REACT UTILS-----------
-import React, { useState } from "react";
-//
-//
-//----------REDUX UTILS-----------
-import { useDispatch, useSelector } from "react-redux";
-import CurrentId from "../Redux/Actions/CurrentId.js";
-//
-//
-//----------REACT-NATIVE UTILS-----------
+import React, { useState, useEffect } from "react";
 import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
+import Btn from "./Helpers/Btns.js";
+import globalStyles from "./GlobalStyles.js";
 import UserOutlined from "react-native-vector-icons/AntDesign";
 import TagOutlined from "react-native-vector-icons/AntDesign";
-//
-//
-//----------FIREBASE UTILS-----------
+import firebase from "../database/firebase";
+import fireAuth from "../database/firebase";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
-//
-//
-//---------SCREENS & COMPONENTS---------------
-import Btn from "./Helpers/Btns.js";
-//
-//
-//-------STYLES-------
-import globalStyles from "./GlobalStyles.js";
-
-//
-//
-//-------INITIALIZATIONS-------
 
 const auth = getAuth();
 
 export default function NavHome({ title, navigation }) {
-  const dispatch = useDispatch();
-  const currentId = useSelector((state) => state.currentId);
+
+  const [logged, setLogged] = useState(false);
 
   onAuthStateChanged(auth, (usuarioFirebase) => {
-    if (!usuarioFirebase?.emailVerified) {
-      dispatch(CurrentId(null));
+    if (usuarioFirebase?.emailVerified) {
+
+      setLogged(true);
+      //   console.log("userFirebase", usuarioFirebase);
+    } else {
+      setLogged(false);
     }
+    // setLogged(false);
   });
 
   const signOutAndAlert = () => {
     signOut(auth);
+
+    // window.location.reload(); //recarga la pagina, ver si anda en el celu
+    setLogged(false);
+    // navigation.navigate("Despedida");
   };
 
   return (
@@ -68,10 +57,10 @@ export default function NavHome({ title, navigation }) {
           <TouchableOpacity
             style={globalStyles.btn}
             onPress={() =>
-              currentId ? signOutAndAlert() : navigation.navigate("GlobalLogin")
+              logged ? signOutAndAlert() : navigation.navigate("GlobalLogin")
             }
           >
-            <Text>{currentId ? "Log out" : "Log in"}</Text>
+            <Text>{logged ? "Log out" : "Log in"}</Text>
           </TouchableOpacity>
           <Btn
             nombre={<TagOutlined name="tag" color="#392c28" size={15} />}

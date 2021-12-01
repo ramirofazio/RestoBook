@@ -1,12 +1,4 @@
-//----------REACT UTILS-----------
 import React, { useState } from "react";
-//
-//
-//----------REDUX UTILS-----------
-
-//
-//
-//----------REACT-NATIVE UTILS-----------
 import {
   View,
   Button,
@@ -16,9 +8,6 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
-//
-//
-//----------FIREBASE UTILS-----------
 import {
   getAuth,
   signInWithEmailAndPassword,
@@ -28,27 +17,18 @@ import {
   sendEmailVerification,
   onAuthStateChanged,
 } from "firebase/auth";
-//
-//
-//---------SCREENS & COMPONENTS---------------
-
-//
-//
-//-------ICONS-------
-import { MaterialCommunityIcons as Icon } from "@expo/vector-icons"; //SE BORRA?
-//
-//
-//-------STYLES-------
 import globalStyles from "./GlobalStyles";
-//
-//
-//-------INITIALIZATIONS-------
+import {addDoc,collection} from "firebase/firestore";
+import db from "../database/firebase";
+// ESTA import { getFocusedRouteNameFromRoute } from "@react-navigation/core";
+// ESTA import { baseProps } from "react-native-gesture-handler/lib/typescript/handlers/gestureHandlers";
+//import { useScrollToTop } from "@react-navigation/native";
+
+//ERAN ESSAS 2 LIBRERIAS LAS DEL ERROR 505
 
 const auth = getAuth();
 const googleProvider = new GoogleAuthProvider();
-//
-//---------------------------------------------------------------------------------------//
-//
+
 const GlobalLogin = ({ navigation }) => {
   const [user, setUser] = useState({
     mail: "",
@@ -119,9 +99,7 @@ const GlobalLogin = ({ navigation }) => {
           sendEmailVerification(auth.currentUser)
             .then(handleChangeUser("mail", ""))
             .then(handleChangeUser("password", ""))
-            .then(alert("hola!"))
-            .then(navigation.navigate("AwaitEmail"))
-            .then(alert("chau!"));
+            .then(navigation.navigate("AwaitEmail"));
         }
       });
     } catch (error) {
@@ -143,7 +121,7 @@ const GlobalLogin = ({ navigation }) => {
 
   const buttonText = [
     "Log In",
-    "Sign Up",
+    "Sign In",
     "I don't have an account yet",
     "I already have an account",
   ];
@@ -151,7 +129,6 @@ const GlobalLogin = ({ navigation }) => {
   const onIconPress = () => {
     let iconName = user.secureTextEntry ? "eye-off" : "eye";
     setUser({
-      ...user,
       secureTextEntry: !user.secureTextEntry,
       iconName: iconName,
     });
@@ -221,5 +198,9 @@ const GlobalLogin = ({ navigation }) => {
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  
+  
+
+});
 export default GlobalLogin;

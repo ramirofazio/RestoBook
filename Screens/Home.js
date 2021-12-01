@@ -1,76 +1,35 @@
-//----------REACT UTILS-----------
 import React, { useState, useEffect } from "react";
-//
-//
-//----------REDUX UTILS-----------
-import { useDispatch, useSelector } from "react-redux";
-import CurrentId from "../Redux/Actions/CurrentId.js";
-import CurrentUser from "../Redux/Actions/CurrentUser.js";
-//
-//
-//----------REACT-NATIVE UTILS-----------
-import { View, ScrollView, Text, StyleSheet } from "react-native";
-//
-//
-//----------FIREBASE UTILS-----------
+import { useSelector } from "react-redux";
+import {
+  View,
+  ScrollView,
+  TouchableOpacity,
+  Text,
+  StyleSheet,
+  Button,
+} from "react-native";
+
+//----------FIREBASE-----------
 import firebase from "../database/firebase";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { doc, onSnapshot, collection, query } from "firebase/firestore";
-//
-//
+import fireAuth from "../database/firebase";
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+
 //---------SCREENS---------------
 import CardHome from "../components/CardHome.js";
+import BtnFuncional from "./Helpers/BtnFuncional.js";
 import Btn from "./Helpers/Btns.js";
-//
-//
+
 //-------STYLES-------
 import globalStyles from "./GlobalStyles.js";
-//
-//
-//-------INITIALIZATIONS-------
+
 const auth = getAuth();
-//
-//---------------------------------------------------------------------------------------//
-//
 export default function Home({ navigation }) {
   //------LOGIN JOSE------------
   const [usuarioGlobal, setUsuarioGlobal] = useState("");
-  const [availableCommerces, setAvailableCommerces] = useState([]);
+  const [logged, setLogged] = useState(false);
   const empresas = useSelector((state) => state.empresas);
-  const loggedUser = useSelector((state) => state.currentUser);
-  const loggedId = useSelector((state) => state.currentId);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    const q = query(collection(firebase.db, "Test"));
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      let arr = [];
-      querySnapshot.forEach((doc) => {
-        let obj = doc.data();
-        obj.id = doc.id;
-        arr.push(obj);
-      });
-      setAvailableCommerces(arr);
-    });
-  }, []);
-  onAuthStateChanged(auth, (usuarioFirebase) => {
-    if (usuarioFirebase?.emailVerified) {
-      if (loggedId !== usuarioFirebase.uid) {
-        dispatch(CurrentId(usuarioFirebase.uid));
-        const unsub = onSnapshot(
-          doc(firebase.db, "Test", usuarioFirebase.uid),
-          (doc) => {
-            if (doc.exists()) {
-              dispatch(CurrentUser(doc.data()));
-            }
-          }
-        );
-      }
-    } else {
-      dispatch(CurrentUser(null));
-    }
-  });
-
+  //console.log("empresas", empresas);
+  // window.location.reload
   onAuthStateChanged(auth, (usuarioFirebase) => {
     if (usuarioFirebase?.emailVerified) {
       if (usuarioFirebase.displayName) {
@@ -79,7 +38,10 @@ export default function Home({ navigation }) {
         const trimmedName = usuarioFirebase.email.split("@")[0];
         setUsuarioGlobal(trimmedName);
       }
+      setLogged(true);
+      console.log("userFirebase", usuarioFirebase);
     } else {
+      setLogged(false);
       setUsuarioGlobal("");
     }
   });
@@ -97,34 +59,30 @@ export default function Home({ navigation }) {
         {/* <Btn nombre="Ciudad" ruta="#" navigation={navigation} /> */}
         {/* <Btn nombre='Buscar' ruta='#' navigation={navigation} /> */}
         {/* <Btn nombre="Categorias" ruta="#" navigation={navigation} /> */}
-        {/* {logged ? (
+        {logged ? (
           <Btn
             nombre="Create your Resto!"
             ruta="RegisterResto"
             navigation={navigation}
           />
-        ) : null} */}
-        <Btn
-          nombre={
-            loggedUser
-              ? `Create your resto, ${loggedUser.Description}`
-              : `Crea tu resto.`
-          }
+        ) : null}
+        {/* <Btn
+          nombre="Create your Resto!"
           ruta="RegisterResto"
           navigation={navigation}
-        />
+        /> */}
+
       </View>
-      {availableCommerces.length ? (
-        <ScrollView style={{ overflow: "scroll" }}>
-          {availableCommerces.map((resto) => {
-            return (
-              <CardHome key={resto.id} resto={resto} navigation={navigation}>
-                {" "}
-              </CardHome>
-            );
-          })}
-        </ScrollView>
-      ) : null}
+
+      <ScrollView style={{ overflow: "scroll" }}>
+        {empresas.map((resto) => {
+          return (
+            <CardHome key={resto.Id} resto={resto} navigation={navigation}>
+              {" "}
+            </CardHome>
+          );
+        })}
+      </ScrollView>
     </ScrollView>
   );
 }
