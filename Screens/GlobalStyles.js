@@ -22,11 +22,9 @@ const globalStyles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "space-around",
         width: 160,
-        //backgroundColor: "red",
     },
     Container: {
         alignItems: "center",
-        // backgroundColor: "brown",
     },
     btn: {
         backgroundColor: '#ffd964',
@@ -38,7 +36,6 @@ const globalStyles = StyleSheet.create({
         borderColor: '#b39138',
     },
     img: {
-        // alignSelf: 'center',
         height: 40,
         width: 40,
         marginTop: 5,
@@ -53,15 +50,69 @@ const globalStyles = StyleSheet.create({
         color: '#392c28'
     },
     containerTitle: {
-        //backgroundColor: "red",
         flexDirection: "row",
     },
     navHome: {
         flexDirection: "row",
-        //backgroundColor: "blue",
         width: "100%",
     },
-
+    touchLog: {
+        marginTop: 10,
+        maxWidth: "100%",
+        width: '50%',
+        alignItems: "center",
+        borderRadius: 10,
+        backgroundColor: "#bd967e",
+        padding: 10,
+      },
+      touchFlag: {
+        marginTop: 10,
+        maxWidth: "100%",
+        width: '50%',
+        alignItems: "center",
+        borderRadius: 10,
+        backgroundColor: "#ffdfcb",
+        borderWidth: 2,
+        borderColor: "#bd967e",
+        padding: 10,
+      },
+      fontLog: {
+        color: "#392c28",
+        fontWeight: "bold"
+      },
+      container: {
+        flex: 6,
+        alignItems: "center",
+      },
+      text: {
+        fontSize: 20,
+        width: "100%",
+      },
+      texts: {
+        textAlign: "center",
+        width: "100%",
+        fontSize: 14.5,
+        fontWeight: "bold",
+      },
+      textContainer: {
+        flex: 1,
+        alignSelf: "center",
+        justifyContent: "center",
+        width:"70%",
+      },
+      inputContainer: {
+        flex: 2,
+        alignItems: "center",
+        justifyContent: "space-evenly",
+      },
+      inputComponent: {
+        alignSelf: "center",
+        borderRadius: 10,
+        backgroundColor: "#e8b595",
+        maxWidth: '100%',
+        width: '60%',
+        borderRadius: 10,
+      },
 });
 
 export default globalStyles;

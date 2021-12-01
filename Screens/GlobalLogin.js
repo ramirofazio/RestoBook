@@ -1,4 +1,12 @@
+//----------REACT UTILS-----------
 import React, { useState } from "react";
+//
+//
+//----------REDUX UTILS-----------
+
+//
+//
+//----------REACT-NATIVE UTILS-----------
 import {
   View,
   Button,
@@ -8,9 +16,9 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
-import { MaterialCommunityIcons as Icon } from "@expo/vector-icons";
-import firebase from "../database/firebase";
-import fireAuth from "../database/firebase";
+//
+//
+//----------FIREBASE UTILS-----------
 import {
   getAuth,
   signInWithEmailAndPassword,
@@ -20,11 +28,27 @@ import {
   sendEmailVerification,
   onAuthStateChanged,
 } from "firebase/auth";
-// import { useScrollToTop } from "@react-navigation/native";
+import firebase from "../database/firebase";
+//
+//
+//---------SCREENS & COMPONENTS---------------
 
+//
+//
+//-------ICONS-------
+import { MaterialCommunityIcons as Icon } from "@expo/vector-icons"; //SE BORRA?
+//
+//
+//-------STYLES-------
+import globalStyles from "./GlobalStyles";
+//
+//
+//-------INITIALIZATIONS-------
 const auth = getAuth();
 const googleProvider = new GoogleAuthProvider();
-
+//
+//---------------------------------------------------------------------------------------//
+//
 const GlobalLogin = ({ navigation }) => {
   const [user, setUser] = useState({
     mail: "",
@@ -44,32 +68,44 @@ const GlobalLogin = ({ navigation }) => {
     });
   };
 
-  const logUserWithGoogle = async () => {
-    try {
-      const newUser = await signInWithRedirect(auth, googleProvider);
-      if (auth.currentUser) {
-        console.log("works");
-        props.navigation.navigate("RestoBook");
-      } else {
-        console.log("NO works");
-      }
-    } catch (error) {
-      alert("error!");
-      console.log(error);
-    }
-  };
+  // const logUserWithGoogle = async () => {
+  //   try {
+  //     const newUser = await signInWithRedirect(auth, googleProvider);
+  //     if (auth.currentUser) {
+  //       console.log("works");
+  //       props.navigation.navigate("RestoBook");
+  //     } else {
+  //       console.log("NO works");
+  //     }
+  //   } catch (error) {
+  //     alert("error!");
+  //     console.log(error);
+  //   }
+  // };
 
   const logEmpresa = async () => {
     try {
       const newUser = await signInWithEmailAndPassword(auth, email, pass);
       if (auth.currentUser.emailVerified) {
-        alert("verified");
+        alert("Welcome");
         navigation.navigate("RestoBook");
       } else {
         navigation.navigate("AwaitEmail");
       }
     } catch (error) {
-      alert("error!!");
+      const errorCode = error.code;
+      console.log("errorCode", errorCode);
+      switch (errorCode) {
+        case "auth/wrong-password":
+          alert("Wrong password");
+          break;
+        case "auth/user-not-found":
+          alert("User not found");
+        case "auth/internal-error":
+          alert("Enter your password!");
+        default:
+          alert("Error");
+      }
     }
   };
 
@@ -81,138 +117,112 @@ const GlobalLogin = ({ navigation }) => {
           sendEmailVerification(auth.currentUser)
             .then(handleChangeUser("mail", ""))
             .then(handleChangeUser("password", ""))
+            .then(alert("Sign Up!"))
             .then(navigation.navigate("AwaitEmail"));
         }
       });
     } catch (error) {
-      alert("error en save", error);
+      const errorCode = error.code;
+      console.log("errorCode", errorCode);
+      switch (errorCode) {
+        case "auth/invalid-email":
+          alert("Invalid Email");
+          break;
+        case "auth/weak-password":
+          alert("password must be at least 6 characters");
+        case "auth/email-already-in-use":
+          alert("Email already in-use");
+        default:
+          break;
+      }
     }
   };
 
   const buttonText = [
-    "Ingresar",
-    "Registrate",
-    "Aun no tengo cuenta",
-    "Ya tengo cuenta",
+    "Log In",
+    "Sign Up",
+    "I don't have an account yet",
+    "I already have an account",
   ];
 
   const onIconPress = () => {
     let iconName = user.secureTextEntry ? "eye-off" : "eye";
     setUser({
+      ...user,
       secureTextEntry: !user.secureTextEntry,
       iconName: iconName,
     });
   };
 
   return (
-    <View>
-      <ScrollView>
-        <View style={styles.inputContainer}>
-          <View style={styles.inputComponent}>
+    <View style={globalStyles.Home}>
+      <ScrollView contentContainerStyle={{ flex: 1 }}>
+        <View style={globalStyles.inputContainer}>
+          <View style={globalStyles.inputComponent}>
             <TextInput
+              style={globalStyles.texts}
               placeholder="Email"
               value={user.mail}
               onChangeText={(value) => handleChangeUser("mail", value)}
             />
           </View>
-          <View style={styles.inputComponent}>
+          <View style={globalStyles.inputComponent}>
             <TextInput
+              style={globalStyles.texts}
               onPress={onIconPress}
               secureTextEntry={user.secureTextEntry}
               placeholder="Password"
               value={user.password}
               onChangeText={(value) => handleChangeUser("password", value)}
             />
-            <TouchableOpacity
-              onPress={onIconPress}
-              style={styles.inputComponent}
-            >
-              <Icon name={user.iconName} size={20} />
-            </TouchableOpacity>
+            {/* <View>
+              <TouchableOpacity
+                onPress={onIconPress}
+                style={styles.inputComponent}
+              >
+                <Icon name={user.iconName} size={20} />
+              </TouchableOpacity>
+            </View> */}
           </View>
         </View>
 
-        <View style={styles.container}>
+        <View style={globalStyles.container}>
           <TouchableOpacity
-            style={styles.touchLog}
-            onPress={() => (registered ? logEmpresa() : saveEmpresa())}
+            style={globalStyles.touchLog}
+            onPress={() => logEmpresa()}
           >
-            <Text style={styles.fontLog}>
-              {registered ? buttonText[0] : buttonText[1]}
-            </Text>
+            <Text style={globalStyles.fontLog}>Log In</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={styles.touchFlag}
+            style={globalStyles.touchLog}
+            onPress={() => saveEmpresa()}
+          >
+            <Text style={globalStyles.fontLog}>Sign Up</Text>
+          </TouchableOpacity>
+          {/* <TouchableOpacity
+            style={globalStyles.touchFlag}
             onPress={() =>
               registered ? setRegistered(false) : setRegistered(true)
             }
           >
-            <Text style={styles.fontFlag}>
+            <Text style={globalStyles.fontLog}>
               {registered ? buttonText[2] : buttonText[3]}
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
-          <Text>O</Text>
-
+          {/* <Text>O</Text>
           <TouchableOpacity
-            style={styles.touchLog}
+            style={globalStyles.touchLog}
             onPress={() => logUserWithGoogle()}
           >
-            <Text style={styles.fontLog}>Ingresa con Google</Text>
-          </TouchableOpacity>
+            <Text style={globalStyles.fontLog}>Sign In With Google</Text>
+          </TouchableOpacity> */}
         </View>
       </ScrollView>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    marginTop: 50,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  inputContainer: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-
-  inputComponent: {
-    marginTop: 15,
-    backgroundColor: "#cacbcf",
-    width: 300,
-    borderRadius: 5,
-  },
-
-  touchLog: {
-    marginTop: 10,
-    width: 200,
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 5,
-    color: "#9b9ba3",
-    backgroundColor: "#4951de",
-    padding: 10,
-  },
-  touchFlag: {
-    marginTop: 10,
-    width: 200,
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 5,
-    backgroundColor: "#cacbcf",
-    padding: 10,
-  },
-  fontLog: {
-    color: "#cacbcf",
-  },
-  fontFlag: {
-    color: "#4951de",
-  },
-});
+const styles = StyleSheet.create({});
 export default GlobalLogin;

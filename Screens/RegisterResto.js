@@ -1,18 +1,50 @@
-//Creo que no se puede autenticar un usuario con todos los datos completos. El sign up con mail solo admite mail y password,
-// usuario >> se registra como empresa >> le permitimos cargar un local >> ese local tiene menus
-//    X           mail y pass             todos los datos de este form    anidamos/linkeamos menu
-
+//----------REACT UTILS-----------
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-
-import { Button, View, TextInput, ScrollView, StyleSheet } from "react-native";
-
+//
+//
+//----------REDUX UTILS-----------
+import { useDispatch, useSelector } from "react-redux";
+//
+//
+//----------REACT-NATIVE UTILS-----------
+import {
+  Button,
+  View,
+  TextInput,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  Text,
+} from "react-native";
+//
+//
+//----------FIREBASE UTILS-----------
 import firebase from "../database/firebase";
-import { addEmpresa } from "../Redux/Actions/AddTask";
-import BtnFuncional from './Helpers/BtnFuncional.js';
+import { onAuthStateChanged, getAuth } from "firebase/auth";
+//
+//
+//---------SCREENS & COMPONENTS---------------
+import addEmpresa from "../Redux/Actions/addEmpresa";
+import BtnFuncional from "./Helpers/BtnFuncional.js";
+//
+//
+//-------STYLES-------
+import globalStyles from "./GlobalStyles";
+//
+//
+//-------INITIALIZATIONS-------
+const auth = getAuth();
+//
+//---------------------------------------------------------------------------------------//
+//
 
 const RegisterResto = (props) => {
   let dispatch = useDispatch();
+
+  const empresas = useSelector((state) => state.empresas);
+  const Id = empresas.length + 1;
+  //console.log("soy ID", Id)
+
   const initalState = {
     // name: "",
     // fantasyName: "",
@@ -35,9 +67,43 @@ const RegisterResto = (props) => {
     setState({ ...state, [name]: value });
   };
 
-  const saveNewResto = () => {
-    dispatch(addEmpresa(state));
-    props.navigation.navigate("RestoBook");
+  // const saveNewResto = () => {
+  //   dispatch(addEmpresa(state));
+  //   props.navigation.navigate("RestoBook");
+  // };
+  let id = null;
+  onAuthStateChanged(auth, (usuarioFirebase) => {
+    if (usuarioFirebase) {
+      id = usuarioFirebase.uid;
+    }
+  });
+
+  const saveNewResto = async () => {
+    if (state.Title === "") {
+      alert("Complete sus datos por favor");
+    } else {
+      if (id) {
+        try {
+          firebase.db
+            .collection("Restos")
+            .doc()
+            .set({
+              id,
+              title: state.Title,
+              Description: state.Description,
+              Img: state.Img,
+              category: '',
+              menu: [],
+            })
+            .then(alert("creado"))
+            .then(props.navigation.navigate("RestoBook"));
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        alert("logueate!");
+      }
+    }
   };
 
   // const saveNewResto = async () => {
@@ -66,136 +132,127 @@ const RegisterResto = (props) => {
   // };
 
   return (
-    <ScrollView style={styles.container}>
+    <View style={globalStyles.Home}>
       {/* <View style={styles.inputGroup}>
-        <TextInput
-          placeholder="Razón social"
-          onChangeText={(value) => handleChangeText(value, "name")}
-          value={state.name}
-        />
-      </View> */}
+          <TextInput
+            placeholder="Razón social"
+            onChangeText={(value) => handleChangeText(value, "name")}
+            value={state.name}
+          />
+        </View> */}
 
       {/* <View style={styles.inputGroup}>
-        <TextInput
-          placeholder="Nombre de fantasía"
-          onChangeText={(value) => handleChangeText(value, "fantasyName")}
-          value={state.fantasyName}
-        />
-      </View> */}
+          <TextInput
+            placeholder="Nombre de fantasía"
+            onChangeText={(value) => handleChangeText(value, "fantasyName")}
+            value={state.fantasyName}
+          />
+        </View> */}
 
       {/* <View style={styles.inputGroup}>
-        <TextInput
-          placeholder="Cuit"
-          onChangeText={(value) => handleChangeText(value, "cuit")}
-          value={state.cuit}
-        />
-      </View> */}
+          <TextInput
+            placeholder="Cuit"
+            onChangeText={(value) => handleChangeText(value, "cuit")}
+            value={state.cuit}
+          />
+        </View> */}
 
       {/* <View style={styles.inputGroup}>
-        <TextInput
-          placeholder="Teléfono"
-          onChangeText={(value) => handleChangeText(value, "phone")}
-          value={state.phone}
-        />
-      </View> */}
+          <TextInput
+            placeholder="Teléfono"
+            onChangeText={(value) => handleChangeText(value, "phone")}
+            value={state.phone}
+          />
+        </View> */}
 
       {/* <View style={styles.inputGroup}>
-        <TextInput
-          placeholder="Teléfono 2"
-          onChangeText={(value) => handleChangeText(value, "phone2")}
-          value={state.phone2}
-        />
-      </View> */}
+          <TextInput
+            placeholder="Teléfono 2"
+            onChangeText={(value) => handleChangeText(value, "phone2")}
+            value={state.phone2}
+          />
+        </View> */}
 
       {/* <View style={styles.inputGroup}>
-        <TextInput
-          placeholder="Email"
-          onChangeText={(value) => handleChangeText(value, "email")}
-          value={state.email}
-        />
-      </View> */}
+          <TextInput
+            placeholder="Email"
+            onChangeText={(value) => handleChangeText(value, "email")}
+            value={state.email}
+          />
+        </View> */}
 
       {/* <View style={styles.inputGroup}>
-        <TextInput
-          placeholder="Provincia"
-          onChangeText={(value) => handleChangeText(value, "provincia")}
-          value={state.provincia}
-        />
-      </View> */}
+          <TextInput
+            placeholder="Provincia"
+            onChangeText={(value) => handleChangeText(value, "provincia")}
+            value={state.provincia}
+          />
+        </View> */}
 
       {/* <View style={styles.inputGroup}>
-        <TextInput
-          placeholder="Ciudad"
-          onChangeText={(value) => handleChangeText(value, "ciudad")}
-          value={state.ciudad}
-        />
-      </View> */}
+          <TextInput
+            placeholder="Ciudad"
+            onChangeText={(value) => handleChangeText(value, "ciudad")}
+            value={state.ciudad}
+          />
+        </View> */}
 
       {/* <View style={styles.inputGroup}>
-        <TextInput
-          placeholder="Dirección"
-          onChangeText={(value) => handleChangeText(value, "direction")}
-          value={state.direction}
-        />
-      </View> */}
+          <TextInput
+            placeholder="Dirección"
+            onChangeText={(value) => handleChangeText(value, "direction")}
+            value={state.direction}
+          />
+        </View> */}
 
       {/* <View style={styles.inputGroup}>
-        <TextInput
-          placeholder="Horarios"
-          onChangeText={(value) => handleChangeText(value, "horarios")}
-          value={state.horarios}
-        />
-      </View> */}
-      <View style={styles.inputGroup}>
-        <TextInput
-          placeholder="Title"
-          onChangeText={(value) => handleChangeText(value, "Title")}
-          value={state.Title}
-        />
+          <TextInput
+            placeholder="Horarios"
+            onChangeText={(value) => handleChangeText(value, "horarios")}
+            value={state.horarios}
+          />
+        </View> */}
+      <View style={globalStyles.inputContainer}>
+        <View style={globalStyles.inputComponent}>
+          <TextInput
+            style={globalStyles.texts}
+            placeholder="Title"
+            onChangeText={(value) => handleChangeText(value, "Title")}
+            value={state.Title}
+          />
+        </View>
+        <View style={globalStyles.inputComponent}>
+          <TextInput
+            style={globalStyles.texts}
+            placeholder="Descripcion"
+            onChangeText={(value) => handleChangeText(value, "Description")}
+            value={state.Description}
+          />
+        </View>
+        <View style={globalStyles.inputComponent}>
+          <TextInput
+            style={globalStyles.texts}
+            placeholder="Image"
+            onChangeText={(value) => handleChangeText(value, "Img")}
+            value={state.Img}
+          />
+        </View>
       </View>
-      <View style={styles.inputGroup}>
-        <TextInput
-          placeholder="Descripcion"
-          onChangeText={(value) => handleChangeText(value, "Description")}
-          value={state.Description}
-        />
+      <View style={globalStyles.container}>
+        <TouchableOpacity
+          style={globalStyles.touchLog}
+          onPress={() => saveNewResto()}
+        >
+          <Text style={globalStyles.fontLog}>Create</Text>
+        </TouchableOpacity>
       </View>
-      <View style={styles.inputGroup}>
-        <TextInput
-          placeholder="Image"
-          onChangeText={(value) => handleChangeText(value, "Img")}
-          value={state.Img}
-        />
-      </View>
-
-      <View>
-        <Button title="Crear" onPress={() => saveNewResto()} />
-      </View>
-    </ScrollView>
+      {/* <View>
+          <Button title="Crear" onPress={() => saveNewResto()} />
+        </View> */}
+    </View>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 35,
-  },
-  inputGroup: {
-    flex: 1,
-    padding: 0,
-    marginBottom: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: "#cccccc",
-  },
-  loader: {
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
-    position: "absolute",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
+const styles = StyleSheet.create({});
 
 export default RegisterResto;
