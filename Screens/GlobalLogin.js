@@ -140,7 +140,7 @@ const GlobalLogin = ({ navigation }) => {
 
   const buttonText = [
     "Log In",
-    "Sign In",
+    "Sign Up",
     "I don't have an account yet",
     "I already have an account",
   ];
