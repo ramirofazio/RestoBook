@@ -14,6 +14,7 @@ import AwaitEmail from "../Screens/AwaitEmail.js";
 import NavHome from "../Screens/NavHome.js";
 import NavDetail from "../Screens/NavDetail";
 import { useSelector } from "react-redux";
+import DetailsUser from "../Screens/DetailsUser";
 
 export default Navigator = () => {
   const Stack = createNativeStackNavigator();
@@ -108,6 +109,8 @@ export default Navigator = () => {
             },
           }}
         />
+
+        <Stack.Screen name="DetailsUser" component={DetailsUser} />
       </Stack.Navigator>
     </NavigationContainer>
   );
