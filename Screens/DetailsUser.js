@@ -62,17 +62,26 @@ const DetailsUser = ({ navigation }) => {
         <Text>Home</Text>
       </TouchableOpacity>
       <Text>Tus comercios: </Text>
-      {availableCommerces.length &&
-        availableCommerces.map((element) => {
-          return (
-            <View>
-              <Text>{element.title}</Text>
-              <Text>{element.Description}</Text>
-            </View>
-          );
-        })}
+
+      {availableCommerces.length ? (
+        <View>
+          {availableCommerces.map((element) => {
+            return (
+              <View>
+                <Text>{element.title}</Text>
+                <Text>{element.Description}</Text>
+              </View>
+            );
+          })}
+        </View>
+      ) : null}
     </View>
   );
 };
 
 export default DetailsUser;
+
+/* 
+
+
+*/

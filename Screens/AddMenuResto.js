@@ -38,14 +38,12 @@ import globalStyles from "./GlobalStyles";
 //---------------------------------------------------------------------------------------//
 //
 const AddMenuResto = ({ navigation }) => {
-
-  useEffect(() => {
-
-  })
+  useEffect(() => {});
 
   const dispatch = useDispatch();
   const empresaDetail = useSelector((state) => state.empresaDetail);
   const menu = useSelector((state) => state.empresaDetail.menu);
+  const [spinner, setSpinner] = useState(false);
 
   const idResto = empresaDetail.idResto;
 
@@ -65,9 +63,11 @@ const AddMenuResto = ({ navigation }) => {
   const saveMenuResto = async () => {
     try {
       let restoRef = doc(firebase.db, "Restos", idResto);
+      setSpinner(true);
       await updateDoc(restoRef, {
-        menu: arrayUnion(state)
-      })
+        menu: arrayUnion(state),
+      });
+      setSpinner(false);
       navigation.navigate("DetailsResto");
     } catch (err) {
       console.log(err);
@@ -119,6 +119,7 @@ const AddMenuResto = ({ navigation }) => {
           <Text style={globalStyles.fontLog}>Add Food</Text>
         </TouchableOpacity>
       </View>
+      {spinner && <Text>Spinner!</Text>}
     </View>
   );
 };

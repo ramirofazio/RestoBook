@@ -95,13 +95,16 @@ export default function NavHome({ title, navigation }) {
           >
             <Text>{currentId ? "Log out" : "Log in"}</Text>
           </TouchableOpacity>
-          <Btn
-            nombre={<TagOutlined name="tag" color="#392c28" size={15} />}
-            ruta="#"
-            navigation={navigation}
-          />
 
-          {!commerce && (
+          {loggedId && (
+            <Btn
+              nombre={<TagOutlined name="tag" color="#392c28" size={15} />}
+              ruta="#"
+              navigation={navigation}
+            />
+          )}
+
+          {!commerce && loggedId && (
             <Btn
               nombre={<UserOutlined name="user" color="#392c28" size={15} />}
               ruta="DetailsUser"
@@ -109,7 +112,7 @@ export default function NavHome({ title, navigation }) {
             />
           )}
 
-          {commerce && (
+          {commerce && loggedId && (
             <Btn
               nombre={<RestOutlined name="rest" color="#392c28" size={15} />}
               ruta="DetailsUser"
