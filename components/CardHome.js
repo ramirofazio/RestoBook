@@ -55,6 +55,15 @@ const styles = StyleSheet.create({
         width: 140,
         height: 140,
     },
+    container: {
+        flex: 1,
+        marginVertical: 4,
+        marginHorizontal: 16,
+        borderRadius: 5,
+        overflow: "hidden",
+        alignItems: "center",
+        justifyContent: "center"
+    }
 })
 
 export default CardMenu;

@@ -8,6 +8,7 @@ import TagOutlined from 'react-native-vector-icons/AntDesign';
 // import fireAuth from "../database/firebase";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 
+
 const auth = getAuth();
 
 
@@ -58,7 +59,9 @@ export default function Nav({ title, navigation }) {
             <Text>{logged ? "Log out" : "Log in"}</Text>
           </TouchableOpacity>
           <Btn nombre={<TagOutlined name='tag' color="#392c28" size={15} />} ruta="#" navigation={navigation} />
-          <Btn nombre={<UserOutlined name='user' color="#392c28" size={15} />} ruta="#" navigation={navigation} />
+          {/* <Btn nombre={<UserOutlined name='user' color="#392c28" size={15} />} ruta="#" navigation={navigation} /> */}
+          
+          
         </View>
 
       </View>

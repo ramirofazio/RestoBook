@@ -173,9 +173,5 @@ const GlobalLogin = ({ navigation }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  
-  
 
-});
 export default GlobalLogin;
