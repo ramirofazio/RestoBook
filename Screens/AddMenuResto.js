@@ -47,7 +47,7 @@ const MenuRestoSchema = yup.object({
   description: yup.string()
     .required()
     .min(5)
-    .max(100),
+    .max(60),
   price: yup.number()
     .required()
     .positive()
@@ -61,23 +61,22 @@ const AddMenuResto = ({ navigation }) => {
   const idResto = empresaDetail.idResto;
 
   const handleOnPressPickImage = async (handleChange) => {
-    if (Platform.OS !== 'web') {
-      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-      if (status !== 'granted') {
-        alert('Sorry, we need camera roll permissions to make this work!');
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status === 'granted') {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
+      if (!result.cancelled) {
+        handleChange(result.uri)
       }
-    }
-
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-    if (!result.cancelled) {
-      handleChange(result.uri)
+    } else {
+      alert('Sorry, we need camera roll permissions to make this work!');
     }
   }
+
 
   return (
     <View style={globalStyles.Home}>

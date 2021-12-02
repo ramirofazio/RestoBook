@@ -63,7 +63,7 @@ const GlobalLoginSchema = yup.object({
     .email(),
   password: yup.string()
     .required()
-    .min(5)
+    .min(6)
     .max(12)
 })
 
@@ -143,22 +143,61 @@ export default GlobalLogin = ({ navigation }) => {
       </View >
     )
   } else {
+
+    const GlobalRegisterSchema = yup.object({
+      name: yup.string()
+        .required(),
+      lastName: yup.string()
+        .required(),
+      cel: yup.number()
+        .required(),
+      email: yup.string()
+        .required()
+        .email(),
+      password: yup.string()
+        .required()
+        .min(6)
+        .max(12),
+      passwordConfirm: yup.string()
+        .required()
+        .test("password-match",
+          "passwords must match",
+          async (value, testContext) => testContext.parent.password === value,
+        )
+    })
+
     return (
       //-------REGISTER-------------
       <View style={globalStyles.Home}>
         <Formik
           initialValues={{
+            name: "",
+            lastName: "",
+            cel: "",
             email: "",
             password: "",
+            passwordConfirm: "",
           }}
-          validationSchema={GlobalLoginSchema}
-          onSubmit={async ({ email, password }) => {
+          validationSchema={GlobalRegisterSchema}
+          onSubmit={async (values) => {
+            console.log(values)
             try {
-              await createUserWithEmailAndPassword(auth, email, password);
+              //-----AUTENTICA USER-----------
+              await createUserWithEmailAndPassword(auth, values.email, values.password);
               onAuthStateChanged(auth, (usuarioFirebase) => {
                 if (usuarioFirebase) {
-                  sendEmailVerification(auth.currentUser)
-                    .then(alert("Sign Up!"))
+                  //-----AGREGA A COLECCION USER--------
+                  firebase.db.collection("Users").doc(auth.currentUser.uid).set({
+                    id: auth.currentUser.uid,
+                    name: values.name,
+                    lastName: values.lastName,
+                    cel: values.cel,
+                    email: values.email,
+                    commerce: false,
+                    reservations: [],
+                    payments: [],
+                  })
+                    .then(sendEmailVerification(auth.currentUser))
                     .then(navigation.navigate("AwaitEmail"));
                 }
               });
@@ -169,6 +208,37 @@ export default GlobalLogin = ({ navigation }) => {
         >
           {(props) => (
             <View style={globalStyles.inputContainer}>
+              <View style={globalStyles.inputComponent}>
+                <TextInput
+                  style={globalStyles.texts}
+                  placeholder="Nombre"
+                  onChangeText={props.handleChange("name")}
+                  value={props.values.name}
+                  onBlur={props.handleBlur("name")}
+                />
+              </View>
+              {props.touched.name && props.errors.name ? <Text>{props.errors.name}</Text> : null}
+              <View style={globalStyles.inputComponent}>
+                <TextInput
+                  style={globalStyles.texts}
+                  placeholder="Apellido"
+                  onChangeText={props.handleChange("lastName")}
+                  value={props.values.lastName}
+                  onBlur={props.handleBlur("lastName")}
+                />
+              </View>
+              {props.touched.lastName && props.errors.lastName ? <Text>{props.errors.lastName}</Text> : null}
+              <View style={globalStyles.inputComponent}>
+                <TextInput
+                  style={globalStyles.texts}
+                  placeholder="Telephone"
+                  onChangeText={props.handleChange("cel")}
+                  value={props.values.cel}
+                  onBlur={props.handleBlur("cel")}
+                  keyboardType="numeric"
+                />
+              </View>
+              {props.touched.cel && props.errors.cel ? <Text>{props.errors.cel}</Text> : null}
               <View style={globalStyles.inputComponent}>
                 <TextInput
                   style={globalStyles.texts}
@@ -190,6 +260,17 @@ export default GlobalLogin = ({ navigation }) => {
                 />
               </View>
               {props.touched.password && props.errors.password ? <Text>{props.errors.password}</Text> : null}
+              <View style={globalStyles.inputComponent}>
+                <TextInput
+                  style={globalStyles.texts}
+                  placeholder="Confirm password"
+                  onChangeText={props.handleChange("passwordConfirm")}
+                  value={props.values.passwordConfirm}
+                  secureTextEntry={flagSecureText}
+                  onBlur={props.handleBlur("passwordConfirm")}
+                />
+              </View>
+              {props.touched.passwordConfirm && props.errors.passwordConfirm ? <Text>{props.errors.passwordConfirm}</Text> : null}
               <TouchableOpacity
                 onPress={() => flagSecureText ? setFlagSecureText(false) : setFlagSecureText(true)}
               >
@@ -207,7 +288,7 @@ export default GlobalLogin = ({ navigation }) => {
             </View >
           )}
         </Formik >
-      </View>
+      </View >
     )
   };
 };
