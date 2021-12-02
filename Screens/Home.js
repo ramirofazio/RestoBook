@@ -36,7 +36,6 @@ export default function Home({ navigation }) {
   //------LOGIN JOSE------------
   const [usuarioGlobal, setUsuarioGlobal] = useState("");
   const [availableCommerces, setAvailableCommerces] = useState([]);
-  const empresas = useSelector((state) => state.empresas);
   const loggedUser = useSelector((state) => state.currentUser);
   const loggedId = useSelector((state) => state.currentId);
   const dispatch = useDispatch();
@@ -56,6 +55,8 @@ export default function Home({ navigation }) {
   onAuthStateChanged(auth, (usuarioFirebase) => {
     if (usuarioFirebase?.emailVerified) {
       if (loggedId !== usuarioFirebase.uid) {
+        console.log("cambio en logged!:", usuarioFirebase.uid);
+        console.log("cambio en logged!");
         dispatch(CurrentId(usuarioFirebase.uid));
         const unsub = onSnapshot(
           doc(firebase.db, "Restos", usuarioFirebase.uid),
@@ -94,16 +95,7 @@ export default function Home({ navigation }) {
         )}
       </View>
       <View style={globalStyles.btnHome}>
-        {/* <Btn nombre="Ciudad" ruta="#" navigation={navigation} /> */}
-        {/* <Btn nombre='Buscar' ruta='#' navigation={navigation} /> */}
         {/* <Btn nombre="Categorias" ruta="#" navigation={navigation} /> */}
-        {/* {logged ? (
-          <Btn
-            nombre="Create your Resto!"
-            ruta="RegisterResto"
-            navigation={navigation}
-          />
-        ) : null} */}
         <Btn
           nombre={
             loggedUser
@@ -118,7 +110,11 @@ export default function Home({ navigation }) {
         <ScrollView style={{ overflow: "scroll" }}>
           {availableCommerces.map((resto) => {
             return (
-              <CardHome key={resto.idResto} resto={resto} navigation={navigation}>
+              <CardHome
+                key={resto.idResto}
+                resto={resto}
+                navigation={navigation}
+              >
                 {" "}
               </CardHome>
             );

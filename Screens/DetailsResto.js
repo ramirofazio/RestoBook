@@ -7,14 +7,14 @@ import { useSelector } from "react-redux";
 //
 //
 //----------REACT-NATIVE UTILS-----------
-import { View, Text, StyleSheet, Image } from "react-native";
-import { FlatList, ScrollView } from "react-native-gesture-handler";
+import { View, Text, StyleSheet } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 import MapView from "react-native-maps";
 //
 //
 //----------FIREBASE UTILS-----------
-import { onAuthStateChanged, getAuth } from "firebase/auth";
-import { onSnapshot, collection, doc, query } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+import { onSnapshot, collection, query } from "firebase/firestore";
 import firebase from "../database/firebase";
 //
 //
@@ -23,6 +23,7 @@ import CardMenu from "../components/CardMenu";
 //
 //
 //-------STYLES-------
+import globalStyles from './GlobalStyles';
 
 //
 //
@@ -33,11 +34,9 @@ const auth = getAuth();
 //
 const DetailsResto = () => {
   const empresaDetail = useSelector((state) => state.empresaDetail);
-  const menus = useSelector((state) => state.menus);
-  const thisMenu = menus.filter((menu) => menu.id === empresaDetail.Id);
-
   const [menuArr, setMenuArr] = useState([]);
   //Tiene que desactivar el boton en los comercios que no sean del logueado
+
 
   useEffect(() => {
     const q = query(collection(firebase.db, "Restos"));
@@ -45,7 +44,7 @@ const DetailsResto = () => {
       let menu = [];
       querySnapshot.forEach((doc) => {
         if (doc.id === empresaDetail.idResto) {
-          console.log("yes!");
+          //console.log("yes!");
           let obj = doc.data();
           menu = obj.menu;
           setMenuArr(menu);
@@ -53,12 +52,8 @@ const DetailsResto = () => {
       });
     });
   }, []);
-
   return (
-    <View style={styles.container}>
-      <View style={styles.titleContainer}>
-        <Text style={styles.title}>{empresaDetail.title}</Text>
-      </View>
+    <View style={globalStyles.Home}>
       <View style={styles.content}>
         <View style={styles.categoriesContainer}>
           <View style={styles.categoriesView}>
@@ -77,24 +72,17 @@ const DetailsResto = () => {
             <Text style={styles.categoriesText}>Drinks</Text>
           </View>
         </View>
-        {menuArr.length > 0 ? (
-          <ScrollView style={styles.showMenu}>
+        {
+          menuArr.length > 0 ? <ScrollView style={styles.showMenu}>
             {menuArr.map((menu, index) => {
               return (
-                <CardMenu key={index} menu={menu}>
-                  {" "}
-                </CardMenu>
-              );
-            })}
-          </ScrollView>
-        ) : (
-          <Text
-            style={{ alignSelf: "center", fontSize: 30, marginVertical: 30 }}
-          >
-            {" "}
-            Add a food to see it!
-          </Text>
-        )}
+                <CardMenu key={index} menu={menu}> </CardMenu>
+              )
+            }
+            )}
+          </ScrollView> : <Text style={{ alignSelf: "center", fontSize: 30, marginVertical: 30 }}> Add a food to see it!</Text>
+        }
+
         <View style={styles.googleMapsContainer}>
           <MapView
             style={styles.googleMaps}
@@ -102,9 +90,10 @@ const DetailsResto = () => {
               latitude: 37.78825,
               longitude: -122.4324,
               latitudeDelta: 0.0922,
-              longitudeDelta: 0.0421,
+              longitudeDelta: 0.0421
             }}
-          ></MapView>
+          >
+          </MapView>
         </View>
       </View>
     </View>
