@@ -15,9 +15,10 @@ import {
   ScrollView,
   TouchableOpacity,
   StyleSheet,
+  Alert, 
+ Modal,
 } from "react-native";
-//
-//
+
 //----------FIREBASE UTILS-----------
 import {
   getAuth,
@@ -56,14 +57,33 @@ const GlobalLogin = ({ navigation }) => {
     secureTextEntry: true,
     iconName: "eye",
   });
-  const [registered, setRegistered] = useState(true);
 
   const email = user.mail;
   const pass = user.password;
-
+ 
   const handleChangeUser = (field, value) => {
     setUser({
       ...user,
+      [field]: value,
+    });
+  };
+
+  const [registered, setRegistered] = useState({
+    email:"",
+    passwor:"",
+    repeatPassword:"",
+    phone:"",
+    secureTextEntry: true,
+  });
+  
+  const email2 =registered.email;
+  const pass2 = registered.passwor;
+  const phone = registered.phone;
+  const repeatPassword = registered.repeatPassword;
+
+  const handleChangeUser2 = (field, value) => {
+    setRegistered({
+      ...registered,
       [field]: value,
     });
   };
@@ -111,14 +131,16 @@ const GlobalLogin = ({ navigation }) => {
     }
   };
 
-  const saveEmpresa = async () => {
+   const saveEmpresa = async () => {
     try {
-      await createUserWithEmailAndPassword(auth, email, pass);
+      await createUserWithEmailAndPassword(auth, email2, pass2, phone, repeatPassword);
       onAuthStateChanged(auth, (usuarioFirebase) => {
         if (usuarioFirebase) {
           sendEmailVerification(auth.currentUser)
-            .then(handleChangeUser("mail", ""))
-            .then(handleChangeUser("password", ""))
+            .then(handleChangeUser2("email", ""))
+            .then(handleChangeUser2("passwor", ""))
+            .then(handleChangeUser2("phone", ""))
+            .then(handleChangeUser2("repeatPassword", ""))
             .then(alert("Sign Up!"))
             .then(navigation.navigate("AwaitEmail"));
         }
@@ -141,7 +163,7 @@ const GlobalLogin = ({ navigation }) => {
       }
     }
   };
-
+ 
   const buttonText = [
     "Log In",
     "Sign Up",
@@ -157,7 +179,12 @@ const GlobalLogin = ({ navigation }) => {
       iconName: iconName,
     });
   };
-
+  
+  //---- modal logic xD  ----
+  const [modalVisible, setModalVisible] = useState(false);
+  // final logica modal 
+  
+  
   return (
     <View style={globalStyles.Home}>
       <ScrollView contentContainerStyle={{ flex: 1 }}>
@@ -189,7 +216,6 @@ const GlobalLogin = ({ navigation }) => {
             </View> */}
           </View>
         </View>
-
         <View style={globalStyles.container}>
           <TouchableOpacity
             style={globalStyles.touchLog}
@@ -197,10 +223,69 @@ const GlobalLogin = ({ navigation }) => {
           >
             <Text style={globalStyles.fontLog}>Log In</Text>
           </TouchableOpacity>
-
+          <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <TouchableOpacity
+              style={[styles.botton, styles.bottonClose]}
+              onPress={() => setModalVisible(!modalVisible)}
+            >
+              <Text style={styles.textStyle}>X</Text>
+            </TouchableOpacity>
+            <Text style={styles.modalText}>Welcome to Restobook</Text>
+            <TextInput
+              style={globalStyles.texts}
+              onPress={onIconPress}
+              secureTextEntry={user.secureTextEntry}
+              placeholder="Email"
+              value={registered.email}
+              onChangeText={(value) => handleChangeUser2("email", value)}
+            />
+             <TextInput
+              style={globalStyles.texts}
+              onPress={onIconPress}
+              secureTextEntry={user.secureTextEntry}
+              placeholder="Password"
+              value={registered.passwor}
+              onChangeText={(value) => handleChangeUser2("passwor", value)}
+            />
+             <TextInput
+              style={globalStyles.texts}
+              onPress={onIconPress}
+              secureTextEntry={user.secureTextEntry}
+              placeholder=" Repeat password"
+              value={registered.repeatPassword}
+              onChangeText={(value) => handleChangeUser2("repeatpassword", value)}
+            />
+             <TextInput
+              style={globalStyles.texts}
+              onPress={onIconPress}
+              secureTextEntry={user.secureTextEntry}
+              placeholder="phone"
+              value={registered.phone}
+              onChangeText={(value) => handleChangeUser2("phone", value)}
+            />
+            
+            <TouchableOpacity
+              style={[styles.button, styles.buttonClose]}
+              onPress={() => saveEmpresa()}
+            >
+              <Text style={styles.textStyle}>register</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
           <TouchableOpacity
             style={globalStyles.touchLog}
-            onPress={() => saveEmpresa()}
+            onPress={() => setModalVisible(true)}
           >
             <Text style={globalStyles.fontLog}>Sign Up</Text>
           </TouchableOpacity>
@@ -228,5 +313,63 @@ const GlobalLogin = ({ navigation }) => {
   );
 };
 
-const styles = StyleSheet.create({});
+/* const styles = StyleSheet.create({}); */
+const styles = StyleSheet.create({
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+    backgroundColor: "blur",
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    width: "50%",
+    height: "80%",
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 30,
+      height: 30
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2
+  },
+  buttonOpen: {
+    backgroundColor: "#F194FF",
+  },
+  buttonClose: {
+    backgroundColor: "#2196F3",
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center",
+    fontSize: 30,
+    fontWeight: "bold",
+  },
+  botton: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    float: "right",
+  },
+  bottonClose: {
+    backgroundColor: "#2196F3",
+  },
+  });
+
 export default GlobalLogin;
