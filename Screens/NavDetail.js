@@ -63,13 +63,11 @@ export default function NavDetail({ navigation }) {
           <Text style={styles.title}>Resto Book</Text>
         </View>
         <View style={styles.btnMenu}>
-          {logged && owner ? (
-            <Btn
-              nombre="Add Food!"
-              ruta="AddMenuResto"
-              navigation={navigation}
-            />
-          ) : null}
+          <Btn
+            nombre="Add Food!"
+            ruta="AddMenuResto"
+            navigation={navigation}
+          />
         </View>
       </View>
     </View>

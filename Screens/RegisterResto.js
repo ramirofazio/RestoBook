@@ -95,6 +95,14 @@ const RegisterResto = (props) => {
               category: '',
               menu: [],
             })
+            .then(
+              firebase.db
+                .collection("Users")
+                .doc(id)
+                .update({
+                  commerce: true
+                })
+            )
             .then(alert("creado"))
             .then(props.navigation.navigate("RestoBook"));
         } catch (error) {
