@@ -1,9 +1,6 @@
-<<<<<<< HEAD
-=======
 // ESTA ES LA CONEXIÓN A FIREBASE BASADO EN EL VIDEO DE FAZT PERO SE AÑADE LAS LÍNEAS 3,4,5,22,24
 
 // Import the functions you need from the SDKs you need
->>>>>>> origin/Develop
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
@@ -40,9 +37,6 @@ export default {
   firebase,
   db,
   fireAuth,
-<<<<<<< HEAD
-};
-=======
 };
 
 // ESTO SERÍA LA CONEXIÓN A FIREBASE ACTUALIZADA PERO COMO NO FUNCIONA VOY A COLOCAR EL DEL VIDEO DE FAZT
@@ -73,4 +67,3 @@ export default {
 // const db = getFirestore();
 
 // export default {firebaseApp, db};
->>>>>>> origin/Develop

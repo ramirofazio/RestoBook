@@ -44,30 +44,6 @@ const AddMenuResto = ({ navigation }) => {
   const [spinner, setSpinner] = useState(false);
   const idResto = empresaDetail.idResto;
 
-<<<<<<< HEAD
-  const initalState = {
-    foodName: "",
-    description: "",
-    price: "",
-    img: "",
-  };
-
-  const [state, setState] = useState(initalState);
-
-  const handleChangeText = (value, name) => {
-    setState({ ...state, [name]: value });
-  };
-
-  const saveMenuResto = async () => {
-    try {
-      let restoRef = doc(firebase.db, "Restos", idResto);
-      await updateDoc(restoRef, {
-        menu: arrayUnion(state)
-      })
-      navigation.navigate("DetailsResto");
-    } catch (err) {
-      console.log(err);
-=======
   const handleOnPressPickImage = async (handleChange) => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status === "granted") {
@@ -82,57 +58,11 @@ const AddMenuResto = ({ navigation }) => {
       }
     } else {
       alert("Sorry, we need camera roll permissions to make this work!");
->>>>>>> origin/Develop
     }
   };
 
   return (
     <View style={globalStyles.Home}>
-<<<<<<< HEAD
-      <View style={globalStyles.inputContainer}>
-        <View style={globalStyles.inputComponent}>
-          <TextInput
-            style={globalStyles.texts}
-            placeholder="Food Name"
-            onChangeText={(value) => handleChangeText(value, "foodName")}
-            value={state.foodName}
-          />
-        </View>
-        <View style={globalStyles.inputComponent}>
-          <TextInput
-            style={globalStyles.texts}
-            placeholder="Description"
-            onChangeText={(value) => handleChangeText(value, "description")}
-            value={state.description}
-          />
-        </View>
-        <View style={globalStyles.inputComponent}>
-          <TextInput
-            style={globalStyles.texts}
-            placeholder="Price"
-            onChangeText={(value) => handleChangeText(value, "price")}
-            value={state.price}
-          />
-        </View>
-        <View style={globalStyles.inputComponent}>
-          <TextInput
-            style={globalStyles.texts}
-            placeholder="Image"
-            onChangeText={(value) => handleChangeText(value, "img")}
-            value={state.img}
-          />
-        </View>
-      </View>
-      <View style={globalStyles.container}>
-        {/* <Button title="Add Food" onPress={() => saveMenuResto()} /> */}
-        <TouchableOpacity
-          style={globalStyles.touchLog}
-          onPress={() => saveMenuResto()}
-        >
-          <Text style={globalStyles.fontLog}>Add Food</Text>
-        </TouchableOpacity>
-      </View>
-=======
       <Formik
         initialValues={{
           foodName: "",
@@ -224,7 +154,6 @@ const AddMenuResto = ({ navigation }) => {
           </View>
         )}
       </Formik>
->>>>>>> origin/Develop
     </View>
   );
 };

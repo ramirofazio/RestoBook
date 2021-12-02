@@ -3,11 +3,7 @@ import React, { useState } from "react";
 //
 //
 //----------REDUX UTILS-----------
-<<<<<<< HEAD
-import { useDispatch, useSelector } from "react-redux";
-=======
 import { useSelector } from "react-redux";
->>>>>>> origin/Develop
 //
 //
 //----------REACT-NATIVE UTILS-----------
@@ -33,11 +29,6 @@ import { onAuthStateChanged, getAuth } from "firebase/auth";
 //
 //
 //---------SCREENS & COMPONENTS---------------
-<<<<<<< HEAD
-import addEmpresa from "../Redux/Actions/addEmpresa";
-import BtnFuncional from "./Helpers/BtnFuncional.js";
-=======
->>>>>>> origin/Develop
 //
 //
 //-------STYLES-------
@@ -51,10 +42,6 @@ const auth = getAuth();
 //
 
 const RegisterResto = (props) => {
-<<<<<<< HEAD
-  let dispatch = useDispatch();
-=======
->>>>>>> origin/Develop
 
   const empresas = useSelector((state) => state.empresas);
   const Id = empresas.length + 1;
@@ -91,13 +78,6 @@ const RegisterResto = (props) => {
     setState({ ...state, [name]: value });
   };
 
-<<<<<<< HEAD
-  // const saveNewResto = () => {
-  //   dispatch(addEmpresa(state));
-  //   props.navigation.navigate("RestoBook");
-  // };
-=======
->>>>>>> origin/Develop
   let id = null;
   onAuthStateChanged(auth, (usuarioFirebase) => {
     if (usuarioFirebase) {
@@ -136,10 +116,6 @@ const RegisterResto = (props) => {
     } else {
       alert("logueate!");
     }
-<<<<<<< HEAD
-  };
-=======
->>>>>>> origin/Develop
 
   };
 
