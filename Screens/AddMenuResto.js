@@ -6,13 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import AddMenu from "../Redux/Actions/AddMenu";
 //
 //----------REACT-NATIVE UTILS-----------
-import {
-  View,
-  TextInput,
-  TouchableOpacity,
-  Text,
-  Image
-} from "react-native";
+import { View, TextInput, TouchableOpacity, Text, Image } from "react-native";
 //
 //----------FIREBASE UTILS-----------
 import firebase from "../database/firebase";
@@ -28,41 +22,31 @@ import globalStyles from "./GlobalStyles";
 
 //
 //-------FORMIK------------
-import { Formik } from 'formik';
+import { Formik } from "formik";
 //
 //-------IMAGE PICKER----------
-import * as ImagePicker from 'expo-image-picker';
+import * as ImagePicker from "expo-image-picker";
 //
 //-------YUP(Validacion)------
-import * as yup from 'yup';
+import * as yup from "yup";
 //
 //---------------------------------------------------------------------------------------//
 //
 
 const MenuRestoSchema = yup.object({
-  foodName: yup.string()
-    .required()
-    .min(3)
-    .max(15),
-  description: yup.string()
-    .required()
-    .min(5)
-    .max(60),
-  price: yup.number()
-    .required()
-    .positive()
-    .integer()
-    .max(2000),
-})
+  foodName: yup.string().required().min(3).max(15),
+  description: yup.string().required().min(5).max(60),
+  price: yup.number().required().positive().integer().max(2000),
+});
 
 const AddMenuResto = ({ navigation }) => {
-
   const empresaDetail = useSelector((state) => state.empresaDetail);
+  const [spinner, setSpinner] = useState(false);
   const idResto = empresaDetail.idResto;
 
   const handleOnPressPickImage = async (handleChange) => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (status === 'granted') {
+    if (status === "granted") {
       let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.All,
         allowsEditing: true,
@@ -70,27 +54,31 @@ const AddMenuResto = ({ navigation }) => {
         quality: 1,
       });
       if (!result.cancelled) {
-        handleChange(result.uri)
+        handleChange(result.uri);
       }
     } else {
-      alert('Sorry, we need camera roll permissions to make this work!');
+      alert("Sorry, we need camera roll permissions to make this work!");
     }
-  }
-
+  };
 
   return (
     <View style={globalStyles.Home}>
       <Formik
         initialValues={{
-          foodName: "", description: "", price: "", img: "",
+          foodName: "",
+          description: "",
+          price: "",
+          img: "",
         }}
         validationSchema={MenuRestoSchema}
         onSubmit={async (values) => {
           try {
             let restoRef = doc(firebase.db, "Restos", idResto);
+            setSpinner(true);
             await updateDoc(restoRef, {
-              menu: arrayUnion(values)
-            })
+              menu: arrayUnion(values),
+            });
+            setSpinner(false);
             navigation.navigate("DetailsResto");
           } catch (err) {
             console.log(err);
@@ -108,7 +96,9 @@ const AddMenuResto = ({ navigation }) => {
                 onBlur={props.handleBlur("foodName")}
               />
             </View>
-            {props.touched.foodName && props.errors.foodName ? <Text>{props.errors.foodName}</Text> : null}
+            {props.touched.foodName && props.errors.foodName ? (
+              <Text>{props.errors.foodName}</Text>
+            ) : null}
             <View style={globalStyles.inputComponent}>
               <TextInput
                 multiline
@@ -117,10 +107,11 @@ const AddMenuResto = ({ navigation }) => {
                 onChangeText={props.handleChange("description")}
                 value={props.values.description}
                 onBlur={props.handleBlur("description")}
-
               />
             </View>
-            {props.touched.description && props.errors.description ? <Text>{props.errors.description}</Text> : null}
+            {props.touched.description && props.errors.description ? (
+              <Text>{props.errors.description}</Text>
+            ) : null}
             <View style={globalStyles.inputComponent}>
               <TextInput
                 style={globalStyles.texts}
@@ -131,17 +122,27 @@ const AddMenuResto = ({ navigation }) => {
                 onBlur={props.handleBlur("price")}
               />
             </View>
-            {props.touched.price && props.errors.price ? <Text>{props.errors.price}</Text> : null}
+            {props.touched.price && props.errors.price ? (
+              <Text>{props.errors.price}</Text>
+            ) : null}
             <TouchableOpacity
               style={globalStyles.touchLog}
-              onPress={() => { handleOnPressPickImage(props.handleChange("img")) }}
+              onPress={() => {
+                handleOnPressPickImage(props.handleChange("img"));
+              }}
             >
               <Text style={{ textAlign: "center" }}>
-                {props.values.img && props.values.img.length > 0 ? "Change Image" : "Select Image"}
+                {props.values.img && props.values.img.length > 0
+                  ? "Change Image"
+                  : "Select Image"}
               </Text>
             </TouchableOpacity>
-            {props.values.img && props.values.img.length > 0 ?
-              <Image source={{ uri: props.values.img }} style={{ width: 200, height: 200, borderRadius: 15 }} /> : null}
+            {props.values.img && props.values.img.length > 0 ? (
+              <Image
+                source={{ uri: props.values.img }}
+                style={{ width: 200, height: 200, borderRadius: 15 }}
+              />
+            ) : null}
             <View>
               <TouchableOpacity
                 style={globalStyles.touchLog}
@@ -153,8 +154,8 @@ const AddMenuResto = ({ navigation }) => {
           </View>
         )}
       </Formik>
-    </View >
-  )
-}
+    </View>
+  );
+};
 
 export default AddMenuResto;

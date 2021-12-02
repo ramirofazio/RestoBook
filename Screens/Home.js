@@ -56,6 +56,8 @@ export default function Home({ navigation }) {
   onAuthStateChanged(auth, (usuarioFirebase) => {
     if (usuarioFirebase?.emailVerified) {
       if (loggedId !== usuarioFirebase.uid) {
+        console.log("cambio en logged!:", usuarioFirebase.uid);
+        console.log("cambio en logged!");
         dispatch(CurrentId(usuarioFirebase.uid));
         const unsub = onSnapshot(
           doc(firebase.db, "Restos", usuarioFirebase.uid),
@@ -111,7 +113,11 @@ export default function Home({ navigation }) {
         <ScrollView style={{ overflow: "scroll" }}>
           {availableCommerces.map((resto) => {
             return (
-              <CardHome key={resto.idResto} resto={resto} navigation={navigation}>
+              <CardHome
+                key={resto.idResto}
+                resto={resto}
+                navigation={navigation}
+              >
                 {" "}
               </CardHome>
             );

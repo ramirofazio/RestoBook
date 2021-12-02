@@ -292,3 +292,9 @@ export default GlobalLogin = ({ navigation }) => {
     )
   };
 };
+<<<<<<< HEAD
+
+const styles = StyleSheet.create({});
+export default GlobalLogin;
+=======
+>>>>>>> Develop
