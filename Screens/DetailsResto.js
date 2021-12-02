@@ -33,9 +33,6 @@ const auth = getAuth();
 //
 const DetailsResto = () => {
   const empresaDetail = useSelector((state) => state.empresaDetail);
-  const menus = useSelector((state) => state.menus);
-  const thisMenu = menus.filter((menu) => menu.id === empresaDetail.Id);
-
   const [menuArr, setMenuArr] = useState([]);
   //Tiene que desactivar el boton en los comercios que no sean del logueado
 
@@ -45,7 +42,7 @@ const DetailsResto = () => {
       let menu = [];
       querySnapshot.forEach((doc) => {
         if (doc.id === empresaDetail.idResto) {
-          console.log("yes!");
+          //console.log("yes!");
           let obj = doc.data();
           menu = obj.menu;
           setMenuArr(menu);
