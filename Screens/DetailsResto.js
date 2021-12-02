@@ -31,7 +31,6 @@ import CardMenu from "../components/CardMenu";
 //
 const DetailsResto = () => {
   const empresaDetail = useSelector((state) => state.empresaDetail);
-  console.log(empresaDetail)
   const menus = useSelector((state) => state.menus);
   //console.log(menus)s
   const thisMenu = menus.filter((menu) => menu.id === empresaDetail.Id);
