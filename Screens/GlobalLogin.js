@@ -67,7 +67,7 @@ const GlobalLoginSchema = yup.object({
     .max(12)
 })
 
-export default GlobalLogin = ({ navigation }) => {
+const GlobalLogin = ({ navigation }) => {
 
   // const secureTextEntry = (handleChange) => {
   //   handleChange(false)
@@ -292,3 +292,6 @@ export default GlobalLogin = ({ navigation }) => {
     )
   };
 };
+
+export default GlobalLogin;
+
