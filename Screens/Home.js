@@ -36,7 +36,6 @@ export default function Home({ navigation }) {
   //------LOGIN JOSE------------
   const [usuarioGlobal, setUsuarioGlobal] = useState("");
   const [availableCommerces, setAvailableCommerces] = useState([]);
-  const empresas = useSelector((state) => state.empresas);
   const loggedUser = useSelector((state) => state.currentUser);
   const loggedId = useSelector((state) => state.currentId);
   const dispatch = useDispatch();
@@ -96,8 +95,6 @@ export default function Home({ navigation }) {
         )}
       </View>
       <View style={globalStyles.btnHome}>
-        {/* <Btn nombre="Ciudad" ruta="#" navigation={navigation} /> */}
-        {/* <Btn nombre='Buscar' ruta='#' navigation={navigation} /> */}
         {/* <Btn nombre="Categorias" ruta="#" navigation={navigation} /> */}
         <Btn
           nombre={
