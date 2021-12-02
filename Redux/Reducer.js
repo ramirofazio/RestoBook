@@ -1,52 +1,49 @@
-import { ADD_EMPRESA, EMPRESA_DETAIL, ADD_MENU } from "./Actions/Constants.js";
+import {
+  ADD_EMPRESA,
+  EMPRESA_DETAIL,
+  ADD_MENU,
+  CURRENT_USER,
+  CURRENT_ID,
+} from "./Actions/Constants.js";
 
 let initialState = {
-  empresas: [
-    {
-      Id: 1,
-      Title: "McDonald's",
-      Description: "McDonald's es una franquicia de restaurantes de comida rápida estadounidense con sede en Chicago, Illinois.​ Sus principales productos son las hamburguesas, las patatas fritas, los menús para el desayuno y los refrescos. ",
-      Img: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/McDonald%27s_Golden_Arches.svg/1200px-McDonald%27s_Golden_Arches.svg.png",
-    },
-    {
-      Id: 2,
-      Title: "Los pollos Hermanos",
-      Description: "Los Pollos Hermanos es un restaurante de comida rápida de pollo frito que se originó en las series de televisión Breaking Bad y Better Call Saul.",
-      Img: "https://blog-eeuu.com/wp-content/uploads/2018/08/breaking-bad-logo.jpeg",
-    },
-    {
-      Id: 3,
-      Title: "Burger King",
-      Description: "Burger King, también conocida como BK, ​ es una cadena de establecimientos de comida rápida estadounidense con sede central en Miami, Florida, fundada por James McLamore y David Edgerton, presente a nivel internacional y especializada principalmente en la elaboración de hamburguesas.",
-      Img: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Burger_King_2020.svg/800px-Burger_King_2020.svg.png",
-    }
-  ],
+  empresas: [],
   empresaDetail: [],
   menus: [],
+  currentId: null,
+  currentUser: null,
 };
 
 const RootReducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_MENU:
-      const menu = action.payload
+      const menu = action.payload;
       return {
         ...state,
-        menus: [...state.menus, menu]
-      }
+        menus: [...state.menus, menu],
+      };
     case EMPRESA_DETAIL:
-      const IdEmpresa = action.payload;
-      const empresas = state.empresas
-      const dataEmpresa = empresas.find((empresa) => empresa.Id === IdEmpresa)
+      const empresaDetail = action.payload;
       //console.log(dataEmpresa[0])
       return {
         ...state,
-        empresaDetail: dataEmpresa,
-      }
+        empresaDetail: empresaDetail,
+      };
 
     case ADD_EMPRESA:
       return {
         ...state,
         empresas: [...state.empresas, action.payload],
+      };
+    case CURRENT_USER:
+      return {
+        ...state,
+        currentUser: action.payload,
+      };
+    case CURRENT_ID:
+      return {
+        ...state,
+        currentId: action.payload,
       };
     default:
       return state;
