@@ -7,14 +7,14 @@ import { useSelector } from "react-redux";
 //
 //
 //----------REACT-NATIVE UTILS-----------
-import { View, Text, StyleSheet, Image } from "react-native";
-import { FlatList, ScrollView } from "react-native-gesture-handler";
+import { View, Text, StyleSheet } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 import MapView from "react-native-maps";
 //
 //
 //----------FIREBASE UTILS-----------
-import { onAuthStateChanged, getAuth } from "firebase/auth";
-import { onSnapshot, collection, doc, query } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+import { onSnapshot, collection, query } from "firebase/firestore";
 import firebase from "../database/firebase";
 //
 //
@@ -37,70 +37,65 @@ const DetailsResto = () => {
   const [menuArr, setMenuArr] = useState([]);
   //Tiene que desactivar el boton en los comercios que no sean del logueado
 
-    const empresaDetail = useSelector((state) => state.empresaDetail)
-    const menus = useSelector((state) => state.menus)
-    //console.log(menus)
-    const thisMenu = menus.filter((menu) => menu.id === empresaDetail.Id)
-    //console.log(thisMenu)
-    
-    useEffect(() => {
-      const q = query(collection(firebase.db, "Restos"));
-      const unsubscribe = onSnapshot(q, (querySnapshot) => {
-        let menu = [];
-        querySnapshot.forEach((doc) => {
-          if (doc.id === empresaDetail.idResto) {
-            //console.log("yes!");
-            let obj = doc.data();
-            menu = obj.menu;
-            setMenuArr(menu);
-          }
-        });
-      });
-    }, []);
-    return (
-        <View style={globalStyles.Home}>
-            <View style={styles.content}>
-                <View style={styles.categoriesContainer}>
-                    <View style={styles.categoriesView}>
-                        <Text style={styles.categoriesText}>Fast Food</Text>
-                    </View>
-                    <View style={styles.categoriesView}>
-                        <Text style={styles.categoriesText}>Home-made pastas</Text>
-                    </View>
-                    <View style={styles.categoriesView}>
-                        <Text style={styles.categoriesText}>Meats</Text>
-                    </View>
-                    <View style={styles.categoriesView}>
-                        <Text style={styles.categoriesText}>Deserts</Text>
-                    </View>
-                    <View style={styles.categoriesView}>
-                        <Text style={styles.categoriesText}>Drinks</Text>
-                    </View>
-                </View>
-                {
-                    thisMenu.length > 0 ? <ScrollView style={styles.showMenu}>
-                        {thisMenu.map((menu, index) => {
-                            return (
-                                <CardMenu key={index} menu={menu}> </CardMenu>
-                            )
-                        }
-                        )}
-                    </ScrollView> : <Text style={{ alignSelf: "center", fontSize: 30, marginVertical: 30 }}> Add a food to see it!</Text>
-                }
 
-                <View style={styles.googleMapsContainer}>
-                    <MapView
-                        style={styles.googleMaps}
-                        initialRegion={{
-                            latitude: 37.78825,
-                            longitude: -122.4324,
-                            latitudeDelta: 0.0922,
-                            longitudeDelta: 0.0421
-                        }}
-                    >
-                    </MapView>
-                </View>
-            </View>
+  useEffect(() => {
+    const q = query(collection(firebase.db, "Restos"));
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      let menu = [];
+      querySnapshot.forEach((doc) => {
+        if (doc.id === empresaDetail.idResto) {
+          //console.log("yes!");
+          let obj = doc.data();
+          menu = obj.menu;
+          setMenuArr(menu);
+        }
+      });
+    });
+  }, []);
+  return (
+    <View style={globalStyles.Home}>
+      <View style={styles.content}>
+        <View style={styles.categoriesContainer}>
+          <View style={styles.categoriesView}>
+            <Text style={styles.categoriesText}>Fast Food</Text>
+          </View>
+          <View style={styles.categoriesView}>
+            <Text style={styles.categoriesText}>Home-made pastas</Text>
+          </View>
+          <View style={styles.categoriesView}>
+            <Text style={styles.categoriesText}>Meats</Text>
+          </View>
+          <View style={styles.categoriesView}>
+            <Text style={styles.categoriesText}>Deserts</Text>
+          </View>
+          <View style={styles.categoriesView}>
+            <Text style={styles.categoriesText}>Drinks</Text>
+          </View>
+        </View>
+        {
+          menuArr.length > 0 ? <ScrollView style={styles.showMenu}>
+            {menuArr.map((menu, index) => {
+              return (
+                <CardMenu key={index} menu={menu}> </CardMenu>
+              )
+            }
+            )}
+          </ScrollView> : <Text style={{ alignSelf: "center", fontSize: 30, marginVertical: 30 }}> Add a food to see it!</Text>
+        }
+
+        <View style={styles.googleMapsContainer}>
+          <MapView
+            style={styles.googleMaps}
+            initialRegion={{
+              latitude: 37.78825,
+              longitude: -122.4324,
+              latitudeDelta: 0.0922,
+              longitudeDelta: 0.0421
+            }}
+          >
+          </MapView>
+        </View>
+      </View>
     </View>
   );
 };

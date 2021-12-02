@@ -3,7 +3,6 @@ import React, { useState } from "react";
 //
 //
 //----------REDUX UTILS-----------
-
 //
 //
 //----------FORMIK UTILS-----------
@@ -13,12 +12,9 @@ import { Formik } from "formik";
 //----------REACT-NATIVE UTILS-----------
 import {
   View,
-  Button,
   Text,
   TextInput,
-  ScrollView,
-  TouchableOpacity,
-  StyleSheet,
+  TouchableOpacity
 } from "react-native";
 //
 //
@@ -26,7 +22,6 @@ import {
 import {
   getAuth,
   signInWithEmailAndPassword,
-  signInWithRedirect,
   GoogleAuthProvider,
   createUserWithEmailAndPassword,
   sendEmailVerification,
@@ -36,7 +31,6 @@ import firebase from "../database/firebase";
 //
 //
 //---------SCREENS & COMPONENTS---------------
-
 //
 //
 //-------ICONS-------
@@ -49,7 +43,7 @@ import globalStyles from "./GlobalStyles";
 //
 //-------INITIALIZATIONS-------
 const auth = getAuth();
-const googleProvider = new GoogleAuthProvider();
+//const googleProvider = new GoogleAuthProvider();
 //
 //-------YUP(Validacion)------
 import * as yup from 'yup';
@@ -292,6 +286,5 @@ const GlobalLogin = ({ navigation }) => {
     )
   };
 };
-
 export default GlobalLogin;
 

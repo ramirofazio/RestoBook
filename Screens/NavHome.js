@@ -10,14 +10,14 @@ import CurrentId from "../Redux/Actions/CurrentId.js";
 //----------REACT-NATIVE UTILS-----------
 import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 import UserOutlined from "react-native-vector-icons/AntDesign";
-import TagOutlined from "react-native-vector-icons/AntDesign";
+//import TagOutlined from "react-native-vector-icons/AntDesign";
 import RestOutlined from "react-native-vector-icons/AntDesign";
 //
 //
 //----------FIREBASE UTILS-----------
 import firebase from "../database/firebase";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
-import { doc, onSnapshot, collection, query } from "firebase/firestore";
+import { onSnapshot, collection, query } from "firebase/firestore";
 //
 //
 //---------SCREENS & COMPONENTS---------------
@@ -26,7 +26,6 @@ import Btn from "./Helpers/Btns.js";
 //
 //-------STYLES-------
 import globalStyles from "./GlobalStyles.js";
-
 //
 //
 //-------INITIALIZATIONS-------
@@ -96,10 +95,10 @@ export default function NavHome({ title, navigation }) {
             <Text>{currentId ? "Log out" : "Log in"}</Text>
           </TouchableOpacity>
 
-          {!commerce && loggedId && (
+          {loggedId && (
             <Btn
               nombre={<UserOutlined name="user" color="#392c28" size={15} />}
-              ruta="DetailsUser"
+              ruta="ProfileUser"
               navigation={navigation}
             />
           )}
@@ -107,7 +106,7 @@ export default function NavHome({ title, navigation }) {
           {commerce && loggedId && (
             <Btn
               nombre={<RestOutlined name="rest" color="#392c28" size={15} />}
-              ruta="DetailsUser"
+              ruta="ProfileResto"
               navigation={navigation}
             />
           )}

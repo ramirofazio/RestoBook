@@ -34,7 +34,7 @@ import * as yup from "yup";
 //
 
 const MenuRestoSchema = yup.object({
-  foodName: yup.string().required().min(3).max(15),
+  foodName: yup.string().required().min(3).max(25),
   description: yup.string().required().min(5).max(60),
   price: yup.number().required().positive().integer().max(2000),
 });

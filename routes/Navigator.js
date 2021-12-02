@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { createDrawerNavigator } from '@react-navigation/drawer';
+//import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from "@react-navigation/native";
 
 //----------IMP SCREENS-----------
@@ -9,17 +9,16 @@ import RegisterResto from "../Screens/RegisterResto.js";
 import AddUserScreen from "../Screens/RegisterUser.js";
 import AddMenuResto from "../Screens/AddMenuResto.js";
 import DetailsResto from "../Screens/DetailsResto";
-import DetailUser from '../Screens/DetailUser.js';
+import ProfileUser from '../Screens/ProfileUser.js';
 import GlobalLogin from "../Screens/GlobalLogin.js";
-
 import AwaitEmail from "../Screens/AwaitEmail.js";
 import NavHome from "../Screens/NavHome.js";
 import NavDetail from "../Screens/NavDetail";
-import { useSelector } from "react-redux";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import ProfileResto from "../Screens/ProfileResto";
 //------------Styles y otros ---------
 import globalStyles from "../Screens/GlobalStyles";
-import {Text} from 'react-native'
+import { Text } from 'react-native'
 
 const Stack = createNativeStackNavigator();
 
@@ -115,49 +114,50 @@ export default Navigator = () => {
             },
           }}
         />
-          <Stack.Screen
-            name="AwaitEmail"
-            component={AwaitEmail}
-            options={{
-              headerTitle: "Verify Email",
-              title: 'Verify Email',
-              headerTitleAlign: "center",
-              headerStyle: {
-                backgroundColor: '#f6efd2',
-              },
-              headerTintColor: '#392c28',
-              headerTitleStyle: {
-                fontSize: 25
-              },
-            }}
-          />
-          <Stack.Screen
-            name="DetailUser"
-            component={DetailUser}
-            options={{
-              headerTitle: "Profile",
-              title: 'Profile',
-              headerTitleAlign: "center",
-              headerRight: () => (
-                <TouchableOpacity
+        <Stack.Screen
+          name="ProfileUser"
+          component={ProfileUser}
+          options={{
+            headerTitle: "Profile",
+            title: 'Profile',
+            headerTitleAlign: "center",
+            headerRight: () => (
+              <TouchableOpacity
                 style={globalStyles.btn}
-                  onPress={() =>
-                    navigation.navigate('NavHome')
-                  }
-                >
-                  <Text>Log out</Text>
-                </TouchableOpacity>
-              ),
-              headerStyle: {
-                backgroundColor: '#f6efd2',
-              },
-              headerTintColor: '#392c28',
-              headerTitleStyle: {
-                fontSize: 25
-              },
-              
-            }}
-          />
+                onPress={() =>
+                  navigation.navigate('NavHome')
+                }
+              >
+                <Text>Log out</Text>
+              </TouchableOpacity>
+            ),
+            headerStyle: {
+              backgroundColor: '#f6efd2',
+            },
+            headerTintColor: '#392c28',
+            headerTitleStyle: {
+              fontSize: 25
+            },
+
+          }}
+        />
+        <Stack.Screen
+          name="ProfileResto"
+          component={ProfileResto}
+          options={{
+            headerTitle: "Profile",
+            title: 'Profile',
+            headerTitleAlign: "center",
+            headerStyle: {
+              backgroundColor: '#f6efd2',
+            },
+            headerTintColor: '#392c28',
+            headerTitleStyle: {
+              fontSize: 25
+            },
+
+          }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
