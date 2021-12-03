@@ -1,5 +1,5 @@
 //----------REACT UTILS-----------
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 //
 //
 //----------REDUX UTILS-----------
@@ -7,13 +7,20 @@ import { useSelector } from "react-redux";
 //
 //
 //----------REACT-NATIVE UTILS-----------
+<<<<<<< HEAD
 import { View, Text, StyleSheet, Image,TouchableOpacity } from "react-native";
 import { FlatList, ScrollView } from "react-native-gesture-handler";
+=======
+import { View, Text, StyleSheet } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
+>>>>>>> Develop
 import MapView from "react-native-maps";
 //
 //
 //----------FIREBASE UTILS-----------
-
+import { getAuth } from "firebase/auth";
+import { onSnapshot, collection, query } from "firebase/firestore";
+import firebase from "../database/firebase";
 //
 //
 //---------SCREENS & COMPONENTS---------------
@@ -21,16 +28,18 @@ import CardMenu from "../components/CardMenu";
 //
 //
 //-------STYLES-------
+import globalStyles from './GlobalStyles';
 
 //
 //
 //-------INITIALIZATIONS-------
-
+const auth = getAuth();
 //
 //---------------------------------------------------------------------------------------//
 //
 const DetailsResto = () => {
   const empresaDetail = useSelector((state) => state.empresaDetail);
+<<<<<<< HEAD
   console.log(empresaDetail)
   const menus = useSelector((state) => state.menus);
   //console.log(menus)s
@@ -41,12 +50,28 @@ const DetailsResto = () => {
   const handleWhatsAppPress = async() => {
     await Linking.openURL('whatsapp://send?text=Hola RestoBook&phone=+541168020511')
 }
+=======
+  const [menuArr, setMenuArr] = useState([]);
+  //Tiene que desactivar el boton en los comercios que no sean del logueado
 
+>>>>>>> Develop
+
+  useEffect(() => {
+    const q = query(collection(firebase.db, "Restos"));
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      let menu = [];
+      querySnapshot.forEach((doc) => {
+        if (doc.id === empresaDetail.idResto) {
+          //console.log("yes!");
+          let obj = doc.data();
+          menu = obj.menu;
+          setMenuArr(menu);
+        }
+      });
+    });
+  }, []);
   return (
-    <View style={styles.container}>
-      <View style={styles.titleContainer}>
-        <Text style={styles.title}>{empresaDetail.title}</Text>
-      </View>
+    <View style={globalStyles.Home}>
       <View style={styles.content}>
         <View style={styles.categoriesContainer}>
           <View style={styles.categoriesView}>
@@ -65,24 +90,16 @@ const DetailsResto = () => {
             <Text style={styles.categoriesText}>Drinks</Text>
           </View>
         </View>
-        {thisMenu.length > 0 ? (
-          <ScrollView style={styles.showMenu}>
-            {thisMenu.map((menu, index) => {
+        {
+          menuArr.length > 0 ? <ScrollView style={styles.showMenu}>
+            {menuArr.map((menu, index) => {
               return (
-                <CardMenu key={index} menu={menu}>
-                  {" "}
-                </CardMenu>
-              );
-            })}
-          </ScrollView>
-        ) : (
-          <Text
-            style={{ alignSelf: "center", fontSize: 30, marginVertical: 30 }}
-          >
-            {" "}
-            Add a food to see it!
-          </Text>
-        )}
+                <CardMenu key={index} menu={menu}> </CardMenu>
+              )
+            }
+            )}
+          </ScrollView> : <Text style={{ alignSelf: "center", fontSize: 30, marginVertical: 30 }}> Add a food to see it!</Text>
+        }
 
         <View style={styles.googleMapsContainer}>
           <MapView
@@ -91,9 +108,10 @@ const DetailsResto = () => {
               latitude: 37.78825,
               longitude: -122.4324,
               latitudeDelta: 0.0922,
-              longitudeDelta: 0.0421,
+              longitudeDelta: 0.0421
             }}
-          ></MapView>
+          >
+          </MapView>
         </View>
         <TouchableOpacity onPress={(e) => handleWhatsAppPress(e)}>
                     <View style={styles.searchIcon}>

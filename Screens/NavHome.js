@@ -1,5 +1,5 @@
 //----------REACT UTILS-----------
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 //
 //
 //----------REDUX UTILS-----------
@@ -10,11 +10,14 @@ import CurrentId from "../Redux/Actions/CurrentId.js";
 //----------REACT-NATIVE UTILS-----------
 import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 import UserOutlined from "react-native-vector-icons/AntDesign";
-import TagOutlined from "react-native-vector-icons/AntDesign";
+//import TagOutlined from "react-native-vector-icons/AntDesign";
+import RestOutlined from "react-native-vector-icons/AntDesign";
 //
 //
 //----------FIREBASE UTILS-----------
+import firebase from "../database/firebase";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import { onSnapshot, collection, query } from "firebase/firestore";
 //
 //
 //---------SCREENS & COMPONENTS---------------
@@ -23,7 +26,6 @@ import Btn from "./Helpers/Btns.js";
 //
 //-------STYLES-------
 import globalStyles from "./GlobalStyles.js";
-
 //
 //
 //-------INITIALIZATIONS-------
@@ -33,10 +35,29 @@ const auth = getAuth();
 export default function NavHome({ title, navigation }) {
   const dispatch = useDispatch();
   const currentId = useSelector((state) => state.currentId);
+  //Esto lo tenemos que manejar con una propiedad de cada user, dsps lo corregimos
+  const [commerce, isCommerce] = useState(false);
+  const loggedId = useSelector((state) => state.currentId);
+  useEffect(() => {
+    const q = query(collection(firebase.db, "Restos"));
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        let obj = doc.data();
+        obj.idResto = doc.id;
 
+        if (obj.id === loggedId) {
+          isCommerce(true);
+        }
+      });
+      console.log("commerce?", commerce);
+    });
+  }, [loggedId]);
+
+  //__________________________________________________________________________________
   onAuthStateChanged(auth, (usuarioFirebase) => {
     if (!usuarioFirebase?.emailVerified) {
       dispatch(CurrentId(null));
+      isCommerce(false);
     }
   });
 
@@ -73,16 +94,22 @@ export default function NavHome({ title, navigation }) {
           >
             <Text>{currentId ? "Log out" : "Log in"}</Text>
           </TouchableOpacity>
-          <Btn
-            nombre={<TagOutlined name="tag" color="#392c28" size={15} />}
-            ruta="#"
-            navigation={navigation}
-          />
-          <Btn
-            nombre={<UserOutlined name="user" color="#392c28" size={15} />}
-            ruta="#"
-            navigation={navigation}
-          />
+
+          {loggedId && (
+            <Btn
+              nombre={<UserOutlined name="user" color="#392c28" size={15} />}
+              ruta="ProfileUser"
+              navigation={navigation}
+            />
+          )}
+
+          {commerce && loggedId && (
+            <Btn
+              nombre={<RestOutlined name="rest" color="#392c28" size={15} />}
+              ruta="ProfileResto"
+              navigation={navigation}
+            />
+          )}
         </View>
       </View>
     </View>

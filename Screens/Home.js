@@ -1,6 +1,8 @@
 //----------REACT UTILS-----------
 import React, { useState, useEffect } from "react";
 //
+//----------WEBVIEW---------------
+import {WebView} from "react-native-webview"
 //
 //----------REDUX UTILS-----------
 import { useDispatch, useSelector } from "react-redux";
@@ -9,8 +11,14 @@ import CurrentUser from "../Redux/Actions/CurrentUser.js";
 //
 //
 //----------REACT-NATIVE UTILS-----------
+<<<<<<< HEAD
 import { View, ScrollView, Text, StyleSheet, TouchableOpacity} from "react-native";
 import {MaterialIcons} from '@expo/vector-icons'
+=======
+import { View, ScrollView, Text, StyleSheet, Button, TouchableOpacity } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
+import {PaymentCalc} from "./PaymentCalc"
+>>>>>>> Develop
 //
 //
 //----------FIREBASE UTILS-----------
@@ -35,10 +43,10 @@ const auth = getAuth();
 //---------------------------------------------------------------------------------------//
 //
 export default function Home({ navigation }) {
+  const youtube = "https://www.youtube.com/"
   //------LOGIN JOSE------------
   const [usuarioGlobal, setUsuarioGlobal] = useState("");
   const [availableCommerces, setAvailableCommerces] = useState([]);
-  const empresas = useSelector((state) => state.empresas);
   const loggedUser = useSelector((state) => state.currentUser);
   const loggedId = useSelector((state) => state.currentId);
   const dispatch = useDispatch();
@@ -58,6 +66,8 @@ export default function Home({ navigation }) {
   onAuthStateChanged(auth, (usuarioFirebase) => {
     if (usuarioFirebase?.emailVerified) {
       if (loggedId !== usuarioFirebase.uid) {
+        console.log("cambio en logged!:", usuarioFirebase.uid);
+        console.log("cambio en logged!");
         dispatch(CurrentId(usuarioFirebase.uid));
         const unsub = onSnapshot(
           doc(firebase.db, "Restos", usuarioFirebase.uid),
@@ -93,8 +103,28 @@ export default function Home({ navigation }) {
           <Text style={styles.text}>{` Welcome ${usuarioGlobal}`}</Text>
         ) : (
           <Text style={styles.text}>Welcome to Resto Book</Text>
+          
         )}
+
+
+
+
+
+        {/* <View> PAAGAARR
+          <WebView source={{uri: youtube}} onLoad={console.log("Loaded!")}>
+          </WebView>
+        </View> */}
+
+
       </View>
+
+      <View style={styles.textContainer2}>
+      <TouchableOpacity onPress={() => navigation.navigate("PaymentCalc")}> 
+      <Text ><MaterialIcons name="payment" size={20}  color="black"></MaterialIcons> Pagar: $100 de tu reserva
+      </Text>
+      </TouchableOpacity>
+      </View>
+<<<<<<< HEAD
       <View>
         <SearchBar/>
       </View>
@@ -104,17 +134,12 @@ export default function Home({ navigation }) {
       </Text>
       </TouchableOpacity>
       </View>
+=======
+
+
+>>>>>>> Develop
       <View style={globalStyles.btnHome}>
-        {/* <Btn nombre="Ciudad" ruta="#" navigation={navigation} /> */}
-        {/* <Btn nombre='Buscar' ruta='#' navigation={navigation} /> */}
         {/* <Btn nombre="Categorias" ruta="#" navigation={navigation} /> */}
-        {/* {logged ? (
-          <Btn
-            nombre="Create your Resto!"
-            ruta="RegisterResto"
-            navigation={navigation}
-          />
-        ) : null} */}
         <Btn
           nombre={
             loggedUser
@@ -129,7 +154,11 @@ export default function Home({ navigation }) {
         <ScrollView style={{ overflow: "scroll" }}>
           {availableCommerces.map((resto) => {
             return (
-              <CardHome key={resto.idResto} resto={resto} navigation={navigation}>
+              <CardHome
+                key={resto.idResto}
+                resto={resto}
+                navigation={navigation}
+              >
                 {" "}
               </CardHome>
             );
@@ -168,4 +197,15 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#392c28",
   },
+
+  textContainer2: {
+    flex: 1,
+    alignSelf: "center",
+    justifyContent: "center",
+    width: "40%",
+    borderRadius: 10,
+    borderWidth: 3,
+    marginTop: 10,
+  }
+  
 });
