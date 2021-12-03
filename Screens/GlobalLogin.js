@@ -134,6 +134,7 @@ const GlobalLogin = ({ navigation }) => {
                   <Text style={globalStyles.fontLog}>Log In</Text>
                 </TouchableOpacity>
                 <Text onPress={() => setModalVisible(true)}>I dont have an account yet</Text>
+ {/* ------------------------- modal ---------------------------------  */}              
                 <Modal
 animationType="slide"
 transparent={true}
@@ -146,15 +147,28 @@ onRequestClose={() => {
 <View style={styles.centeredView}>
   <View style={styles.modalView}>
     <TouchableOpacity
-      style={[styles.botton, styles.bottonClose]}
+      style={globalStyles.touchLog}
       onPress={() => setModalVisible(!modalVisible)}
     >
       <Text style={styles.textStyle}>X</Text>
     </TouchableOpacity>
     <Text style={styles.modalText}>Welcome to Restobook</Text>
+   
+    <TextInput
+      style={globalStyles.texts}
+      placeholder="Email"
+    />
+  
+  <TouchableOpacity
+                  style={globalStyles.touchLog}
+                 
+                  >
+                  <Text>Check in</Text>
+                </TouchableOpacity>
   </View>
 </View>
 </Modal>
+{/* ----------------------------------------------------------------------------------- */}
               </View>
             </View >
           )}
@@ -162,7 +176,6 @@ onRequestClose={() => {
       </View >
     )
   } else {
-    const [modalVisible, setModalVisible] = useState(false);
     const GlobalRegisterSchema = yup.object({
       name: yup.string()
         .required(),
@@ -228,24 +241,6 @@ onRequestClose={() => {
           {(props) => (
             <View style={globalStyles.inputContainer}>
               <View style={globalStyles.inputComponent}>
-              <Modal
-animationType="slide"
-transparent={true}
-visible={modalVisible}
-onRequestClose={() => {
-  Alert.alert("Modal has been closed.");
-  setModalVisible(!modalVisible);
-}}
->
-<View style={styles.centeredView}>
-  <View style={styles.modalView}>
-    <TouchableOpacity
-      style={[styles.botton, styles.bottonClose]}
-      onPress={() => setModalVisible(!modalVisible)}
-    >
-      <Text style={styles.textStyle}>X</Text>
-    </TouchableOpacity>
-    <Text style={styles.modalText}>Welcome to Restobook</Text>
                 <TextInput
                   style={globalStyles.texts}
                   placeholder="Nombre"
@@ -321,9 +316,7 @@ onRequestClose={() => {
                   <Text style={globalStyles.fontLog}>Sign Up</Text>
                 </TouchableOpacity>
                 <Text onPress={() => setFlagLoginOrRegister(true)}>I have an account</Text>
-                  </View>
-                  </View>
-                  </Modal>
+
               </View>
             </View >
           )}
