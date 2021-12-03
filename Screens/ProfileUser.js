@@ -239,7 +239,7 @@ centeredView: {
     justifyContent: "center",
     alignItems: "center",
     marginTop: 22,
-    backgroundColor: "blur",
+    
   },
   modalView: {
     margin: 20,
@@ -284,7 +284,7 @@ centeredView: {
     borderRadius: 20,
     padding: 10,
     elevation: 2,
-    float: "right",
+   
   },
   bottonClose: {
     backgroundColor: "#2196F3",

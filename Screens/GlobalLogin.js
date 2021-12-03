@@ -331,14 +331,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginTop: 22,
-    backgroundColor: "blur",
+    
   },
   modalView: {
     margin: 20,
     backgroundColor: "white",
     borderRadius: 20,
     padding: 35,
-    width: "50%",
+    width: "70%",
     height: "80%",
     alignItems: "center",
     shadowColor: "#000",
@@ -376,7 +376,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 10,
     elevation: 2,
-    float: "right",
+   
   },
   bottonClose: {
     backgroundColor: "#2196F3",
