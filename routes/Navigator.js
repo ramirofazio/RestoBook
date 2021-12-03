@@ -9,7 +9,7 @@ import AddUserScreen from "../Screens/RegisterUser.js";
 import AddMenuResto from "../Screens/AddMenuResto.js";
 import DetailsResto from "../Screens/DetailsResto";
 import GlobalLogin from "../Screens/GlobalLogin.js";
-
+import Checkout from "../Screens/Checkout.js";
 import AwaitEmail from "../Screens/AwaitEmail.js";
 import NavHome from "../Screens/NavHome.js";
 import NavDetail from "../Screens/NavDetail";
@@ -75,6 +75,13 @@ export default Navigator = () => {
             },
           })}
         />
+         <Stack.Screen
+        name="Checkout"
+         component={Checkout}
+         options={{
+           headerShown: false
+         }}
+         />
         <Stack.Screen
           name="GlobalLogin"
           component={GlobalLogin}

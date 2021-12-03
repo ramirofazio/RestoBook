@@ -9,7 +9,8 @@ import CurrentUser from "../Redux/Actions/CurrentUser.js";
 //
 //
 //----------REACT-NATIVE UTILS-----------
-import { View, ScrollView, Text, StyleSheet } from "react-native";
+import { View, ScrollView, Text, StyleSheet, TouchableOpacity} from "react-native";
+import {MaterialIcons} from '@expo/vector-icons'
 //
 //
 //----------FIREBASE UTILS-----------
@@ -19,6 +20,7 @@ import { doc, onSnapshot, collection, query } from "firebase/firestore";
 //
 //
 //---------SCREENS---------------
+import SearchBar from "./SearchBar.js";
 import CardHome from "../components/CardHome.js";
 import Btn from "./Helpers/Btns.js";
 //
@@ -93,6 +95,15 @@ export default function Home({ navigation }) {
           <Text style={styles.text}>Welcome to Resto Book</Text>
         )}
       </View>
+      <View>
+        <SearchBar/>
+      </View>
+      <View style={styles.textContainer2}>
+      <TouchableOpacity onPress={() => navigation.navigate('Checkout', {price:"10"})}> 
+      <Text ><MaterialIcons name="payment" size={20}  color="black"></MaterialIcons> Pagar: $10 de tu reserva
+      </Text>
+      </TouchableOpacity>
+      </View>
       <View style={globalStyles.btnHome}>
         {/* <Btn nombre="Ciudad" ruta="#" navigation={navigation} /> */}
         {/* <Btn nombre='Buscar' ruta='#' navigation={navigation} /> */}
@@ -136,6 +147,15 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: "90%",
     borderColor: "#bd967e",
+    borderRadius: 10,
+    borderWidth: 3,
+    marginTop: 10,
+  },
+  textContainer2: {
+    flex: 1,
+    alignSelf: "center",
+    justifyContent: "center",
+    width: "40%",
     borderRadius: 10,
     borderWidth: 3,
     marginTop: 10,

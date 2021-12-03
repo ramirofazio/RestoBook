@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 //
 //
 //----------REACT-NATIVE UTILS-----------
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image,TouchableOpacity } from "react-native";
 import { FlatList, ScrollView } from "react-native-gesture-handler";
 import MapView from "react-native-maps";
 //
@@ -36,6 +36,11 @@ const DetailsResto = () => {
   //console.log(menus)s
   const thisMenu = menus.filter((menu) => menu.id === empresaDetail.Id);
   //console.log(thisMenu)
+  
+  //WhatsApp
+  const handleWhatsAppPress = async() => {
+    await Linking.openURL('whatsapp://send?text=Hola RestoBook&phone=+541168020511')
+}
 
   return (
     <View style={styles.container}>
@@ -90,6 +95,11 @@ const DetailsResto = () => {
             }}
           ></MapView>
         </View>
+        <TouchableOpacity onPress={(e) => handleWhatsAppPress(e)}>
+                    <View style={styles.searchIcon}>
+                        <Image style={styles.img} source={require('../assets/whatsapp.png') } />
+                     </View>
+                </TouchableOpacity>
       </View>
     </View>
   );
