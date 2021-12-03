@@ -9,6 +9,7 @@ import AddUserScreen from "../Screens/RegisterUser.js";
 import AddMenuResto from "../Screens/AddMenuResto.js";
 import DetailsResto from "../Screens/DetailsResto";
 import GlobalLogin from "../Screens/GlobalLogin.js";
+import PaymentCalc from "../Screens/PaymentCalc"
 
 import AwaitEmail from "../Screens/AwaitEmail.js";
 import NavHome from "../Screens/NavHome.js";
@@ -32,6 +33,17 @@ export default Navigator = () => {
             },
           })}
         />
+
+<Stack.Screen
+        name= "PaymentCalc"
+         component={PaymentCalc}
+         options={{
+           headerShown: false
+         }}
+         />
+
+         
+
         <Stack.Screen name="RegisterUser" component={AddUserScreen} />
         <Stack.Screen
           name="RegisterResto"
@@ -91,6 +103,7 @@ export default Navigator = () => {
             },
           }}
         />
+
 
         <Stack.Screen
           name="AwaitEmail"
