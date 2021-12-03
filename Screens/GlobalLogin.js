@@ -14,10 +14,13 @@ import {
   View,
   Text,
   TextInput,
-  TouchableOpacity
+  ScrollView,
+  TouchableOpacity,
+  StyleSheet,
+  Alert,
+  Modal,
 } from "react-native";
-//
-//
+
 //----------FIREBASE UTILS-----------
 import {
   getAuth,
@@ -69,6 +72,7 @@ const GlobalLogin = ({ navigation }) => {
 
   const [flagLoginOrRegister, setFlagLoginOrRegister] = useState(true)
   const [flagSecureText, setFlagSecureText] = useState(true)
+  const [modalVisible, setModalVisible] = useState(false);
 
   if (flagLoginOrRegister) {
     return (
@@ -129,7 +133,42 @@ const GlobalLogin = ({ navigation }) => {
                 >
                   <Text style={globalStyles.fontLog}>Log In</Text>
                 </TouchableOpacity>
-                <Text onPress={() => setFlagLoginOrRegister(false)}>I dont have an account yet</Text>
+                <Text onPress={() => setModalVisible(true)}>I dont have an account yet</Text>
+                {/* ------------------------- modal ---------------------------------  */}
+                <Modal
+                  animationType="slide"
+                  transparent={true}
+                  visible={modalVisible}
+                  onRequestClose={() => {
+                    Alert.alert("Modal has been closed.");
+                    setModalVisible(!modalVisible);
+                  }}
+                >
+                  <View style={styles.centeredView}>
+                    <View style={styles.modalView}>
+                      <TouchableOpacity
+                        style={globalStyles.touchLog}
+                        onPress={() => setModalVisible(!modalVisible)}
+                      >
+                        <Text style={styles.textStyle}>X</Text>
+                      </TouchableOpacity>
+                      <Text style={styles.modalText}>Welcome to Restobook</Text>
+
+                      <TextInput
+                        style={globalStyles.texts}
+                        placeholder="Email"
+                      />
+
+                      <TouchableOpacity
+                        style={globalStyles.touchLog}
+
+                      >
+                        <Text>Check in</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                </Modal>
+                {/* ----------------------------------------------------------------------------------- */}
               </View>
             </View >
           )}
@@ -137,7 +176,6 @@ const GlobalLogin = ({ navigation }) => {
       </View >
     )
   } else {
-
     const GlobalRegisterSchema = yup.object({
       name: yup.string()
         .required(),
@@ -278,6 +316,7 @@ const GlobalLogin = ({ navigation }) => {
                   <Text style={globalStyles.fontLog}>Sign Up</Text>
                 </TouchableOpacity>
                 <Text onPress={() => setFlagLoginOrRegister(true)}>I have an account</Text>
+
               </View>
             </View >
           )}
@@ -286,5 +325,63 @@ const GlobalLogin = ({ navigation }) => {
     )
   };
 };
+const styles = StyleSheet.create({
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+    //backgroundColor: "blur",
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    width: "50%",
+    height: "80%",
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 30,
+      height: 30
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2
+  },
+  buttonOpen: {
+    backgroundColor: "#F194FF",
+  },
+  buttonClose: {
+    backgroundColor: "#2196F3",
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center",
+    fontSize: 30,
+    fontWeight: "bold",
+  },
+  botton: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    //float: "right",
+  },
+  bottonClose: {
+    backgroundColor: "#2196F3",
+  },
+});
+
 export default GlobalLogin;
 
