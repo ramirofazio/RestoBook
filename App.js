@@ -5,10 +5,14 @@ import 'react-native-gesture-handler';
 import Navigator from './routes/Navigator.js';
 
 
+
 export default function App() {
+  // const Stack = createStackNavigator();
+  
   return (
     <Provider store={store}>
-      <Navigator />
+      <Navigator/>
+      
     </Provider >
   );
 };
