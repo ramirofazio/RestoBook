@@ -35,8 +35,6 @@ const auth = getAuth();
 const DetailsResto = () => {
   const empresaDetail = useSelector((state) => state.empresaDetail);
   const [menuArr, setMenuArr] = useState([]);
-  //Tiene que desactivar el boton en los comercios que no sean del logueado
-
 
   useEffect(() => {
     const q = query(collection(firebase.db, "Restos"));
