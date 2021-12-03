@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 //
 //----------WEBVIEW---------------
-import {WebView} from "react-native-webview"
+import { WebView } from "react-native-webview";
 //
 //----------REDUX UTILS-----------
 import { useDispatch, useSelector } from "react-redux";
@@ -11,9 +11,16 @@ import CurrentUser from "../Redux/Actions/CurrentUser.js";
 //
 //
 //----------REACT-NATIVE UTILS-----------
-import { View, ScrollView, Text, StyleSheet, Button, TouchableOpacity } from "react-native";
+import {
+  View,
+  ScrollView,
+  Text,
+  StyleSheet,
+  Button,
+  TouchableOpacity,
+} from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-import {PaymentCalc} from "./PaymentCalc"
+import { PaymentCalc } from "./PaymentCalc";
 //
 //
 //----------FIREBASE UTILS-----------
@@ -37,7 +44,7 @@ const auth = getAuth();
 //---------------------------------------------------------------------------------------//
 //
 export default function Home({ navigation }) {
-  const youtube = "https://www.youtube.com/"
+  const youtube = "https://www.youtube.com/";
   //------LOGIN JOSE------------
   const [usuarioGlobal, setUsuarioGlobal] = useState("");
   const [availableCommerces, setAvailableCommerces] = useState([]);
@@ -60,8 +67,6 @@ export default function Home({ navigation }) {
   onAuthStateChanged(auth, (usuarioFirebase) => {
     if (usuarioFirebase?.emailVerified) {
       if (loggedId !== usuarioFirebase.uid) {
-        console.log("cambio en logged!:", usuarioFirebase.uid);
-        console.log("cambio en logged!");
         dispatch(CurrentId(usuarioFirebase.uid));
         const unsub = onSnapshot(
           doc(firebase.db, "Restos", usuarioFirebase.uid),
@@ -97,28 +102,26 @@ export default function Home({ navigation }) {
           <Text style={styles.text}>{` Welcome ${usuarioGlobal}`}</Text>
         ) : (
           <Text style={styles.text}>Welcome to Resto Book</Text>
-          
         )}
-
-
-
-
 
         {/* <View> PAAGAARR
           <WebView source={{uri: youtube}} onLoad={console.log("Loaded!")}>
           </WebView>
         </View> */}
-
-
       </View>
 
       <View style={styles.textContainer2}>
-      <TouchableOpacity onPress={() => navigation.navigate("PaymentCalc")}> 
-      <Text ><MaterialIcons name="payment" size={20}  color="black"></MaterialIcons> Pagar: $100 de tu reserva
-      </Text>
-      </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("PaymentCalc")}>
+          <Text>
+            <MaterialIcons
+              name="payment"
+              size={20}
+              color="black"
+            ></MaterialIcons>{" "}
+            Pagar: $100 de tu reserva
+          </Text>
+        </TouchableOpacity>
       </View>
-
 
       <View style={globalStyles.btnHome}>
         {/* <Btn nombre="Categorias" ruta="#" navigation={navigation} /> */}
@@ -179,6 +182,5 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 3,
     marginTop: 10,
-  }
-  
+  },
 });
