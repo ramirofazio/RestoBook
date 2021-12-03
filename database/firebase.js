@@ -33,10 +33,12 @@ firebase.initializeApp(firebaseConfig);
 // const analytics = getAnalytics(app);
 const db = firebase.firestore();
 const fireAuth = firebase.auth();
+const storage = firebase.storage();
 export default {
   firebase,
   db,
   fireAuth,
+  storage,
 };
 
 // ESTO SERÍA LA CONEXIÓN A FIREBASE ACTUALIZADA PERO COMO NO FUNCIONA VOY A COLOCAR EL DEL VIDEO DE FAZT
