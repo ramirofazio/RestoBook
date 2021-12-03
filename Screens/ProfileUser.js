@@ -1,11 +1,12 @@
 import React, { useState, useRef } from "react";
 import { useSelector } from "react-redux";
-import { Text, View, StyleSheet, Image, TouchableOpacity, Animated, useWindowDimensions } from "react-native";
+import { Text, View, ScrollView, StyleSheet, Image, TouchableOpacity, Animated, useWindowDimensions, Touchable, ActivityIndicator } from "react-native";
 import * as ImagePicker from 'expo-image-picker';
+import * as Firebase from 'firebase';
+import {firebaseConfig} from '/firebase.js'; //esto no se esta importando
 import globalStyles from "./GlobalStyles";
 import StarFilled from 'react-native-vector-icons/AntDesign';
 import TagOutlined from 'react-native-vector-icons/AntDesign';
-import { ScrollView } from "react-native-gesture-handler";
 import CardHome from '../components/CardHome.js'
 import CardReservation from "../components/CardReservation";
 
@@ -63,11 +64,17 @@ const ProfileUser = ({ navigation }) => {
     // })
 
 
-    const [image, setImage] = useState(null)
+    const [image, setImage] = useState("")
+    const [uploading, setUploading] = useState(false)
+    
     const empresas = useSelector((state) => state.empresas);
 
     const scrollX = useRef(new Animated.Value(0)).current;
     const { width: windowWidth } = useWindowDimensions();
+
+    if(!Firebase.apps.length) {
+        Firebase.initializeApp(firebaseConfig)
+    }//ESTO ROMPE LA APP PQ FIREBASECONFIG NO SE ESTA IMPORTANDO
 
     let openImagePicker = async () => {
         let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync() // este modulo pide permiso al user para leer los archivos de su disp.
@@ -81,6 +88,47 @@ const ProfileUser = ({ navigation }) => {
             return; // que no tire error
         }
         setImage({ localUri: imageSelected.uri }) //sino actualizamos el estado con la dir de la imagen
+    }
+
+    const uploadImage = async () => {
+        const blob = await new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.onload = function() {
+              resolve(xhr.response);
+            };
+            xhr.onerror = function() {
+              reject(new TypeError('Network request failed'));
+            };
+            xhr.responseType = 'blob';
+            xhr.open('GET', image, true);
+            xhr.send(null);
+          });
+
+
+
+        const ref = Firebase.storage().ref().child(new Date().toISOString())
+        const snapshot = ref.put(blob)  
+
+        snapshot.on(
+            Firebase.storage.TaskEvent.STATE_CHANGED, 
+            () => {
+            setUploading(true)
+        }, 
+        (error)=> {
+            setUploading(false)
+            console.log(error)
+            blob.close()
+            return 
+        },
+        () => {
+            snapshot.snapshot.ref.getDownloadURL().then((url)=> {
+                setUploading(false)
+                console.log('download url: ',url)
+                blob.close();
+                return url
+            })
+        }
+        )
     }
 
     return (
@@ -102,6 +150,19 @@ const ProfileUser = ({ navigation }) => {
                             </TouchableOpacity>
                             )
                     }
+
+                    {   
+                        !uploading ? <TouchableOpacity
+                        style={globalStyles.btn}
+                        onPress={uploadImage}
+                        >
+                            <Text>SUBIR IMAGEN</Text>
+                        </TouchableOpacity> 
+                        : (
+                        <ActivityIndicator size='large' color='#5555'/>
+                        )
+                    }
+
                     <View style={styles.nombreContainer}>
                         <Text style={{ fontSize: 25, fontWeight: "bold", color: '#392c28', textAlignVertical: "top" }}>{reservas[1].name}</Text>
                         <Text style={{ fontSize: 15, fontWeight: "bold", color: '#392c28', paddingVertical: 15 }}>{reservas[1].email}</Text>
