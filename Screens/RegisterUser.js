@@ -3,7 +3,6 @@ import React, { useState } from "react";
 //
 //
 //----------REDUX UTILS-----------
-
 //
 //
 //----------REACT-NATIVE UTILS-----------
@@ -11,7 +10,6 @@ import { View, TextInput, ScrollView, TouchableOpacity } from "react-native";
 //
 //
 //----------FIREBASE UTILS-----------
-
 //
 //
 //---------SCREENS & COMPONENTS---------------
@@ -23,16 +21,15 @@ import { MaterialCommunityIcons as Icon } from "@expo/vector-icons";
 //
 //
 //-------STYLES-------
-
 //
 //
 //-------INITIALIZATIONS-------
-
 //
 //---------------------------------------------------------------------------------------//
 //
-
 const AddUserScreen = ({ navigation }) => {
+
+
   const [users, setUsers] = useState({
     name: "",
     email: "",

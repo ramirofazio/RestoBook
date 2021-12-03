@@ -1,18 +1,13 @@
 //----------REACT UTILS-----------
-import React, { useEffect } from "react";
+import React from "react";
 //
 //
 //----------REDUX UTILS-----------
-
 //
 //
 //----------REACT-NATIVE UTILS-----------
 import {
   View,
-  Button,
-  TextInput,
-  ScrollView,
-  StyleSheet,
   Text,
 } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
@@ -24,7 +19,6 @@ import { getAuth, signOut } from "firebase/auth";
 //
 //
 //---------SCREENS & COMPONENTS---------------
-
 //
 //
 //-------STYLES-------
@@ -34,7 +28,6 @@ import globalStyles from "./GlobalStyles.js";
 //-------INITIALIZATIONS-------
 const auth = getAuth();
 // import { Alert } from 'antd'; PREGUNTAR A LAI Y LUCAS G O BORRAR :)
-
 //
 //---------------------------------------------------------------------------------------//
 //
@@ -48,34 +41,15 @@ const AwaitEmail = ({ navigation }) => {
         </Text>
       </View>
       <View style={globalStyles.container}>
-        {/* <Button
-            title="Reenviar"
-            onPress={() => {
-              firebase.fireAuth.currentUser.sendEmailVerification();
-              alert("Mail enviado. Revisa en spam!!");
-            }}
-          /> */}
         <TouchableOpacity
           style={globalStyles.touchLog}
           onPress={() => {
             firebase.fireAuth.currentUser.sendEmailVerification();
             alert("Email sent. Check spam section!!");
-            // <Alert
-            //   message="Informational Notes"
-            //   description="Additional description and information about copywriting."
-            //   type="info"
-            //   showIcon
-            //   closable
-            // />
           }}
         >
           <Text style={globalStyles.fontLog}>Resend</Text>
         </TouchableOpacity>
-
-        {/* <Button
-            title="ir a Login"
-            onPress={() => navigation.navigate("GlobalLogin")}
-          /> */}
         <TouchableOpacity
           style={globalStyles.touchFlag}
           onPress={() => {
@@ -89,6 +63,4 @@ const AwaitEmail = ({ navigation }) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({});
 export default AwaitEmail;
