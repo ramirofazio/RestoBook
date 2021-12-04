@@ -40,13 +40,11 @@ const reservas = [
     }
 ]
 
-
 const ProfileUser = ({ navigation }) => {
     const [user, setUser] = useState({
         name: '',
         email: '',
     })
-
     const handleEdit = () => {
         setUser(
 
@@ -61,8 +59,6 @@ const ProfileUser = ({ navigation }) => {
     //     name: '',
     //     adress: ''
     // })
-
-
     const [image, setImage] = useState("")
     const [uploading, setUploading] = useState(false)
     
@@ -71,7 +67,6 @@ const ProfileUser = ({ navigation }) => {
     const scrollX = useRef(new Animated.Value(0)).current;
     const { width: windowWidth } = useWindowDimensions();
 
-    
     let openImagePicker = async () => {
         let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync() // este modulo pide permiso al user para leer los archivos de su disp.
 
@@ -101,7 +96,6 @@ const ProfileUser = ({ navigation }) => {
           });
 
 
-
         const ref = firebase.storage.ref().child(new Date().toISOString())
         const snapshot = ref.put(blob)  
 
@@ -126,12 +120,10 @@ const ProfileUser = ({ navigation }) => {
         }
         )
     }
-
     return (
-        <View style={styles.container}>
-            <ScrollView style={styles.container}>
+        <View style={styles.container} >
+            <ScrollView style={styles.container} contentContainerStyle={{flex: 1}}>
                 <View style={styles.imgContainer}>
-                    
                     {
                         !image ? 
                         <Image
@@ -143,29 +135,7 @@ const ProfileUser = ({ navigation }) => {
                             source={image.localUri}
                             style={styles.img}
                         />
-                       
                     }
-
-                        {   !image? 
-                            <TouchableOpacity 
-                                style={globalStyles.btn}
-                                onPress={openImagePicker}
-                            >
-                                <Text>Pick Image</Text>
-                            </TouchableOpacity>
-                            :
-                            !uploading ? <TouchableOpacity
-                            style={globalStyles.btn}
-                            onPress={uploadImage}
-                            >
-                                <Text>SUBIR IMAGEN</Text>
-                            </TouchableOpacity> 
-                            : 
-                            // y cuando se este cargando que active el spiner
-                            (
-                            <ActivityIndicator size='large' color='#5555'/>
-                            )
-                        }
                     {/* {
                         image ? (<TouchableOpacity onPress={openImagePicker}>
                             <Image
@@ -196,8 +166,6 @@ const ProfileUser = ({ navigation }) => {
                             <ActivityIndicator size='large' color='#5555'/>
                             )
                         } */}
-
-
                     <View style={styles.nombreContainer}>
                         <Text style={{ fontSize: 25, fontWeight: "bold", color: '#392c28', textAlignVertical: "top" }}>{reservas[1].name}</Text>
                         <Text style={{ fontSize: 15, fontWeight: "bold", color: '#392c28', paddingVertical: 15 }}>{reservas[1].email}</Text>
@@ -209,6 +177,29 @@ const ProfileUser = ({ navigation }) => {
                         </TouchableOpacity>
                     </View>
                 </View>
+                <View>
+                    {   !image? 
+                            <TouchableOpacity 
+                                style={globalStyles.btn}
+                                onPress={openImagePicker}
+                            >
+                                <Text>Pick Image</Text>
+                            </TouchableOpacity>
+                            :
+                            !uploading ? <TouchableOpacity
+                            style={globalStyles.btn}
+                            onPress={uploadImage}
+                            >
+                                <Text>Upload Image</Text>
+                            </TouchableOpacity> 
+                            : 
+                            // y cuando se este cargando que active el spiner
+                            (
+                            <ActivityIndicator size='large' color='#5555'/>
+                            )
+                        }
+                </View>
+
                 <Text style={{ fontSize: 25, color: "#392c28", textAlign: "center" }}> <StarFilled name='star' color="#392c28" size={25} /> FAVORITOS</Text>
                 <ScrollView
                     horizontal={true}
@@ -239,7 +230,7 @@ const ProfileUser = ({ navigation }) => {
                 <Text style={{ fontSize: 25, color: "#392c28", textAlign: "center" }}>
                     <TagOutlined name='tag' color="#392c28" size={25} /> My Reservations
                 </Text>
-                <ScrollView style={{ overflow: "scroll" }}>
+                <ScrollView style={{ overflow: "hidden" }}>
                     {reservas.map((persona) => {
                         return (
                             <View>
@@ -291,8 +282,8 @@ const styles = StyleSheet.create({
     FavouriteContainer: {
         overflow: "scroll",
         backgroundColor: '#5555',
-        maxHeight: '100%',
-        height: "100%",
+        // maxHeight: '40%',
+        height: "40%",
     },
 
 });
