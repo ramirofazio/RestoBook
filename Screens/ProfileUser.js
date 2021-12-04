@@ -12,18 +12,16 @@ import {
   Alert,
   Modal,
   ActivityIndicator,
+  ScrollView
 } from "react-native";
-// import { CLOUDINARY_URL } from "@env";
 import * as ImagePicker from "expo-image-picker";
 import firebase from "../database/firebase";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { doc, onSnapshot, collection, query } from "firebase/firestore";
-import { TaskEvent } from "firebase/storage";
 import { CLOUDINARY_URL, CLOUDINARY_CONSTANT } from "@env";
 import globalStyles from "./GlobalStyles";
 import StarFilled from "react-native-vector-icons/AntDesign";
 import TagOutlined from "react-native-vector-icons/AntDesign";
-import { ScrollView } from "react-native-gesture-handler";
 import CardHome from "../components/CardHome.js";
 import CardReservation from "../components/CardReservation";
 const auth = getAuth();
@@ -67,8 +65,6 @@ const ProfileUser = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
 
   const [uploading, setUploading] = useState(false);
-
-  //
   const [image, setImage] = useState("");
 
   useEffect(() => {
@@ -128,7 +124,93 @@ const ProfileUser = ({ navigation }) => {
       })
       .catch((err) => console.log(err));
   };
+///////////////////FUNCION STORAGE FIREBASE LAIAL COMENTADA PARA REVISION///////////
+    // const uploadImage = async () => {
+    //     const blob = await new Promise((resolve, reject) => {
+    //         const xhr = new XMLHttpRequest();
+    //         xhr.onload = function() {
+    //           resolve(xhr.response);
+    //         };
+    //         xhr.onerror = function() {
+    //           reject(new TypeError('Network request failed'));
+    //         };
+    //         xhr.responseType = 'blob';
+    //         xhr.open('GET', image, true);
+    //         xhr.send(null);
+    //       });
 
+
+    //     const ref = firebase.storage.ref().child(new Date().toISOString())
+    //     const snapshot = ref.put(blob)  
+
+    //     snapshot.on(
+    //         firebase.storage.TaskEvent.STATE_CHANGED, 
+    //         () => {
+    //         setUploading(true)
+    //     }, 
+    //     (error)=> {
+    //         setUploading(false)
+    //         console.log(error)
+    //         blob.close()
+    //         return 
+    //     },
+    //     () => {
+    //         snapshot.snapshot.ref.getDownloadURL().then((url)=> {
+    //             setUploading(false)
+    //             console.log('download url: ', url)
+    //             blob.close();
+    //             return url
+    //         })
+    //     }
+    //     )
+    // }
+    // return (
+    //     <View style={styles.container} >
+    //         <ScrollView style={styles.container} contentContainerStyle={{flex: 1}}>
+    //             <View style={styles.imgContainer}>
+    //                 {
+    //                     !image ? 
+    //                     <Image
+    //                         source={'https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-unknown-social-media-user-photo-default-avatar-profile-icon-vector-unknown-social-media-user-184816085.jpg'}
+    //                         style={styles.img}
+    //                     />
+    //                     :
+    //                     <Image
+    //                         source={image.localUri}
+    //                         style={styles.img}
+    //                     />
+    //                 }
+    //                 {/* {
+    //                     image ? (<TouchableOpacity onPress={openImagePicker}>
+    //                         <Image
+    //                             source={{ uri: image !== null ? image.localUri : 'https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-unknown-social-media-user-photo-default-avatar-profile-icon-vector-unknown-social-media-user-184816085.jpg' }}
+    //                             style={styles.img}
+    //                         />
+    //                     </TouchableOpacity>)
+    //                         : (<TouchableOpacity onPress={openImagePicker}>
+    //                             <Image
+    //                                 source={{ uri: image !== null ? image.localUri : 'https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-unknown-social-media-user-photo-default-avatar-profile-icon-vector-unknown-social-media-user-184816085.jpg' }}
+    //                                 style={styles.img}
+    //                             />
+    //                         </TouchableOpacity>
+    //                         )
+                            
+                            
+    //                     } */}
+    //                     {/* { // si la imagen no se esta cargando a firebase que este el boton
+    //                         !uploading ? <TouchableOpacity
+    //                         style={globalStyles.btn}
+    //                         onPress={uploadImage}
+    //                         >
+    //                             <Text>SUBIR IMAGEN</Text>
+    //                         </TouchableOpacity> 
+    //                         : 
+    //                         // y cuando se este cargando que active el spiner
+    //                         (
+    //                         <ActivityIndicator size='large' color='#5555'/>
+    //                         )
+    //                     } */}
+ ///////////////////////////////////////////////////////////////////////////                  
   const scrollX = useRef(new Animated.Value(0)).current;
   const { width: windowWidth } = useWindowDimensions();
 
@@ -264,100 +346,101 @@ const ProfileUser = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#e6c2bf",
-  },
-  img: {
-    height: 150,
-    width: 150,
-    borderRadius: 200,
-    // resizeMode: 'contain' // esta linea es para que se adapte al tam;o de la imagen
-  },
-  imgContainer: {
-    flex: 2,
-    flexDirection: "row",
-    // backgroundColor: 'red',
-    maxHeight: "25%",
-    maxWidth: "100%",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingHorizontal: 10,
-    paddingVertical: 15,
-  },
-  nombreContainer: {
-    flex: 2,
-    // backgroundColor: 'grey',
-    // marginHorizontal: 5,
-    maxWidth: "60%",
-    width: "100%",
-    height: "100%",
-    justifyContent: "center",
-    alignItems: "center",
-    alignSelf: "flex-end",
-  },
-  FavouriteContainer: {
-    overflow: "scroll",
-    backgroundColor: "#5555",
-    maxHeight: "100%",
-    height: "100%",
-  },
-  //----------------------- modal css?? ---------------------------------
-  centeredView: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 22,
-    //backgroundColor: "blur",
-  },
-  modalView: {
-    margin: 20,
-    backgroundColor: "white",
-    borderRadius: 20,
-    padding: 35,
-    width: "45%",
-    height: "30%",
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 30,
-      height: 30,
+    container: {
+        flex: 1,
+        backgroundColor: '#e6c2bf'
     },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-  },
-  buttonOpen: {
-    backgroundColor: "#F194FF",
-  },
-  buttonClose: {
-    backgroundColor: "#2196F3",
-  },
-  textStyle: {
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center",
-  },
-  modalText: {
-    marginBottom: 15,
-    textAlign: "center",
-    fontSize: 30,
-    fontWeight: "bold",
-  },
-  botton: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-    //float: "right",
-  },
-  bottonClose: {
-    backgroundColor: "#2196F3",
-  },
+    img: {
+        height: 150,
+        width: 150,
+        borderRadius: 200,
+        // resizeMode: 'contain' // esta linea es para que se adapte al tam;o de la imagen
+    },
+    imgContainer: {
+        flex: 2,
+        flexDirection: "row",
+        // backgroundColor: 'red',
+        maxHeight: '25%',
+        maxWidth: '100%',
+        justifyContent: "space-between",
+        alignItems: "center",
+        paddingHorizontal: 10,
+        paddingVertical: 15,
+
+    },
+    nombreContainer: {
+        flex: 2,
+        // backgroundColor: 'grey',
+        // marginHorizontal: 5,
+        maxWidth: '60%',
+        width: '100%',
+        height: '100%',
+        justifyContent: "center",
+        alignItems: "center",
+        alignSelf: 'flex-end'
+    },
+    FavouriteContainer: {
+        overflow: "scroll",
+        backgroundColor: '#5555',
+        maxHeight: '30%',
+        height: "40%",
+    },
+    //----------------------- modal css?? ---------------------------------
+    centeredView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 22,
+        //backgroundColor: "blur",
+    },
+    modalView: {
+        margin: 20,
+        backgroundColor: "white",
+        borderRadius: 20,
+        padding: 35,
+        width: "45%",
+        height: "30%",
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 30,
+            height: 30
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5
+    },
+    button: {
+        borderRadius: 20,
+        padding: 10,
+        elevation: 2
+    },
+    buttonOpen: {
+        backgroundColor: "#F194FF",
+    },
+    buttonClose: {
+        backgroundColor: "#2196F3",
+    },
+    textStyle: {
+        color: "white",
+        fontWeight: "bold",
+        textAlign: "center",
+    },
+    modalText: {
+        marginBottom: 15,
+        textAlign: "center",
+        fontSize: 30,
+        fontWeight: "bold",
+    },
+    botton: {
+        borderRadius: 20,
+        padding: 10,
+        elevation: 2,
+        //float: "right",
+    },
+    bottonClose: {
+        backgroundColor: "#2196F3",
+    }
 });
 
 export default ProfileUser;

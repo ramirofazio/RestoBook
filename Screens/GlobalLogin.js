@@ -133,7 +133,11 @@ const GlobalLogin = ({ navigation }) => {
     return (
       //------------LOGIN---------------
       <View style={globalStyles.Home}>
-        <Text style={globalStyles.componentTitle}>Login</Text>
+        <Text style={{fontSize: 25,
+          fontWeight: "bold",
+          paddingVertical: 5,
+          alignSelf: "center",
+          color: '#392c28'}}>Login</Text>
         <Formik
           initialValues={{
             email: "",
@@ -175,7 +179,7 @@ const GlobalLogin = ({ navigation }) => {
               <View style={globalStyles.inputComponent}>
                 <TextInput
                   style={globalStyles.texts}
-                  placeholder="password"
+                  placeholder="Password"
                   onChangeText={props.handleChange("password")}
                   value={props.values.password}
                   secureTextEntry={flagSecureText}
@@ -195,21 +199,22 @@ const GlobalLogin = ({ navigation }) => {
                     : setFlagSecureText(true)
                 }
               >
-                <Icon name={flagSecureText ? "eye-off" : "eye"} size={20} />
+                <Icon name={flagSecureText ? "eye-off" : "eye"} size={20} style={{alignSelf: "center"}} />
               </TouchableOpacity>
-              <View style={globalStyles.container}>
+              <View style={globalStyles.btnContainerLogin}>
                 <TouchableOpacity
                   style={globalStyles.touchLog}
                   onPress={() => props.handleSubmit()}
                 >
                   <Text style={globalStyles.fontLog}>Log In</Text>
                 </TouchableOpacity>
-                <Text
-                  style={globalStyles.textDownButton}
-                  onPress={() => setFlagLoginOrRegister(false)}
+
+                <TouchableOpacity
+                  style={globalStyles.touchFlag}
+                  onPress={() => props.handleSubmit()}
                 >
-                  I dont have an account yet
-                </Text>
+                  <Text style={globalStyles.fontLog} onPress={() => setFlagLoginOrRegister(false)}>I dont have an account yet</Text>
+                </TouchableOpacity>
 
                 <TouchableOpacity onPress={() => Glogin()}>
                   <Text>Google</Text>
@@ -373,21 +378,23 @@ const GlobalLogin = ({ navigation }) => {
                   >
                     <Icon name={flagSecureText ? "eye-off" : "eye"} size={20} />
                   </TouchableOpacity>
-                  <View style={globalStyles.container}>
+                  <View style={globalStyles.btnContainerLogin}>
                     <TouchableOpacity
                       style={globalStyles.touchLog}
                       onPress={() => props.handleSubmit()}
                     >
                       <Text style={globalStyles.fontLog}>Sign Up</Text>
                     </TouchableOpacity>
-                    <Text
-                      style={globalStyles.textDownButton}
-                      onPress={() => setFlagLoginOrRegister(true)}
+                    <TouchableOpacity
+                      style={globalStyles.touchFlag}
+                      onPress={() => props.handleSubmit()}
                     >
-                      I have an account
-                    </Text>
+                      <Text style={globalStyles.fontLog} onPress={() => setFlagLoginOrRegister(true)}>I have an account</Text>
+                    </TouchableOpacity>
                   </View>
-                </View>
+                      
+
+                </View >
               )}
             </Formik>
           </View>

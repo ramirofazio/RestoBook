@@ -26,6 +26,18 @@ const globalStyles = StyleSheet.create({
   Container: {
     alignItems: "center",
   },
+  cardsContainer: {
+    alignSelf: "center",
+    backgroundColor: "#f6efd3",
+    marginHorizontal: 10,
+    marginVertical: 5,
+    paddingHorizontal: 15,
+    paddingVertical: 30,
+    borderRadius: 25,
+    width: "95%",
+    maxHeight: "15%",
+    // height: '15%'
+  },
   btn: {
     backgroundColor: '#ffd964',
     paddingVertical: 8,
@@ -38,9 +50,33 @@ const globalStyles = StyleSheet.create({
   img: {
     height: 40,
     width: 40,
-    marginTop: 5,
-    alignItems: "center",
     resizeMode: 'contain' // esta linea es para que se adapte al tam;o de la imagen
+  },
+  cardsHomeimg: {
+    backgroundColor: "red",
+    alignItems: 'center',
+    alignSelf: "flex-start",
+    width: 100,
+    height: 100,
+    borderRadius: 25,
+    marginVertical: -35, //VER COMO ARREGLAR 
+  },
+  cardsInfoContainer: {
+    display: "flex",
+    flexDirection: "row",
+    alignSelf: "center",
+    backgroundColor: 'skyblue',
+    maxWidth: '40%',
+    // width: '100%'
+  },
+  cardsDescriptionContainer: {
+    // backgroundColor: "violet",
+    flex: 1,
+    alignSelf: "center",
+    marginTop: -45,
+  },
+  cardsDescriptionText: {
+    textAlign: "center"
   },
   title: {
     fontSize: 25,
@@ -49,11 +85,27 @@ const globalStyles = StyleSheet.create({
     paddingHorizontal: 5,
     color: '#392c28'
   },
+  cardsHomeTitle: {
+    backgroundColor: "#5555",
+    fontSize: 25,
+    fontWeight: "bold",
+    textAlign: "center",
+    alignSelf: "center",
+    marginTop: -15,
+    maxWidth: '40%',
+    width: '100%'
+  },
+  wspImage: {
+    width: 30,
+    height: 30,
+    borderRadius: 25,
+    backgroundColor: 'yellow'
+  },
   componentTitle: {
     alignSelf: "center",
     marginTop: 10,
     fontSize: 30,
-    color: "#000"
+    color: "#392c28"
 
   },
   containerTitle: {
@@ -85,11 +137,16 @@ const globalStyles = StyleSheet.create({
   },
   fontLog: {
     color: "#392c28",
-    fontWeight: "bold"
+    fontWeight: "bold",
+    textAlign: "center"
   },
-  container: {
+  btnContainerLogin: {
     flex: 6,
     alignItems: "center",
+    maxWidth: '80%',
+    width: '100%',
+    maxHeight: '70%',
+    height: '100%'
   },
   text: {
     fontSize: 20,
@@ -137,9 +194,6 @@ const globalStyles = StyleSheet.create({
     marginTop: 50,
     alignItems: "center",
 
-  },
-  eye: {
-    marginTop: 10,
   },
 });
 
