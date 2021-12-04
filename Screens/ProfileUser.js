@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import {
     Text, View, StyleSheet, Image, TouchableOpacity, TextInput,
-    Animated, useWindowDimensions, Alert, Modal,
+    Animated, useWindowDimensions, Alert, Modal, ScrollView
 } from "react-native";
 import * as ImagePicker from 'expo-image-picker';
 import firebase from "../database/firebase";
@@ -235,7 +235,7 @@ const ProfileUser = ({ navigation }) => {
                             <ActivityIndicator size='large' color='#5555'/>
                             )
                         }
-                </View>
+                </View> 
 
                 <Text style={{ fontSize: 25, color: "#392c28", textAlign: "center" }}> <StarFilled name='star' color="#392c28" size={25} /> FAVORITOS</Text>
                 <ScrollView
@@ -319,7 +319,7 @@ const styles = StyleSheet.create({
     FavouriteContainer: {
         overflow: "scroll",
         backgroundColor: '#5555',
-        // maxHeight: '40%',
+        maxHeight: '30%',
         height: "40%",
     },
     //----------------------- modal css?? ---------------------------------

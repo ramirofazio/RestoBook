@@ -25,7 +25,6 @@ const CardMenu = ({ resto, navigation, icon }) => {
     >
       <View>
         <Text style={globalStyles.cardsHomeTitle}>{resto.title}</Text>
-        <View style={globalStyles.cardsInfoContainer}>
           <Image
             style={globalStyles.cardsHomeimg}
             source={
@@ -36,11 +35,12 @@ const CardMenu = ({ resto, navigation, icon }) => {
                 : { uri: resto.Img }
             }
           />
+        <View style={globalStyles.cardsInfoContainer}>
           <View style={{
-            width: 30, height: 30, marginLeft: 125, marginTop: 10,
+            width: 30, height: 30, marginLeft: 125, marginTop: 10, backgroundColor: 'grey'
           }}>
             <TouchableOpacity
-              onPress={() => alert("llevame a whatsapp")}
+              onPress={() => alert("llevame a whatsapp")} 
             >
               <Image
                 style={globalStyles.wspImage}
@@ -50,14 +50,17 @@ const CardMenu = ({ resto, navigation, icon }) => {
             </TouchableOpacity>
           </View>
           <View style={globalStyles.cardsDescriptionContainer}>
-            <View style={{ alignSelf: "flex-end" }}>
+            <View style={{ alignSelf: "flex-end", backgroundColor: 'yellow'}}>
               <Text style={globalStyles.cardsDescriptionText}>
                 Categoria
               </Text>
+            </View>
+            <View style={{ alignSelf: "flex-end", backgroundColor: 'pink'}}>
               <Text style={globalStyles.cardsDescriptionText}>
                 Rating??
               </Text>
             </View>
+              
           </View>
         </View>
       </View >

@@ -28,16 +28,15 @@ const globalStyles = StyleSheet.create({
   },
   cardsContainer: {
     alignSelf: "center",
-    backgroundColor: "#f6efd2",
+    backgroundColor: "#f6efd3",
     marginHorizontal: 10,
-    marginVertical: 15,
-    paddingHorizontal: 20,
-    paddingVertical: 20,
+    marginVertical: 5,
+    paddingHorizontal: 15,
+    paddingVertical: 30,
     borderRadius: 25,
     width: "95%",
-    height: "14%",
-
-    //backgroundColor: "yellow",
+    maxHeight: "15%",
+    // height: '15%'
   },
   btn: {
     backgroundColor: '#ffd964',
@@ -51,25 +50,27 @@ const globalStyles = StyleSheet.create({
   img: {
     height: 40,
     width: 40,
-    marginTop: 5,
-    alignItems: "center",
     resizeMode: 'contain' // esta linea es para que se adapte al tam;o de la imagen
   },
   cardsHomeimg: {
-    //backgroundColor: "red",
-    alignSelf: "center",
+    backgroundColor: "red",
+    alignItems: 'center',
+    alignSelf: "flex-start",
     width: 100,
     height: 100,
     borderRadius: 25,
-    marginTop: -45, //VER COMO ARREGLAR 
+    marginVertical: -35, //VER COMO ARREGLAR 
   },
   cardsInfoContainer: {
     display: "flex",
     flexDirection: "row",
-    alignItems: "center",
+    alignSelf: "center",
+    backgroundColor: 'skyblue',
+    maxWidth: '40%',
+    // width: '100%'
   },
   cardsDescriptionContainer: {
-    //backgroundColor: "red",
+    // backgroundColor: "violet",
     flex: 1,
     alignSelf: "center",
     marginTop: -45,
@@ -85,16 +86,20 @@ const globalStyles = StyleSheet.create({
     color: '#392c28'
   },
   cardsHomeTitle: {
-    //backgroundColor: "blue",
-    fontSize: 30,
+    backgroundColor: "#5555",
+    fontSize: 25,
     fontWeight: "bold",
+    textAlign: "center",
     alignSelf: "center",
     marginTop: -15,
+    maxWidth: '40%',
+    width: '100%'
   },
   wspImage: {
     width: 30,
     height: 30,
     borderRadius: 25,
+    backgroundColor: 'yellow'
   },
   componentTitle: {
     alignSelf: "center",

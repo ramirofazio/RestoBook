@@ -140,8 +140,8 @@ const GlobalLogin = ({ navigation }) => {
               <View style={globalStyles.inputComponent}>
                 <TextInput
                   style={globalStyles.texts}
-                  placeholder="password"
-                  onChangeText={props.handleChange("Password")}
+                  placeholder="Password"
+                  onChangeText={props.handleChange("password")}
                   value={props.values.password}
                   secureTextEntry={flagSecureText}
                   onBlur={props.handleBlur("password")}
@@ -288,21 +288,26 @@ const GlobalLogin = ({ navigation }) => {
                   </View>
                   {props.touched.passwordConfirm && props.errors.passwordConfirm ? <Text style={globalStyles.errorText}>{props.errors.passwordConfirm}</Text> : null}
                   <TouchableOpacity
-                    style={globalStyles.eye}
                     onPress={() => flagSecureText ? setFlagSecureText(false) : setFlagSecureText(true)}
                   >
                     <Icon name={flagSecureText ? "eye-off" : "eye"} size={20} />
                   </TouchableOpacity>
-                  <View style={globalStyles.container}>
+                  <View style={globalStyles.btnContainerLogin}>
                     <TouchableOpacity
                       style={globalStyles.touchLog}
                       onPress={() => props.handleSubmit()}
                     >
                       <Text style={globalStyles.fontLog}>Sign Up</Text>
                     </TouchableOpacity>
-                    <Text style={globalStyles.textDownButton} onPress={() => setFlagLoginOrRegister(true)}>I have an account</Text>
-
+                    <TouchableOpacity
+                      style={globalStyles.touchFlag}
+                      onPress={() => props.handleSubmit()}
+                    >
+                      <Text style={globalStyles.fontLog} onPress={() => setFlagLoginOrRegister(true)}>I have an account</Text>
+                    </TouchableOpacity>
                   </View>
+                      
+
                 </View >
               )}
             </Formik >
