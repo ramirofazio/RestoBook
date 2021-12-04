@@ -20,7 +20,11 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
+<<<<<<< HEAD
 import { PaymentCalc } from "./PaymentCalc";
+=======
+import {WebViewScreen} from "./WebViewScreen"
+>>>>>>> Develop
 //
 //
 //----------FIREBASE UTILS-----------
@@ -30,6 +34,7 @@ import { doc, onSnapshot, collection, query } from "firebase/firestore";
 //
 //
 //---------SCREENS---------------
+import SearchBar from "./SearchBar.js";
 import CardHome from "../components/CardHome.js";
 import Btn from "./Helpers/Btns.js";
 //
@@ -44,7 +49,10 @@ const auth = getAuth();
 //---------------------------------------------------------------------------------------//
 //
 export default function Home({ navigation }) {
+<<<<<<< HEAD
   const youtube = "https://www.youtube.com/";
+=======
+>>>>>>> Develop
   //------LOGIN JOSE------------
   const [usuarioGlobal, setUsuarioGlobal] = useState("");
   const [availableCommerces, setAvailableCommerces] = useState([]);
@@ -112,6 +120,7 @@ export default function Home({ navigation }) {
       </View>
 
       <View style={styles.textContainer2}>
+<<<<<<< HEAD
         <TouchableOpacity onPress={() => navigation.navigate("PaymentCalc")}>
           <Text>
             <MaterialIcons
@@ -122,6 +131,15 @@ export default function Home({ navigation }) {
             Pagar: $100 de tu reserva
           </Text>
         </TouchableOpacity>
+=======
+      <TouchableOpacity onPress={() => navigation.navigate("WebViewScreen")}> 
+      <Text ><MaterialIcons name="payment" size={20}  color="black"></MaterialIcons> Pagar: $100 de tu reserva
+      </Text>
+      </TouchableOpacity>
+>>>>>>> Develop
+      </View>
+      <View>
+        <SearchBar/>
       </View>
 
       <View style={globalStyles.btnHome}>
@@ -162,6 +180,15 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: "90%",
     borderColor: "#bd967e",
+    borderRadius: 10,
+    borderWidth: 3,
+    marginTop: 10,
+  },
+  textContainer2: {
+    flex: 1,
+    alignSelf: "center",
+    justifyContent: "center",
+    width: "40%",
     borderRadius: 10,
     borderWidth: 3,
     marginTop: 10,
