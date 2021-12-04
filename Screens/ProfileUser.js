@@ -44,7 +44,7 @@ const reservas = [
 ]
 
 
-const ProfileUser = ({ navigation } ) => {
+const ProfileUser = ({ navigation }) => {
     const [user, setUser] = useState({
         name: '',
         email: '',
