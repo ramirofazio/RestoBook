@@ -14,7 +14,9 @@ import {
   View,
   Text,
   TextInput,
-  TouchableOpacity
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  ScrollView
 } from "react-native";
 //
 //
@@ -74,6 +76,8 @@ const GlobalLogin = ({ navigation }) => {
     return (
       //------------LOGIN---------------
       <View style={globalStyles.Home}>
+        <ScrollView contentContainerStyle={{ flex: 1 }}>
+
         <Formik
           initialValues={{
             email: "",
@@ -109,32 +113,38 @@ const GlobalLogin = ({ navigation }) => {
               <View style={globalStyles.inputComponent}>
                 <TextInput
                   style={globalStyles.texts}
-                  placeholder="password"
+                  placeholder="Password"
                   onChangeText={props.handleChange("password")}
                   value={props.values.password}
                   secureTextEntry={flagSecureText}
                   onBlur={props.handleBlur("password")}
                 />
-              </View>
-              {props.touched.password && props.errors.password ? <Text>{props.errors.password}</Text> : null}
               <TouchableOpacity
                 onPress={() => flagSecureText ? setFlagSecureText(false) : setFlagSecureText(true)}
               >
-                <Icon name={flagSecureText ? "eye-off" : "eye"} size={20} />
+                <Icon name={flagSecureText ? "eye-off" : "eye"} size={20} style={{alignSelf: "center"}} />
               </TouchableOpacity>
-              <View style={globalStyles.container}>
+              </View>
+              {props.touched.password && props.errors.password ? <Text>{props.errors.password}</Text> : null}
+              <View style={globalStyles.btnContainer}>
                 <TouchableOpacity
                   style={globalStyles.touchLog}
                   onPress={() => props.handleSubmit()}
                 >
                   <Text style={globalStyles.fontLog}>Log In</Text>
                 </TouchableOpacity>
-                <Text onPress={() => setFlagLoginOrRegister(false)}>I dont have an account yet</Text>
+                <TouchableOpacity
+                  style={globalStyles.touchFlag}
+                  onPress={() => props.handleSubmit()}
+                >
+                  <Text style={globalStyles.fontLog} onPress={() => setFlagLoginOrRegister(false)}>I dont have an account yet</Text>
+                </TouchableOpacity>
               </View>
             </View >
           )}
         </Formik >
-      </View >
+        </ScrollView>
+          </View >
     )
   } else {
 
