@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 //
 //
 //----------REACT-NATIVE UTILS-----------
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet,Image, Linking, TouchableOpacity } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import MapView from "react-native-maps";
 //
@@ -34,6 +34,13 @@ const auth = getAuth();
 //
 const DetailsResto = () => {
   const empresaDetail = useSelector((state) => state.empresaDetail);
+
+  const number = "+541168020511"
+  //WhatsApp
+  const handleWhatsAppPress = async() => {
+    
+    await Linking.openURL(`whatsapp://send?text=Hola RestoBook&phone=${number}`)
+}
   const [menuArr, setMenuArr] = useState([]);
   //Tiene que desactivar el boton en los comercios que no sean del logueado
 
@@ -82,6 +89,13 @@ const DetailsResto = () => {
             )}
           </ScrollView> : <Text style={{ alignSelf: "center", fontSize: 30, marginVertical: 30 }}> Add a food to see it!</Text>
         }
+            <View >
+            <TouchableOpacity onPress={(e) => handleWhatsAppPress(e)}>
+                        <View style={styles.wppIcon}>
+                            <Image style={styles.img} source={require('../assets/whatsapp.png') } />
+                         </View>
+                    </TouchableOpacity>
+            </View>
 
         <View style={styles.googleMapsContainer}>
           <MapView
@@ -153,6 +167,23 @@ const styles = StyleSheet.create({
     height: 130,
     borderRadius: 20,
   },
+  wppIcon:{
+    height:30,
+    marginLeft:10,
+    borderRadius: 10,
+    width: 40,
+    backgroundColor: '#ffd964',
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: '#b39138',
+    
+  },
+  img:{
+    margin: 5,
+    height:20,
+    width:20,
+    alignItems:'center'
+  }
 });
 
 export default DetailsResto;
