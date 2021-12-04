@@ -53,6 +53,7 @@ const reservas = [
     },
   },
 ];
+let CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/restobook/image/upload";
 let imgPerrito =
   "https://res.cloudinary.com/restobook/image/upload/samples/bike.jpg";
 const ProfileUser = ({ navigation }) => {
@@ -67,10 +68,6 @@ const ProfileUser = ({ navigation }) => {
   const handleEdit = () => {
     setUser();
   };
-
-  //   let openImagePickerAsync = (async) => {
-  //     File;
-  //   };
 
   let openImagePickerAsync = async () => {
     let permissionResult =
@@ -110,7 +107,6 @@ const ProfileUser = ({ navigation }) => {
     })
       .then(async (r) => {
         let data = await r.json();
-        let name = data.public_id;
       })
       .catch((err) => console.log(err));
   };
