@@ -40,6 +40,20 @@ export default Navigator = () => {
             },
           })}
         />
+<<<<<<< HEAD
+
+        <Stack.Screen
+          name="PaymentCalc"
+          component={PaymentCalc}
+          options={{
+            headerShown: false
+          }}
+        />
+
+
+
+=======
+>>>>>>> Develop
         <Stack.Screen name="RegisterUser" component={AddUserScreen} />
         <Stack.Screen
           name="RegisterResto"
@@ -106,8 +120,8 @@ export default Navigator = () => {
           name="GlobalLogin"
           component={GlobalLogin}
           options={{
-            headerTitle: "Login",
-            title: "Login",
+            headerTitle: "",
+            title: "RestoBook",
             headerTitleAlign: "center",
             headerStyle: {
               backgroundColor: "#f6efd2",
@@ -115,6 +129,7 @@ export default Navigator = () => {
             headerTintColor: "#392c28",
             headerTitleStyle: {
               fontSize: 25,
+              fontWeight: "bold",
             },
           }}
         />
