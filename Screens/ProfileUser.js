@@ -2,8 +2,7 @@ import React, { useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import { Text, View, ScrollView, StyleSheet, Image, TouchableOpacity, Animated, useWindowDimensions, Touchable, ActivityIndicator } from "react-native";
 import * as ImagePicker from 'expo-image-picker';
-import * as Firebase from 'firebase';
-import {firebaseConfig} from '/firebase.js'; //esto no se esta importando
+import firebase from "../database/firebase";
 import globalStyles from "./GlobalStyles";
 import StarFilled from 'react-native-vector-icons/AntDesign';
 import TagOutlined from 'react-native-vector-icons/AntDesign';
@@ -72,10 +71,7 @@ const ProfileUser = ({ navigation }) => {
     const scrollX = useRef(new Animated.Value(0)).current;
     const { width: windowWidth } = useWindowDimensions();
 
-    if(!Firebase.apps.length) {
-        Firebase.initializeApp(firebaseConfig)
-    }//ESTO ROMPE LA APP PQ FIREBASECONFIG NO SE ESTA IMPORTANDO
-
+    
     let openImagePicker = async () => {
         let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync() // este modulo pide permiso al user para leer los archivos de su disp.
 
@@ -106,11 +102,11 @@ const ProfileUser = ({ navigation }) => {
 
 
 
-        const ref = Firebase.storage().ref().child(new Date().toISOString())
+        const ref = firebase.storage.ref().child(new Date().toISOString())
         const snapshot = ref.put(blob)  
 
         snapshot.on(
-            Firebase.storage.TaskEvent.STATE_CHANGED, 
+            firebase.storage.TaskEvent.STATE_CHANGED, 
             () => {
             setUploading(true)
         }, 
@@ -123,7 +119,7 @@ const ProfileUser = ({ navigation }) => {
         () => {
             snapshot.snapshot.ref.getDownloadURL().then((url)=> {
                 setUploading(false)
-                console.log('download url: ',url)
+                console.log('download url: ', url)
                 blob.close();
                 return url
             })
@@ -135,7 +131,42 @@ const ProfileUser = ({ navigation }) => {
         <View style={styles.container}>
             <ScrollView style={styles.container}>
                 <View style={styles.imgContainer}>
+                    
                     {
+                        !image ? 
+                        <Image
+                            source={'https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-unknown-social-media-user-photo-default-avatar-profile-icon-vector-unknown-social-media-user-184816085.jpg'}
+                            style={styles.img}
+                        />
+                        :
+                        <Image
+                            source={image.localUri}
+                            style={styles.img}
+                        />
+                       
+                    }
+
+                        {   !image? 
+                            <TouchableOpacity 
+                                style={globalStyles.btn}
+                                onPress={openImagePicker}
+                            >
+                                <Text>Pick Image</Text>
+                            </TouchableOpacity>
+                            :
+                            !uploading ? <TouchableOpacity
+                            style={globalStyles.btn}
+                            onPress={uploadImage}
+                            >
+                                <Text>SUBIR IMAGEN</Text>
+                            </TouchableOpacity> 
+                            : 
+                            // y cuando se este cargando que active el spiner
+                            (
+                            <ActivityIndicator size='large' color='#5555'/>
+                            )
+                        }
+                    {/* {
                         image ? (<TouchableOpacity onPress={openImagePicker}>
                             <Image
                                 source={{ uri: image !== null ? image.localUri : 'https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-unknown-social-media-user-photo-default-avatar-profile-icon-vector-unknown-social-media-user-184816085.jpg' }}
@@ -149,19 +180,23 @@ const ProfileUser = ({ navigation }) => {
                                 />
                             </TouchableOpacity>
                             )
-                    }
+                            
+                            
+                        } */}
+                        {/* { // si la imagen no se esta cargando a firebase que este el boton
+                            !uploading ? <TouchableOpacity
+                            style={globalStyles.btn}
+                            onPress={uploadImage}
+                            >
+                                <Text>SUBIR IMAGEN</Text>
+                            </TouchableOpacity> 
+                            : 
+                            // y cuando se este cargando que active el spiner
+                            (
+                            <ActivityIndicator size='large' color='#5555'/>
+                            )
+                        } */}
 
-                    {   
-                        !uploading ? <TouchableOpacity
-                        style={globalStyles.btn}
-                        onPress={uploadImage}
-                        >
-                            <Text>SUBIR IMAGEN</Text>
-                        </TouchableOpacity> 
-                        : (
-                        <ActivityIndicator size='large' color='#5555'/>
-                        )
-                    }
 
                     <View style={styles.nombreContainer}>
                         <Text style={{ fontSize: 25, fontWeight: "bold", color: '#392c28', textAlignVertical: "top" }}>{reservas[1].name}</Text>
