@@ -132,6 +132,7 @@ const GlobalLogin = ({ navigation }) => {
   if (flagLoginOrRegister) {
     return (
       //------------LOGIN---------------
+      
       <View style={globalStyles.Home}>
         <Text style={{fontSize: 25,
           fontWeight: "bold",
