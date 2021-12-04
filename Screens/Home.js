@@ -11,14 +11,9 @@ import CurrentUser from "../Redux/Actions/CurrentUser.js";
 //
 //
 //----------REACT-NATIVE UTILS-----------
-<<<<<<< HEAD
-import { View, ScrollView, Text, StyleSheet, TouchableOpacity} from "react-native";
-import {MaterialIcons} from '@expo/vector-icons'
-=======
 import { View, ScrollView, Text, StyleSheet, Button, TouchableOpacity } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-import {PaymentCalc} from "./PaymentCalc"
->>>>>>> Develop
+import {WebViewScreen} from "./WebViewScreen"
 //
 //
 //----------FIREBASE UTILS-----------
@@ -43,7 +38,6 @@ const auth = getAuth();
 //---------------------------------------------------------------------------------------//
 //
 export default function Home({ navigation }) {
-  const youtube = "https://www.youtube.com/"
   //------LOGIN JOSE------------
   const [usuarioGlobal, setUsuarioGlobal] = useState("");
   const [availableCommerces, setAvailableCommerces] = useState([]);
@@ -119,25 +113,16 @@ export default function Home({ navigation }) {
       </View>
 
       <View style={styles.textContainer2}>
-      <TouchableOpacity onPress={() => navigation.navigate("PaymentCalc")}> 
+      <TouchableOpacity onPress={() => navigation.navigate("WebViewScreen")}> 
       <Text ><MaterialIcons name="payment" size={20}  color="black"></MaterialIcons> Pagar: $100 de tu reserva
       </Text>
       </TouchableOpacity>
       </View>
-<<<<<<< HEAD
       <View>
         <SearchBar/>
       </View>
-      <View style={styles.textContainer2}>
-      <TouchableOpacity onPress={() => navigation.navigate('Checkout', {price:"10"})}> 
-      <Text ><MaterialIcons name="payment" size={20}  color="black"></MaterialIcons> Pagar: $10 de tu reserva
-      </Text>
-      </TouchableOpacity>
-      </View>
-=======
 
 
->>>>>>> Develop
       <View style={globalStyles.btnHome}>
         {/* <Btn nombre="Categorias" ruta="#" navigation={navigation} /> */}
         <Btn
