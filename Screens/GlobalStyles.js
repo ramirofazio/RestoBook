@@ -100,7 +100,7 @@ const globalStyles = StyleSheet.create({
     alignSelf: "center",
     marginTop: 10,
     fontSize: 30,
-    color: "#000"
+    color: "#392c28"
 
   },
   containerTitle: {
@@ -132,11 +132,16 @@ const globalStyles = StyleSheet.create({
   },
   fontLog: {
     color: "#392c28",
-    fontWeight: "bold"
+    fontWeight: "bold",
+    textAlign: "center"
   },
-  container: {
+  btnContainerLogin: {
     flex: 6,
     alignItems: "center",
+    maxWidth: '80%',
+    width: '100%',
+    maxHeight: '70%',
+    height: '100%'
   },
   text: {
     fontSize: 20,
@@ -184,9 +189,6 @@ const globalStyles = StyleSheet.create({
     marginTop: 50,
     alignItems: "center",
 
-  },
-  eye: {
-    marginTop: 10,
   },
 });
 

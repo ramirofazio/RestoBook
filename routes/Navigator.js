@@ -99,7 +99,7 @@ export default Navigator = () => {
           component={GlobalLogin}
           options={{
             headerTitle: "",
-            title: "RestoBook",
+            title: "Resto Book",
             headerTitleAlign: "center",
             headerStyle: {
               backgroundColor: "#f6efd2",
@@ -107,7 +107,6 @@ export default Navigator = () => {
             headerTintColor: "#392c28",
             headerTitleStyle: {
               fontSize: 25,
-              fontWeight: "bold",
             },
           }}
         />
