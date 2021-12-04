@@ -43,7 +43,7 @@ export default function WebViewScreen ({navigation, redirectUrl}) {
             Event.create(eventInfoDB)
                 .then(id=>{
                     user.addRelation('events', 'created', {eventUUID: id, userUUID: auth.currentUser.uid})
-                    Alert.alert('Tu evento ha sido creado', 'Te enviamos un email con la información.');
+                    Alert.alert('Tu mesa a sido reservada');
                     navigation.replace('TabBar', currentUrl);
                 })
                 .catch(e=> {
