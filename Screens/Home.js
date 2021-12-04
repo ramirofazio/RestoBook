@@ -1,6 +1,8 @@
 //----------REACT UTILS-----------
 import React, { useState, useEffect } from "react";
 //
+//----------WEBVIEW---------------
+import { WebView } from "react-native-webview"
 //
 //----------REDUX UTILS-----------
 import { useDispatch, useSelector } from "react-redux";
@@ -9,7 +11,9 @@ import CurrentUser from "../Redux/Actions/CurrentUser.js";
 //
 //
 //----------REACT-NATIVE UTILS-----------
-import { View, ScrollView, Text, StyleSheet } from "react-native";
+import { View, Image, ScrollView, Text, StyleSheet, Button, TouchableOpacity } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
+import { PaymentCalc } from "./PaymentCalc"
 //
 //
 //----------FIREBASE UTILS-----------
@@ -33,6 +37,7 @@ const auth = getAuth();
 //---------------------------------------------------------------------------------------//
 //
 export default function Home({ navigation }) {
+  const youtube = "https://www.youtube.com/"
   //------LOGIN JOSE------------
   const [usuarioGlobal, setUsuarioGlobal] = useState("");
   const [availableCommerces, setAvailableCommerces] = useState([]);
@@ -92,8 +97,29 @@ export default function Home({ navigation }) {
           <Text style={styles.text}>{` Welcome ${usuarioGlobal}`}</Text>
         ) : (
           <Text style={styles.text}>Welcome to Resto Book</Text>
+
         )}
+
+
+
+
+
+        {/* <View> PAAGAARR
+          <WebView source={{uri: youtube}} onLoad={console.log("Loaded!")}>
+          </WebView>
+        </View> */}
+
+
       </View>
+
+      <View style={styles.textContainer2}>
+        <TouchableOpacity onPress={() => navigation.navigate("PaymentCalc")}>
+          <Text ><MaterialIcons name="payment" size={20} color="black"></MaterialIcons> Pagar: $100 de tu reserva
+          </Text>
+        </TouchableOpacity>
+      </View>
+
+
       <View style={globalStyles.btnHome}>
         {/* <Btn nombre="Categorias" ruta="#" navigation={navigation} /> */}
         <Btn
@@ -107,7 +133,7 @@ export default function Home({ navigation }) {
         />
       </View>
       {availableCommerces.length ? (
-        <ScrollView style={{ overflow: "scroll" }}>
+        <View>
           {availableCommerces.map((resto) => {
             return (
               <CardHome
@@ -115,11 +141,10 @@ export default function Home({ navigation }) {
                 resto={resto}
                 navigation={navigation}
               >
-                {" "}
               </CardHome>
             );
           })}
-        </ScrollView>
+        </View>
       ) : null}
     </ScrollView>
   );
@@ -127,7 +152,6 @@ export default function Home({ navigation }) {
 
 const styles = StyleSheet.create({
   textContainer: {
-    flex: 1,
     alignSelf: "center",
     justifyContent: "center",
     width: "90%",
@@ -144,4 +168,14 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#392c28",
   },
+
+  textContainer2: {
+    alignSelf: "center",
+    justifyContent: "center",
+    width: "40%",
+    borderRadius: 10,
+    borderWidth: 3,
+    marginTop: 10,
+  }
+
 });

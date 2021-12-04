@@ -2,17 +2,14 @@ import React from "react";
 import { Card, Text } from "react-native-elements";
 import { View, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { useDispatch } from "react-redux";
-
 //-------SCREENS--------
 import BtnFuncional from "../Screens/Helpers/BtnFuncional.js";
 
 //------ACTIONS---------
 import empresaDetail from "../Redux/Actions/empresaDetail.js";
-
 //-----STYLES----------
 import globalStyles from "../Screens/GlobalStyles.js";
-
-const CardMenu = ({ resto, navigation }) => {
+const CardMenu = ({ resto, navigation, icon }) => {
   //console.log(resto)
   const dispatch = useDispatch();
 
@@ -22,14 +19,15 @@ const CardMenu = ({ resto, navigation }) => {
   };
 
   return (
-    <Card style={styles.container}>
+    <TouchableOpacity
+      style={globalStyles.cardsContainer}
+      onPress={() => handleOnPress()}
+    >
       <View>
-        <Card.Title style={{ fontSize: 20 }}>{resto.title}</Card.Title>
-        <Card.Divider />
-        <View style={{ alignItems: "center" }}>
+        <Text style={globalStyles.cardsHomeTitle}>{resto.title}</Text>
+        <View style={globalStyles.cardsInfoContainer}>
           <Image
-            style={styles.imagen}
-            resizeMode="contain"
+            style={globalStyles.cardsHomeimg}
             source={
               resto.Img === ""
                 ? {
@@ -37,39 +35,50 @@ const CardMenu = ({ resto, navigation }) => {
                 }
                 : { uri: resto.Img }
             }
-            resizeMode="contain"
           />
-          <Text style={{ padding: 5, textAlign: "center", marginVertical: 5 }}>
-            {resto.Description}
-          </Text>
-          <View style={{}}>
+          <View style={{
+            width: 30, height: 30, marginLeft: 125, marginTop: 10,
+          }}>
             <TouchableOpacity
-              style={globalStyles.btn}
-              onPress={() => handleOnPress()}
+              onPress={() => alert("llevame a whatsapp")}
             >
-              <Text>About</Text>
+              <Image
+                style={globalStyles.wspImage}
+                resizeMode="contain"
+                source={require("../assets/whatsAppIcon.png")}
+              />
             </TouchableOpacity>
           </View>
+          <View style={globalStyles.cardsDescriptionContainer}>
+            <View style={{ alignSelf: "flex-end" }}>
+              <Text style={globalStyles.cardsDescriptionText}>
+                Categoria
+              </Text>
+              <Text style={globalStyles.cardsDescriptionText}>
+                Rating??
+              </Text>
+            </View>
+          </View>
         </View>
-      </View>
-    </Card>
+      </View >
+    </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
-    imagen: {
-        width: 140,
-        height: 140,
-    },
-    container: {
-        flex: 1,
-        marginVertical: 4,
-        marginHorizontal: 16,
-        borderRadius: 5,
-        overflow: "hidden",
-        alignItems: "center",
-        justifyContent: "center"
-    }
+  imagen: {
+    width: 140,
+    height: 140,
+  },
+  container: {
+    flex: 1,
+    marginVertical: 4,
+    marginHorizontal: 16,
+    borderRadius: 5,
+    overflow: "hidden",
+    alignItems: "center",
+    justifyContent: "center"
+  }
 })
 
 export default CardMenu;

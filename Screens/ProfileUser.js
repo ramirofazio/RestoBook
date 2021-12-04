@@ -1,6 +1,9 @@
 import React, { useState, useRef } from "react";
 import { useSelector } from "react-redux";
-import { Text, View, ScrollView, StyleSheet, Image, TouchableOpacity, Animated, useWindowDimensions, Touchable, ActivityIndicator } from "react-native";
+import {
+    Text, View, StyleSheet, Image, TouchableOpacity, TextInput,
+    Animated, useWindowDimensions, Alert, Modal,
+} from "react-native";
 import * as ImagePicker from 'expo-image-picker';
 import firebase from "../database/firebase";
 import globalStyles from "./GlobalStyles";
@@ -80,6 +83,7 @@ const ProfileUser = ({ navigation }) => {
         }
         setImage({ localUri: imageSelected.uri }) //sino actualizamos el estado con la dir de la imagen
     }
+    const [modalVisible, setModalVisible] = useState(false);
 
     const uploadImage = async () => {
         const blob = await new Promise((resolve, reject) => {
@@ -171,10 +175,43 @@ const ProfileUser = ({ navigation }) => {
                         <Text style={{ fontSize: 15, fontWeight: "bold", color: '#392c28', paddingVertical: 15 }}>{reservas[1].email}</Text>
                         <TouchableOpacity
                             style={globalStyles.btn}
-                            onPress={() => alert('deberia dejar editar nombre de usere email')}
+                            onPress={() => setModalVisible(true)}
                         >
                             <Text>Edit</Text>
                         </TouchableOpacity>
+                        <Modal
+                            animationType="slide"
+                            transparent={true}
+                            visible={modalVisible}
+                            onRequestClose={() => {
+                                Alert.alert("Modal has been closed.");
+                                setModalVisible(!modalVisible);
+                            }}
+                        >
+                            <View style={styles.centeredView}>
+                                <View style={styles.modalView}>
+                                    <TouchableOpacity
+                                        style={globalStyles.touchLog}
+                                        onPress={() => setModalVisible(!modalVisible)}
+                                    >
+                                        <Text style={styles.textStyle}>X</Text>
+                                    </TouchableOpacity>
+                                    <Text style={styles.modalText}>Edit your Username</Text>
+
+                                    <TextInput
+                                        style={globalStyles.texts}
+                                        placeholder="User name"
+                                    />
+
+                                    <TouchableOpacity
+                                        style={globalStyles.touchLog}
+
+                                    >
+                                        <Text>Save</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                        </Modal>
                     </View>
                 </View>
                 <View>
@@ -285,6 +322,62 @@ const styles = StyleSheet.create({
         // maxHeight: '40%',
         height: "40%",
     },
-
+    //----------------------- modal css?? ---------------------------------
+    centeredView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 22,
+        //backgroundColor: "blur",
+    },
+    modalView: {
+        margin: 20,
+        backgroundColor: "white",
+        borderRadius: 20,
+        padding: 35,
+        width: "45%",
+        height: "30%",
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 30,
+            height: 30
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5
+    },
+    button: {
+        borderRadius: 20,
+        padding: 10,
+        elevation: 2
+    },
+    buttonOpen: {
+        backgroundColor: "#F194FF",
+    },
+    buttonClose: {
+        backgroundColor: "#2196F3",
+    },
+    textStyle: {
+        color: "white",
+        fontWeight: "bold",
+        textAlign: "center",
+    },
+    modalText: {
+        marginBottom: 15,
+        textAlign: "center",
+        fontSize: 30,
+        fontWeight: "bold",
+    },
+    botton: {
+        borderRadius: 20,
+        padding: 10,
+        elevation: 2,
+        //float: "right",
+    },
+    bottonClose: {
+        backgroundColor: "#2196F3",
+    },
 });
+
 export default ProfileUser;
