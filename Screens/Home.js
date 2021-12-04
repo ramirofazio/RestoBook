@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 //
 //----------WEBVIEW---------------
-import {WebView} from "react-native-webview"
+import { WebView } from "react-native-webview"
 //
 //----------REDUX UTILS-----------
 import { useDispatch, useSelector } from "react-redux";
@@ -11,9 +11,9 @@ import CurrentUser from "../Redux/Actions/CurrentUser.js";
 //
 //
 //----------REACT-NATIVE UTILS-----------
-import { View, ScrollView, Text, StyleSheet, Button, TouchableOpacity } from "react-native";
+import { View, Image, ScrollView, Text, StyleSheet, Button, TouchableOpacity } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-import {PaymentCalc} from "./PaymentCalc"
+import { PaymentCalc } from "./PaymentCalc"
 //
 //
 //----------FIREBASE UTILS-----------
@@ -97,7 +97,7 @@ export default function Home({ navigation }) {
           <Text style={styles.text}>{` Welcome ${usuarioGlobal}`}</Text>
         ) : (
           <Text style={styles.text}>Welcome to Resto Book</Text>
-          
+
         )}
 
 
@@ -113,10 +113,10 @@ export default function Home({ navigation }) {
       </View>
 
       <View style={styles.textContainer2}>
-      <TouchableOpacity onPress={() => navigation.navigate("PaymentCalc")}> 
-      <Text ><MaterialIcons name="payment" size={20}  color="black"></MaterialIcons> Pagar: $100 de tu reserva
-      </Text>
-      </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("PaymentCalc")}>
+          <Text ><MaterialIcons name="payment" size={20} color="black"></MaterialIcons> Pagar: $100 de tu reserva
+          </Text>
+        </TouchableOpacity>
       </View>
 
 
@@ -133,7 +133,7 @@ export default function Home({ navigation }) {
         />
       </View>
       {availableCommerces.length ? (
-        <ScrollView style={{ overflow: "scroll" }}>
+        <View>
           {availableCommerces.map((resto) => {
             return (
               <CardHome
@@ -141,11 +141,10 @@ export default function Home({ navigation }) {
                 resto={resto}
                 navigation={navigation}
               >
-                {" "}
               </CardHome>
             );
           })}
-        </ScrollView>
+        </View>
       ) : null}
     </ScrollView>
   );
@@ -153,7 +152,6 @@ export default function Home({ navigation }) {
 
 const styles = StyleSheet.create({
   textContainer: {
-    flex: 1,
     alignSelf: "center",
     justifyContent: "center",
     width: "90%",
@@ -172,7 +170,6 @@ const styles = StyleSheet.create({
   },
 
   textContainer2: {
-    flex: 1,
     alignSelf: "center",
     justifyContent: "center",
     width: "40%",
@@ -180,5 +177,5 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     marginTop: 10,
   }
-  
+
 });
