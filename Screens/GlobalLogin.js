@@ -17,8 +17,8 @@ import {
   ScrollView,
   TouchableOpacity,
   StyleSheet,
-  Alert, 
- Modal,
+  Alert,
+  Modal,
 } from "react-native";
 
 //----------FIREBASE UTILS-----------
@@ -73,7 +73,7 @@ const GlobalLogin = ({ navigation }) => {
   const [flagLoginOrRegister, setFlagLoginOrRegister] = useState(true)
   const [flagSecureText, setFlagSecureText] = useState(true)
   const [modalVisible, setModalVisible] = useState(false);
-  
+
   if (flagLoginOrRegister) {
     return (
       //------------LOGIN---------------
@@ -134,41 +134,41 @@ const GlobalLogin = ({ navigation }) => {
                   <Text style={globalStyles.fontLog}>Log In</Text>
                 </TouchableOpacity>
                 <Text onPress={() => setModalVisible(true)}>I dont have an account yet</Text>
- {/* ------------------------- modal ---------------------------------  */}              
+                {/* ------------------------- modal ---------------------------------  */}
                 <Modal
-animationType="slide"
-transparent={true}
-visible={modalVisible}
-onRequestClose={() => {
-  Alert.alert("Modal has been closed.");
-  setModalVisible(!modalVisible);
-}}
->
-<View style={styles.centeredView}>
-  <View style={styles.modalView}>
-    <TouchableOpacity
-      style={globalStyles.touchLog}
-      onPress={() => setModalVisible(!modalVisible)}
-    >
-      <Text style={styles.textStyle}>X</Text>
-    </TouchableOpacity>
-    <Text style={styles.modalText}>Welcome to Restobook</Text>
-   
-    <TextInput
-      style={globalStyles.texts}
-      placeholder="Email"
-    />
-  
-  <TouchableOpacity
-                  style={globalStyles.touchLog}
-                 
-                  >
-                  <Text>Check in</Text>
-                </TouchableOpacity>
-  </View>
-</View>
-</Modal>
-{/* ----------------------------------------------------------------------------------- */}
+                  animationType="slide"
+                  transparent={true}
+                  visible={modalVisible}
+                  onRequestClose={() => {
+                    Alert.alert("Modal has been closed.");
+                    setModalVisible(!modalVisible);
+                  }}
+                >
+                  <View style={styles.centeredView}>
+                    <View style={styles.modalView}>
+                      <TouchableOpacity
+                        style={globalStyles.touchLog}
+                        onPress={() => setModalVisible(!modalVisible)}
+                      >
+                        <Text style={styles.textStyle}>X</Text>
+                      </TouchableOpacity>
+                      <Text style={styles.modalText}>Welcome to Restobook</Text>
+
+                      <TextInput
+                        style={globalStyles.texts}
+                        placeholder="Email"
+                      />
+
+                      <TouchableOpacity
+                        style={globalStyles.touchLog}
+
+                      >
+                        <Text>Check in</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                </Modal>
+                {/* ----------------------------------------------------------------------------------- */}
               </View>
             </View >
           )}
@@ -257,7 +257,7 @@ onRequestClose={() => {
                   onChangeText={props.handleChange("lastName")}
                   value={props.values.lastName}
                   onBlur={props.handleBlur("lastName")}
-                  />
+                />
               </View>
               {props.touched.lastName && props.errors.lastName ? <Text>{props.errors.lastName}</Text> : null}
               <View style={globalStyles.inputComponent}>
@@ -268,7 +268,7 @@ onRequestClose={() => {
                   value={props.values.cel}
                   onBlur={props.handleBlur("cel")}
                   keyboardType="numeric"
-                  />
+                />
               </View>
               {props.touched.cel && props.errors.cel ? <Text>{props.errors.cel}</Text> : null}
               <View style={globalStyles.inputComponent}>
@@ -278,7 +278,7 @@ onRequestClose={() => {
                   onChangeText={props.handleChange("email")}
                   value={props.values.email}
                   onBlur={props.handleBlur("email")}
-                  />
+                />
               </View>
               {props.touched.email && props.errors.email ? <Text>{props.errors.email}</Text> : null}
               <View style={globalStyles.inputComponent}>
@@ -289,7 +289,7 @@ onRequestClose={() => {
                   value={props.values.password}
                   secureTextEntry={flagSecureText}
                   onBlur={props.handleBlur("password")}
-                  />
+                />
               </View>
               {props.touched.password && props.errors.password ? <Text>{props.errors.password}</Text> : null}
               <View style={globalStyles.inputComponent}>
@@ -300,19 +300,19 @@ onRequestClose={() => {
                   value={props.values.passwordConfirm}
                   secureTextEntry={flagSecureText}
                   onBlur={props.handleBlur("passwordConfirm")}
-                  />
+                />
               </View>
               {props.touched.passwordConfirm && props.errors.passwordConfirm ? <Text>{props.errors.passwordConfirm}</Text> : null}
               <TouchableOpacity
                 onPress={() => flagSecureText ? setFlagSecureText(false) : setFlagSecureText(true)}
-                >
+              >
                 <Icon name={flagSecureText ? "eye-off" : "eye"} size={20} />
               </TouchableOpacity>
               <View style={globalStyles.container}>
                 <TouchableOpacity
                   style={globalStyles.touchLog}
                   onPress={() => props.handleSubmit()}
-                  >
+                >
                   <Text style={globalStyles.fontLog}>Sign Up</Text>
                 </TouchableOpacity>
                 <Text onPress={() => setFlagLoginOrRegister(true)}>I have an account</Text>
@@ -331,14 +331,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginTop: 22,
-    
+    //backgroundColor: "blur",
   },
   modalView: {
     margin: 20,
     backgroundColor: "white",
     borderRadius: 20,
     padding: 35,
-    width: "70%",
+    width: "50%",
     height: "80%",
     alignItems: "center",
     shadowColor: "#000",
@@ -376,12 +376,12 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 10,
     elevation: 2,
-   
+    //float: "right",
   },
   bottonClose: {
     backgroundColor: "#2196F3",
   },
-  });
+});
 
- export default GlobalLogin;
+export default GlobalLogin;
 
