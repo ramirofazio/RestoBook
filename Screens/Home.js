@@ -73,6 +73,7 @@ export default function Home({ navigation }) {
           (doc) => {
             if (doc.exists()) {
               dispatch(CurrentUser(doc.data()));
+              console.log("data user en home : ", doc.data());
             }
           }
         );

@@ -33,6 +33,7 @@ import {
   getRedirectResult,
   onAuthStateChanged,
 } from "firebase/auth";
+
 import firebase from "../database/firebase";
 import * as firebaseAuth from "firebase/auth";
 //
@@ -42,7 +43,11 @@ import * as firebaseAuth from "firebase/auth";
 //
 //
 //----------ENV-----------
-import { GOOGLE_0AUTH_ANDROID_ID, GOOGLE_0AUTH_IOS_ID } from "@env";
+import {
+  GOOGLE_0AUTH_ANDROID_ID,
+  GOOGLE_0AUTH_IOS_ID,
+  DEFAULT_PROFILE_IMAGE,
+} from "@env";
 //
 //
 //---------EXPO---------------
@@ -253,6 +258,7 @@ const GlobalLogin = ({ navigation }) => {
                           cel: values.cel,
                           email: values.email,
                           commerce: false,
+                          profileImage: DEFAULT_PROFILE_IMAGE,
                           reservations: [],
                           payments: [],
                         })

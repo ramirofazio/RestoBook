@@ -11,18 +11,22 @@ import {
   useWindowDimensions,
   Alert,
   Modal,
+  ActivityIndicator,
 } from "react-native";
 // import { CLOUDINARY_URL } from "@env";
 import * as ImagePicker from "expo-image-picker";
 import firebase from "../database/firebase";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { doc, onSnapshot, collection, query } from "firebase/firestore";
 import { TaskEvent } from "firebase/storage";
+import { CLOUDINARY_URL, CLOUDINARY_CONSTANT } from "@env";
 import globalStyles from "./GlobalStyles";
 import StarFilled from "react-native-vector-icons/AntDesign";
 import TagOutlined from "react-native-vector-icons/AntDesign";
 import { ScrollView } from "react-native-gesture-handler";
 import CardHome from "../components/CardHome.js";
 import CardReservation from "../components/CardReservation";
-
+const auth = getAuth();
 const reservas = [
   {
     id: 1,
@@ -53,23 +57,34 @@ const reservas = [
     },
   },
 ];
-let CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/restobook/image/upload";
+// let CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/restobook/image/upload";
 let imgPerrito =
   "https://res.cloudinary.com/restobook/image/upload/samples/bike.jpg";
 const ProfileUser = ({ navigation }) => {
   const empresas = useSelector((state) => state.empresas);
-  const [user, setUser] = useState({
-    name: "",
-    email: "",
-  });
+  const loggedUser = useSelector((state) => state.currentUser);
+  const loggedId = useSelector((state) => state.currentId);
   const [modalVisible, setModalVisible] = useState(false);
-  const [image, setImage] = useState({ localUri: null });
+
   const [uploading, setUploading] = useState(false);
-  const handleEdit = () => {
-    setUser();
-  };
+
+  //
+  const [image, setImage] = useState("");
+
+  useEffect(() => {
+    const q = query(collection(firebase.db, "Users"));
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        if (doc.id === loggedId) {
+          let obj = doc.data();
+          setImage(obj.profileImage);
+        }
+      });
+    });
+  }, [loggedId]);
 
   let openImagePickerAsync = async () => {
+    setUploading(true);
     let permissionResult =
       await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (permissionResult.granted === false) {
@@ -84,10 +99,9 @@ const ProfileUser = ({ navigation }) => {
     });
 
     if (pickerResult.cancelled === true) {
+      setUploading(false);
       return;
     }
-
-    setImage({ localUri: pickerResult.uri });
 
     let base64Img = `data:image/jpg;base64,${pickerResult.base64}`;
 
@@ -95,8 +109,6 @@ const ProfileUser = ({ navigation }) => {
       file: base64Img,
       upload_preset: "restohenry",
     };
-
-    debugger;
 
     fetch(CLOUDINARY_URL, {
       body: JSON.stringify(data),
@@ -107,75 +119,15 @@ const ProfileUser = ({ navigation }) => {
     })
       .then(async (r) => {
         let data = await r.json();
+        let str = data.secure_url.split("restohenry/")[1];
+        setImage(str);
+        firebase.db.collection("Users").doc(loggedId).update({
+          profileImage: str,
+        });
+        setUploading(false);
       })
       .catch((err) => console.log(err));
   };
-
-  // const getImage = async () => {
-  //     let result = await ImagePicker.launchImageLibraryAsync({
-  //         mediaTypes: ImagePicker.MediaTypeOptions.Images,
-  //         allowsEditing: true,
-  //         aspect: [4, 3],
-  //         quality: 1,
-  //         base64: true
-  //     })
-  //     if (!result.cancelled) {
-  //         const { uri, base64 } = result
-  //         uploadImage(uri, base64)
-  //     }
-  // }
-
-  // const uploadImage = (uri, base64) => {
-  //     const uriArr = uri.split('.');
-  //     const fileType = uriArr[uriArr.length - 1];
-  //     const file = `data:${fileType};base64,${base64}`
-  //     let upload = request.post()
-  // }
-
-  // const [reservation, setReservation] = useState({
-  //     personas: 0,
-  //     fecha: '',
-  //     hora: ''
-  // })
-  // const [bar, setBar] = useState({
-  //     name: '',
-  //     adress: ''
-  // })
-  // if (image.localUri) cargar en storage
-
-  //   const ref = firebase.storage.ref().child("img");
-  //   const snapshot = ref.put(image.localUri);
-  //   snapshot.on(
-  //     "STATE_CHANGED",
-  //     () => {
-  //       setUploading(true);
-  //     },
-  //     (error) => {
-  //       console.log("error", error);
-  //     },
-  //     () => {
-  //       snapshot.snapshot.ref.getDownloadURL().then((url) => {
-  //         console.log("download url", url);
-  //       });
-  //     }
-  //   );
-
-  // let openImagePicker = async () => {
-  //   let permissionResult =
-  //     await ImagePicker.requestMediaLibraryPermissionsAsync(); // este modulo pide permiso al user para leer los archivos de su disp.
-
-  //   if (permissionResult.granted === false) {
-  //     Alert.alert("Permission to access galery is required");
-  //     return;
-  //   }
-  //   const imageSelected = await ImagePicker.launchImageLibraryAsync(); // esto va a retornar la imagen que selecciono
-  //   if (imageSelected.cancelled === true) {
-  //     //si el estado de la seleccion es cancelado (o sea no selecciono una imagen)
-  //     return; // que no tire error
-  //   }
-  //   setImage({ localUri: imageSelected.uri }); //sino actualizamos el estado con la dir de la imagen
-  //   console.log("image: ", imageSelected);
-  // };
 
   const scrollX = useRef(new Animated.Value(0)).current;
   const { width: windowWidth } = useWindowDimensions();
@@ -184,42 +136,17 @@ const ProfileUser = ({ navigation }) => {
     <View style={styles.container}>
       <ScrollView style={styles.container}>
         <View style={styles.imgContainer}>
-          {image ? (
+          {image && !uploading ? (
             <TouchableOpacity onPress={openImagePickerAsync}>
-              {/* <Image
-                source={{
-                  uri:
-                    image !== null
-                      ? image.localUri
-                      : "https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-unknown-social-media-user-photo-default-avatar-profile-icon-vector-unknown-social-media-user-184816085.jpg",
-                }}
-                style={styles.img}
-              /> */}
               <Image
-                style={styles.img}
                 source={{
-                  uri: imgPerrito,
+                  uri: CLOUDINARY_CONSTANT + image,
                 }}
+                style={styles.img}
               />
             </TouchableOpacity>
           ) : (
-            <TouchableOpacity onPress={openImagePickerAsync}>
-              {/* <Image
-                source={{
-                  uri:
-                    image !== null
-                      ? image.localUri
-                      : "https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-unknown-social-media-user-photo-default-avatar-profile-icon-vector-unknown-social-media-user-184816085.jpg",
-                }}
-                style={styles.img}
-              /> */}
-              <Image
-                style={styles.img}
-                source={{
-                  uri: imgPerrito,
-                }}
-              />
-            </TouchableOpacity>
+            <ActivityIndicator size="large" color="#5555" style={styles.img} />
           )}
           <View style={styles.nombreContainer}>
             <Text
