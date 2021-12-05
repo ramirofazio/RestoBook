@@ -27,16 +27,17 @@ const globalStyles = StyleSheet.create({
     alignItems: "center",
   },
   cardsContainer: {
+    flex: 1,
     alignSelf: "center",
     backgroundColor: "#f6efd3",
     marginHorizontal: 10,
     marginVertical: 5,
-    paddingHorizontal: 15,
+    paddingHorizontal: 5,
     paddingVertical: 30,
     borderRadius: 25,
     width: "95%",
-    maxHeight: "15%",
-    // height: '15%'
+    // maxHeight: "15%",
+    height: 150
   },
   btn: {
     backgroundColor: '#ffd964',
@@ -52,31 +53,44 @@ const globalStyles = StyleSheet.create({
     width: 40,
     resizeMode: 'contain' // esta linea es para que se adapte al tam;o de la imagen
   },
+  containerImgCard: {
+    width: "31.6%",
+    maxHeight: '250%',
+    // height: '100%',
+    backgroundColor: 'pink',
+    marginVertical: -25,
+    // marginHorizontal: 5,
+    alignSelf: "flex-start",
+    alignItems: "center",
+    justifyContent: "center"
+  },
   cardsHomeimg: {
     backgroundColor: "red",
-    alignItems: 'center',
-    alignSelf: "flex-start",
-    width: 100,
-    height: 100,
+    width: '100%',
+    height: '100%',
     borderRadius: 25,
-    marginVertical: -35, //VER COMO ARREGLAR 
-  },
-  cardsInfoContainer: {
-    display: "flex",
-    flexDirection: "row",
-    alignSelf: "center",
-    backgroundColor: 'skyblue',
-    maxWidth: '40%',
-    // width: '100%'
   },
   cardsDescriptionContainer: {
-    // backgroundColor: "violet",
-    flex: 1,
+    flex: 2,
+    backgroundColor: 'green',
+    maxHeight: '100%',
+    height: '15%',
+    width: '33%',
     alignSelf: "center",
-    marginTop: -45,
+    justifyContent: "center"
+    
   },
   cardsDescriptionText: {
     textAlign: "center"
+  },
+  btnContainerCard: {
+    backgroundColor: 'violet',
+    // maxHeight: '15%',
+    height: '50%',
+    width: '31.6%',
+    alignSelf: "flex-end",
+    alignItems: "center",
+    marginTop: -65
   },
   title: {
     fontSize: 25,
@@ -90,16 +104,12 @@ const globalStyles = StyleSheet.create({
     fontSize: 25,
     fontWeight: "bold",
     textAlign: "center",
-    alignSelf: "center",
-    marginTop: -15,
-    maxWidth: '40%',
     width: '100%'
   },
   wspImage: {
     width: 30,
     height: 30,
-    borderRadius: 25,
-    backgroundColor: 'yellow'
+    borderRadius: 25
   },
   componentTitle: {
     alignSelf: "center",
