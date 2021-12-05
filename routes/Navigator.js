@@ -40,20 +40,6 @@ export default Navigator = () => {
             },
           })}
         />
-<<<<<<< HEAD
-
-        <Stack.Screen
-          name="PaymentCalc"
-          component={PaymentCalc}
-          options={{
-            headerShown: false
-          }}
-        />
-
-
-
-=======
->>>>>>> Develop
         <Stack.Screen name="RegisterUser" component={AddUserScreen} />
         <Stack.Screen
           name="RegisterResto"
