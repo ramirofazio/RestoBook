@@ -191,7 +191,7 @@ const RegisterResto = ({ navigation }) => {
         {(props) => (
           <View>
             <ScrollView>
-              <View style={globalStyles.inputComponent}>
+              <View style={styles.inputGroup}>
                 <TextInput
                   style={globalStyles.texts}
                   placeholder="Email"
@@ -203,7 +203,7 @@ const RegisterResto = ({ navigation }) => {
               {props.touched.email && props.errors.email ? (
                 <Text style={globalStyles.errorText}>{props.errors.email}</Text>
               ) : null}
-              <View style={globalStyles.inputComponent}>
+              <View style={styles.inputGroup}>
                 <TextInput
                   style={globalStyles.texts}
                   placeholder="Title"
@@ -215,7 +215,7 @@ const RegisterResto = ({ navigation }) => {
               {props.touched.title && props.errors.title ? (
                 <Text style={globalStyles.errorText}>{props.errors.title}</Text>
               ) : null}
-              <View style={globalStyles.inputComponent}>
+              <View style={styles.inputGroup}>
                 <TextInput
                   style={globalStyles.texts}
                   placeholder="Description"
@@ -227,7 +227,7 @@ const RegisterResto = ({ navigation }) => {
               {props.touched.description && props.errors.description ? (
                 <Text style={globalStyles.errorText}>{props.errors.description}</Text>
               ) : null}
-              <View style={globalStyles.inputComponent}>
+              <View style={styles.inputGroup}>
                 <TextInput
                   style={globalStyles.texts}
                   placeholder="Phone"
@@ -239,7 +239,7 @@ const RegisterResto = ({ navigation }) => {
               {props.touched.phone && props.errors.phone ? (
                 <Text style={globalStyles.errorText}>{props.errors.phone}</Text>
               ) : null}
-              <View style={globalStyles.inputComponent}>
+              <View style={styles.inputGroup}>
                 <TextInput
                   style={globalStyles.texts}
                   placeholder="Phone 2"
@@ -251,7 +251,7 @@ const RegisterResto = ({ navigation }) => {
               {props.touched.phone2 && props.errors.phone2 ? (
                 <Text style={globalStyles.errorText}>{props.errors.phone2}</Text>
               ) : null}
-              <View style={globalStyles.inputComponent}>
+              <View style={styles.inputGroup}>
                 <TextInput
                   style={globalStyles.texts}
                   placeholder="Cuit"
@@ -334,7 +334,7 @@ const RegisterResto = ({ navigation }) => {
                 styles={{
                   container: {
                     marginTop: 5,
-                    flex: 1,
+                    flex: 0,
                     padding: 0,
                     borderTopWidth: 1,
                     borderTopColor: "skyblue",
@@ -384,7 +384,7 @@ const styles = StyleSheet.create({
     padding: 25,
   },
   inputGroup: {
-    height: 50,
+    height: 15,
     padding: 0,
     marginBottom: 15,
     borderBottomWidth: 1,
