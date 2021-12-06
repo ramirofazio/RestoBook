@@ -215,8 +215,8 @@ const ProfileUser = ({ navigation }) => {
   const { width: windowWidth } = useWindowDimensions();
 
   return (
-    <View style={styles.container}>
-      <ScrollView style={styles.container}>
+    <View style={styles.container} >
+            <ScrollView style={styles.container} contentContainerStyle={{flex: 1}}>
         <View style={styles.imgContainer}>
           {image && !uploading ? (
             <TouchableOpacity onPress={openImagePickerAsync}>
