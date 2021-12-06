@@ -1,7 +1,7 @@
 import React,{useState, useRef, useEffect} from "react";
 import { StyleSheet } from "react-native";
 import { View, Text } from "react-native-animatable";
-import {WebView} from "react-native-webview";
+import { WebView } from "react-native-webview";
 import WebViewNavigation from "./WebViewNavigation";
 import { URL } from 'react-native-url-polyfill';
 import { useSelector } from "react-redux";
@@ -73,12 +73,12 @@ const handleForwardPress=()=> {
             }}
             > 
             </WebView>
-            <WebViewNavigation onBackPress={handleBackPress} onForwardPress={handleForwardPress}/>
+            <WebViewNavigation onBackPress={handleBackPress} onForwardPress={handleForwardPress} />
         </View>
     )
 }
 const styles = StyleSheet.create({
     container: {
-      flex:1,
+        flex: 1,
     },
 })

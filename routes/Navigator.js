@@ -86,23 +86,23 @@ export default Navigator = () => {
         />
         
         {/* Mercado Pago */}
-         <Stack.Screen
-        name="WebViewScreen"
-         component={WebViewScreen}
-         options={{
-          headerTitle: "WebViewScreen",
-          title: "WebViewScreen",
-          headerTitleAlign: "center",
-          headerStyle: {
-            backgroundColor: "#f6efd2",
-          },
-          headerTintColor: "#392c28",
-          headerTitleStyle: {
-            fontSize: 25,
-           },
+        <Stack.Screen
+          name="WebViewScreen"
+          component={WebViewScreen}
+          options={{
+            headerTitle: "WebViewScreen",
+            title: "WebViewScreen",
+            headerTitleAlign: "center",
+            headerStyle: {
+              backgroundColor: "#f6efd2",
+            },
+            headerTintColor: "#392c28",
+            headerTitleStyle: {
+              fontSize: 25,
+            },
           }}
-         />
-         {/* //============// */}
+        />
+        {/* //============// */}
 
         <Stack.Screen
           name="GlobalLogin"

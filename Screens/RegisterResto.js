@@ -85,6 +85,7 @@ const RegisterResto = ({ navigation }) => {
     lat: -34.6131500,
     lng: -58.3772300,
     address: "",
+    category: '',
   })
   const categories = useSelector((state) => state.categoriesResto);
 
@@ -129,251 +130,274 @@ const RegisterResto = ({ navigation }) => {
   }
 
   return (
-    <View style={globalStyles.Home}>
-      <Formik
-        initialValues={{
-          email: "",
-          razonSocial: "",
-          title: "",
-          description: "",
-          phone: "",
-          phone2: "",
-          cuit: "",
-          category: "",
-          img: "",
-          lat: state.lat,
-          lng: state.lng,
-          address: state.address,
-        }}
-        validationSchema={registerRestoSchema}
-        onSubmit={(values) => {
-          if (id) {
-            try {
-              firebase.db
-                .collection("Restos")
-                .doc()
-                .set({
-                  idUser: id,
-                  email: values.email,
-                  razonSocial: values.razonSocial,
-                  title: values.title,
-                  description: values.description,
-                  phone: values.phone,
-                  phone2: values.phone2,
-                  cuit: values.cuit,
-                  category: values.category,
-                  img: values.img,
-                  menu: [],
-                  location: {
-                    latitude: values.lat,
-                    longitude: values.lng,
-                    address: values.address
-                  }
-                })
-                .then(
-                  firebase.db
-                    .collection("Users")
-                    .doc(id)
-                    .update({
-                      commerce: true
-                    })
-                )
-                .then(alert("creado"))
-                .then(navigation.navigate("RestoBook"))
-            } catch (error) {
-              console.log(error);
+    <ScrollView>
+      <View style={globalStyles.Home}>
+        <Formik
+          initialValues={{
+            email: "",
+            razonSocial: "",
+            title: "",
+            description: "",
+            phone: "",
+            phone2: "",
+            cuit: "",
+            category: state.category,
+            img: "",
+            lat: state.lat,
+            lng: state.lng,
+            address: state.address,
+          }}
+          validationSchema={registerRestoSchema}
+          onSubmit={(values) => {
+            if (id) {
+              try {
+                firebase.db
+                  .collection("Restos")
+                  .doc()
+                  .set({
+                    idUser: id,
+                    email: values.email,
+                    razonSocial: values.razonSocial,
+                    title: values.title,
+                    description: values.description,
+                    phone: values.phone,
+                    phone2: values.phone2,
+                    cuit: values.cuit,
+                    category: values.category,
+                    img: values.img,
+                    menu: [],
+                    location: {
+                      latitude: values.lat,
+                      longitude: values.lng,
+                      address: values.address
+                    }
+                  })
+                  .then(
+                    firebase.db
+                      .collection("Users")
+                      .doc(id)
+                      .update({
+                        commerce: true
+                      })
+                  )
+                  .then(alert("creado"))
+                  .then(navigation.navigate("RestoBook"))
+              } catch (error) {
+                console.log(error);
+              }
+            } else {
+              alert("logueate!");
             }
-          } else {
-            alert("logueate!");
-          }
-        }}
-      >
-        {(props) => (
-          <View>
-            <ScrollView>
-              <View style={globalStyles.inputComponent}>
-                <TextInput
-                  style={globalStyles.texts}
-                  placeholder="Email"
-                  onChangeText={props.handleChange("email")}
-                  value={props.values.email}
-                  onBlur={props.handleBlur("email")}
-                />
-              </View>
-              {props.touched.email && props.errors.email ? (
-                <Text style={globalStyles.errorText}>{props.errors.email}</Text>
-              ) : null}
-              <View style={globalStyles.inputComponent}>
-                <TextInput
-                  style={globalStyles.texts}
-                  placeholder="Title"
-                  onChangeText={props.handleChange("title")}
-                  value={props.values.title}
-                  onBlur={props.handleBlur("title")}
-                />
-              </View>
-              {props.touched.title && props.errors.title ? (
-                <Text style={globalStyles.errorText}>{props.errors.title}</Text>
-              ) : null}
-              <View style={globalStyles.inputComponent}>
-                <TextInput
-                  style={globalStyles.texts}
-                  placeholder="Description"
-                  onChangeText={props.handleChange("description")}
-                  value={props.values.description}
-                  onBlur={props.handleBlur("description")}
-                />
-              </View>
-              {props.touched.description && props.errors.description ? (
-                <Text style={globalStyles.errorText}>{props.errors.description}</Text>
-              ) : null}
-              <View style={globalStyles.inputComponent}>
-                <TextInput
-                  style={globalStyles.texts}
-                  placeholder="Phone"
-                  onChangeText={props.handleChange("phone")}
-                  value={props.values.phone}
-                  onBlur={props.handleBlur("phone")}
-                />
-              </View>
-              {props.touched.phone && props.errors.phone ? (
-                <Text style={globalStyles.errorText}>{props.errors.phone}</Text>
-              ) : null}
-              <View style={globalStyles.inputComponent}>
-                <TextInput
-                  style={globalStyles.texts}
-                  placeholder="Phone 2"
-                  onChangeText={props.handleChange("phone2")}
-                  value={props.values.phone2}
-                  onBlur={props.handleBlur("phone2")}
-                />
-              </View>
-              {props.touched.phone2 && props.errors.phone2 ? (
-                <Text style={globalStyles.errorText}>{props.errors.phone2}</Text>
-              ) : null}
-              <View style={globalStyles.inputComponent}>
-                <TextInput
-                  style={globalStyles.texts}
-                  placeholder="Cuit"
-                  onChangeText={props.handleChange("cuit")}
-                  value={props.values.cuit}
-                  onBlur={props.handleBlur("cuit")}
-                />
-              </View>
-              {props.touched.cuit && props.errors.cuit ? (
-                <Text style={globalStyles.errorText}>{props.errors.cuit}</Text>
-              ) : null}
-              <View style={{ alignItems: "center" }}>
-                <TouchableOpacity
-                  style={globalStyles.touchLog}
-                  onPress={() => {
-                    handleOnPressPickImage(props.handleChange("img"));
-                  }}
-                >
-                  <Text style={globalStyles.fontLog}>
-                    {props.values.img && props.values.img.length > 0
-                      ? "Change Image"
-                      : "Select Image"}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-              <View style={{ alignItems: "center" }}>
-                <TouchableOpacity
-                  style={globalStyles.touchLog}
-                  onPress={() => props.handleSubmit()}
-                >
-                  <Text style={globalStyles.fontLog}>Create</Text>
-                </TouchableOpacity>
-              </View>
-              <View>
-                <TextInput
-                  editable={false}
-                  placeholder="Select Category"
-                  value={props.values.category}
-                  onPressIn={() => setIsVisible(true)}
-                />
-                <BottomSheet
-                  isVisible={isVisible}
-                  containerStyle={{ backgroundColor: 'rgba(0.5,0.25,0,0.2)' }}
-                >
-                  {categories.map((categoria, index) => (
-                    <ListItem
-                      key={index}
-                      containerStyle={{ backgroundColor: 'rgba(0.5,0.25,0,0.7)' }}
-                      style={{ borderWidth: 1, borderColor: '#cccccc' }}
-                      onPress={() => props.handleChange("category") && setIsVisible(false)}
-                    >
-                      <ListItem.Content>
-                        <ListItem.Title style={{ height: 35, color: '#FFF', padding: 8 }}>{categoria}</ListItem.Title>
-                      </ListItem.Content>
-                    </ListItem>
-                  ))}
-                  <ListItem key={999} containerStyle={{ backgroundColor: 'red' }} style={{ borderWidth: 1, borderColor: '#cccccc' }} onPress={() => setIsVisible(false)}>
-                    <ListItem.Content style={{}}>
-                      <ListItem.Title style={{ height: 35, color: '#FFF', padding: 8 }}>Cancel</ListItem.Title>
-                    </ListItem.Content>
-                  </ListItem>
-                </BottomSheet>
-              </View>
-            </ScrollView>
+          }}
+        >
+          {(props) => (
+            <View>
+              <ScrollView>
 
+                <View style={globalStyles.inputComponent}>
+                  <TextInput
+                    style={globalStyles.texts}
+                    placeholder="Email"
+                    onChangeText={props.handleChange("email")}
+                    value={props.values.email}
+                    onBlur={props.handleBlur("email")}
+                  />
+                </View>
 
-            <View style={{ flex: 3 }}>
-              <GooglePlacesAutocomplete
-                placeholder='Completa tu direccion'
-                nearbyPlacesAPI='GooglePlacesSearch'
-                debounce={400}
-                enablePoweredByContainer={false}
-                query={{
-                  key: GOOGLE_API_KEY,
-                  language: 'en',
-                }}
-                minLength={3}
-                onPress={(data, details = null) => setStateAndRegion(details.geometry.location, details.formatted_address)}
-                fetchDetails={true}
-                styles={{
-                  container: {
-                    marginTop: 5,
-                    flex: 1,
-                    padding: 0,
-                    borderTopWidth: 1,
-                    borderTopColor: "skyblue",
-                  },
-                  textInput: {
-                    fontSize: 15,
-                    marginLeft: -9,
-                    backgroundColor: 'transparent',
-                  }
-                }}
-              />
-              <View style={styles.googleMapsContainer}>
-                <MapView
-                  style={styles.googleMaps}
-                  region={region}
-                >
-                  <Marker
-                    draggable
-                    title='Your Resto'
-                    coordinate={region}
-                    onDragEnd={event => {
-                      const { latitude, longitude } = event.nativeEvent.coordinate
-                      const newLocation = {
-                        lat: latitude,
-                        lng: longitude
-                      }
-                      setStateAndRegion(newLocation)
+                {props.touched.email && props.errors.email ? (
+                  <Text style={globalStyles.errorText}>{props.errors.email}</Text>
+                ) : null}
+
+                <View style={globalStyles.inputComponent}>
+                  <TextInput
+                    style={globalStyles.texts}
+                    placeholder="Title"
+                    onChangeText={props.handleChange("title")}
+                    value={props.values.title}
+                    onBlur={props.handleBlur("title")}
+                  />
+                </View>
+
+                {props.touched.title && props.errors.title ? (
+                  <Text style={globalStyles.errorText}>{props.errors.title}</Text>
+                ) : null}
+
+                <View style={globalStyles.inputComponent}>
+                  <TextInput
+                    style={globalStyles.texts}
+                    placeholder="Description"
+                    onChangeText={props.handleChange("description")}
+                    value={props.values.description}
+                    onBlur={props.handleBlur("description")}
+                  />
+                </View>
+
+                {props.touched.description && props.errors.description ? (
+                  <Text style={globalStyles.errorText}>{props.errors.description}</Text>
+                ) : null}
+
+                <View style={globalStyles.inputComponent}>
+                  <TextInput
+                    style={globalStyles.texts}
+                    placeholder="Phone"
+                    onChangeText={props.handleChange("phone")}
+                    value={props.values.phone}
+                    onBlur={props.handleBlur("phone")}
+                  />
+                </View>
+
+                {props.touched.phone && props.errors.phone ? (
+                  <Text style={globalStyles.errorText}>{props.errors.phone}</Text>
+                ) : null}
+
+                <View style={globalStyles.inputComponent}>
+                  <TextInput
+                    style={globalStyles.texts}
+                    placeholder="Phone 2"
+                    onChangeText={props.handleChange("phone2")}
+                    value={props.values.phone2}
+                    onBlur={props.handleBlur("phone2")}
+                  />
+                </View>
+
+                {props.touched.phone2 && props.errors.phone2 ? (
+                  <Text style={globalStyles.errorText}>{props.errors.phone2}</Text>
+                ) : null}
+
+                <View style={globalStyles.inputComponent}>
+                  <TextInput
+                    style={globalStyles.texts}
+                    placeholder="Cuit"
+                    onChangeText={props.handleChange("cuit")}
+                    value={props.values.cuit}
+                    onBlur={props.handleBlur("cuit")}
+                  />
+                </View>
+
+                {props.touched.cuit && props.errors.cuit ? (
+                  <Text style={globalStyles.errorText}>{props.errors.cuit}</Text>
+                ) : null}
+
+                <View style={{ alignItems: "center" }}>
+                  <TouchableOpacity
+                    style={globalStyles.touchLog}
+                    onPress={() => {
+                      handleOnPressPickImage(props.handleChange("img"));
                     }}
-                    pinColor='#0072B5'
                   >
-                  </Marker>
-                </MapView>
-              </View>
+                    <Text style={globalStyles.fontLog}>
+                      {props.values.img && props.values.img.length > 0
+                        ? "Change Image"
+                        : "Select Image"}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+
+                <View style={{ alignItems: "center" }}>
+                  <TouchableOpacity
+                    style={globalStyles.touchLog}
+                    onPress={() => props.handleSubmit()}
+                  >
+                    <Text style={globalStyles.fontLog}>Create</Text>
+                  </TouchableOpacity>
+                </View>
+              </ScrollView>
+
             </View>
+
+          )}
+        </Formik>
+
+        <View style={globalStyles.inputComponent}>
+          <TextInput
+            style={globalStyles.texts}
+            editable={false}
+            placeholder="Select Category"
+            value={state.category}
+            onPressIn={() => setIsVisible(true)}
+          />
+          <BottomSheet
+            isVisible={isVisible}
+            containerStyle={{ backgroundColor: 'rgba(0.5,0.25,0,0.2)' }}
+          >
+            {categories.map((categoria, index) => (
+              <ListItem
+                key={index}
+                containerStyle={{ backgroundColor: 'rgba(0.5,0.25,0,0.7)' }}
+                style={{ borderWidth: 1, borderColor: '#cccccc' }}
+                onPress={(e) => setState({ ...state, category: categoria }) && setIsVisible(false)}
+              >
+                <ListItem.Content>
+                  <ListItem.Title style={{ height: 35, color: '#FFF', padding: 8 }}>{categoria}</ListItem.Title>
+                </ListItem.Content>
+              </ListItem>
+            ))}
+            <ListItem key={999} containerStyle={{ backgroundColor: 'red' }} style={{ borderWidth: 1, borderColor: '#cccccc' }} onPress={() => setIsVisible(false)}>
+              <ListItem.Content style={{}}>
+                <ListItem.Title style={{ height: 35, color: '#FFF', padding: 8 }}>Cancel</ListItem.Title>
+              </ListItem.Content>
+            </ListItem>
+          </BottomSheet>
+        </View>
+
+
+        <View style={{ flex: 3 }}>
+          <View style={globalStyles.inputComponent}>
+            <GooglePlacesAutocomplete
+              placeholder='Completa tu direccion'
+              nearbyPlacesAPI='GooglePlacesSearch'
+              debounce={400}
+              enablePoweredByContainer={false}
+              query={{
+                key: GOOGLE_API_KEY,
+                language: 'en',
+              }}
+              minLength={3}
+              onPress={(data, details = null) => setStateAndRegion(details.geometry.location, details.formatted_address)}
+              fetchDetails={true}
+              styles={{
+                container: {
+                  marginTop: 5,
+                  flex: 1,
+                  padding: 0,
+                  borderTopWidth: 1,
+                  borderTopColor: "skyblue",
+                },
+                textInput: {
+                  fontSize: 15,
+                  marginLeft: -9,
+                  backgroundColor: 'transparent',
+                }
+              }}
+            />
           </View>
 
-        )}
-      </Formik>
-    </View >
+          <View style={styles.googleMapsContainer}>
+            <MapView
+              style={styles.googleMaps}
+              region={region}
+            >
+
+              <Marker
+                draggable
+                title='Your Resto'
+                coordinate={region}
+                onDragEnd={event => {
+                  const { latitude, longitude } = event.nativeEvent.coordinate
+                  const newLocation = {
+                    lat: latitude,
+                    lng: longitude
+                  }
+                  setStateAndRegion(newLocation)
+                }}
+                pinColor='#0072B5'
+              >
+              </Marker>
+            </MapView>
+          </View>
+        </View>
+      </View >
+    </ScrollView>
 
   )
 }
@@ -401,7 +425,7 @@ const styles = StyleSheet.create({
   },
   googleMapsContainer: {
     padding: 5,
-    flex: 2
+    flex: 2,
   },
   googleMaps: {
     borderColor: '#034F84',
