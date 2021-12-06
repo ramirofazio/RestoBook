@@ -387,9 +387,9 @@ const GlobalLogin = ({ navigation }) => {
                     </TouchableOpacity>
                     <TouchableOpacity
                       style={globalStyles.touchFlag}
-                      onPress={() => props.handleSubmit()}
+                      onPress={() => setFlagLoginOrRegister(true)}
                     >
-                      <Text style={globalStyles.fontLog} onPress={() => setFlagLoginOrRegister(true)}>I have an account</Text>
+                      <Text style={globalStyles.fontLog}>I have an account</Text>
                     </TouchableOpacity>
                   </View>
                       
