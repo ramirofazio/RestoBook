@@ -191,6 +191,7 @@ const RegisterResto = ({ navigation }) => {
         {(props) => (
           <View>
             <ScrollView>
+
               <View style={globalStyles.inputComponent}>
                 <TextInput
                   style={globalStyles.texts}
@@ -200,9 +201,11 @@ const RegisterResto = ({ navigation }) => {
                   onBlur={props.handleBlur("email")}
                 />
               </View>
+
               {props.touched.email && props.errors.email ? (
                 <Text style={globalStyles.errorText}>{props.errors.email}</Text>
               ) : null}
+
               <View style={globalStyles.inputComponent}>
                 <TextInput
                   style={globalStyles.texts}
@@ -212,9 +215,11 @@ const RegisterResto = ({ navigation }) => {
                   onBlur={props.handleBlur("title")}
                 />
               </View>
+
               {props.touched.title && props.errors.title ? (
                 <Text style={globalStyles.errorText}>{props.errors.title}</Text>
               ) : null}
+
               <View style={globalStyles.inputComponent}>
                 <TextInput
                   style={globalStyles.texts}
@@ -224,9 +229,11 @@ const RegisterResto = ({ navigation }) => {
                   onBlur={props.handleBlur("description")}
                 />
               </View>
+
               {props.touched.description && props.errors.description ? (
                 <Text style={globalStyles.errorText}>{props.errors.description}</Text>
               ) : null}
+
               <View style={globalStyles.inputComponent}>
                 <TextInput
                   style={globalStyles.texts}
@@ -236,9 +243,11 @@ const RegisterResto = ({ navigation }) => {
                   onBlur={props.handleBlur("phone")}
                 />
               </View>
+
               {props.touched.phone && props.errors.phone ? (
                 <Text style={globalStyles.errorText}>{props.errors.phone}</Text>
               ) : null}
+
               <View style={globalStyles.inputComponent}>
                 <TextInput
                   style={globalStyles.texts}
@@ -248,9 +257,11 @@ const RegisterResto = ({ navigation }) => {
                   onBlur={props.handleBlur("phone2")}
                 />
               </View>
+
               {props.touched.phone2 && props.errors.phone2 ? (
                 <Text style={globalStyles.errorText}>{props.errors.phone2}</Text>
               ) : null}
+
               <View style={globalStyles.inputComponent}>
                 <TextInput
                   style={globalStyles.texts}
@@ -260,9 +271,11 @@ const RegisterResto = ({ navigation }) => {
                   onBlur={props.handleBlur("cuit")}
                 />
               </View>
+
               {props.touched.cuit && props.errors.cuit ? (
                 <Text style={globalStyles.errorText}>{props.errors.cuit}</Text>
               ) : null}
+
               <View style={{ alignItems: "center" }}>
                 <TouchableOpacity
                   style={globalStyles.touchLog}
@@ -277,6 +290,7 @@ const RegisterResto = ({ navigation }) => {
                   </Text>
                 </TouchableOpacity>
               </View>
+
               <View style={{ alignItems: "center" }}>
                 <TouchableOpacity
                   style={globalStyles.touchLog}
@@ -285,6 +299,7 @@ const RegisterResto = ({ navigation }) => {
                   <Text style={globalStyles.fontLog}>Create</Text>
                 </TouchableOpacity>
               </View>
+
               <View>
                 <TextInput
                   editable={false}
@@ -315,8 +330,8 @@ const RegisterResto = ({ navigation }) => {
                   </ListItem>
                 </BottomSheet>
               </View>
-            </ScrollView>
 
+            </ScrollView>
 
             <View style={{ flex: 3 }}>
               <GooglePlacesAutocomplete
@@ -346,11 +361,13 @@ const RegisterResto = ({ navigation }) => {
                   }
                 }}
               />
+
               <View style={styles.googleMapsContainer}>
                 <MapView
                   style={styles.googleMaps}
                   region={region}
                 >
+
                   <Marker
                     draggable
                     title='Your Resto'
