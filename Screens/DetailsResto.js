@@ -80,7 +80,7 @@ const DetailsResto = () => {
             <Text style={styles.categoriesText}>Drinks</Text>
           </View>
         </View>
-        {menuArr.length > 0 ? (
+        {menuArr.length > 0 ? 
           <ScrollView style={styles.showMenu}>
             {menuArr.map((menu, index) => {
               return (
@@ -90,7 +90,7 @@ const DetailsResto = () => {
               );
             })}
           </ScrollView>
-        ) : (
+         : (
           <Text
             style={{ alignSelf: "center", fontSize: 30, marginVertical: 30 }}
           >
