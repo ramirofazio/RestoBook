@@ -40,7 +40,6 @@ export default Navigator = () => {
             },
           })}
         />
-<<<<<<< HEAD
 
         <Stack.Screen
           name="PaymentCalc"
@@ -52,8 +51,6 @@ export default Navigator = () => {
 
 
 
-=======
->>>>>>> Develop
         <Stack.Screen name="RegisterUser" component={AddUserScreen} />
         <Stack.Screen
           name="RegisterResto"
