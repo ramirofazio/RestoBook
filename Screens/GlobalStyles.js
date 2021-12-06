@@ -149,6 +149,7 @@ const globalStyles = StyleSheet.create({
     height: '100%'
   },
   text: {
+    textAlign: "center",
     fontSize: 20,
     width: "100%",
   },

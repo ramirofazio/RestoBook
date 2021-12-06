@@ -70,6 +70,7 @@ const provider = new GoogleAuthProvider();
 //
 //-------YUP(Validacion)------
 import * as yup from "yup";
+import Btn from "./Helpers/Btns";
 //
 //---------------------------------------------------------------------------------------//
 //
@@ -213,14 +214,17 @@ const GlobalLogin = ({ navigation }) => {
 
                 <TouchableOpacity
                   style={globalStyles.touchFlag}
+                  onPress={() => Glogin()}>
+                  <Text style={globalStyles.fontLog}>Log In with Google</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={globalStyles.touchFlag}
                   onPress={() => setFlagLoginOrRegister(false)}
                 >
                   <Text style={globalStyles.fontLog}>I dont have an account yet</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => Glogin()}>
-                  <Text>Google</Text>
-                </TouchableOpacity>
               </View>
             </View>
           )}
@@ -383,15 +387,14 @@ const GlobalLogin = ({ navigation }) => {
                   <View style={globalStyles.btnContainerLogin}>
                     <TouchableOpacity
                       style={globalStyles.touchLog}
-                      onPress={() => props.handleSubmit()}
+                      onPress={() => { props.handleSubmit() && setFlagLoginOrRegister(true) }}
                     >
                       <Text style={globalStyles.fontLog}>Sign Up</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                       style={globalStyles.touchFlag}
-                      onPress={() => props.handleSubmit()}
-                    >
-                      <Text style={globalStyles.fontLog} onPress={() => setFlagLoginOrRegister(true)}>I have an account</Text>
+                      onPress={() => setFlagLoginOrRegister(true)}                    >
+                      <Text style={globalStyles.fontLog} >I have an account</Text>
                     </TouchableOpacity>
                   </View>
 
