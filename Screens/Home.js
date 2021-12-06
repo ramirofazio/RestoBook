@@ -11,7 +11,6 @@ import CurrentUser from "../Redux/Actions/CurrentUser.js";
 //
 //
 //----------REACT-NATIVE UTILS-----------
-
 import { View, Image, ScrollView, Text, StyleSheet, Button, TouchableOpacity } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 //
@@ -60,6 +59,7 @@ export default function Home({ navigation }) {
   }, []);
   onAuthStateChanged(auth, (usuarioFirebase) => {
     if (usuarioFirebase?.emailVerified) {
+      console.log(loggedId)
       if (loggedId !== usuarioFirebase.uid) {
         dispatch(CurrentId(usuarioFirebase.uid));
         const unsub = onSnapshot(
@@ -90,8 +90,6 @@ export default function Home({ navigation }) {
     }
   });
 
-  
-
   return (
     <ScrollView style={globalStyles.Home}>
       <View style={styles.textContainer}>
@@ -101,21 +99,15 @@ export default function Home({ navigation }) {
           <Text style={styles.text}>Welcome to Resto Book</Text>
         )}
 
-
-
-
-
-
       </View>
-
       <View style={styles.textContainer2}>
-      <TouchableOpacity onPress={() => navigation.navigate("WebViewScreen")}> 
-      <Text ><MaterialIcons name="payment" size={20}  color="black"></MaterialIcons> Pagar: $100 de tu reserva
-      </Text>
-      </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("WebViewScreen")}>
+          <Text ><MaterialIcons name="payment" size={20} color="black"></MaterialIcons> Pagar: $100 de tu reserva
+          </Text>
+        </TouchableOpacity>
       </View>
       <View>
-        <SearchBar/>
+        <SearchBar />
       </View>
 
       <View style={globalStyles.btnHome}>

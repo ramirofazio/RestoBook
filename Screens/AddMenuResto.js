@@ -97,7 +97,7 @@ const AddMenuResto = ({ navigation }) => {
               />
             </View>
             {props.touched.foodName && props.errors.foodName ? (
-              <Text>{props.errors.foodName}</Text>
+              <Text style={globalStyles.errorText}>{props.errors.foodName}</Text>
             ) : null}
             <View style={globalStyles.inputComponent}>
               <TextInput
