@@ -187,7 +187,6 @@ const globalStyles = StyleSheet.create({
     backgroundColor: "#e8b595",
     maxWidth: '100%',
     width: '60%',
-    borderRadius: 10,
   },
   modalInputContainer: {
     flex: 2,
