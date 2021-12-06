@@ -210,58 +210,14 @@ const RegisterResto = (props) => {
           value={state.email}
         />
       </View>
-
-      {/* 
-       <View style={styles.inputGroup}>
-        <TextInput
-          placeholder="Calle"
-          onChangeText={(value) => handleChangeText(value, "calle")}
-          value={state.calle}
-          />
-      </View>
-
       <View style={styles.inputGroup}>
-        <TextInput
-          placeholder="Numero"
-          onChangeText={(value) => handleChangeText(value, "numero")}
-          value={state.numero}
-          />
-      </View>
-
-      <View style={styles.inputGroup}>
-        <TextInput
-          placeholder="Provincia"
-          onChangeText={(value) => handleChangeText(value, "provincia")}
-          value={state.provincia}
-        />
-      </View>
-
-       <View style={styles.inputGroup}>
-        <TextInput
-          placeholder="Ciudad"
-          onChangeText={(value) => handleChangeText(value, "ciudad")}
-          value={state.ciudad}
-          onBlur={ value => handleCityBlur(value)}
-          />
-      </View>  */}
-
-      {/* <GooglePlacesInput>
-      </GooglePlacesInput> */}
-      {/* <View style={styles.inputGroup}>
-        <TextInput
-          placeholder="Horarios"
-          onChangeText={(value) => handleChangeText(value, "horarios")}
-          value={state.horarios}
-        />
-      </View> */}
-      {/* <View style={styles.inputGroup}>
         <TextInput
           placeholder="Title"
           onChangeText={(value) => handleChangeText(value, "Title")}
           value={state.Title}
         />
       </View>
-      
+
       <View style={styles.inputGroup}>
         <TextInput
           placeholder="Descripcion"
@@ -269,13 +225,6 @@ const RegisterResto = (props) => {
           value={state.Description}
         />
       </View>
-      <View style={styles.inputGroup}>
-        <TextInput
-          placeholder="Image"
-          onChangeText={(value) => handleChangeText(value, "Img")}
-          value={state.Img}
-        />
-      </View> */}
 
       <View style={styles.googleMapsContainer}>
         <MapView

@@ -11,7 +11,6 @@ import AddMenuResto from "../Screens/AddMenuResto.js";
 import DetailsResto from "../Screens/DetailsResto";
 import ProfileUser from '../Screens/ProfileUser.js';
 import GlobalLogin from "../Screens/GlobalLogin.js";
-import PaymentCalc from "../Screens/PaymentCalc"
 import WebViewScreen from "../Screens/WebViewScreen"
 
 import AwaitEmail from "../Screens/AwaitEmail.js";
@@ -41,17 +40,6 @@ export default Navigator = () => {
             },
           })}
         />
-
-<Stack.Screen
-        name= "PaymentCalc"
-         component={PaymentCalc}
-         options={{
-           headerShown: false
-         }}
-         />
-
-         
-
         <Stack.Screen name="RegisterUser" component={AddUserScreen} />
         <Stack.Screen
           name="RegisterResto"
@@ -85,8 +73,20 @@ export default Navigator = () => {
             },
           }}
           />
-  {/* Mercado Pago */}
-  <Stack.Screen
+
+        <Stack.Screen
+          name="DetailsResto"
+          component={DetailsResto}
+          options={({ navigation }) => ({
+            headerTitle: () => <NavDetail navigation={navigation} />,
+            headerStyle: {
+              backgroundColor: "#f6efd2",
+            },
+          })}
+        />
+        
+        {/* Mercado Pago */}
+         <Stack.Screen
         name="WebViewScreen"
          component={WebViewScreen}
          options={{
@@ -104,24 +104,12 @@ export default Navigator = () => {
          />
          {/* //============// */}
 
-
-
-        <Stack.Screen
-          name="DetailsResto"
-          component={DetailsResto}
-          options={({ navigation }) => ({
-            headerTitle: () => <NavDetail navigation={navigation} />,
-            headerStyle: {
-              backgroundColor: "#f6efd2",
-            },
-          })}
-        />
         <Stack.Screen
           name="GlobalLogin"
           component={GlobalLogin}
           options={{
-            headerTitle: "Login",
-            title: "Login",
+            headerTitle: "",
+            title: "Resto Book",
             headerTitleAlign: "center",
             headerStyle: {
               backgroundColor: "#f6efd2",
