@@ -14,9 +14,6 @@ import CurrentUser from "../Redux/Actions/CurrentUser.js";
 
 import { View, Image, ScrollView, Text, StyleSheet, Button, TouchableOpacity } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-
-import { PaymentCalc } from "./PaymentCalc";
-import {WebViewScreen} from "./WebViewScreen"
 //
 //
 //----------FIREBASE UTILS-----------
@@ -33,6 +30,7 @@ import Btn from "./Helpers/Btns.js";
 //
 //-------STYLES-------
 import globalStyles from "./GlobalStyles.js";
+import { State } from "react-native-gesture-handler";
 //
 //
 //-------INITIALIZATIONS-------
@@ -92,6 +90,8 @@ export default function Home({ navigation }) {
     }
   });
 
+  
+
   return (
     <ScrollView style={globalStyles.Home}>
       <View style={styles.textContainer}>
@@ -101,14 +101,14 @@ export default function Home({ navigation }) {
           <Text style={styles.text}>Welcome to Resto Book</Text>
         )}
 
-        {/* <View> PAAGAARR
-          <WebView source={{uri: youtube}} onLoad={console.log("Loaded!")}>
-          </WebView>
-        </View> */}
+
+
+
+
+
       </View>
 
       <View style={styles.textContainer2}>
-
       <TouchableOpacity onPress={() => navigation.navigate("WebViewScreen")}> 
       <Text ><MaterialIcons name="payment" size={20}  color="black"></MaterialIcons> Pagar: $100 de tu reserva
       </Text>
