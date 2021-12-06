@@ -12,7 +12,7 @@ import DetailsResto from "../Screens/DetailsResto";
 import ProfileUser from '../Screens/ProfileUser.js';
 import GlobalLogin from "../Screens/GlobalLogin.js";
 import PaymentCalc from "../Screens/PaymentCalc"
-
+import WebViewScreen from "../Screens/WebViewScreen";
 import AwaitEmail from "../Screens/AwaitEmail.js";
 import NavHome from "../Screens/NavHome.js";
 import NavDetail from "../Screens/NavDetail";
@@ -48,7 +48,6 @@ export default Navigator = () => {
             headerShown: false
           }}
         />
-
 
 
         <Stack.Screen name="RegisterUser" component={AddUserScreen} />
@@ -94,12 +93,13 @@ export default Navigator = () => {
             },
           })}
         />
+        {/* Mercado Pago */}
         <Stack.Screen
-          name="GlobalLogin"
-          component={GlobalLogin}
+          name="WebViewScreen"
+          component={WebViewScreen}
           options={{
-            headerTitle: "",
-            title: "RestoBook",
+            headerTitle: "WebViewScreen",
+            title: "WebViewScreen",
             headerTitleAlign: "center",
             headerStyle: {
               backgroundColor: "#f6efd2",
@@ -107,7 +107,24 @@ export default Navigator = () => {
             headerTintColor: "#392c28",
             headerTitleStyle: {
               fontSize: 25,
-              fontWeight: "bold",
+            },
+          }}
+        />
+        {/* //============// */}
+
+        <Stack.Screen
+          name="GlobalLogin"
+          component={GlobalLogin}
+          options={{
+            headerTitle: "",
+            title: "Resto Book",
+            headerTitleAlign: "center",
+            headerStyle: {
+              backgroundColor: "#f6efd2",
+            },
+            headerTintColor: "#392c28",
+            headerTitleStyle: {
+              fontSize: 25,
             },
           }}
         />
