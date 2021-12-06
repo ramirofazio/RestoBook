@@ -3,8 +3,6 @@ const morgan = require('morgan');
 
 const app = express();
 
-
-
 app.use(express.json());
 app.use(morgan('dev'));
 
@@ -17,9 +15,9 @@ mercadopago.configure({
   access_token: "TEST-6117189399019398-120220-b652cb60d6f3795955dd7ad49fe98a5e-1031166001",
 });
 
-app.get("http://localhost:19006", (req, res) =>{
-  res.send("http://localhost:19006")
-})
+// app.get("http://localhost:19006", (req, res) =>{
+//   res.send("http://localhost:19006")
+// })
 
 
 app.post('/checkout', (req, res) => {
@@ -50,9 +48,9 @@ app.post('/checkout', (req, res) => {
 });
 
 app.get('/success', (req, res) => {
-  console.log('QUERYYYYY', req.query)
-  console.log('PARAMSSSS', req.params)
-  console.log('BODYYYYYY', req.body);
+  // console.log('QUERYYYYY', req.query)
+  // console.log('PARAMSSSS', req.params)
+  // console.log('BODYYYYYY', req.body);
   res.send('Approved')
 })
 

@@ -12,6 +12,7 @@ import DetailsResto from "../Screens/DetailsResto";
 import ProfileUser from '../Screens/ProfileUser.js';
 import GlobalLogin from "../Screens/GlobalLogin.js";
 import PaymentCalc from "../Screens/PaymentCalc"
+import WebViewScreen from "../Screens/WebViewScreen"
 
 import AwaitEmail from "../Screens/AwaitEmail.js";
 import NavHome from "../Screens/NavHome.js";
@@ -83,7 +84,28 @@ export default Navigator = () => {
               fontSize: 25,
             },
           }}
-        />
+          />
+  {/* Mercado Pago */}
+  <Stack.Screen
+        name="WebViewScreen"
+         component={WebViewScreen}
+         options={{
+          headerTitle: "WebViewScreen",
+          title: "WebViewScreen",
+          headerTitleAlign: "center",
+          headerStyle: {
+            backgroundColor: "#f6efd2",
+          },
+          headerTintColor: "#392c28",
+          headerTitleStyle: {
+            fontSize: 25,
+           },
+          }}
+         />
+         {/* //============// */}
+
+
+
         <Stack.Screen
           name="DetailsResto"
           component={DetailsResto}
