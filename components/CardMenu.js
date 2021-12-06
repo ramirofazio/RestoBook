@@ -4,7 +4,6 @@ import { View, Image, StyleSheet } from "react-native";
 import globalStyles from "../Screens/GlobalStyles";
 
 const CardMenu = ({ menu }) => {
-  console.log(menu)
   return (
     <View>
       <Card.Title style={{ fontSize: 18 }}>{menu.foodName}</Card.Title>

@@ -9,7 +9,7 @@ import { useSelector } from "react-redux";
 //----------REACT-NATIVE UTILS-----------
 import { View, Text, StyleSheet,Image, Linking, TouchableOpacity } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import MapView from "react-native-maps";
+import MapView, { Marker } from "react-native-maps";
 //
 //
 //----------FIREBASE UTILS-----------
@@ -17,6 +17,7 @@ import { getAuth } from "firebase/auth";
 import { onSnapshot, collection, query } from "firebase/firestore";
 
 import firebase from "../database/firebase";
+import { MaterialIcons } from "@expo/vector-icons";
 //
 //
 //---------SCREENS & COMPONENTS---------------
@@ -36,7 +37,8 @@ const auth = getAuth();
 //
 const DetailsResto = () => {
   const empresaDetail = useSelector((state) => state.empresaDetail);
-
+  const {location} = empresaDetail
+  console.log(location)
   const number = "+541168020511"
   //WhatsApp
   const handleWhatsAppPress = async() => {
@@ -79,6 +81,7 @@ const DetailsResto = () => {
           <View style={globalStyles.categoriesView}>
             <Text style={globalStyles.categoriesText}>Drinks</Text>
           </View>
+        
         </View>
         {menuArr.length > 0 ? (
           <ScrollView style={styles.showMenu}>
@@ -98,17 +101,32 @@ const DetailsResto = () => {
             Add a food to see it!
           </Text>
         )}
-
+          <View style={globalStyles.btn}>
+            <TouchableOpacity onPress={() => navigation.navigate("WebViewScreen")}>
+              <Text><MaterialIcons name="payment" size={20} color="black" ></MaterialIcons> Pagar: $100 de tu reserva
+              </Text>
+            </TouchableOpacity>
+          </View> 
         <View style={styles.googleMapsContainer}>
           <MapView
             style={styles.googleMaps}
             initialRegion={{
-              latitude: 37.78825,
-              longitude: -122.4324,
-              latitudeDelta: 0.0922,
-              longitudeDelta: 0.0421,
+              latitude: location.latitude,
+              longitude: location.longitude,
+              latitudeDelta: 0.004757,
+              longitudeDelta: 0.006866,
             }}
-          ></MapView>
+          >
+            <Marker
+              coordinate={{
+                latitude: location.latitude,
+                longitude: location.longitude,
+              }}
+              pinColor='#0072B5'
+            >
+
+            </Marker>
+          </MapView>
         </View>
       </View>
     </View>
@@ -155,8 +173,8 @@ const styles = StyleSheet.create({
     //backgroundColor: "red"
   },
   googleMaps: {
-    height: 130,
-    borderRadius: 20,
+    height: 250,
+    borderRadius: 30,
   },
   wppIcon:{
     height:30,
@@ -174,7 +192,16 @@ const styles = StyleSheet.create({
     height:20,
     width:20,
     alignItems:'center'
-  }
+  },
+  textContainer2: {
+    alignSelf: "center",
+    justifyContent: "center",
+    width: "60%",
+    borderRadius: 10,
+    borderWidth: 3,
+    marginTop: 10,
+    backgroundColor: '#ffd964'
+  },
 });
 
 export default DetailsResto;

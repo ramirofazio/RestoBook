@@ -100,12 +100,6 @@ export default function Home({ navigation }) {
         )}
 
       </View>
-      <View style={styles.textContainer2}>
-        <TouchableOpacity onPress={() => navigation.navigate("WebViewScreen")}>
-          <Text ><MaterialIcons name="payment" size={20} color="black"></MaterialIcons> Pagar: $100 de tu reserva
-          </Text>
-        </TouchableOpacity>
-      </View>
       <View>
         <SearchBar />
       </View>

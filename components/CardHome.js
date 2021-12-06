@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, Text } from "react-native-elements";
-import { View, Image, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Image, StyleSheet, TouchableOpacity, Linking } from "react-native";
 import { useDispatch } from "react-redux";
 //-------SCREENS--------
 import BtnFuncional from "../Screens/Helpers/BtnFuncional.js";
@@ -13,10 +13,16 @@ const CardMenu = ({ resto, navigation }) => {
   //console.log(resto)
   const dispatch = useDispatch();
 
+  const celphone = +541168020511;
+
   const handleOnPress = () => {
     dispatch(empresaDetail(resto));
     navigation.navigate("DetailsResto");
   };
+
+  const handleWhatsapp = async () => {
+    await Linking.openURL(`whatsapp://send?text=Hola ${resto.title}, mi nombre es Lucas y quiero generar una reserva&phone=${celphone}`)
+  }
 
   return (
     <View style={globalStyles.cardsContainer}>
@@ -57,7 +63,7 @@ const CardMenu = ({ resto, navigation }) => {
         <View style={globalStyles.btnContainerCard}>
           <View>
             <TouchableOpacity
-              onPress={() => alert("llevame a whatsapp")}
+              onPress={() => handleWhatsapp()}
             >
               <Image
                 style={globalStyles.wspImage}

@@ -161,7 +161,7 @@ const RegisterResto = ({ navigation }) => {
             },
             textInputContainer: {
               alignItems: 'center',
-              height: '2.7%',
+              height: 18,
             },
             listView: {
               borderRadius: 13,
@@ -208,13 +208,13 @@ const RegisterResto = ({ navigation }) => {
                   phone: values.phone,
                   phone2: values.phone2,
                   cuit: values.cuit,
-                  category: values.category,
+                  category: state.category,
                   img: values.img,
                   menu: [],
                   location: {
-                    latitude: values.lat,
-                    longitude: values.lng,
-                    address: values.address
+                    latitude: state.lat,
+                    longitude: state.lng,
+                    address: state.address
                   }
                 })
                 .then(
@@ -445,7 +445,8 @@ const styles = StyleSheet.create({
   googleMaps: {
     borderColor: '#034F84',
     borderWidth: 1,
-    borderRadius: 10,
+    borderRadius: 50,
+    height: 250
   }
 });
 export default RegisterResto;

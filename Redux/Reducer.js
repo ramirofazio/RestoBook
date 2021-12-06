@@ -25,7 +25,7 @@ const RootReducer = (state = initialState, action) => {
       return {
         ...state,
         menus: [...state.menus, menu],
-      }; o
+      }; 
     case EMPRESA_DETAIL:
       const empresaDetail = action.payload;
       //console.log(dataEmpresa[0])

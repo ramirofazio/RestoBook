@@ -26,7 +26,7 @@ app.post('/checkout', (req, res) => {
               items:[{
                    title: 'Mesa reservada',
                    quantity: 1,
-                   unit_price: 10,
+                   unit_price: 100,
                    currency_id:'ARG'
                   }],
     back_urls: {
