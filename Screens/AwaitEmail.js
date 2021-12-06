@@ -57,7 +57,7 @@ const AwaitEmail = ({ navigation }) => {
           style={globalStyles.touchFlag}
           onPress={() => {
             signOut(auth);
-            navigation.navigate("GlobalLogin");
+            navigation.navigate("RestoBook");
           }}
         >
           <Text style={globalStyles.fontLog}>Go back to Login</Text>
