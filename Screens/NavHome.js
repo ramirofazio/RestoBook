@@ -35,24 +35,27 @@ const auth = getAuth();
 export default function NavHome({ title, navigation }) {
   const dispatch = useDispatch();
   const currentId = useSelector((state) => state.currentId);
+  const hasCommerce = useSelector( state => state.commerce)
   //Esto lo tenemos que manejar con una propiedad de cada user, dsps lo corregimos
   const [commerce, isCommerce] = useState(false);
   const loggedId = useSelector((state) => state.currentId);
+  
   useEffect(() => {
-    const q = query(collection(firebase.db, "Restos"));
+    const q = query(collection(firebase.db, "Users"));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       querySnapshot.forEach((doc) => {
         let obj = doc.data();
-        obj.idResto = doc.id;
-
-        if (obj.id === loggedId) {
-          isCommerce(true);
+        // obj.idResto = doc.id;
+        if ( doc.id === loggedId ) {
+          if (obj.commerce === true) {
+            isCommerce(true);
+          }
         }
+        console.log("commerce?", commerce);
       });
-      console.log("commerce?", commerce);
     });
-  }, [loggedId]);
-
+  }, [loggedId, hasCommerce]);
+ 
   //__________________________________________________________________________________
   onAuthStateChanged(auth, (usuarioFirebase) => {
     if (!usuarioFirebase?.emailVerified) {

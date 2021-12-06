@@ -4,14 +4,18 @@ import {
   ADD_MENU,
   CURRENT_USER,
   CURRENT_ID,
+  SET_COMMERCE,
 } from "./Actions/Constants.js";
 
 let initialState = {
   empresas: [],
-  empresaDetail: [],
   menus: [],
+  commerce: false,
   currentId: null,
   currentUser: null,
+  empresaDetail: [],
+  categoriesResto: ["Pizzas/Empanadas", "Rotiseria", "Pastas", "Parrilla", "Sushi", "Hamburguesas", "Fingerfood", "Drinks", "Otros"],
+  categoriesMenu: ['Pizza', 'Pasta', 'Bebida', 'Guarnicion', 'Postre', 'Plato Principal']
 };
 
 const RootReducer = (state = initialState, action) => {
@@ -29,7 +33,6 @@ const RootReducer = (state = initialState, action) => {
         ...state,
         empresaDetail: empresaDetail,
       };
-
     case ADD_EMPRESA:
       return {
         ...state,
@@ -45,6 +48,11 @@ const RootReducer = (state = initialState, action) => {
         ...state,
         currentId: action.payload,
       };
+    case SET_COMMERCE:
+      return {
+        ...state,
+        commerce: true
+      }
     default:
       return state;
   }
