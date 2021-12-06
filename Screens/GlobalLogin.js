@@ -133,11 +133,13 @@ const GlobalLogin = ({ navigation }) => {
     return (
       //------------LOGIN---------------
       <View style={globalStyles.Home}>
-        <Text style={{fontSize: 25,
+        <Text style={{
+          fontSize: 25,
           fontWeight: "bold",
           paddingVertical: 5,
           alignSelf: "center",
-          color: '#392c28'}}>Login</Text>
+          color: '#392c28'
+        }}>Login</Text>
         <Formik
           initialValues={{
             email: "",
@@ -199,7 +201,7 @@ const GlobalLogin = ({ navigation }) => {
                     : setFlagSecureText(true)
                 }
               >
-                <Icon name={flagSecureText ? "eye-off" : "eye"} size={20} style={{alignSelf: "center"}} />
+                <Icon name={flagSecureText ? "eye-off" : "eye"} size={20} style={{ alignSelf: "center" }} />
               </TouchableOpacity>
               <View style={globalStyles.btnContainerLogin}>
                 <TouchableOpacity
@@ -211,9 +213,9 @@ const GlobalLogin = ({ navigation }) => {
 
                 <TouchableOpacity
                   style={globalStyles.touchFlag}
-                  onPress={() => props.handleSubmit()}
+                  onPress={() => setFlagLoginOrRegister(false)}
                 >
-                  <Text style={globalStyles.fontLog} onPress={() => setFlagLoginOrRegister(false)}>I dont have an account yet</Text>
+                  <Text style={globalStyles.fontLog}>I dont have an account yet</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity onPress={() => Glogin()}>
@@ -363,7 +365,7 @@ const GlobalLogin = ({ navigation }) => {
                     />
                   </View>
                   {props.touched.passwordConfirm &&
-                  props.errors.passwordConfirm ? (
+                    props.errors.passwordConfirm ? (
                     <Text style={globalStyles.errorText}>
                       {props.errors.passwordConfirm}
                     </Text>
@@ -392,7 +394,7 @@ const GlobalLogin = ({ navigation }) => {
                       <Text style={globalStyles.fontLog} onPress={() => setFlagLoginOrRegister(true)}>I have an account</Text>
                     </TouchableOpacity>
                   </View>
-                      
+
 
                 </View >
               )}
