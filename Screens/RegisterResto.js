@@ -11,11 +11,17 @@ import {
   Button,
   View,
   TextInput,
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
   Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity
 } from "react-native";
+//
+//----------FORMIK y YUP------------------
+import { Formik } from 'formik';
+import * as yup from 'yup';
+
+//
 //
 //----------GOOGLE MAPS---------------
 import MapView, { Marker } from "react-native-maps";
@@ -33,6 +39,11 @@ import { onAuthStateChanged, getAuth } from "firebase/auth";
 //
 //-------STYLES-------
 import globalStyles from "./GlobalStyles";
+import { BottomSheet, ListItem } from "react-native-elements";
+//
+//------IMAGINE PICKER---------
+import * as ImagePicker from "expo-image-picker";
+
 //
 //
 //-------INITIALIZATIONS-------
@@ -41,28 +52,26 @@ const auth = getAuth();
 //---------------------------------------------------------------------------------------//
 //
 
-const RegisterResto = (props) => {
+const registerRestoSchema = yup.object({
+  email: yup.string()
+    .email()
+    .required(),
+  title: yup.string()
+    .required()
+    .min(3)
+    .max(15),
+  description: yup.string()
+    .required()
+    .min(10)
+    .max(60),
+  phone: yup.number()
+    .required(),
+  phone2: yup.number(),
+  cuit: yup.number()
+    .required(),
+})
 
-  const empresas = useSelector((state) => state.empresas);
-  const Id = empresas.length + 1;
-  //console.log("soy ID", Id)
-
-  const initalState = {
-    name: "",
-    fantasyName: "",
-    cuit: "",
-    phone: "",
-    phone2: "",
-    email: "",
-    direccion: '',
-    // horarios: "",
-    Id: Id,
-    Title: "",
-    Description: "",
-    Img: "",
-    Lat: -34.6131500,
-    Lng: -58.3772300
-  };
+const RegisterResto = ({ navigation }) => {
 
   const initialRegion = {
     latitude: -34.6131500,
@@ -70,13 +79,15 @@ const RegisterResto = (props) => {
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   }
-
-  const [state, setState] = useState(initalState);
+  const [isVisible, setIsVisible] = useState(false)
   const [region, setRegion] = useState(initialRegion);
-
-  const handleChangeText = (value, name) => {
-    setState({ ...state, [name]: value });
-  };
+  const [state, setState] = useState({
+    lat: -34.6131500,
+    lng: -58.3772300,
+    address: "",
+    category: '',
+  })
+  const categories = useSelector((state) => state.categoriesResto);
 
   let id = null;
   onAuthStateChanged(auth, (usuarioFirebase) => {
@@ -85,178 +96,319 @@ const RegisterResto = (props) => {
     }
   });
 
-  const saveNewResto = () => {
-    //alert("Complete sus datos por favor");
-    if (id) {
-      try {
-        firebase.db
-          .collection("Restos")
-          .doc()
-          .set({
-            id,
-            title: state.Title,
-            Description: state.Description,
-            Img: state.Img,
-            category: '',
-            menu: [],
-          })
-          .then(
-            firebase.db
-              .collection("Users")
-              .doc(id)
-              .update({
-                commerce: true
-              })
-          )
-          .then(alert("creado"))
-          .then(props.navigation.navigate("RestoBook"));
-      } catch (error) {
-        console.log(error);
+  const handleOnPressPickImage = async (handleChange) => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status === "granted") {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
+      if (!result.cancelled) {
+        handleChange(result.uri);
       }
     } else {
-      alert("logueate!");
+      alert("Sorry, we need camera roll permissions to make this work!");
     }
-
   };
 
+  const setStateAndRegion = (newLocation, formatedAddress) => {
+    const { lat, lng } = newLocation;
+    setRegion({
+      latitude: lat,
+      longitude: lng,
+      latitudeDelta: 0.004757,
+      longitudeDelta: 0.006866,
+    })
+    setState({
+      ...state,
+      address: formatedAddress,
+      lat: lat,
+      lng: lng
+    })
+  }
 
   return (
-    <View style={styles.container}>
-      <GooglePlacesAutocomplete
-        placeholder='Completa tu direccion'
-        nearbyPlacesAPI='GooglePlacesSearch'
-        debounce={400}
-        enablePoweredByContainer={false}
-        query={{
-          key: GOOGLE_API_KEY,
-          language: 'en',
-        }}
-        minLength={3}
-        onPress={(data, details = null) => {
-          const { lat, lng } = details.geometry.location
-          setRegion({
-            latitude: lat,
-            longitude: lng,
-            latitudeDelta: 0.004757,
-            longitudeDelta: 0.006866,
-          })
-          setState({
-            ...state,
-            Lat: lat,
-            Lng: lng
-          })
-        }}
-        fetchDetails={true}
-        styles={{
-          container: {
-            flex: 0,
-            padding: 0,
-            marginBottom: 15,
-            borderBottomWidth: 1,
-            borderBottomColor: "#cccccc",
-          },
-          textInput: {
-            fontSize: 14,
-            marginBottom: -10,
-            marginLeft: -9,
-            backgroundColor: 'transparent',
-          }
-        }}
-      />
-      <View style={styles.inputGroup}>
-        <TextInput
-          placeholder="Razón social"
-          onChangeText={(value) => handleChangeText(value, "name")}
-          value={state.name}
-        />
-      </View>
-
-      <View style={styles.inputGroup}>
-        <TextInput
-          placeholder="Nombre de fantasía"
-          onChangeText={(value) => handleChangeText(value, "fantasyName")}
-          value={state.fantasyName}
-        />
-      </View>
-
-      <View style={styles.inputGroup}>
-        <TextInput
-          placeholder="Cuit"
-          onChangeText={(value) => handleChangeText(value, "cuit")}
-          value={state.cuit}
-        />
-      </View>
-
-      <View style={styles.inputGroup}>
-        <TextInput
-          placeholder="Teléfono"
-          onChangeText={(value) => handleChangeText(value, "phone")}
-          value={state.phone}
-        />
-      </View>
-
-      <View style={styles.inputGroup}>
-        <TextInput
-          placeholder="Teléfono 2"
-          onChangeText={(value) => handleChangeText(value, "phone2")}
-          value={state.phone2}
-        />
-      </View>
-
-      <View style={styles.inputGroup}>
-        <TextInput
-          placeholder="Email"
-          onChangeText={(value) => handleChangeText(value, "email")}
-          value={state.email}
-        />
-      </View>
-      <View style={styles.inputGroup}>
-        <TextInput
-          placeholder="Title"
-          onChangeText={(value) => handleChangeText(value, "Title")}
-          value={state.Title}
-        />
-      </View>
-
-      <View style={styles.inputGroup}>
-        <TextInput
-          placeholder="Descripcion"
-          onChangeText={(value) => handleChangeText(value, "Description")}
-          value={state.Description}
-        />
-      </View>
-
-      <View style={styles.googleMapsContainer}>
-        <MapView
-          style={styles.googleMaps}
-          region={region}
+    <ScrollView>
+      <View style={globalStyles.Home}>
+        <Formik
+          initialValues={{
+            email: "",
+            razonSocial: "",
+            title: "",
+            description: "",
+            phone: "",
+            phone2: "",
+            cuit: "",
+            category: state.category,
+            img: "",
+            lat: state.lat,
+            lng: state.lng,
+            address: state.address,
+          }}
+          validationSchema={registerRestoSchema}
+          onSubmit={(values) => {
+            if (id) {
+              try {
+                firebase.db
+                  .collection("Restos")
+                  .doc()
+                  .set({
+                    idUser: id,
+                    email: values.email,
+                    razonSocial: values.razonSocial,
+                    title: values.title,
+                    description: values.description,
+                    phone: values.phone,
+                    phone2: values.phone2,
+                    cuit: values.cuit,
+                    category: values.category,
+                    img: values.img,
+                    menu: [],
+                    location: {
+                      latitude: values.lat,
+                      longitude: values.lng,
+                      address: values.address
+                    }
+                  })
+                  .then(
+                    firebase.db
+                      .collection("Users")
+                      .doc(id)
+                      .update({
+                        commerce: true
+                      })
+                  )
+                  .then(alert("creado"))
+                  .then(navigation.navigate("RestoBook"))
+              } catch (error) {
+                console.log(error);
+              }
+            } else {
+              alert("logueate!");
+            }
+          }}
         >
-          <Marker
-            title='Your Resto'
-            coordinate={region}
-          >
-          </Marker>
-        </MapView>
-      </View>
+          {(props) => (
+            <View>
+              <ScrollView>
 
-      <View>
-        <Button title="Crear" onPress={() => saveNewResto()} />
-      </View>
-    </View>
-  );
-};
+                <View style={globalStyles.inputComponent}>
+                  <TextInput
+                    style={globalStyles.texts}
+                    placeholder="Email"
+                    onChangeText={props.handleChange("email")}
+                    value={props.values.email}
+                    onBlur={props.handleBlur("email")}
+                  />
+                </View>
+
+                {props.touched.email && props.errors.email ? (
+                  <Text style={globalStyles.errorText}>{props.errors.email}</Text>
+                ) : null}
+
+                <View style={globalStyles.inputComponent}>
+                  <TextInput
+                    style={globalStyles.texts}
+                    placeholder="Title"
+                    onChangeText={props.handleChange("title")}
+                    value={props.values.title}
+                    onBlur={props.handleBlur("title")}
+                  />
+                </View>
+
+                {props.touched.title && props.errors.title ? (
+                  <Text style={globalStyles.errorText}>{props.errors.title}</Text>
+                ) : null}
+
+                <View style={globalStyles.inputComponent}>
+                  <TextInput
+                    style={globalStyles.texts}
+                    placeholder="Description"
+                    onChangeText={props.handleChange("description")}
+                    value={props.values.description}
+                    onBlur={props.handleBlur("description")}
+                  />
+                </View>
+
+                {props.touched.description && props.errors.description ? (
+                  <Text style={globalStyles.errorText}>{props.errors.description}</Text>
+                ) : null}
+
+                <View style={globalStyles.inputComponent}>
+                  <TextInput
+                    style={globalStyles.texts}
+                    placeholder="Phone"
+                    onChangeText={props.handleChange("phone")}
+                    value={props.values.phone}
+                    onBlur={props.handleBlur("phone")}
+                  />
+                </View>
+
+                {props.touched.phone && props.errors.phone ? (
+                  <Text style={globalStyles.errorText}>{props.errors.phone}</Text>
+                ) : null}
+
+                <View style={globalStyles.inputComponent}>
+                  <TextInput
+                    style={globalStyles.texts}
+                    placeholder="Phone 2"
+                    onChangeText={props.handleChange("phone2")}
+                    value={props.values.phone2}
+                    onBlur={props.handleBlur("phone2")}
+                  />
+                </View>
+
+                {props.touched.phone2 && props.errors.phone2 ? (
+                  <Text style={globalStyles.errorText}>{props.errors.phone2}</Text>
+                ) : null}
+
+                <View style={globalStyles.inputComponent}>
+                  <TextInput
+                    style={globalStyles.texts}
+                    placeholder="Cuit"
+                    onChangeText={props.handleChange("cuit")}
+                    value={props.values.cuit}
+                    onBlur={props.handleBlur("cuit")}
+                  />
+                </View>
+
+                {props.touched.cuit && props.errors.cuit ? (
+                  <Text style={globalStyles.errorText}>{props.errors.cuit}</Text>
+                ) : null}
+
+                <View style={{ alignItems: "center" }}>
+                  <TouchableOpacity
+                    style={globalStyles.touchLog}
+                    onPress={() => {
+                      handleOnPressPickImage(props.handleChange("img"));
+                    }}
+                  >
+                    <Text style={globalStyles.fontLog}>
+                      {props.values.img && props.values.img.length > 0
+                        ? "Change Image"
+                        : "Select Image"}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+
+                <View style={{ alignItems: "center" }}>
+                  <TouchableOpacity
+                    style={globalStyles.touchLog}
+                    onPress={() => props.handleSubmit()}
+                  >
+                    <Text style={globalStyles.fontLog}>Create</Text>
+                  </TouchableOpacity>
+                </View>
+              </ScrollView>
+
+            </View>
+
+          )}
+        </Formik>
+
+        <View style={globalStyles.inputComponent}>
+          <TextInput
+            style={globalStyles.texts}
+            editable={false}
+            placeholder="Select Category"
+            value={state.category}
+            onPressIn={() => setIsVisible(true)}
+          />
+          <BottomSheet
+            isVisible={isVisible}
+            containerStyle={{ backgroundColor: 'rgba(0.5,0.25,0,0.2)' }}
+          >
+            {categories.map((categoria, index) => (
+              <ListItem
+                key={index}
+                containerStyle={{ backgroundColor: 'rgba(0.5,0.25,0,0.7)' }}
+                style={{ borderWidth: 1, borderColor: '#cccccc' }}
+                onPress={(e) => setState({ ...state, category: categoria }) && setIsVisible(false)}
+              >
+                <ListItem.Content>
+                  <ListItem.Title style={{ height: 35, color: '#FFF', padding: 8 }}>{categoria}</ListItem.Title>
+                </ListItem.Content>
+              </ListItem>
+            ))}
+            <ListItem key={999} containerStyle={{ backgroundColor: 'red' }} style={{ borderWidth: 1, borderColor: '#cccccc' }} onPress={() => setIsVisible(false)}>
+              <ListItem.Content style={{}}>
+                <ListItem.Title style={{ height: 35, color: '#FFF', padding: 8 }}>Cancel</ListItem.Title>
+              </ListItem.Content>
+            </ListItem>
+          </BottomSheet>
+        </View>
+
+
+        <View style={{ flex: 3 }}>
+          <View style={globalStyles.inputComponent}>
+            <GooglePlacesAutocomplete
+              placeholder='Completa tu direccion'
+              nearbyPlacesAPI='GooglePlacesSearch'
+              debounce={400}
+              enablePoweredByContainer={false}
+              query={{
+                key: GOOGLE_API_KEY,
+                language: 'en',
+              }}
+              minLength={3}
+              onPress={(data, details = null) => setStateAndRegion(details.geometry.location, details.formatted_address)}
+              fetchDetails={true}
+              styles={{
+                container: {
+                  marginTop: 5,
+                  flex: 1,
+                  padding: 0,
+                  borderTopWidth: 1,
+                  borderTopColor: "skyblue",
+                },
+                textInput: {
+                  fontSize: 15,
+                  marginLeft: -9,
+                  backgroundColor: 'transparent',
+                }
+              }}
+            />
+          </View>
+
+          <View style={styles.googleMapsContainer}>
+            <MapView
+              style={styles.googleMaps}
+              region={region}
+            >
+
+              <Marker
+                draggable
+                title='Your Resto'
+                coordinate={region}
+                onDragEnd={event => {
+                  const { latitude, longitude } = event.nativeEvent.coordinate
+                  const newLocation = {
+                    lat: latitude,
+                    lng: longitude
+                  }
+                  setStateAndRegion(newLocation)
+                }}
+                pinColor='#0072B5'
+              >
+              </Marker>
+            </MapView>
+          </View>
+        </View>
+      </View >
+    </ScrollView>
+
+  )
+}
 
 const styles = StyleSheet.create({
-  textInput: {
-    backgroundColor: '#FFF',
-    height: 50,
-    marginVertical: 5
-  },
   container: {
     flex: 1,
-    padding: 35,
+    padding: 25,
   },
   inputGroup: {
+    height: 50,
     padding: 0,
     marginBottom: 15,
     borderBottomWidth: 1,
@@ -273,14 +425,13 @@ const styles = StyleSheet.create({
   },
   googleMapsContainer: {
     padding: 5,
-    flex: 1
+    flex: 2,
   },
   googleMaps: {
-    borderColor: 'skyblue',
+    borderColor: '#034F84',
     borderWidth: 1,
-    height: 300,
-    borderRadius: 150
+    flex: 1,
+    borderRadius: 10
   }
 });
-
 export default RegisterResto;
