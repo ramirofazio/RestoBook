@@ -41,16 +41,16 @@ const CardMenu = ({ resto, navigation }) => {
               <Text style={globalStyles.cardsHomeTitle}>{resto.title}</Text>
             </View>
 
-            <View style={{backgroundColor: 'pink'}}>
+            <View >
                 <Text style={globalStyles.cardsDescriptionText}>
-                  Rating??
+                  ⭐⭐⭐⭐⭐
                 </Text>
             </View>
 
-            <View style={{backgroundColor: 'blue'}}>
-              <Text style={globalStyles.cardsDescriptionText}>
-                Categoria
-              </Text>
+            <View >
+              <View style={globalStyles.categoriesView}>
+                <Text style={globalStyles.categoriesText}>  Categoria de local</Text>
+              </View>
             </View>
           </View>
 
@@ -68,7 +68,7 @@ const CardMenu = ({ resto, navigation }) => {
             </View>
             <View>
               <TouchableOpacity>
-                <Text>COrazon</Text>
+                <Text style={{fontSize: 25}}>❤</Text>
               </TouchableOpacity>
             </View>
         </View>

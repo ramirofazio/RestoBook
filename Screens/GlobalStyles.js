@@ -26,19 +26,6 @@ const globalStyles = StyleSheet.create({
   Container: {
     alignItems: "center",
   },
-  cardsContainer: {
-    flex: 1,
-    alignSelf: "center",
-    backgroundColor: "#f6efd3",
-    marginHorizontal: 10,
-    marginVertical: 5,
-    paddingHorizontal: 5,
-    paddingVertical: 30,
-    borderRadius: 25,
-    width: "95%",
-    // maxHeight: "15%",
-    height: 150
-  },
   btn: {
     backgroundColor: '#ffd964',
     paddingVertical: 8,
@@ -53,63 +40,89 @@ const globalStyles = StyleSheet.create({
     width: 40,
     resizeMode: 'contain' // esta linea es para que se adapte al tam;o de la imagen
   },
+  
+  //////CARD HOME/////////////////////////////////////////////////
+  cardsContainer: {
+    flex: 1,
+    alignSelf: "center",
+    backgroundColor: "#f6efd3",
+    marginHorizontal: 10,
+    marginVertical: 5,
+    paddingHorizontal: 5,
+    paddingVertical: 5,
+    borderRadius: 25,
+    width: "95%",
+    height: 150
+  },
   containerImgCard: {
     width: "31.6%",
-    maxHeight: '250%',
-    // height: '100%',
-    backgroundColor: 'pink',
-    marginVertical: -25,
-    // marginHorizontal: 5,
+    maxHeight: '5%',
+    padding: 5,
     alignSelf: "flex-start",
     alignItems: "center",
-    justifyContent: "center"
   },
   cardsHomeimg: {
-    backgroundColor: "red",
-    width: '100%',
-    height: '100%',
+    marginTop: 5,
+    // backgroundColor: "red",
+    width: 110,
+    height: 120,
     borderRadius: 25,
+    justifyContent: "center"
   },
   cardsDescriptionContainer: {
-    flex: 2,
-    backgroundColor: 'green',
-    maxHeight: '100%',
-    height: '15%',
-    width: '33%',
+    // backgroundColor: 'green',
+    maxHeight: '120%',
+    height: 120,
+    width: '35%',
     alignSelf: "center",
-    justifyContent: "center"
-    
+    justifyContent: "space-around"
   },
   cardsDescriptionText: {
     textAlign: "center"
   },
+  cardsHomeTitle: {
+    // backgroundColor: "#5555",
+    fontSize: 25,
+    fontWeight: "bold",
+    textAlign: "center",
+    width: '100%'
+  },
   btnContainerCard: {
-    backgroundColor: 'violet',
-    // maxHeight: '15%',
-    height: '50%',
+    // backgroundColor: 'violet',
+    maxHeight: '120%',
+    height: 120,
     width: '31.6%',
     alignSelf: "flex-end",
     alignItems: "center",
-    marginTop: -65
+    marginTop: -120,
+    justifyContent: "space-around"
   },
+  wspImage: {
+    width: 40,
+    height: 40,
+    borderRadius: 25
+  },
+  //////ACA TERMINAN  LOS ESTILOS DE LAS CARDS HOME/////////////////////
+
+  /////////////////////CATEGORIAS LOCAL////////////////////////////////
+  categoriesView: {
+    backgroundColor: "white",
+    borderRadius: 10,
+    padding: 2,
+  },
+  categoriesText: {
+    fontWeight: "bold",
+    fontSize: 13,
+    padding: 1,
+  },
+  ////////////////////ACA TERMINA CATEGORIAS LOCALES//////////////////
+
   title: {
     fontSize: 25,
     fontWeight: "bold",
     paddingVertical: 10,
     paddingHorizontal: 5,
     color: '#392c28'
-  },
-  cardsHomeTitle: {
-    backgroundColor: "#5555",
-    fontSize: 25,
-    fontWeight: "bold",
-    textAlign: "center",
-    width: '100%'
-  },
-  wspImage: {
-    width: 30,
-    height: 30,
-    borderRadius: 25
   },
   componentTitle: {
     alignSelf: "center",
