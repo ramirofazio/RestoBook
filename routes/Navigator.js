@@ -11,8 +11,8 @@ import AddMenuResto from "../Screens/AddMenuResto.js";
 import DetailsResto from "../Screens/DetailsResto";
 import ProfileUser from '../Screens/ProfileUser.js';
 import GlobalLogin from "../Screens/GlobalLogin.js";
-import PaymentCalc from "../Screens/PaymentCalc"
-import WebViewScreen from "../Screens/WebViewScreen";
+import WebViewScreen from "../Screens/WebViewScreen"
+
 import AwaitEmail from "../Screens/AwaitEmail.js";
 import NavHome from "../Screens/NavHome.js";
 import NavDetail from "../Screens/NavDetail";
@@ -72,7 +72,8 @@ export default Navigator = () => {
               fontSize: 25,
             },
           }}
-        />
+          />
+
         <Stack.Screen
           name="DetailsResto"
           component={DetailsResto}
@@ -83,6 +84,7 @@ export default Navigator = () => {
             },
           })}
         />
+        
         {/* Mercado Pago */}
          <Stack.Screen
         name="WebViewScreen"

@@ -80,24 +80,24 @@ const DetailsResto = () => {
             <Text style={styles.categoriesText}>Drinks</Text>
           </View>
         </View>
-        {menuArr.length > 0 ? 
+        {menuArr.length > 0 ? (
           <ScrollView style={styles.showMenu}>
             {menuArr.map((menu, index) => {
               return (
-                <CardMenu key={index} menu={menu}> </CardMenu>
-              )
-            }
-            )}
-          </ScrollView> : 
-<Text style={{ alignSelf: "center", fontSize: 30, marginVertical: 30 }}> Add a food to see it!</Text>
-        }
-            <View >
-            <TouchableOpacity onPress={(e) => handleWhatsAppPress(e)}>
-                        <View style={styles.wppIcon}>
-                            <Image style={styles.img} source={require('../assets/whatsapp.png') } />
-                         </View>
-                    </TouchableOpacity>
-            </View>
+                <CardMenu key={index} menu={menu}>
+                  {" "}
+                </CardMenu>
+              );
+            })}
+          </ScrollView>
+        ) : (
+          <Text
+            style={{ alignSelf: "center", fontSize: 30, marginVertical: 30 }}
+          >
+            {" "}
+            Add a food to see it!
+          </Text>
+        )}
 
         <View style={styles.googleMapsContainer}>
           <MapView
