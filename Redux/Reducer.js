@@ -10,10 +10,7 @@ import {
 let initialState = {
   empresas: [],
   menus: [],
-<<<<<<< HEAD
-=======
   commerce: false,
->>>>>>> 52b82ec1d48951fdb1a8a4c2b9c4c930ea71db6a
   currentId: null,
   currentUser: null,
   empresaDetail: [],
@@ -28,7 +25,7 @@ const RootReducer = (state = initialState, action) => {
       return {
         ...state,
         menus: [...state.menus, menu],
-      };
+      }; o
     case EMPRESA_DETAIL:
       const empresaDetail = action.payload;
       //console.log(dataEmpresa[0])
