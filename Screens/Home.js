@@ -60,6 +60,7 @@ export default function Home({ navigation }) {
   }, []);
   onAuthStateChanged(auth, (usuarioFirebase) => {
     if (usuarioFirebase?.emailVerified) {
+      console.log(loggedId)
       if (loggedId !== usuarioFirebase.uid) {
         dispatch(CurrentId(usuarioFirebase.uid));
         const unsub = onSnapshot(
@@ -90,7 +91,7 @@ export default function Home({ navigation }) {
     }
   });
 
-  
+
 
   return (
     <ScrollView style={globalStyles.Home}>
@@ -109,13 +110,13 @@ export default function Home({ navigation }) {
       </View>
 
       <View style={styles.textContainer2}>
-      <TouchableOpacity onPress={() => navigation.navigate("WebViewScreen")}> 
-      <Text ><MaterialIcons name="payment" size={20}  color="black"></MaterialIcons> Pagar: $100 de tu reserva
-      </Text>
-      </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("WebViewScreen")}>
+          <Text ><MaterialIcons name="payment" size={20} color="black"></MaterialIcons> Pagar: $100 de tu reserva
+          </Text>
+        </TouchableOpacity>
       </View>
       <View>
-        <SearchBar/>
+        <SearchBar />
       </View>
 
       <View style={globalStyles.btnHome}>
