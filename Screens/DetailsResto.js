@@ -64,20 +64,20 @@ const DetailsResto = () => {
     <View style={globalStyles.Home}>
       <View style={styles.content}>
         <View style={styles.categoriesContainer}>
-          <View style={styles.categoriesView}>
-            <Text style={styles.categoriesText}>Fast Food</Text>
+          <View style={globalStyles.categoriesView}>
+            <Text style={globalStyles.categoriesText}>Fast Food</Text>
           </View>
-          <View style={styles.categoriesView}>
-            <Text style={styles.categoriesText}>Home-made pastas</Text>
+          <View style={globalStyles.categoriesView}>
+            <Text style={globalStyles.categoriesText}>Home-made pastas</Text>
           </View>
-          <View style={styles.categoriesView}>
-            <Text style={styles.categoriesText}>Meats</Text>
+          <View style={globalStyles.categoriesView}>
+            <Text style={globalStyles.categoriesText}>Meats</Text>
           </View>
-          <View style={styles.categoriesView}>
-            <Text style={styles.categoriesText}>Deserts</Text>
+          <View style={globalStyles.categoriesView}>
+            <Text style={globalStyles.categoriesText}>Deserts</Text>
           </View>
-          <View style={styles.categoriesView}>
-            <Text style={styles.categoriesText}>Drinks</Text>
+          <View style={globalStyles.categoriesView}>
+            <Text style={globalStyles.categoriesText}>Drinks</Text>
           </View>
         </View>
         {menuArr.length > 0 ? (
@@ -141,16 +141,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     borderRadius: 20,
     marginBottom: 5,
-  },
-  categoriesView: {
-    backgroundColor: "white",
-    borderRadius: 10,
-    padding: 2,
-  },
-  categoriesText: {
-    fontWeight: "bold",
-    fontSize: 13,
-    padding: 1,
   },
   showMenu: {
     height: 250,

@@ -19,58 +19,62 @@ const CardMenu = ({ resto, navigation }) => {
   };
 
   return (
-    <TouchableOpacity
-      style={globalStyles.cardsContainer}
-      onPress={() => handleOnPress()}
-    >
-      <View style={{ backgroundColor: 'yellow', }}>
-        <Text style={globalStyles.cardsHomeTitle}>{resto.title}</Text>
+    <View style={globalStyles.cardsContainer}>
+        <TouchableOpacity
+        onPress={() => handleOnPress()}
+        >
+          <View style={globalStyles.containerImgCard}>
+            <Image
+                style={globalStyles.cardsHomeimg}
+                source={
+                  resto.Img === ""
+                  ? {
+                    uri: "https://images.vexels.com/media/users/3/204941/isolated/preview/d8bc6d74b3da7ee41fc99b6000c1e6a4-trazo-de-puntuacion-de-signo-de-interrogacion.png",
+                  }
+                  : { uri: resto.Img }
+                }
+            />
+          </View>
+                
+          <View style={globalStyles.cardsDescriptionContainer}>
+            <View>
+              <Text style={globalStyles.cardsHomeTitle}>{resto.title}</Text>
+            </View>
 
-        <Image
-          style={globalStyles.cardsHomeimg}
-          source={
-            resto.Img === ""
-              ? {
-                uri: "https://images.vexels.com/media/users/3/204941/isolated/preview/d8bc6d74b3da7ee41fc99b6000c1e6a4-trazo-de-puntuacion-de-signo-de-interrogacion.png",
-              }
-              : { uri: resto.Img }
-          }
-        />
+            <View >
+                <Text style={globalStyles.cardsDescriptionText}>
+                  ⭐⭐⭐⭐⭐
+                </Text>
+            </View>
 
-        <View style={globalStyles.cardsInfoContainer}>
-          <View style={{
-            width: 30, height: 30, marginLeft: 125, backgroundColor: 'grey'
-          }}>
-            <TouchableOpacity
+            <View >
+              <View style={globalStyles.categoriesView}>
+                <Text style={globalStyles.categoriesText}>  Categoria de local</Text>
+              </View>
+            </View>
+          </View>
+
+          <View style={globalStyles.btnContainerCard}>
+            <View>
+              <TouchableOpacity
               onPress={() => alert("llevame a whatsapp")}
             >
               <Image
                 style={globalStyles.wspImage}
-                resizeMode="contain"
+                // resizeMode="contain"
                 source={require("../assets/whatsAppIcon.png")}
               />
             </TouchableOpacity>
-          </View>
-
-          <View>
-            <View style={{ alignSelf: "flex-end", backgroundColor: 'blue' }}>
-              <Text style={globalStyles.cardsDescriptionText}>
-                Categoria
-              </Text>
             </View>
-          </View>
-
-          <View>
-            <View style={{ alignSelf: "flex-end", backgroundColor: 'pink' }}>
-              <Text style={globalStyles.cardsDescriptionText}>
-                Rating??
-              </Text>
+            <View>
+              <TouchableOpacity>
+                <Text style={{fontSize: 25}}>❤</Text>
+              </TouchableOpacity>
             </View>
-          </View>
-
         </View>
-      </View >
-    </TouchableOpacity>
+      </TouchableOpacity>
+    </View>
+    
   );
 };
 
