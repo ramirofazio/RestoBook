@@ -20,43 +20,43 @@ const CardMenu = ({ resto, navigation }) => {
 
   return (
     <View style={globalStyles.cardsContainer}>
-        <TouchableOpacity
+      <TouchableOpacity
         onPress={() => handleOnPress()}
-        >
-          <View style={globalStyles.containerImgCard}>
-            <Image
-                style={globalStyles.cardsHomeimg}
-                source={
-                  resto.Img === ""
-                  ? {
-                    uri: "https://images.vexels.com/media/users/3/204941/isolated/preview/d8bc6d74b3da7ee41fc99b6000c1e6a4-trazo-de-puntuacion-de-signo-de-interrogacion.png",
-                  }
-                  : { uri: resto.Img }
+      >
+        <View style={globalStyles.containerImgCard}>
+          <Image
+            style={globalStyles.cardsHomeimg}
+            source={
+              resto.Img === ""
+                ? {
+                  uri: "https://images.vexels.com/media/users/3/204941/isolated/preview/d8bc6d74b3da7ee41fc99b6000c1e6a4-trazo-de-puntuacion-de-signo-de-interrogacion.png",
                 }
-            />
-          </View>
-                
-          <View style={globalStyles.cardsDescriptionContainer}>
-            <View>
-              <Text style={globalStyles.cardsHomeTitle}>{resto.title}</Text>
-            </View>
+                : { uri: resto.Img }
+            }
+          />
+        </View>
 
-            <View >
-                <Text style={globalStyles.cardsDescriptionText}>
-                  ⭐⭐⭐⭐⭐
-                </Text>
-            </View>
-
-            <View >
-              <View style={globalStyles.categoriesView}>
-                <Text style={globalStyles.categoriesText}>  Categoria de local</Text>
-              </View>
-            </View>
+        <View style={globalStyles.cardsDescriptionContainer}>
+          <View>
+            <Text style={globalStyles.cardsHomeTitle}>{resto.title}</Text>
           </View>
 
-          <View style={globalStyles.btnContainerCard}>
-            <View>
-              <TouchableOpacity
+          <View >
+            <Text style={globalStyles.cardsDescriptionText}>
+              ⭐⭐⭐⭐⭐
+            </Text>
+          </View>
+
+          <View >
+            <View style={globalStyles.categoriesView}>
+              <Text style={globalStyles.categoriesText}>  Categoria de local</Text>
+            </View>
+          </View>
+        </View>
+
+        <View style={globalStyles.btnContainerCard}>
+          <View>
+            <TouchableOpacity
               onPress={() => alert("llevame a whatsapp")}
             >
               <Image
@@ -65,16 +65,16 @@ const CardMenu = ({ resto, navigation }) => {
                 source={require("../assets/whatsAppIcon.png")}
               />
             </TouchableOpacity>
-            </View>
-            <View>
-              <TouchableOpacity>
-                <Text style={{fontSize: 25}}>❤</Text>
-              </TouchableOpacity>
-            </View>
+          </View>
+          <View>
+            <TouchableOpacity>
+              <Text style={{ fontSize: 25 }}>❤</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </TouchableOpacity>
     </View>
-    
+
   );
 };
 
