@@ -3,7 +3,7 @@ import React, { useState } from "react";
 //
 //
 //----------REDUX UTILS-----------
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 //
 //
 //----------REACT-NATIVE UTILS-----------
@@ -43,6 +43,7 @@ import { BottomSheet, ListItem } from "react-native-elements";
 //
 //------IMAGINE PICKER---------
 import * as ImagePicker from "expo-image-picker";
+import SetCommerce from "../Redux/Actions/setCommerce";
 
 //
 //
@@ -54,7 +55,6 @@ const auth = getAuth();
 
 const registerRestoSchema = yup.object({
   email: yup.string()
-    .email()
     .required(),
   title: yup.string()
     .required()
@@ -79,6 +79,7 @@ const RegisterResto = ({ navigation }) => {
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   }
+  const dispatch = useDispatch()
   const [isVisible, setIsVisible] = useState(false)
   const [region, setRegion] = useState(initialRegion);
   const [state, setState] = useState({
@@ -131,6 +132,51 @@ const RegisterResto = ({ navigation }) => {
 
   return (
     <View style={globalStyles.Home}>
+      <View style={globalStyles.inputComponent}>
+        <GooglePlacesAutocomplete
+          placeholder='Completa tu direccion'
+          nearbyPlacesAPI='GooglePlacesSearch'
+          debounce={400}
+          enablePoweredByContainer={false}
+          query={{
+            key: GOOGLE_API_KEY,
+            language: 'en',
+          }}
+          minLength={3}
+          onPress={(data, details = null) => setStateAndRegion(details.geometry.location, details.formatted_address)}
+          fetchDetails={true}
+          styles={{
+            container: {
+              flex: 0,
+              width: '150%',
+              padding: 0,
+              alignSelf: 'center',
+            },
+            textInput: {
+              fontSize: 14.5,
+              fontWeight: 'bold',
+              width: '130%',
+              backgroundColor: 'transparent',
+              textAlign: 'center',
+            },
+            textInputContainer: {
+              alignItems: 'center',
+              height: '2.7%',
+            },
+            listView: {
+              borderRadius: 13,
+              backgroundColor: '#f6efd2',
+            },
+            description: {
+            },
+            row: {
+              backgroundColor: '#f6efd2',
+            },
+
+          }}
+        />
+      </View>
+
       <Formik
         initialValues={{
           email: "",
@@ -179,7 +225,9 @@ const RegisterResto = ({ navigation }) => {
                       commerce: true
                     })
                 )
-                .then(alert("creado"))
+                .then(
+                  dispatch(SetCommerce())
+                )
                 .then(navigation.navigate("RestoBook"))
             } catch (error) {
               console.log(error);
@@ -341,35 +389,6 @@ const RegisterResto = ({ navigation }) => {
 
 
       <View style={{ flex: 3 }}>
-        <View style={globalStyles.inputComponent}>
-          <GooglePlacesAutocomplete
-            placeholder='Completa tu direccion'
-            nearbyPlacesAPI='GooglePlacesSearch'
-            debounce={400}
-            enablePoweredByContainer={false}
-            query={{
-              key: GOOGLE_API_KEY,
-              language: 'en',
-            }}
-            minLength={3}
-            onPress={(data, details = null) => setStateAndRegion(details.geometry.location, details.formatted_address)}
-            fetchDetails={true}
-            styles={{
-              container: {
-                marginTop: 5,
-                flex: 1,
-                padding: 0,
-                borderTopWidth: 1,
-                borderTopColor: "skyblue",
-              },
-              textInput: {
-                fontSize: 15,
-                marginLeft: -9,
-                backgroundColor: 'transparent',
-              }
-            }}
-          />
-        </View>
 
         <View style={styles.googleMapsContainer}>
           <MapView
@@ -396,7 +415,6 @@ const RegisterResto = ({ navigation }) => {
         </View>
       </View>
     </View >
-
   )
 }
 
@@ -423,13 +441,11 @@ const styles = StyleSheet.create({
   },
   googleMapsContainer: {
     padding: 5,
-    flex: 2,
   },
   googleMaps: {
     borderColor: '#034F84',
     borderWidth: 1,
-    flex: 1,
-    borderRadius: 10
+    borderRadius: 10,
   }
 });
 export default RegisterResto;

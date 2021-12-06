@@ -11,7 +11,6 @@ import CurrentUser from "../Redux/Actions/CurrentUser.js";
 //
 //
 //----------REACT-NATIVE UTILS-----------
-
 import { View, Image, ScrollView, Text, StyleSheet, Button, TouchableOpacity } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 //
@@ -91,8 +90,6 @@ export default function Home({ navigation }) {
     }
   });
 
-
-
   return (
     <ScrollView style={globalStyles.Home}>
       <View style={styles.textContainer}>
@@ -103,7 +100,6 @@ export default function Home({ navigation }) {
         )}
 
       </View>
-
       <View style={styles.textContainer2}>
         <TouchableOpacity onPress={() => navigation.navigate("WebViewScreen")}>
           <Text ><MaterialIcons name="payment" size={20} color="black"></MaterialIcons> Pagar: $100 de tu reserva
