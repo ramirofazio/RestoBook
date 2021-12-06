@@ -9,7 +9,7 @@ import BtnFuncional from "../Screens/Helpers/BtnFuncional.js";
 import empresaDetail from "../Redux/Actions/empresaDetail.js";
 //-----STYLES----------
 import globalStyles from "../Screens/GlobalStyles.js";
-const CardMenu = ({ resto, navigation, icon }) => {
+const CardMenu = ({ resto, navigation }) => {
   //console.log(resto)
   const dispatch = useDispatch();
 
@@ -77,21 +77,5 @@ const CardMenu = ({ resto, navigation, icon }) => {
     
   );
 };
-
-const styles = StyleSheet.create({
-  imagen: {
-    width: 140,
-    height: 140,
-  },
-  container: {
-    flex: 1,
-    marginVertical: 4,
-    marginHorizontal: 16,
-    borderRadius: 5,
-    overflow: "hidden",
-    alignItems: "center",
-    justifyContent: "center"
-  }
-})
 
 export default CardMenu;

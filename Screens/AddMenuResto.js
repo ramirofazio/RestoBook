@@ -110,7 +110,7 @@ const AddMenuResto = ({ navigation }) => {
               />
             </View>
             {props.touched.description && props.errors.description ? (
-              <Text>{props.errors.description}</Text>
+              <Text style={globalStyles.errorText}>{props.errors.description}</Text>
             ) : null}
             <View style={globalStyles.inputComponent}>
               <TextInput
@@ -123,7 +123,7 @@ const AddMenuResto = ({ navigation }) => {
               />
             </View>
             {props.touched.price && props.errors.price ? (
-              <Text>{props.errors.price}</Text>
+              <Text style={globalStyles.errorText}>{props.errors.price}</Text>
             ) : null}
             <TouchableOpacity
               style={globalStyles.touchLog}
