@@ -54,6 +54,7 @@ export default function Home({ navigation }) {
         obj.idResto = doc.id;
         arr.push(obj);
       });
+      console.log(arr)
       setAvailableCommerces(arr);
     });
   }, []);

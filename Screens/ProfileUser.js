@@ -59,7 +59,105 @@ const reservas = [
 let imgPerrito =
   "https://res.cloudinary.com/restobook/image/upload/samples/bike.jpg";
 const ProfileUser = ({ navigation }) => {
-  const empresas = useSelector((state) => state.empresas);
+  const empresas = [
+    {
+      "category": "",
+      "cuit": "2081828284",
+      "description": "Comidas rapidas",
+      "email": "francobrizueladev@gmail.com",
+      "idResto": "JyZ4DGShfFONQVE9y4fj",
+      "idUser": "sNYshQ9DEYggznBVA38DF2BNXfM2",
+      "img": "",
+      "location":  {
+        "address": "",
+        "latitude": -34.61315,
+        "longitude": -58.37723,
+      },
+      "menu":  [
+         {
+          "description": "Las pastas de gran ",
+          "foodName": "Pastas feas",
+          "img": "file:///var/mobile/Containers/Data/Application/D09EF3A7-9869-49DF-8A6A-63D51A6363EE/Library/Caches/ExponentExperienceData/%2540anonymous%252FRestoBook-536ab453-cf09-435d-b7e1-150ec487fa5a/ImagePicker/6B864B78-4D6C-41D6-833C-0C10064237A7.jpg",
+          "price": "500",
+        },
+      ],
+      "phone": "221783991",
+      "phone2": "221738282",
+      "razonSocial": "",
+      "title": "McDonald Fran",
+    },
+     {
+      "category": "",
+      "cuit": "123456789",
+      "description": "El restaurante de Ramiro ",
+      "email": "ramiazio@gmail.com",
+      "idResto": "XqjVxo9rTjxfZ0RNPQeT",
+      "idUser": "tBsnBsAtBWeIvTmUUc8MUlB5x882",
+      "img": "",
+      "location":  {
+        "address": "",
+        "latitude": -34.61315,
+        "longitude": -58.37723,
+      },
+      "menu":  [
+         {
+          "description": "hamburguesas con jamon y queso",
+          "foodName": "hamburguesas",
+          "img": "",
+          "price": "200",
+        },
+      ],
+      "phone": "2477313700",
+      "phone2": "",
+      "razonSocial": "",
+      "title": "Rami Resto",
+    },
+     {
+      "category": "",
+      "cuit": "272818181",
+      "description": "Vivo abajo del puente ",
+      "email": "franco_lq@hotmail.com",
+      "idResto": "dt88DfXbO8crYQo0DyUo",
+      "idUser": "sNYshQ9DEYggznBVA38DF2BNXfM2",
+      "img": "",
+      "location":  {
+        "address": "",
+        "latitude": -34.61315,
+        "longitude": -58.37723,
+      },
+      "menu":  [],
+      "phone": "272818181",
+      "phone2": "272828272",
+      "razonSocial": "",
+      "title": "London Bridge",
+    },
+     {
+      "category": "Hamburguesas",
+      "cuit": "27282828181",
+      "description": "Sjskskskskakska",
+      "email": "ñaial",
+      "idResto": "jtviznmMDLe0mFuXTusB",
+      "idUser": "sNYshQ9DEYggznBVA38DF2BNXfM2",
+      "img": "",
+      "location":  {
+        "address": "San Lorenzo 2551, Resistencia, Chaco, Argentina",
+        "latitude": -27.4768112,
+        "longitude": -59.00318550000001,
+      },
+      "menu":  [
+         {
+          "description": "Jajajaja",
+          "foodName": "Jdsjakka",
+          "img": "file:///var/mobile/Containers/Data/Application/D09EF3A7-9869-49DF-8A6A-63D51A6363EE/Library/Caches/ExponentExperienceData/%2540anonymous%252FRestoBook-536ab453-cf09-435d-b7e1-150ec487fa5a/ImagePicker/4E105187-B861-4C29-BA8E-5216A2D3D18A.jpg",
+          "price": "650",
+        },
+      ],
+      "phone": "2727171",
+      "phone2": "2727272",
+      "razonSocial": "",
+      "title": "Casa laial ",
+    },
+  ]
   const loggedUser = useSelector((state) => state.currentUser);
   const loggedId = useSelector((state) => state.currentId);
   const [modalVisible, setModalVisible] = useState(false);
@@ -77,6 +175,7 @@ const ProfileUser = ({ navigation }) => {
         }
       });
     });
+    console.log('hola')
   }, [loggedId]);
 
   let openImagePickerAsync = async () => {

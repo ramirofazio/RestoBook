@@ -6,8 +6,6 @@ const app = express();
 app.use(express.json());
 app.use(morgan('dev'));
 
-
-
 // SDK de Mercado Pago
 const mercadopago = require("mercadopago");
 // Agrega credenciales
@@ -59,7 +57,6 @@ app.get('/cancel', (req, res) => {
 })
 app.get('/payment', (req, res) => {
   const id = req.body.id;
-
 })
 
 app.listen(process.env.PORT || 19006, () => {

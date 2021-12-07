@@ -35,7 +35,7 @@ const auth = getAuth();
 //
 //---------------------------------------------------------------------------------------//
 //
-const DetailsResto = () => {
+const DetailsResto = ({navigation}) => {
   const empresaDetail = useSelector((state) => state.empresaDetail);
   const {location} = empresaDetail
   console.log(location)

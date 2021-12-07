@@ -14,7 +14,8 @@ import {
   Text,
   StyleSheet,
   ScrollView,
-  TouchableOpacity
+  TouchableOpacity,
+  Pressable
 } from "react-native";
 //
 //----------FORMIK y YUP------------------
@@ -356,13 +357,17 @@ const RegisterResto = ({ navigation }) => {
       </Formik>
 
       <View style={globalStyles.inputComponent}>
-        <TextInput
-          style={globalStyles.texts}
-          editable={false}
-          placeholder="Select Category"
-          value={state.category}
-          onPressIn={() => setIsVisible(true)}
-        />
+      <Pressable onPress={() => setIsVisible(true) }>
+        <View>
+          <TextInput
+            style={globalStyles.texts}
+            editable={false}
+            placeholder="Select Category"
+            value={state.category}
+            onPressIn={() => setIsVisible(true)}
+          />
+        </View>
+      </Pressable>
         <BottomSheet
           isVisible={isVisible}
           containerStyle={{ backgroundColor: 'rgba(0.5,0.25,0,0.2)' }}
@@ -372,7 +377,10 @@ const RegisterResto = ({ navigation }) => {
               key={index}
               containerStyle={{ backgroundColor: 'rgba(0.5,0.25,0,0.7)' }}
               style={{ borderWidth: 1, borderColor: '#cccccc' }}
-              onPress={(e) => setState({ ...state, category: categoria }) && setIsVisible(false)}
+              onPress={(e) => {
+                setState({ ...state, category: categoria }) 
+                setIsVisible(false)
+              }}
             >
               <ListItem.Content>
                 <ListItem.Title style={{ height: 35, color: '#FFF', padding: 8 }}>{categoria}</ListItem.Title>
