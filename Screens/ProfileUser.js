@@ -22,7 +22,8 @@ import {
   sendPasswordResetEmail,
   signOut,
 } from "firebase/auth";
-import { doc, onSnapshot, collection, query } from "firebase/firestore";
+
+import { doc, onSnapshot, collection, query, getDoc } from "firebase/firestore";
 import { CLOUDINARY_URL, CLOUDINARY_CONSTANT } from "@env";
 import globalStyles from "./GlobalStyles";
 import StarFilled from "react-native-vector-icons/AntDesign";
@@ -73,19 +74,35 @@ const ProfileUser = ({ navigation }) => {
   const [uploading, setUploading] = useState(false);
   const [image, setImage] = useState("");
 
+  // useEffect(() => {
+  //   const q = query(collection(firebase.db, "Users"));
+  //   const unsubscribe = onSnapshot(q, (querySnapshot) => {
+  //     querySnapshot.forEach((doc) => {
+  //       if (doc.id === loggedId) {
+  //         let obj = doc.data();
+  //         setImage(obj.profileImage);
+  //         setCurrentUser(obj);
+  //         setNewUserInfo(obj);
+  //       }
+  //     });
+  //   });
+  // }, [loggedId]);
+
   useEffect(() => {
-    const q = query(collection(firebase.db, "Users"));
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        if (doc.id === loggedId) {
-          let obj = doc.data();
-          setImage(obj.profileImage);
-          setCurrentUser(obj);
-          setNewUserInfo(obj);
-        }
-      });
-    });
-  }, [loggedId]);
+    const getInfo = async () => {
+      const docRef = doc(firebase.db, "Users", auth.currentUser.uid);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        let obj = docSnap.data();
+        setImage(obj.profileImage);
+        setCurrentUser(obj);
+        setNewUserInfo(obj);
+      } else {
+        alert("NO HAY INFO");
+      }
+    };
+    getInfo();
+  }, []);
 
   let openImagePickerAsync = async () => {
     setUploading(true);
@@ -245,7 +262,7 @@ const ProfileUser = ({ navigation }) => {
                 textAlignVertical: "top",
               }}
             >
-              {reservas[1].name}
+              {currentUser?.name}
             </Text>
             <Text
               style={{
@@ -255,7 +272,7 @@ const ProfileUser = ({ navigation }) => {
                 paddingVertical: 15,
               }}
             >
-              {reservas[1].email}
+              {"@" + currentUser?.email}
             </Text>
             <TouchableOpacity
               style={globalStyles.btn}
