@@ -41,7 +41,7 @@ export default function NavDetail({ navigation }) {
   });
   onAuthStateChanged(auth, (usuarioFirebase) => {
     if (usuarioFirebase) {
-      if (empresaDetail.id === usuarioFirebase.uid) {
+      if (empresaDetail.idUser === usuarioFirebase.uid) {
         isOwner(true);
       } else {
         isOwner(false);

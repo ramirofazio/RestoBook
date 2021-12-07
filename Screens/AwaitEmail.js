@@ -33,14 +33,17 @@ const auth = getAuth();
 //
 const AwaitEmail = ({ navigation }) => {
   return (
-    <View style={globalStyles.Home}>
-      <View style={globalStyles.textContainer}>
-        <Text style={globalStyles.text}>
-          {" "}
-          Please check your inbox, if it's empty click below
-        </Text>
-      </View>
-      <View style={globalStyles.container}>
+    <View style={{
+      flex: 1,
+      backgroundColor: '#ffdfcb',
+      alignContent: "center",
+      justifyContent: "center"
+    }}>
+      <Text style={globalStyles.text}>
+        {" "}
+        Please check your inbox, if it's empty click below
+      </Text>
+      <View style={{ alignItems: "center" }}>
         <TouchableOpacity
           style={globalStyles.touchLog}
           onPress={() => {
@@ -54,7 +57,7 @@ const AwaitEmail = ({ navigation }) => {
           style={globalStyles.touchFlag}
           onPress={() => {
             signOut(auth);
-            navigation.navigate("GlobalLogin");
+            navigation.navigate("RestoBook");
           }}
         >
           <Text style={globalStyles.fontLog}>Go back to Login</Text>

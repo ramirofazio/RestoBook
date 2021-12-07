@@ -3,7 +3,7 @@ import React, { useState } from "react";
 //
 //
 //----------REDUX UTILS-----------
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 //
 //
 //----------REACT-NATIVE UTILS-----------
@@ -14,7 +14,8 @@ import {
   Text,
   StyleSheet,
   ScrollView,
-  TouchableOpacity
+  TouchableOpacity,
+  Pressable
 } from "react-native";
 //
 //----------FORMIK y YUP------------------
@@ -43,6 +44,7 @@ import { BottomSheet, ListItem } from "react-native-elements";
 //
 //------IMAGINE PICKER---------
 import * as ImagePicker from "expo-image-picker";
+import SetCommerce from "../Redux/Actions/setCommerce";
 
 //
 //
@@ -54,7 +56,6 @@ const auth = getAuth();
 
 const registerRestoSchema = yup.object({
   email: yup.string()
-    .email()
     .required(),
   title: yup.string()
     .required()
@@ -79,12 +80,14 @@ const RegisterResto = ({ navigation }) => {
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   }
+  const dispatch = useDispatch()
   const [isVisible, setIsVisible] = useState(false)
   const [region, setRegion] = useState(initialRegion);
   const [state, setState] = useState({
     lat: -34.6131500,
     lng: -58.3772300,
     address: "",
+    category: '',
   })
   const categories = useSelector((state) => state.categoriesResto);
 
@@ -130,6 +133,62 @@ const RegisterResto = ({ navigation }) => {
 
   return (
     <View style={globalStyles.Home}>
+      <View style={{
+        backgroundColor: '#e8b595',
+        width: '80%',
+        alignSelf: 'center',
+        marginTop: 15,
+        borderRadius: 10,
+        maxWidth: '100%',  
+      }}
+      >
+        <GooglePlacesAutocomplete
+          placeholder='Completa tu direccion'
+          nearbyPlacesAPI='GooglePlacesSearch'
+          debounce={400}
+          enablePoweredByContainer={false}
+          query={{
+            key: GOOGLE_API_KEY,
+            language: 'en',
+          }}
+          minLength={3}
+          onPress={(data, details = null) => setStateAndRegion(details.geometry.location, details.formatted_address)}
+          fetchDetails={true}
+          styles={{
+            container: {
+              flex: 0,
+              width: '100%',
+              padding: 0,
+              alignSelf: 'center',
+            },
+            textInput: {
+              marginTop: 4,
+              fontSize: 14.5,
+              fontWeight: 'bold',
+              width: '80%',
+              backgroundColor: 'transparent',
+              textAlign: 'center',
+              overflow: 'hidden'
+            },
+            textInputContainer: {
+              alignItems: 'center',
+              height: 18,
+              overflow: 'hidden'
+            },
+            listView: {
+              borderRadius: 13,
+              backgroundColor: '#f6efd2',
+            },
+            description: {
+            },
+            row: {
+              backgroundColor: '#f6efd2',
+            },
+
+          }}
+        />
+      </View>
+
       <Formik
         initialValues={{
           email: "",
@@ -139,7 +198,7 @@ const RegisterResto = ({ navigation }) => {
           phone: "",
           phone2: "",
           cuit: "",
-          category: "",
+          category: state.category,
           img: "",
           lat: state.lat,
           lng: state.lng,
@@ -161,13 +220,13 @@ const RegisterResto = ({ navigation }) => {
                   phone: values.phone,
                   phone2: values.phone2,
                   cuit: values.cuit,
-                  category: values.category,
+                  category: state.category,
                   img: values.img,
                   menu: [],
                   location: {
-                    latitude: values.lat,
-                    longitude: values.lng,
-                    address: values.address
+                    latitude: state.lat,
+                    longitude: state.lng,
+                    address: state.address
                   }
                 })
                 .then(
@@ -178,7 +237,9 @@ const RegisterResto = ({ navigation }) => {
                       commerce: true
                     })
                 )
-                .then(alert("creado"))
+                .then(
+                  dispatch(SetCommerce())
+                )
                 .then(navigation.navigate("RestoBook"))
             } catch (error) {
               console.log(error);
@@ -191,7 +252,8 @@ const RegisterResto = ({ navigation }) => {
         {(props) => (
           <View>
             <ScrollView>
-              <View style={styles.inputGroup}>
+
+              <View style={globalStyles.inputComponent}>
                 <TextInput
                   style={globalStyles.texts}
                   placeholder="Email"
@@ -200,10 +262,12 @@ const RegisterResto = ({ navigation }) => {
                   onBlur={props.handleBlur("email")}
                 />
               </View>
+
               {props.touched.email && props.errors.email ? (
                 <Text style={globalStyles.errorText}>{props.errors.email}</Text>
               ) : null}
-              <View style={styles.inputGroup}>
+
+              <View style={globalStyles.inputComponent}>
                 <TextInput
                   style={globalStyles.texts}
                   placeholder="Title"
@@ -212,10 +276,12 @@ const RegisterResto = ({ navigation }) => {
                   onBlur={props.handleBlur("title")}
                 />
               </View>
+
               {props.touched.title && props.errors.title ? (
                 <Text style={globalStyles.errorText}>{props.errors.title}</Text>
               ) : null}
-              <View style={styles.inputGroup}>
+
+              <View style={globalStyles.inputComponent}>
                 <TextInput
                   style={globalStyles.texts}
                   placeholder="Description"
@@ -224,10 +290,12 @@ const RegisterResto = ({ navigation }) => {
                   onBlur={props.handleBlur("description")}
                 />
               </View>
+
               {props.touched.description && props.errors.description ? (
                 <Text style={globalStyles.errorText}>{props.errors.description}</Text>
               ) : null}
-              <View style={styles.inputGroup}>
+
+              <View style={globalStyles.inputComponent}>
                 <TextInput
                   style={globalStyles.texts}
                   placeholder="Phone"
@@ -236,10 +304,12 @@ const RegisterResto = ({ navigation }) => {
                   onBlur={props.handleBlur("phone")}
                 />
               </View>
+
               {props.touched.phone && props.errors.phone ? (
                 <Text style={globalStyles.errorText}>{props.errors.phone}</Text>
               ) : null}
-              <View style={styles.inputGroup}>
+
+              <View style={globalStyles.inputComponent}>
                 <TextInput
                   style={globalStyles.texts}
                   placeholder="Phone 2"
@@ -248,10 +318,12 @@ const RegisterResto = ({ navigation }) => {
                   onBlur={props.handleBlur("phone2")}
                 />
               </View>
+
               {props.touched.phone2 && props.errors.phone2 ? (
                 <Text style={globalStyles.errorText}>{props.errors.phone2}</Text>
               ) : null}
-              <View style={styles.inputGroup}>
+
+              <View style={globalStyles.inputComponent}>
                 <TextInput
                   style={globalStyles.texts}
                   placeholder="Cuit"
@@ -260,9 +332,23 @@ const RegisterResto = ({ navigation }) => {
                   onBlur={props.handleBlur("cuit")}
                 />
               </View>
+
               {props.touched.cuit && props.errors.cuit ? (
                 <Text style={globalStyles.errorText}>{props.errors.cuit}</Text>
               ) : null}
+              
+              <Pressable onPress={() => setIsVisible(true) }>
+                <View style={globalStyles.inputComponent}>
+                  <TextInput
+                    style={globalStyles.texts}
+                    editable={false}
+                    placeholder="Select Category"
+                    value={state.category}
+                    onPressIn={() => setIsVisible(true)}
+                  />
+                </View>
+              </Pressable>
+
               <View style={{ alignItems: "center" }}>
                 <TouchableOpacity
                   style={globalStyles.touchLog}
@@ -277,6 +363,7 @@ const RegisterResto = ({ navigation }) => {
                   </Text>
                 </TouchableOpacity>
               </View>
+
               <View style={{ alignItems: "center" }}>
                 <TouchableOpacity
                   style={globalStyles.touchLog}
@@ -285,96 +372,70 @@ const RegisterResto = ({ navigation }) => {
                   <Text style={globalStyles.fontLog}>Create</Text>
                 </TouchableOpacity>
               </View>
-              <View>
-                <TextInput
-                  editable={false}
-                  placeholder="Select Category"
-                  value={props.values.category}
-                  onPressIn={() => setIsVisible(true)}
-                />
-                <BottomSheet
-                  isVisible={isVisible}
-                  containerStyle={{ backgroundColor: 'rgba(0.5,0.25,0,0.2)' }}
-                >
-                  {categories.map((categoria, index) => (
-                    <ListItem
-                      key={index}
-                      containerStyle={{ backgroundColor: 'rgba(0.5,0.25,0,0.7)' }}
-                      style={{ borderWidth: 1, borderColor: '#cccccc' }}
-                      onPress={() => props.handleChange("category") && setIsVisible(false)}
-                    >
-                      <ListItem.Content>
-                        <ListItem.Title style={{ height: 35, color: '#FFF', padding: 8 }}>{categoria}</ListItem.Title>
-                      </ListItem.Content>
-                    </ListItem>
-                  ))}
-                  <ListItem key={999} containerStyle={{ backgroundColor: 'red' }} style={{ borderWidth: 1, borderColor: '#cccccc' }} onPress={() => setIsVisible(false)}>
-                    <ListItem.Content style={{}}>
-                      <ListItem.Title style={{ height: 35, color: '#FFF', padding: 8 }}>Cancel</ListItem.Title>
-                    </ListItem.Content>
-                  </ListItem>
-                </BottomSheet>
-              </View>
             </ScrollView>
 
-
-            <View style={{ flex: 3 }}>
-              <GooglePlacesAutocomplete
-                placeholder='Completa tu direccion'
-                nearbyPlacesAPI='GooglePlacesSearch'
-                debounce={400}
-                enablePoweredByContainer={false}
-                query={{
-                  key: GOOGLE_API_KEY,
-                  language: 'en',
-                }}
-                minLength={3}
-                onPress={(data, details = null) => setStateAndRegion(details.geometry.location, details.formatted_address)}
-                fetchDetails={true}
-                styles={{
-                  container: {
-                    marginTop: 5,
-                    flex: 0,
-                    padding: 0,
-                    borderTopWidth: 1,
-                    borderTopColor: "skyblue",
-                  },
-                  textInput: {
-                    fontSize: 15,
-                    marginLeft: -9,
-                    backgroundColor: 'transparent',
-                  }
-                }}
-              />
-              <View style={styles.googleMapsContainer}>
-                <MapView
-                  style={styles.googleMaps}
-                  region={region}
-                >
-                  <Marker
-                    draggable
-                    title='Your Resto'
-                    coordinate={region}
-                    onDragEnd={event => {
-                      const { latitude, longitude } = event.nativeEvent.coordinate
-                      const newLocation = {
-                        lat: latitude,
-                        lng: longitude
-                      }
-                      setStateAndRegion(newLocation)
-                    }}
-                    pinColor='#0072B5'
-                  >
-                  </Marker>
-                </MapView>
-              </View>
-            </View>
           </View>
 
         )}
       </Formik>
-    </View >
 
+      <View style={globalStyles.inputComponent}>
+      
+        <BottomSheet
+          isVisible={isVisible}
+          containerStyle={{ backgroundColor: 'rgba(0.5,0.25,0,0.2)' }}
+        >
+          {categories.map((categoria, index) => (
+            <ListItem
+              key={index}
+              containerStyle={{ backgroundColor: 'rgba(0.5,0.25,0,0.7)' }}
+              style={{ borderWidth: 1, borderColor: '#cccccc' }}
+              onPress={(e) => {
+                setState({ ...state, category: categoria }) 
+                setIsVisible(false)
+              }}
+            >
+              <ListItem.Content>
+                <ListItem.Title style={{ height: 35, color: '#FFF', padding: 8 }}>{categoria}</ListItem.Title>
+              </ListItem.Content>
+            </ListItem>
+          ))}
+          <ListItem key={999} containerStyle={{ backgroundColor: 'red' }} style={{ borderWidth: 1, borderColor: '#cccccc' }} onPress={() => setIsVisible(false)}>
+            <ListItem.Content style={{}}>
+              <ListItem.Title style={{ height: 35, color: '#FFF', padding: 8 }}>Cancel</ListItem.Title>
+            </ListItem.Content>
+          </ListItem>
+        </BottomSheet>
+      </View>
+
+
+      <View style={{ flex: 3 }}>
+
+        <View style={styles.googleMapsContainer}>
+          <MapView
+            style={styles.googleMaps}
+            region={region}
+          >
+
+            <Marker
+              draggable
+              title='Your Resto'
+              coordinate={region}
+              onDragEnd={event => {
+                const { latitude, longitude } = event.nativeEvent.coordinate
+                const newLocation = {
+                  lat: latitude,
+                  lng: longitude
+                }
+                setStateAndRegion(newLocation)
+              }}
+              pinColor='#0072B5'
+            >
+            </Marker>
+          </MapView>
+        </View>
+      </View>
+    </View >
   )
 }
 
@@ -401,13 +462,12 @@ const styles = StyleSheet.create({
   },
   googleMapsContainer: {
     padding: 5,
-    flex: 2
   },
   googleMaps: {
     borderColor: '#034F84',
     borderWidth: 1,
-    flex: 1,
-    borderRadius: 10
+    borderRadius: 50,
+    height: 250
   }
 });
 export default RegisterResto;

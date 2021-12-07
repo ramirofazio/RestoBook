@@ -26,19 +26,6 @@ const globalStyles = StyleSheet.create({
   Container: {
     alignItems: "center",
   },
-  cardsContainer: {
-    alignSelf: "center",
-    backgroundColor: "#f6efd2",
-    marginHorizontal: 10,
-    marginVertical: 15,
-    paddingHorizontal: 20,
-    paddingVertical: 20,
-    borderRadius: 25,
-    width: "95%",
-    height: "14%",
-
-    //backgroundColor: "yellow",
-  },
   btn: {
     backgroundColor: '#ffd964',
     paddingVertical: 8,
@@ -51,32 +38,85 @@ const globalStyles = StyleSheet.create({
   img: {
     height: 40,
     width: 40,
-    marginTop: 5,
-    alignItems: "center",
     resizeMode: 'contain' // esta linea es para que se adapte al tam;o de la imagen
   },
-  cardsHomeimg: {
-    //backgroundColor: "red",
-    alignSelf: "center",
-    width: 100,
-    height: 100,
-    borderRadius: 25,
-    marginTop: -45, //VER COMO ARREGLAR 
-  },
-  cardsInfoContainer: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  cardsDescriptionContainer: {
-    //backgroundColor: "red",
+  
+  //////CARD HOME/////////////////////////////////////////////////
+  cardsContainer: {
     flex: 1,
     alignSelf: "center",
-    marginTop: -45,
+    backgroundColor: "#f6efd3",
+    marginHorizontal: 10,
+    marginVertical: 5,
+    paddingHorizontal: 5,
+    paddingVertical: 5,
+    borderRadius: 25,
+    width: "95%",
+    height: 150
+  },
+  containerImgCard: {
+    width: "31.6%",
+    maxHeight: '5%',
+    padding: 5,
+    alignSelf: "flex-start",
+    alignItems: "center",
+  },
+  cardsHomeimg: {
+    marginTop: 5,
+    // backgroundColor: "red",
+    width: 110,
+    height: 120,
+    borderRadius: 25,
+    justifyContent: "center"
+  },
+  cardsDescriptionContainer: {
+    // backgroundColor: 'green',
+    maxHeight: '120%',
+    height: 120,
+    width: '35%',
+    alignSelf: "center",
+    justifyContent: "space-around"
   },
   cardsDescriptionText: {
     textAlign: "center"
   },
+  cardsHomeTitle: {
+    // backgroundColor: "#5555",
+    fontSize: 25,
+    fontWeight: "bold",
+    textAlign: "center",
+    width: '100%'
+  },
+  btnContainerCard: {
+    // backgroundColor: 'violet',
+    maxHeight: '120%',
+    height: 120,
+    width: '31.6%',
+    alignSelf: "flex-end",
+    alignItems: "center",
+    marginTop: -120,
+    justifyContent: "space-around"
+  },
+  wspImage: {
+    width: 40,
+    height: 40,
+    borderRadius: 25
+  },
+  //////ACA TERMINAN  LOS ESTILOS DE LAS CARDS HOME/////////////////////
+
+  /////////////////////CATEGORIAS LOCAL////////////////////////////////
+  categoriesView: {
+    backgroundColor: "white",
+    borderRadius: 10,
+    padding: 2,
+  },
+  categoriesText: {
+    fontWeight: "bold",
+    fontSize: 13,
+    padding: 1,
+  },
+  ////////////////////ACA TERMINA CATEGORIAS LOCALES//////////////////
+
   title: {
     fontSize: 25,
     fontWeight: "bold",
@@ -84,23 +124,11 @@ const globalStyles = StyleSheet.create({
     paddingHorizontal: 5,
     color: '#392c28'
   },
-  cardsHomeTitle: {
-    //backgroundColor: "blue",
-    fontSize: 30,
-    fontWeight: "bold",
-    alignSelf: "center",
-    marginTop: -15,
-  },
-  wspImage: {
-    width: 30,
-    height: 30,
-    borderRadius: 25,
-  },
   componentTitle: {
     alignSelf: "center",
     marginTop: 10,
     fontSize: 30,
-    color: "#000"
+    color: "#392c28"
 
   },
   containerTitle: {
@@ -132,13 +160,19 @@ const globalStyles = StyleSheet.create({
   },
   fontLog: {
     color: "#392c28",
-    fontWeight: "bold"
+    fontWeight: "bold",
+    textAlign: "center"
   },
-  container: {
+  btnContainerLogin: {
     flex: 6,
     alignItems: "center",
+    maxWidth: '80%',
+    width: '100%',
+    maxHeight: '70%',
+    height: '100%'
   },
   text: {
+    textAlign: "center",
     fontSize: 20,
     width: "100%",
   },
@@ -177,16 +211,12 @@ const globalStyles = StyleSheet.create({
     backgroundColor: "#e8b595",
     maxWidth: '100%',
     width: '60%',
-    borderRadius: 10,
   },
   modalInputContainer: {
     flex: 2,
     marginTop: 50,
     alignItems: "center",
 
-  },
-  eye: {
-    marginTop: 10,
   },
 });
 

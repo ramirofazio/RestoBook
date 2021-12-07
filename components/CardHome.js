@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, Text } from "react-native-elements";
-import { View, Image, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Image, StyleSheet, TouchableOpacity, Linking } from "react-native";
 import { useDispatch } from "react-redux";
 //-------SCREENS--------
 import BtnFuncional from "../Screens/Helpers/BtnFuncional.js";
@@ -13,19 +13,23 @@ const CardMenu = ({ resto, navigation }) => {
   //console.log(resto)
   const dispatch = useDispatch();
 
+  const celphone = +541168020511;
+
   const handleOnPress = () => {
     dispatch(empresaDetail(resto));
     navigation.navigate("DetailsResto");
   };
 
+  const handleWhatsapp = async () => {
+    await Linking.openURL(`whatsapp://send?text=Hola ${resto.title}, mi nombre es Lucas y quiero generar una reserva&phone=${celphone}`)
+  }
+
   return (
-    <TouchableOpacity
-      style={globalStyles.cardsContainer}
-      onPress={() => handleOnPress()}
-    >
-      <View>
-        <Text style={globalStyles.cardsHomeTitle}>{resto.title}</Text>
-        <View style={globalStyles.cardsInfoContainer}>
+    <View style={globalStyles.cardsContainer}>
+      <TouchableOpacity
+        onPress={() => handleOnPress()}
+      >
+        <View style={globalStyles.containerImgCard}>
           <Image
             style={globalStyles.cardsHomeimg}
             source={
@@ -33,52 +37,51 @@ const CardMenu = ({ resto, navigation }) => {
                 ? {
                   uri: "https://images.vexels.com/media/users/3/204941/isolated/preview/d8bc6d74b3da7ee41fc99b6000c1e6a4-trazo-de-puntuacion-de-signo-de-interrogacion.png",
                 }
-                : { uri: resto.img }
+                : { uri: resto.Img }
             }
           />
-          <View style={{
-            width: 30, height: 30, marginLeft: 125, marginTop: 10,
-          }}>
+        </View>
+
+        <View style={globalStyles.cardsDescriptionContainer}>
+          <View>
+            <Text style={globalStyles.cardsHomeTitle}>{resto.title}</Text>
+          </View>
+
+          <View >
+            <Text style={globalStyles.cardsDescriptionText}>
+              ⭐⭐⭐⭐⭐
+            </Text>
+          </View>
+
+          <View >
+            <View style={globalStyles.categoriesView}>
+              <Text style={globalStyles.categoriesText}>  Categoria de local</Text>
+            </View>
+          </View>
+        </View>
+
+        <View style={globalStyles.btnContainerCard}>
+          <View>
             <TouchableOpacity
-              onPress={() => alert("llevame a whatsapp")}
+              onPress={() => handleWhatsapp()}
             >
               <Image
                 style={globalStyles.wspImage}
-                resizeMode="contain"
+                // resizeMode="contain"
                 source={require("../assets/whatsAppIcon.png")}
               />
             </TouchableOpacity>
           </View>
-          <View style={globalStyles.cardsDescriptionContainer}>
-            <View style={{ alignSelf: "flex-end" }}>
-              <Text style={globalStyles.cardsDescriptionText}>
-                Categoria
-              </Text>
-              <Text style={globalStyles.cardsDescriptionText}>
-                Rating??
-              </Text>
-            </View>
+          <View>
+            <TouchableOpacity>
+              <Text style={{ fontSize: 25 }}>❤</Text>
+            </TouchableOpacity>
           </View>
         </View>
-      </View >
-    </TouchableOpacity>
+      </TouchableOpacity>
+    </View>
+
   );
 };
-
-const styles = StyleSheet.create({
-  imagen: {
-    width: 140,
-    height: 140,
-  },
-  container: {
-    flex: 1,
-    marginVertical: 4,
-    marginHorizontal: 16,
-    borderRadius: 5,
-    overflow: "hidden",
-    alignItems: "center",
-    justifyContent: "center"
-  }
-})
 
 export default CardMenu;

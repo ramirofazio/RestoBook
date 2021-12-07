@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 //
 //----------WEBVIEW---------------
-import { WebView } from "react-native-webview"
+import { WebView } from "react-native-webview";
 //
 //----------REDUX UTILS-----------
 import { useDispatch, useSelector } from "react-redux";
@@ -13,7 +13,6 @@ import CurrentUser from "../Redux/Actions/CurrentUser.js";
 //----------REACT-NATIVE UTILS-----------
 import { View, Image, ScrollView, Text, StyleSheet, Button, TouchableOpacity } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-import { PaymentCalc } from "./PaymentCalc"
 //
 //
 //----------FIREBASE UTILS-----------
@@ -23,12 +22,14 @@ import { doc, onSnapshot, collection, query } from "firebase/firestore";
 //
 //
 //---------SCREENS---------------
+import SearchBar from "./SearchBar.js";
 import CardHome from "../components/CardHome.js";
 import Btn from "./Helpers/Btns.js";
 //
 //
 //-------STYLES-------
 import globalStyles from "./GlobalStyles.js";
+import { State } from "react-native-gesture-handler";
 //
 //
 //-------INITIALIZATIONS-------
@@ -37,7 +38,6 @@ const auth = getAuth();
 //---------------------------------------------------------------------------------------//
 //
 export default function Home({ navigation }) {
-  const youtube = "https://www.youtube.com/"
   //------LOGIN JOSE------------
   const [usuarioGlobal, setUsuarioGlobal] = useState("");
   const [availableCommerces, setAvailableCommerces] = useState([]);
@@ -54,20 +54,21 @@ export default function Home({ navigation }) {
         obj.idResto = doc.id;
         arr.push(obj);
       });
+      console.log(arr)
       setAvailableCommerces(arr);
     });
   }, []);
   onAuthStateChanged(auth, (usuarioFirebase) => {
     if (usuarioFirebase?.emailVerified) {
+      console.log(loggedId)
       if (loggedId !== usuarioFirebase.uid) {
-        console.log("cambio en logged!:", usuarioFirebase.uid);
-        console.log("cambio en logged!");
         dispatch(CurrentId(usuarioFirebase.uid));
         const unsub = onSnapshot(
           doc(firebase.db, "Restos", usuarioFirebase.uid),
           (doc) => {
             if (doc.exists()) {
               dispatch(CurrentUser(doc.data()));
+              console.log("data user en home : ", doc.data());
             }
           }
         );
@@ -97,28 +98,12 @@ export default function Home({ navigation }) {
           <Text style={styles.text}>{` Welcome ${usuarioGlobal}`}</Text>
         ) : (
           <Text style={styles.text}>Welcome to Resto Book</Text>
-
         )}
 
-
-
-
-
-        {/* <View> PAAGAARR
-          <WebView source={{uri: youtube}} onLoad={console.log("Loaded!")}>
-          </WebView>
-        </View> */}
-
-
       </View>
-
-      <View style={styles.textContainer2}>
-        <TouchableOpacity onPress={() => navigation.navigate("PaymentCalc")}>
-          <Text ><MaterialIcons name="payment" size={20} color="black"></MaterialIcons> Pagar: $100 de tu reserva
-          </Text>
-        </TouchableOpacity>
+      <View>
+        <SearchBar />
       </View>
-
 
       <View style={globalStyles.btnHome}>
         {/* <Btn nombre="Categorias" ruta="#" navigation={navigation} /> */}
@@ -160,6 +145,15 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     marginTop: 10,
   },
+  textContainer2: {
+    flex: 1,
+    alignSelf: "center",
+    justifyContent: "center",
+    width: "40%",
+    borderRadius: 10,
+    borderWidth: 3,
+    marginTop: 10,
+  },
   text: {
     fontSize: 20,
     width: "100%",
@@ -176,6 +170,5 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 3,
     marginTop: 10,
-  }
-
+  },
 });

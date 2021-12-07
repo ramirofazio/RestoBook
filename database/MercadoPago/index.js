@@ -3,12 +3,8 @@ const morgan = require('morgan');
 
 const app = express();
 
-
-
 app.use(express.json());
 app.use(morgan('dev'));
-
-
 
 // SDK de Mercado Pago
 const mercadopago = require("mercadopago");
@@ -17,9 +13,9 @@ mercadopago.configure({
   access_token: "TEST-6117189399019398-120220-b652cb60d6f3795955dd7ad49fe98a5e-1031166001",
 });
 
-app.get("http://localhost:19006", (req, res) =>{
-  res.send("http://localhost:19006")
-})
+// app.get("http://localhost:19006", (req, res) =>{
+//   res.send("http://localhost:19006")
+// })
 
 
 app.post('/checkout', (req, res) => {
@@ -28,7 +24,7 @@ app.post('/checkout', (req, res) => {
               items:[{
                    title: 'Mesa reservada',
                    quantity: 1,
-                   unit_price: 10,
+                   unit_price: 100,
                    currency_id:'ARG'
                   }],
     back_urls: {
@@ -50,9 +46,9 @@ app.post('/checkout', (req, res) => {
 });
 
 app.get('/success', (req, res) => {
-  console.log('QUERYYYYY', req.query)
-  console.log('PARAMSSSS', req.params)
-  console.log('BODYYYYYY', req.body);
+  // console.log('QUERYYYYY', req.query)
+  // console.log('PARAMSSSS', req.params)
+  // console.log('BODYYYYYY', req.body);
   res.send('Approved')
 })
 
@@ -61,7 +57,6 @@ app.get('/cancel', (req, res) => {
 })
 app.get('/payment', (req, res) => {
   const id = req.body.id;
-
 })
 
 app.listen(process.env.PORT || 19006, () => {
