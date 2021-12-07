@@ -23,7 +23,15 @@ import {
   signOut,
 } from "firebase/auth";
 
-import { doc, onSnapshot, collection, query, getDoc } from "firebase/firestore";
+import {
+  doc,
+  onSnapshot,
+  collection,
+  query,
+  getDoc,
+  getDocs,
+  where,
+} from "firebase/firestore";
 import { CLOUDINARY_URL, CLOUDINARY_CONSTANT } from "@env";
 import globalStyles from "./GlobalStyles";
 import StarFilled from "react-native-vector-icons/AntDesign";
@@ -89,11 +97,28 @@ const ProfileUser = ({ navigation }) => {
   // }, [loggedId]);
 
   useEffect(() => {
+    const getInfo2 = async () => {
+      const q = query(
+        collection(firebase.db, "Users"),
+        where("commerce", "==", true)
+      );
+
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        // doc.data() is never undefined for query doc snapshots
+        console.log(doc.id, " => ", doc.data());
+      });
+    };
+    getInfo2();
+  }, []);
+
+  useEffect(() => {
     const getInfo = async () => {
       const docRef = doc(firebase.db, "Users", auth.currentUser.uid);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
         let obj = docSnap.data();
+        console.log("obj", obj);
         setImage(obj.profileImage);
         setCurrentUser(obj);
         setNewUserInfo(obj);
@@ -272,7 +297,7 @@ const ProfileUser = ({ navigation }) => {
                 paddingVertical: 15,
               }}
             >
-              {"@" + currentUser?.email}
+              {currentUser?.email}
             </Text>
             <TouchableOpacity
               style={globalStyles.btn}
