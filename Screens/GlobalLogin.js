@@ -116,6 +116,7 @@ const GlobalLogin = ({ navigation }) => {
           result.idToken,
           result.accessToken
         );
+
         // const credential = (result.idToken, result.accessToken);
         signInWithCredential(auth, credential).catch((error) => {
           console.log(error);
@@ -407,7 +408,7 @@ const GlobalLogin = ({ navigation }) => {
                     />
                   </View>
                   {props.touched.passwordConfirm &&
-                  props.errors.passwordConfirm ? (
+                    props.errors.passwordConfirm ? (
                     <Text style={globalStyles.errorText}>
                       {props.errors.passwordConfirm}
                     </Text>

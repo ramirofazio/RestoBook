@@ -8,6 +8,7 @@ import CurrentUser from "../Redux/Actions/CurrentUser.js";
 //
 //
 //----------REACT-NATIVE UTILS-----------
+
 import {
   View,
   Image,
@@ -21,6 +22,7 @@ import {
   Modal,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
+
 //
 //
 //----------FIREBASE UTILS-----------

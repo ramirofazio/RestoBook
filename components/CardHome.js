@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Card, Text } from "react-native-elements";
 import {
@@ -7,6 +8,7 @@ import {
   TouchableOpacity,
   Linking,
 } from "react-native";
+
 import { useDispatch } from "react-redux";
 import HeartOutlined from "react-native-vector-icons/AntDesign";
 import { Icon } from "react-native-elements";
