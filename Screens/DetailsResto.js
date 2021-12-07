@@ -38,7 +38,7 @@ const auth = getAuth();
 const DetailsResto = () => {
   const empresaDetail = useSelector((state) => state.empresaDetail);
   const {location} = empresaDetail
-  console.log(location)
+  //console.log(location)
   const number = "+541168020511"
   //WhatsApp
   const handleWhatsAppPress = async() => {
