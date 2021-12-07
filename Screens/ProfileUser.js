@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import { CLOUDINARY_URL, CLOUDINARY_CONSTANT } from "@env";
 import { useSelector } from "react-redux";
 import {
   Text,
@@ -15,6 +16,7 @@ import {
   ScrollView,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
+//------FIREBASE----------------
 import firebase from "../database/firebase";
 import {
   getAuth,
@@ -22,15 +24,23 @@ import {
   sendPasswordResetEmail,
   signOut,
 } from "firebase/auth";
-
 import { doc, onSnapshot, collection, query, getDoc } from "firebase/firestore";
-import { CLOUDINARY_URL, CLOUDINARY_CONSTANT } from "@env";
-import globalStyles from "./GlobalStyles";
+//------------------------------
+//------ICONS-------------------
 import StarFilled from "react-native-vector-icons/AntDesign";
 import TagOutlined from "react-native-vector-icons/AntDesign";
+//--------------------------------
+//---------STYLES-----------------
+import globalStyles from "./GlobalStyles";
+//--------------------------------
+//-------COMPONENTS---------------
 import CardHome from "../components/CardHome.js";
 import CardReservation from "../components/CardReservation";
+import CardFavourite from "../components/CardFavourite";
+//---------------------------------
+
 const auth = getAuth();
+
 const reservas = [
   {
     id: 1,
@@ -64,6 +74,7 @@ const reservas = [
 // let CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/restobook/image/upload";
 let imgPerrito =
   "https://res.cloudinary.com/restobook/image/upload/samples/bike.jpg";
+
 const ProfileUser = ({ navigation }) => {
   const empresas = useSelector((state) => state.empresas);
   const loggedUser = useSelector((state) => state.currentUser);
@@ -73,6 +84,7 @@ const ProfileUser = ({ navigation }) => {
   const [newUserInfo, setNewUserInfo] = useState({});
   const [uploading, setUploading] = useState(false);
   const [image, setImage] = useState("");
+  const [myFavourites, setMyFavourites] = useState([])
 
   // useEffect(() => {
   //   const q = query(collection(firebase.db, "Users"));
@@ -97,6 +109,8 @@ const ProfileUser = ({ navigation }) => {
         setImage(obj.profileImage);
         setCurrentUser(obj);
         setNewUserInfo(obj);
+        setMyFavourites(obj.favourites)
+        console.log(obj.favourites)
       } else {
         alert("NO HAY INFO");
       }
@@ -272,7 +286,7 @@ const ProfileUser = ({ navigation }) => {
                 paddingVertical: 15,
               }}
             >
-              {"@" + currentUser?.email}
+              {currentUser?.email}
             </Text>
             <TouchableOpacity
               style={globalStyles.btn}
@@ -391,20 +405,22 @@ const ProfileUser = ({ navigation }) => {
           ])}
           scrollEventThrottle={1}
         >
-          {empresas.map((resto) => {
+          {myFavourites.length ? myFavourites.map((resto) => {
             return (
               <View style={{ width: windowWidth, height: 250 }}>
-                <CardHome
+                <CardFavourite
                   key={resto.Id}
                   resto={resto}
                   navigation={navigation}
                   index={resto.Id}
                 >
                   {" "}
-                </CardHome>
+                </CardFavourite>
               </View>
             );
-          })}
+          })
+          : null
+          }
         </ScrollView>
         <Text style={{ fontSize: 25, color: "#392c28", textAlign: "center" }}>
           <TagOutlined name="tag" color="#392c28" size={25} /> My Reservations

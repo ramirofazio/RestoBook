@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, Text } from "react-native-elements";
-import { View, Image, StyleSheet, TouchableOpacity, Linking } from "react-native";
-import { useDispatch } from "react-redux";
+import { View, Image, StyleSheet, TouchableOpacity, Linking} from "react-native";
+import { useDispatch, useSelector } from "react-redux";
 import { AirbnbRating, Rating } from 'react-native-elements';
 //-------SCREENS--------
 import BtnFuncional from "../Screens/Helpers/BtnFuncional.js";
@@ -9,13 +9,20 @@ import BtnFuncional from "../Screens/Helpers/BtnFuncional.js";
 import empresaDetail from "../Redux/Actions/empresaDetail.js";
 //-----STYLES----------
 import globalStyles from "../Screens/GlobalStyles.js";
-//------ICONS----------\
-import HeartOutlined from "react-native-vector-icons/AntDesign";
-import { Icon } from "react-native-elements";
+//------ICONS----------
+import { Icon, ListItem } from "react-native-elements";
+//----------FIREBASE UTILS-----------
+import firebase from "../database/firebase";
+import { getAuth } from "firebase/auth";
+import { doc, updateDoc, arrayUnion } from "firebase/firestore";
+//
+
+const auth = getAuth();
 
 const CardMenu = ({ resto, navigation }) => {
   //console.log(resto)
   const dispatch = useDispatch();
+  const categories = useSelector((state) => state.categoriesResto);
 
   const celphone = +541168020511;
 
@@ -57,12 +64,15 @@ const CardMenu = ({ resto, navigation }) => {
           <AirbnbRating 
             showRating={false}
             size={20}
+            // reviews={["Bad", "OK", "Good", "Very Good","Amazing"]}
+            // reviewSize={17}
+            // starContainerStyle={{marginTop:-15}}
             // isDisabled={true} // este es para que los users no puedan cambiar
             selectedColor='#f1c40f' 
             unSelectedColor='lightgrey'
-            tintColor= "#f6efd3"
           />
           {/* <Rating
+          showRating
             type= 'custom'
             // readonly={true} // este es para que los users no puedan cambiar
             ratingColor='#f1c40f' // color stars seleccionadas
@@ -74,6 +84,9 @@ const CardMenu = ({ resto, navigation }) => {
 
           <View >
             <View style={globalStyles.categoriesView}>
+            {/* {availableCommerces.map((resto) =>{
+              resto.includes(category) ? category = resto.categorie
+            })} */}
               <Text style={globalStyles.categoriesText}>  Categoria de local</Text>
             </View>
           </View>
@@ -91,15 +104,32 @@ const CardMenu = ({ resto, navigation }) => {
               />
             </TouchableOpacity>
           </View>
+            
           <View>
             <TouchableOpacity 
-              onPress={() => alert('FAVORITOS!')}
-            >
+              onPress={async () => {
+                let infoFavourite = {
+                  id: resto.idResto,
+                  title: resto.title,
+                  phone: resto.phone,
+                  address: resto.location.address,
+                  img: resto.img
+                }
+                // console.log(infoFavourite)
+                try {
+                  let docRef = doc(firebase.db, "Users", auth.currentUser.uid);
+                  await updateDoc(docRef, {
+                    favourites: arrayUnion(infoFavourite),
+                  });
+                  alert('Agregado a favoritos!')
+                } catch (e) {console.log(error)}
+              }}>
               <Icon
                 raised
                 name='heart'
                 type='antdesign'
-                color='red'
+                color='grey'
+                iconStyle='red'
                 size={19}
               />
             </TouchableOpacity>
