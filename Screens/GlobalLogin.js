@@ -116,7 +116,7 @@ const GlobalLogin = ({ navigation }) => {
           result.idToken,
           result.accessToken
         );
-        //console.log("step1");
+
         // const credential = (result.idToken, result.accessToken);
         signInWithCredential(auth, credential).catch((error) => {
           console.log(error);
@@ -310,6 +310,7 @@ const GlobalLogin = ({ navigation }) => {
                           profileImage: DEFAULT_PROFILE_IMAGE,
                           reservations: [],
                           payments: [],
+                          favourites: [],
                         })
                         .then(sendEmailVerification(auth.currentUser))
                         .then(navigation.navigate("AwaitEmail"));
