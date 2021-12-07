@@ -1,9 +1,6 @@
 //----------REACT UTILS-----------
 import React, { useState, useEffect } from "react";
 //
-//----------WEBVIEW---------------
-import { WebView } from "react-native-webview";
-//
 //----------REDUX UTILS-----------
 import { useDispatch, useSelector } from "react-redux";
 import CurrentId from "../Redux/Actions/CurrentId.js";
@@ -11,8 +8,7 @@ import CurrentUser from "../Redux/Actions/CurrentUser.js";
 //
 //
 //----------REACT-NATIVE UTILS-----------
-import { View, Image, ScrollView, Text, StyleSheet, Button, TouchableOpacity } from "react-native";
-import { MaterialIcons } from "@expo/vector-icons";
+import { View, ScrollView, Text, StyleSheet } from "react-native";
 //
 //
 //----------FIREBASE UTILS-----------
@@ -29,7 +25,6 @@ import Btn from "./Helpers/Btns.js";
 //
 //-------STYLES-------
 import globalStyles from "./GlobalStyles.js";
-import { State } from "react-native-gesture-handler";
 //
 //
 //-------INITIALIZATIONS-------
@@ -41,6 +36,7 @@ export default function Home({ navigation }) {
   //------LOGIN JOSE------------
   const [usuarioGlobal, setUsuarioGlobal] = useState("");
   const [availableCommerces, setAvailableCommerces] = useState([]);
+  //console.log(availableCommerces)
   const loggedUser = useSelector((state) => state.currentUser);
   const loggedId = useSelector((state) => state.currentId);
   const dispatch = useDispatch();
@@ -59,7 +55,7 @@ export default function Home({ navigation }) {
   }, []);
   onAuthStateChanged(auth, (usuarioFirebase) => {
     if (usuarioFirebase?.emailVerified) {
-      console.log(loggedId)
+      //console.log(loggedId)
       if (loggedId !== usuarioFirebase.uid) {
         dispatch(CurrentId(usuarioFirebase.uid));
         const unsub = onSnapshot(
@@ -67,7 +63,7 @@ export default function Home({ navigation }) {
           (doc) => {
             if (doc.exists()) {
               dispatch(CurrentUser(doc.data()));
-              console.log("data user en home : ", doc.data());
+              //console.log("data user en home : ", doc.data());
             }
           }
         );

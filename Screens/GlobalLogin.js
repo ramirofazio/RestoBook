@@ -116,7 +116,7 @@ const GlobalLogin = ({ navigation }) => {
           result.idToken,
           result.accessToken
         );
-        console.log("step1");
+        //console.log("step1");
         // const credential = (result.idToken, result.accessToken);
         signInWithCredential(auth, credential).catch((error) => {
           console.log(error);
@@ -163,7 +163,7 @@ const GlobalLogin = ({ navigation }) => {
                 password
               );
               if (auth.currentUser.emailVerified) {
-                alert("Welcome");
+                //alert("Welcome");
                 navigation.navigate("RestoBook");
               } else {
                 navigation.navigate("AwaitEmail");
@@ -286,7 +286,7 @@ const GlobalLogin = ({ navigation }) => {
               }}
               validationSchema={GlobalRegisterSchema}
               onSubmit={async (values) => {
-                console.log(values);
+                //console.log(values);
                 try {
                   //-----AUTENTICA USER-----------
                   await createUserWithEmailAndPassword(
@@ -302,10 +302,10 @@ const GlobalLogin = ({ navigation }) => {
                         .doc(auth.currentUser.uid)
                         .set({
                           id: auth.currentUser.uid,
-                          name: values.name,
-                          lastName: values.lastName,
+                          name: values.name.toLowerCase(),
+                          lastName: values.lastName.toLowerCase(),
                           cel: values.cel,
-                          email: values.email,
+                          email: values.email.toLowerCase(),
                           commerce: false,
                           profileImage: DEFAULT_PROFILE_IMAGE,
                           reservations: [],
@@ -407,7 +407,7 @@ const GlobalLogin = ({ navigation }) => {
                     />
                   </View>
                   {props.touched.passwordConfirm &&
-                  props.errors.passwordConfirm ? (
+                    props.errors.passwordConfirm ? (
                     <Text style={globalStyles.errorText}>
                       {props.errors.passwordConfirm}
                     </Text>
