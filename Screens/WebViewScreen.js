@@ -63,7 +63,7 @@ const handleForwardPress=()=> {
             source={{uri: 'https://sandbox.mercadopago.com.ar/checkout/v1/redirect?pref_id=1031166001-e0563e6e-a6e5-4b93-b338-4691b20888c1'}}
             navigation={navigation}
             onNavigationStateChange={state => {
-                console.log("State", state.url)
+                //console.log("State", state.url)
                 const url = state.url;
                 setCurrentUrl(url);
                 const back = state.canGoBack;

@@ -1,14 +1,15 @@
 import React from "react";
-import { Card, Text } from "react-native-elements";
-import { View, Image, StyleSheet, TouchableOpacity, Linking } from "react-native";
+import { Text } from "react-native-elements";
+import { View, Image, TouchableOpacity, Linking } from "react-native";
 import { useDispatch } from "react-redux";
 //-------SCREENS--------
-import BtnFuncional from "../Screens/Helpers/BtnFuncional.js";
-
+//
 //------ACTIONS---------
 import empresaDetail from "../Redux/Actions/empresaDetail.js";
+//
 //-----STYLES----------
 import globalStyles from "../Screens/GlobalStyles.js";
+//
 const CardMenu = ({ resto, navigation }) => {
   //console.log(resto)
   const dispatch = useDispatch();

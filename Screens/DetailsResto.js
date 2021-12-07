@@ -7,9 +7,10 @@ import { useSelector } from "react-redux";
 //
 //
 //----------REACT-NATIVE UTILS-----------
-import { View, Text, StyleSheet,Image, Linking, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, Image, Linking, TouchableOpacity } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import MapView, { Marker } from "react-native-maps";
+import DateTimePicker from '@react-native-community/datetimepicker';
 //
 //
 //----------FIREBASE UTILS-----------
@@ -35,16 +36,18 @@ const auth = getAuth();
 //
 //---------------------------------------------------------------------------------------//
 //
-const DetailsResto = () => {
+const DetailsResto = ({ navigation }) => {
   const empresaDetail = useSelector((state) => state.empresaDetail);
-  const {location} = empresaDetail
+  const { location } = empresaDetail
+
+
   //console.log(location)
   const number = "+541168020511"
   //WhatsApp
-  const handleWhatsAppPress = async() => {
-    
+  const handleWhatsAppPress = async () => { 
+
     await Linking.openURL(`whatsapp://send?text=Hola RestoBook&phone=${number}`)
-}
+  }
   const [menuArr, setMenuArr] = useState([]);
   //Tiene que desactivar el boton en los comercios que no sean del logueado
 
@@ -62,8 +65,12 @@ const DetailsResto = () => {
       });
     });
   }, []);
+
+
+
   return (
     <View style={globalStyles.Home}>
+
       <View style={styles.content}>
         <View style={styles.categoriesContainer}>
           <View style={globalStyles.categoriesView}>
@@ -81,7 +88,7 @@ const DetailsResto = () => {
           <View style={globalStyles.categoriesView}>
             <Text style={globalStyles.categoriesText}>Drinks</Text>
           </View>
-        
+
         </View>
         {menuArr.length > 0 ? (
           <ScrollView style={styles.showMenu}>
@@ -101,12 +108,12 @@ const DetailsResto = () => {
             Add a food to see it!
           </Text>
         )}
-          <View style={globalStyles.btn}>
-            <TouchableOpacity onPress={() => navigation.navigate("WebViewScreen")}>
-              <Text><MaterialIcons name="payment" size={20} color="black" ></MaterialIcons> Pagar: $100 de tu reserva
-              </Text>
-            </TouchableOpacity>
-          </View> 
+        <View style={globalStyles.btn}>
+          <TouchableOpacity onPress={() => navigation.navigate("WebViewScreen")}>
+            <Text><MaterialIcons name="payment" size={20} color="black" ></MaterialIcons> Pagar: $100 de tu reserva
+            </Text>
+          </TouchableOpacity>
+        </View>
         <View style={styles.googleMapsContainer}>
           <MapView
             style={styles.googleMaps}
@@ -176,22 +183,22 @@ const styles = StyleSheet.create({
     height: 250,
     borderRadius: 30,
   },
-  wppIcon:{
-    height:30,
-    marginLeft:10,
+  wppIcon: {
+    height: 30,
+    marginLeft: 10,
     borderRadius: 10,
     width: 40,
     backgroundColor: '#ffd964',
     alignItems: "center",
     borderWidth: 1,
     borderColor: '#b39138',
-    
+
   },
-  img:{
+  img: {
     margin: 5,
-    height:20,
-    width:20,
-    alignItems:'center'
+    height: 20,
+    width: 20,
+    alignItems: 'center'
   },
   textContainer2: {
     alignSelf: "center",
