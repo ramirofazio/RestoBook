@@ -11,12 +11,13 @@ import { useDispatch } from "react-redux";
 import HeartOutlined from "react-native-vector-icons/AntDesign";
 import { Icon } from "react-native-elements";
 //-------SCREENS--------
-import BtnFuncional from "../Screens/Helpers/BtnFuncional.js";
-
+//
 //------ACTIONS---------
 import empresaDetail from "../Redux/Actions/empresaDetail.js";
+//
 //-----STYLES----------
 import globalStyles from "../Screens/GlobalStyles.js";
+//
 const CardMenu = ({ resto, navigation }) => {
   //console.log(resto)
   const [hearthColor, setHearthColor] = useState("grey");

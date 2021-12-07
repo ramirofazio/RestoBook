@@ -180,7 +180,6 @@ const RegisterResto = ({ navigation }) => {
       <Formik
         initialValues={{
           email: "",
-          razonSocial: "",
           title: "",
           description: "",
           phone: "",
@@ -201,20 +200,19 @@ const RegisterResto = ({ navigation }) => {
                 .doc()
                 .set({
                   idUser: id,
-                  email: values.email,
-                  razonSocial: values.razonSocial,
-                  title: values.title,
-                  description: values.description,
+                  email: values.email.toLowerCase(),
+                  title: values.title.toLowerCase(),
+                  description: values.description.toLowerCase(),
                   phone: values.phone,
                   phone2: values.phone2,
                   cuit: values.cuit,
-                  category: state.category,
+                  category: state.category.toLowerCase(),
                   img: values.img,
                   menu: [],
                   location: {
                     latitude: state.lat,
                     longitude: state.lng,
-                    address: state.address
+                    address: state.address.toLowerCase()
                   }
                 })
                 .then(
@@ -290,6 +288,7 @@ const RegisterResto = ({ navigation }) => {
                   onChangeText={props.handleChange("phone")}
                   value={props.values.phone}
                   onBlur={props.handleBlur("phone")}
+                  keyboardType="numeric"
                 />
               </View>
 
@@ -304,6 +303,8 @@ const RegisterResto = ({ navigation }) => {
                   onChangeText={props.handleChange("phone2")}
                   value={props.values.phone2}
                   onBlur={props.handleBlur("phone2")}
+                  keyboardType="numeric"
+
                 />
               </View>
 
@@ -318,6 +319,8 @@ const RegisterResto = ({ navigation }) => {
                   onChangeText={props.handleChange("cuit")}
                   value={props.values.cuit}
                   onBlur={props.handleBlur("cuit")}
+                  keyboardType="numeric"
+
                 />
               </View>
 

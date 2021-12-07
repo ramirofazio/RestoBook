@@ -72,11 +72,17 @@ const AddMenuResto = ({ navigation }) => {
         }}
         validationSchema={MenuRestoSchema}
         onSubmit={async (values) => {
+          const newValues = {
+            foodName: values.foodName.toLowerCase(),
+            description: values.description.toLowerCase(),
+            price: values.price,
+            img: values.img
+          }
           try {
             let restoRef = doc(firebase.db, "Restos", idResto);
             setSpinner(true);
             await updateDoc(restoRef, {
-              menu: arrayUnion(values),
+              menu: arrayUnion(newValues),
             });
             setSpinner(false);
             navigation.navigate("DetailsResto");
