@@ -2,13 +2,17 @@ import React from "react";
 import { Card, Text } from "react-native-elements";
 import { View, Image, StyleSheet, TouchableOpacity, Linking } from "react-native";
 import { useDispatch } from "react-redux";
+import { AirbnbRating, Rating } from 'react-native-elements';
 //-------SCREENS--------
 import BtnFuncional from "../Screens/Helpers/BtnFuncional.js";
-
 //------ACTIONS---------
 import empresaDetail from "../Redux/Actions/empresaDetail.js";
 //-----STYLES----------
 import globalStyles from "../Screens/GlobalStyles.js";
+//------ICONS----------\
+import HeartOutlined from "react-native-vector-icons/AntDesign";
+import { Icon } from "react-native-elements";
+
 const CardMenu = ({ resto, navigation }) => {
   //console.log(resto)
   const dispatch = useDispatch();
@@ -23,6 +27,8 @@ const CardMenu = ({ resto, navigation }) => {
   const handleWhatsapp = async () => {
     await Linking.openURL(`whatsapp://send?text=Hola ${resto.title}, mi nombre es Lucas y quiero generar una reserva&phone=${celphone}`)
   }
+
+  
 
   return (
     <View style={globalStyles.cardsContainer}>
@@ -48,9 +54,22 @@ const CardMenu = ({ resto, navigation }) => {
           </View>
 
           <View >
-            <Text style={globalStyles.cardsDescriptionText}>
-              ⭐⭐⭐⭐⭐
-            </Text>
+          <AirbnbRating 
+            showRating={false}
+            size={20}
+            // isDisabled={true} // este es para que los users no puedan cambiar
+            selectedColor='#f1c40f' 
+            unSelectedColor='lightgrey'
+            tintColor= "#f6efd3"
+          />
+          {/* <Rating
+            type= 'custom'
+            // readonly={true} // este es para que los users no puedan cambiar
+            ratingColor='#f1c40f' // color stars seleccionadas
+            ratingBackgroundColor='lightgrey' // color stars sin seleccion
+            tintColor='#f6efd3' // fondo
+            imageSize={25}
+          /> */}
           </View>
 
           <View >
@@ -73,8 +92,16 @@ const CardMenu = ({ resto, navigation }) => {
             </TouchableOpacity>
           </View>
           <View>
-            <TouchableOpacity>
-              <Text style={{ fontSize: 25 }}>❤</Text>
+            <TouchableOpacity 
+              onPress={() => alert('FAVORITOS!')}
+            >
+              <Icon
+                raised
+                name='heart'
+                type='antdesign'
+                color='red'
+                size={19}
+              />
             </TouchableOpacity>
           </View>
         </View>
