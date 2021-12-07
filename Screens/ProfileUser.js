@@ -97,22 +97,6 @@ const ProfileUser = ({ navigation }) => {
   // }, [loggedId]);
 
   useEffect(() => {
-    const getInfo2 = async () => {
-      const q = query(
-        collection(firebase.db, "Users"),
-        where("commerce", "==", true)
-      );
-
-      const querySnapshot = await getDocs(q);
-      querySnapshot.forEach((doc) => {
-        // doc.data() is never undefined for query doc snapshots
-        console.log(doc.id, " => ", doc.data());
-      });
-    };
-    getInfo2();
-  }, []);
-
-  useEffect(() => {
     const getInfo = async () => {
       const docRef = doc(firebase.db, "Users", auth.currentUser.uid);
       const docSnap = await getDoc(docRef);

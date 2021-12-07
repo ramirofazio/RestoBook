@@ -310,6 +310,7 @@ const GlobalLogin = ({ navigation }) => {
                           profileImage: DEFAULT_PROFILE_IMAGE,
                           reservations: [],
                           payments: [],
+                          favourites: [],
                         })
                         .then(sendEmailVerification(auth.currentUser))
                         .then(navigation.navigate("AwaitEmail"));
