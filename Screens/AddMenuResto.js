@@ -1,16 +1,16 @@
 //----------REACT UTILS-----------
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 //
 //----------REDUX UTILS-----------
-import { useDispatch, useSelector } from "react-redux";
-import AddMenu from "../Redux/Actions/AddMenu";
+import { useSelector } from "react-redux";
 //
 //----------REACT-NATIVE UTILS-----------
 import { View, TextInput, TouchableOpacity, Text, Image } from "react-native";
+import { BottomSheet, ListItem } from "react-native-elements";
 //
 //----------FIREBASE UTILS-----------
 import firebase from "../database/firebase";
-import { doc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
+import { doc, updateDoc, arrayUnion } from "firebase/firestore";
 //
 //---------SCREENS & COMPONENTS---------------
 
@@ -43,6 +43,12 @@ const AddMenuResto = ({ navigation }) => {
   const empresaDetail = useSelector((state) => state.empresaDetail);
   const [spinner, setSpinner] = useState(false);
   const idResto = empresaDetail.idResto;
+  const [isVisible, setIsVisible] = useState(false);
+  const [category, setCategory] = useState();
+
+
+  const categories = useSelector((state) => state.categoriesMenu);
+
 
   const handleOnPressPickImage = async (handleChange) => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -63,11 +69,58 @@ const AddMenuResto = ({ navigation }) => {
 
   return (
     <View style={globalStyles.Home}>
+      <View style={globalStyles.inputComponent}>
+        <TextInput
+          style={globalStyles.texts}
+          editable={false}
+          placeholder="Select Category"
+          value={category}
+          onPressIn={() => setIsVisible(true)}
+        />
+        <BottomSheet
+          isVisible={isVisible}
+          containerStyle={{ backgroundColor: '#333a' }}
+        >
+          {categories.map((categoria, index) => (
+            <ListItem
+              key={index}
+              containerStyle={{ backgroundColor: 'rgba(0.5,0.25,0,0.7)' }}
+              style={{ borderBottomWidth: 1, borderColor: '#333a', backgroundColor: "#fff0" }}
+              onPress={() => {
+                setCategory(categoria)
+                setIsVisible(false)
+              }}
+            >
+              <ListItem.Content
+                style={{ backgroundColor: "#0000", alignItems: "center" }}
+              >
+                <ListItem.Title
+                  style={{ height: 35, color: '#fff', padding: 8 }}
+                >
+                  {categoria}
+                </ListItem.Title>
+              </ListItem.Content>
+            </ListItem>
+          ))}
+          <ListItem
+            key={999}
+            containerStyle={{ backgroundColor: '#d14545' }}
+            style={{ borderBottomWidth: 1, borderColor: '#333a' }}
+            onPress={() => setIsVisible(false)}
+          >
+            <ListItem.Content style={{ alignItems: "center" }}>
+              <ListItem.Title style={{ height: 35, color: '#FFF', padding: 8, fontSize: 20 }}>Cancel</ListItem.Title>
+            </ListItem.Content>
+          </ListItem>
+        </BottomSheet>
+      </View>
+
       <Formik
         initialValues={{
           foodName: "",
           description: "",
           price: "",
+          category: "",
           img: "",
         }}
         validationSchema={MenuRestoSchema}
@@ -76,6 +129,7 @@ const AddMenuResto = ({ navigation }) => {
             foodName: values.foodName.toLowerCase(),
             description: values.description.toLowerCase(),
             price: values.price,
+            category: category.toLowerCase(),
             img: values.img
           }
           try {
@@ -128,6 +182,7 @@ const AddMenuResto = ({ navigation }) => {
                 onBlur={props.handleBlur("price")}
               />
             </View>
+
             {props.touched.price && props.errors.price ? (
               <Text style={globalStyles.errorText}>{props.errors.price}</Text>
             ) : null}
@@ -160,7 +215,7 @@ const AddMenuResto = ({ navigation }) => {
           </View>
         )}
       </Formik>
-    </View>
+    </View >
   );
 };
 
