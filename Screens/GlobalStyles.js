@@ -72,13 +72,17 @@ const globalStyles = StyleSheet.create({
   cardsDescriptionContainer: {
     // backgroundColor: 'green',
     maxHeight: '120%',
-    height: 120,
+    height: '90%',
     width: '35%',
     alignSelf: "center",
     justifyContent: "space-around"
   },
   cardsDescriptionText: {
-    textAlign: "center"
+    // backgroundColor: 'lightblue',
+    textAlign: 'center',
+    width: '100%',
+    fontSize: 13,
+    fontWeight: "bold",
   },
   cardsHomeTitle: {
     // backgroundColor: "#5555",

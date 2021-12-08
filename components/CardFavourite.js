@@ -10,16 +10,25 @@ import empresaDetail from "../Redux/Actions/empresaDetail.js";
 
 
 const CardFavourite = ({ resto, navigation }) => {
+    const dispatch = useDispatch();
     
     const handleOnPress = () => {
         dispatch(empresaDetail(resto));
         navigation.navigate("DetailsResto");
-      };
+    };
 
-    const dispatch = useDispatch();
 
     return (
-        <View style={globalStyles.cardsContainer}>
+        <View style={{
+            alignSelf: "center",
+            backgroundColor: "#f6efd3",
+            marginHorizontal: 10,
+            marginVertical: 10,
+            paddingHorizontal: 5,
+            paddingVertical: 5,
+            borderRadius: 25,
+            width: "95%",
+            height: '80%'}}>
       <TouchableOpacity
         onPress={() => handleOnPress()}
       >
@@ -40,11 +49,28 @@ const CardFavourite = ({ resto, navigation }) => {
           <View>
             <Text style={globalStyles.cardsHomeTitle}>{resto.title}</Text>
           </View>
+          
           <View>
-            <Text >{resto.address}</Text>
+            <Text style={globalStyles.cardsDescriptionText}>
+                <Icon
+                    reverse
+                    name='map-marker-alt'
+                    type='font-awesome-5'
+                    color='grey'
+                    reverseColor='#ffd964'
+                    size={11}
+                /> {resto.address}</Text>
           </View>
           <View>
-            <Text >{resto.phone}</Text>
+            <Text style={globalStyles.cardsDescriptionText}>
+                <Icon
+                    reverse
+                    name='phone-alt'
+                    type='font-awesome-5'
+                    color='grey'
+                    reverseColor='#ffd964'
+                    size={11}
+                /> {resto.phone}</Text>
           </View>
         </View>
 

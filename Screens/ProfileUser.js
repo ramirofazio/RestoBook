@@ -15,6 +15,7 @@ import {
   ActivityIndicator,
   ScrollView,
 } from "react-native";
+import { Divider } from 'react-native-elements';
 import * as ImagePicker from "expo-image-picker";
 //------FIREBASE----------------
 import firebase from "../database/firebase";
@@ -34,7 +35,6 @@ import TagOutlined from "react-native-vector-icons/AntDesign";
 import globalStyles from "./GlobalStyles";
 //--------------------------------
 //-------COMPONENTS---------------
-import CardHome from "../components/CardHome.js";
 import CardReservation from "../components/CardReservation";
 import CardFavourite from "../components/CardFavourite";
 //---------------------------------
@@ -389,6 +389,7 @@ const ProfileUser = ({ navigation }) => {
           {" "}
           <StarFilled name="star" color="#392c28" size={25} /> FAVORITOS
         </Text>
+          <Divider orientation="horizontal" width={2} inset={true} insetType={"middle"} color={'black'} style={{marginVertical: 10}}/>
         <ScrollView
           horizontal={true}
           pagingEnabled
@@ -422,9 +423,10 @@ const ProfileUser = ({ navigation }) => {
           : null
           }
         </ScrollView>
-        <Text style={{ fontSize: 25, color: "#392c28", textAlign: "center" }}>
+        <Text style={{ fontSize: 25, color: "#392c28", textAlign: "center"  }}>
           <TagOutlined name="tag" color="#392c28" size={25} /> My Reservations
         </Text>
+         <Divider orientation="horizontal" width={2} inset={true} insetType={"middle"} color={'black'} style={{marginVertical: 5}}/>
         <ScrollView style={{ overflow: "scroll" }}>
           {reservas.map((persona) => {
             return (
@@ -480,8 +482,10 @@ const styles = StyleSheet.create({
     overflow: "scroll",
     backgroundColor: "#5555",
     maxHeight: "30%",
-    height: "40%",
+    height: "20%",
   },
+
+
   //----------------------- modal css?? ---------------------------------
   centeredView: {
     flex: 1,
