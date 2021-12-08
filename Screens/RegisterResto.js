@@ -390,7 +390,7 @@ const RegisterResto = ({ navigation }) => {
               key={index}
               containerStyle={{ backgroundColor: 'rgba(0.5,0.25,0,0.7)' }}
               style={{ borderWidth: 1, borderColor: '#cccccc' }}
-              onPress={(e) => {
+              onPress={() => {
                 setState({ ...state, category: categoria }) 
                 setIsVisible(false)
               }}

@@ -141,7 +141,7 @@ export default Navigator = () => {
         <Stack.Screen
           name="ProfileUser"
           component={ProfileUser}
-          options={{
+          options={ ({navigation}) =>({
             headerTitle: "Profile",
             title: 'Profile',
             headerTitleAlign: "center",
@@ -149,10 +149,10 @@ export default Navigator = () => {
               <TouchableOpacity
                 style={globalStyles.btn}
                 onPress={() =>
-                  navigation.navigate('NavHome')
+                  navigation.navigate('RegisterResto')
                 }
               >
-                <Text>Log out</Text>
+                <Text>Create Resto</Text>
               </TouchableOpacity>
             ),
             headerStyle: {
@@ -163,7 +163,7 @@ export default Navigator = () => {
               fontSize: 25
             },
 
-          }}
+          })}
         />
         <Stack.Screen
           name="ProfileResto"

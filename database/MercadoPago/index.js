@@ -18,20 +18,29 @@ mercadopago.configure({
 // })
 
 
+
 app.post('/checkout', (req, res) => {
+  
+  const {quantity, unit_price, restoName} = req.body
+  
   let preference = {
     external_reference: '1234567890',
-              items:[{
-                   title: 'Mesa reservada',
-                   quantity: 1,
-                   unit_price: 100,
-                   currency_id:'ARG'
-                  }],
+      items:[{
+        title: restoName,
+        quantity: quantity,
+        unit_price: unit_price,
+        currency_id:'ARG'
+       }],
+    // payer: {
+    //   name: '',
+    //   email: '',
+    // },  
     back_urls: {
       success: 'http://localhost:19006/success',
       failure: 'http://localhost:19006/cancel'
     },
     auto_return: 'approved',
+    // notification_url: 'http://192.168.0.10:19006'
   };
   mercadopago.preferences
     .create(preference)
