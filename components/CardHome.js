@@ -73,7 +73,7 @@ const CardMenu = ({ resto, navigation }) => {
             // reviews={["Bad", "OK", "Good", "Very Good","Amazing"]}
             // reviewSize={17}
             // starContainerStyle={{marginTop:-15}}
-            // isDisabled={true} // este es para que los users no puedan cambiar
+            isDisabled={true} // este es para que los users no puedan cambiar
             selectedColor='#f1c40f' 
             unSelectedColor='lightgrey'
           />

@@ -175,7 +175,7 @@ const ProfileResto = ({ navigation }) => {
                   paddingVertical: 15,
                 }}
               >
-                {currentUser?.address}
+                {currentUser?.location.address}
               </Text>
               <TouchableOpacity
                 style={globalStyles.btn}
@@ -220,7 +220,7 @@ const ProfileResto = ({ navigation }) => {
                     <Text>Adress</Text>
                     <TextInput
                       style={globalStyles.texts}
-                      placeholder={currentUser?.address}
+                      placeholder={currentUser?.location.address}
                       onChangeText={(value) =>
                         setNewUserInfo({
                           ...newUserInfo,
