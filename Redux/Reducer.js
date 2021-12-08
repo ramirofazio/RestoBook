@@ -15,7 +15,7 @@ let initialState = {
   currentUser: null,
   empresaDetail: [],
   categoriesResto: ["Pizzas/Empanadas", "Rotiseria", "Pastas", "Parrilla", "Sushi", "Hamburguesas", "Fingerfood", "Drinks", "Otros"],
-  categoriesMenu: ['Pizza', 'Pasta', 'Bebida', 'Guarnicion', 'Postre', 'Plato Principal']
+  categoriesMenu: ['Entradas', 'Plato Principal', 'Guarnicion', 'Bebida', 'Postre']
 };
 
 const RootReducer = (state = initialState, action) => {
@@ -25,7 +25,7 @@ const RootReducer = (state = initialState, action) => {
       return {
         ...state,
         menus: [...state.menus, menu],
-      }; 
+      };
     case EMPRESA_DETAIL:
       const empresaDetail = action.payload;
       //console.log(dataEmpresa[0])
