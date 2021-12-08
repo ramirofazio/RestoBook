@@ -36,7 +36,7 @@ import { CLOUDINARY_URL, CLOUDINARY_CONSTANT } from "@env";
 import globalStyles from "./GlobalStyles";
 import StarFilled from "react-native-vector-icons/AntDesign";
 import TagOutlined from "react-native-vector-icons/AntDesign";
-import CardHome from "../components/CardHome.js";
+import CardFavourite from "../components/CardFavourite.js";
 import CardReservation from "../components/CardReservation";
 const auth = getAuth();
 const reservas = [
@@ -74,28 +74,14 @@ let imgPerrito =
   "https://res.cloudinary.com/restobook/image/upload/samples/bike.jpg";
 const ProfileUser = ({ navigation }) => {
   const empresas = useSelector((state) => state.empresas);
-  const loggedUser = useSelector((state) => state.currentUser);
+
   const loggedId = useSelector((state) => state.currentId);
   const [modalVisible, setModalVisible] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
   const [newUserInfo, setNewUserInfo] = useState({});
   const [uploading, setUploading] = useState(false);
   const [image, setImage] = useState("");
-
-  // useEffect(() => {
-  //   const q = query(collection(firebase.db, "Users"));
-  //   const unsubscribe = onSnapshot(q, (querySnapshot) => {
-  //     querySnapshot.forEach((doc) => {
-  //       if (doc.id === loggedId) {
-  //         let obj = doc.data();
-  //         setImage(obj.profileImage);
-  //         setCurrentUser(obj);
-  //         setNewUserInfo(obj);
-  //       }
-  //     });
-  //   });
-  // }, [loggedId]);
-
+  const [favourites, setFavourites] = useState([]);
   useEffect(() => {
     const getInfo = async () => {
       const docRef = doc(firebase.db, "Users", auth.currentUser.uid);
@@ -106,6 +92,7 @@ const ProfileUser = ({ navigation }) => {
         setImage(obj.profileImage);
         setCurrentUser(obj);
         setNewUserInfo(obj);
+        setFavourites(obj.favourites);
       } else {
         alert("NO HAY INFO");
       }
@@ -400,20 +387,20 @@ const ProfileUser = ({ navigation }) => {
           ])}
           scrollEventThrottle={1}
         >
-          {empresas.map((resto) => {
-            return (
-              <View style={{ width: windowWidth, height: 250 }}>
-                <CardHome
-                  key={resto.Id}
-                  resto={resto}
-                  navigation={navigation}
-                  index={resto.Id}
-                >
-                  {" "}
-                </CardHome>
-              </View>
-            );
-          })}
+          {favourites.length
+            ? favourites.map((fav) => {
+                return (
+                  <View style={{ width: windowWidth, height: 250 }}>
+                    <CardFavourite
+                      key={fav.Id}
+                      fav={fav}
+                      navigation={navigation}
+                      index={fav.Id}
+                    />
+                  </View>
+                );
+              })
+            : null}
         </ScrollView>
         <Text style={{ fontSize: 25, color: "#392c28", textAlign: "center" }}>
           <TagOutlined name="tag" color="#392c28" size={25} /> My Reservations

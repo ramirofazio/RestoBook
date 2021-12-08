@@ -5,6 +5,7 @@ import {
   CURRENT_USER,
   CURRENT_ID,
   SET_COMMERCE,
+  USER_FAVOURITES,
 } from "./Actions/Constants.js";
 
 let initialState = {
@@ -14,8 +15,26 @@ let initialState = {
   currentId: null,
   currentUser: null,
   empresaDetail: [],
-  categoriesResto: ["Pizzas/Empanadas", "Rotiseria", "Pastas", "Parrilla", "Sushi", "Hamburguesas", "Fingerfood", "Drinks", "Otros"],
-  categoriesMenu: ['Pizza', 'Pasta', 'Bebida', 'Guarnicion', 'Postre', 'Plato Principal']
+  favourites: [],
+  categoriesResto: [
+    "Pizzas/Empanadas",
+    "Rotiseria",
+    "Pastas",
+    "Parrilla",
+    "Sushi",
+    "Hamburguesas",
+    "Fingerfood",
+    "Drinks",
+    "Otros",
+  ],
+  categoriesMenu: [
+    "Pizza",
+    "Pasta",
+    "Bebida",
+    "Guarnicion",
+    "Postre",
+    "Plato Principal",
+  ],
 };
 
 const RootReducer = (state = initialState, action) => {
@@ -25,7 +44,7 @@ const RootReducer = (state = initialState, action) => {
       return {
         ...state,
         menus: [...state.menus, menu],
-      }; 
+      };
     case EMPRESA_DETAIL:
       const empresaDetail = action.payload;
       //console.log(dataEmpresa[0])
@@ -51,8 +70,14 @@ const RootReducer = (state = initialState, action) => {
     case SET_COMMERCE:
       return {
         ...state,
-        commerce: true
-      }
+        commerce: true,
+      };
+
+    case USER_FAVOURITES:
+      return {
+        ...state,
+        favourites: action.payload,
+      };
     default:
       return state;
   }
