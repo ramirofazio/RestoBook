@@ -47,7 +47,7 @@ const ProfileResto = ({ navigation }) => {
                 obj.idResto = doc.id;
 
                 if (obj.id === loggedId) {
-                    console.log("coinciden!");
+                    //console.log("coinciden!");
                     arr.push(obj);
                 }
             });

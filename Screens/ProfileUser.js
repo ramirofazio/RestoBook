@@ -23,7 +23,15 @@ import {
   signOut,
 } from "firebase/auth";
 
-import { doc, onSnapshot, collection, query, getDoc } from "firebase/firestore";
+import {
+  doc,
+  onSnapshot,
+  collection,
+  query,
+  getDoc,
+  getDocs,
+  where,
+} from "firebase/firestore";
 import { CLOUDINARY_URL, CLOUDINARY_CONSTANT } from "@env";
 import globalStyles from "./GlobalStyles";
 import StarFilled from "react-native-vector-icons/AntDesign";
@@ -94,6 +102,7 @@ const ProfileUser = ({ navigation }) => {
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
         let obj = docSnap.data();
+        console.log("obj", obj);
         setImage(obj.profileImage);
         setCurrentUser(obj);
         setNewUserInfo(obj);
@@ -272,7 +281,7 @@ const ProfileUser = ({ navigation }) => {
                 paddingVertical: 15,
               }}
             >
-              {"@" + currentUser?.email}
+              {currentUser?.email}
             </Text>
             <TouchableOpacity
               style={globalStyles.btn}

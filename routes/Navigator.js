@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-//import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from "@react-navigation/native";
-
+//
 //----------IMP SCREENS-----------
 import Home from "../Screens/Home";
 import RegisterResto from "../Screens/RegisterResto.js";
@@ -11,12 +10,18 @@ import AddMenuResto from "../Screens/AddMenuResto.js";
 import DetailsResto from "../Screens/DetailsResto";
 import ProfileUser from '../Screens/ProfileUser.js';
 import GlobalLogin from "../Screens/GlobalLogin.js";
+<<<<<<< HEAD
 import WebViewScreen from "../Screens/WebViewScreen";
+=======
+import WebViewScreen from "../Screens/WebViewScreen"
+>>>>>>> df3c1105a35df0aaf6c9e46df89f3cfe030a3939
 import AwaitEmail from "../Screens/AwaitEmail.js";
 import NavHome from "../Screens/NavHome.js";
 import NavDetail from "../Screens/NavDetail";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import ProfileResto from "../Screens/ProfileResto";
+//
+//
 //------------Styles y otros ---------
 import globalStyles from "../Screens/GlobalStyles";
 import { Text } from 'react-native'
@@ -72,7 +77,7 @@ export default Navigator = () => {
               fontSize: 25,
             },
           }}
-          />
+        />
 
         <Stack.Screen
           name="DetailsResto"
@@ -84,7 +89,7 @@ export default Navigator = () => {
             },
           })}
         />
-        
+
         {/* Mercado Pago */}
         <Stack.Screen
           name="WebViewScreen"
