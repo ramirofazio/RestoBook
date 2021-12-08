@@ -69,11 +69,12 @@ const AddMenuResto = ({ navigation }) => {
 
   return (
     <View style={globalStyles.Home}>
+
       <View style={globalStyles.inputComponent}>
         <TextInput
           style={globalStyles.texts}
           editable={false}
-          placeholder="Select Category"
+          placeholder="Seleccionar Categoria"
           value={category}
           onPressIn={() => setIsVisible(true)}
         />
@@ -109,7 +110,11 @@ const AddMenuResto = ({ navigation }) => {
             onPress={() => setIsVisible(false)}
           >
             <ListItem.Content style={{ alignItems: "center" }}>
-              <ListItem.Title style={{ height: 35, color: '#FFF', padding: 8, fontSize: 20 }}>Cancel</ListItem.Title>
+              <ListItem.Title
+                style={{ height: 35, color: '#FFF', padding: 8, fontSize: 20 }}
+              >
+                Cancelar
+              </ListItem.Title>
             </ListItem.Content>
           </ListItem>
         </BottomSheet>
@@ -150,7 +155,7 @@ const AddMenuResto = ({ navigation }) => {
             <View style={globalStyles.inputComponent}>
               <TextInput
                 style={globalStyles.texts}
-                placeholder="Food Name"
+                placeholder="Titulo"
                 onChangeText={props.handleChange("foodName")}
                 value={props.values.foodName}
                 onBlur={props.handleBlur("foodName")}
@@ -163,7 +168,7 @@ const AddMenuResto = ({ navigation }) => {
               <TextInput
                 multiline
                 style={globalStyles.texts}
-                placeholder="description"
+                placeholder="Decripcion"
                 onChangeText={props.handleChange("description")}
                 value={props.values.description}
                 onBlur={props.handleBlur("description")}
@@ -175,7 +180,7 @@ const AddMenuResto = ({ navigation }) => {
             <View style={globalStyles.inputComponent}>
               <TextInput
                 style={globalStyles.texts}
-                placeholder="price"
+                placeholder="Precio"
                 onChangeText={props.handleChange("price")}
                 value={props.values.price}
                 keyboardType="numeric"
@@ -194,8 +199,8 @@ const AddMenuResto = ({ navigation }) => {
             >
               <Text style={{ textAlign: "center" }}>
                 {props.values.img && props.values.img.length > 0
-                  ? "Change Image"
-                  : "Select Image"}
+                  ? "Cambiar Imagen"
+                  : "Seleccionar Imagen"}
               </Text>
             </TouchableOpacity>
             {props.values.img && props.values.img.length > 0 ? (
@@ -209,7 +214,7 @@ const AddMenuResto = ({ navigation }) => {
                 style={globalStyles.touchLog}
                 onPress={() => props.handleSubmit()}
               >
-                <Text style={globalStyles.fontLog}>Add Food</Text>
+                <Text style={globalStyles.fontLog}>Agregar!</Text>
               </TouchableOpacity>
             </View>
           </View>

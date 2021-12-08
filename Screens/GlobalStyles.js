@@ -11,7 +11,8 @@ const globalStyles = StyleSheet.create({
   btnHome: {
     marginTop: 10,
     flexDirection: "row",
-    justifyContent: "space-around"
+    justifyContent: "space-around",
+
   },
   btnText: {
     fontSize: 12.5,
@@ -204,10 +205,12 @@ const globalStyles = StyleSheet.create({
     width: "100%",
   },
   texts: {
+    color: "#000",
     textAlign: "center",
     width: "100%",
     fontSize: 14.5,
     fontWeight: "bold",
+    paddingVertical: 1,
   },
   textDownButton: {
     textAlign: "center",
