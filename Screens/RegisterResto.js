@@ -187,9 +187,10 @@ const RegisterResto = ({ navigation }) => {
           cuit: "",
           category: state.category,
           img: "",
-          lat: state.lat,
-          lng: state.lng,
-          address: state.address,
+          lat: "",
+          lng: "",
+          address: "",
+          reservations: [],
         }}
         validationSchema={registerRestoSchema}
         onSubmit={(values) => {
@@ -209,6 +210,7 @@ const RegisterResto = ({ navigation }) => {
                   category: state.category.toLowerCase(),
                   img: values.img,
                   menu: [],
+                  reservations: [],
                   location: {
                     latitude: state.lat,
                     longitude: state.lng,

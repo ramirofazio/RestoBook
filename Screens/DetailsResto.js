@@ -10,12 +10,12 @@ import { useSelector } from "react-redux";
 import { View, Text, StyleSheet, Image, Linking, TouchableOpacity } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import MapView, { Marker } from "react-native-maps";
-import DateTimePicker from '@react-native-community/datetimepicker';
+//import DateTimePicker from '@react-native-community/datetimepicker';
 //
 //
 //----------FIREBASE UTILS-----------
 import { getAuth } from "firebase/auth";
-import { onSnapshot, collection, query } from "firebase/firestore";
+import { onSnapshot, collection, query, doc, updateDoc, arrayUnion } from "firebase/firestore";
 
 import firebase from "../database/firebase";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -44,7 +44,7 @@ const DetailsResto = ({ navigation }) => {
   //console.log(location)
   const number = "+541168020511"
   //WhatsApp
-  const handleWhatsAppPress = async () => { 
+  const handleWhatsAppPress = async () => {
 
     await Linking.openURL(`whatsapp://send?text=Hola RestoBook&phone=${number}`)
   }
@@ -66,10 +66,75 @@ const DetailsResto = ({ navigation }) => {
     });
   }, []);
 
+  const getCurrentDate = () => {
+    let min = new Date().getMinutes().toString();
+    let hour = new Date().getHours().toString();
+    let date = new Date().getDate().toString();
+    let month = (new Date().getMonth() + 1).toString();
+    let year = new Date().getFullYear().toString();
+    return hour + min + date + month + year;// 22:10 12/10/2021
+  }
+  console.log(getCurrentDate())
+
+  /*try {
+            let restoRef = doc(firebase.db, "Restos", idResto);
+            setSpinner(true);
+            await updateDoc(restoRef, {
+              menu: arrayUnion(newValues),
+            });
+            setSpinner(false);
+            navigation.navigate("DetailsResto");
+          } catch (err) {
+            console.log(err);
+          } */
+
+  const handleReserva = async () => {
+    if (auth.currentUser) {
+      const reserva = {
+        idReserva: getCurrentDate(),
+        emailUser: auth.currentUser.email,
+        idUser: auth.currentUser.uid,
+        nameResto: empresaDetail.title,
+        idResto: empresaDetail.idResto
+      };
+
+      try {
+        let restoRef = doc(firebase.db, "Users", auth.currentUser.uid);
+        await updateDoc(restoRef, {
+          reservations: arrayUnion(reserva),
+        })
+      } catch (err) {
+        console.log(err);
+      }
+      try {
+        let restoRef = doc(firebase.db, "Restos", empresaDetail.idResto);
+        await updateDoc(restoRef, {
+          reservations: arrayUnion(reserva),
+        })
+      } catch (err) {
+        console.log(err);
+      }
+      alert("Su reserva ha sido registrada!")
+    } else {
+      alert("Logueate antes de reservar!")
+    }
+  }
 
 
   return (
     <View style={globalStyles.Home}>
+      <View style={{ backgroundColor: "#fff" }}>
+        <Text style={{ textAlign: "center", fontSize: 30, marginVertical: 10, }}>{empresaDetail.title}</Text>
+      </View>
+
+      <View>
+        <TouchableOpacity
+          style={globalStyles.btn}
+          onPress={handleReserva}
+        >
+          <Text>Reservar</Text>
+        </TouchableOpacity>
+      </View>
 
       <View style={styles.content}>
         <View style={styles.categoriesContainer}>
@@ -108,8 +173,10 @@ const DetailsResto = ({ navigation }) => {
             Add a food to see it!
           </Text>
         )}
-        <View style={globalStyles.btn}>
-          <TouchableOpacity onPress={() => navigation.navigate("WebViewScreen")}>
+        <View>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("WebViewScreen")}
+            style={globalStyles.btn}>
             <Text><MaterialIcons name="payment" size={20} color="black" ></MaterialIcons> Pagar: $100 de tu reserva
             </Text>
           </TouchableOpacity>
