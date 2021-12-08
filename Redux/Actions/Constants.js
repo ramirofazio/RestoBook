@@ -4,3 +4,5 @@ export const ADD_MENU = "ADD_MENU";
 export const CURRENT_ID = "CURRENT_ID";
 export const CURRENT_USER = "CURRENT_USER";
 export const SET_COMMERCE = "SET_COMMERCE"
+export const EMPRESAS_NAME = "EMPRESAS_NAME"
+export const UPDATE_DOCUMENT = "UPDATE_DOCUMENT"

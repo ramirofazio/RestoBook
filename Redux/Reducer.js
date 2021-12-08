@@ -5,6 +5,7 @@ import {
   CURRENT_USER,
   CURRENT_ID,
   SET_COMMERCE,
+  EMPRESAS_NAME
 } from "./Actions/Constants.js";
 
 let initialState = {
@@ -52,7 +53,12 @@ const RootReducer = (state = initialState, action) => {
       return {
         ...state,
         commerce: true
-      }
+      };
+      case EMPRESAS_NAME:
+        return{
+            ...state,
+            empresas: action.payload,
+        }
     default:
       return state;
   }

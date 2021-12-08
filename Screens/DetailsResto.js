@@ -35,7 +35,7 @@ const auth = getAuth();
 //
 //---------------------------------------------------------------------------------------//
 //
-const DetailsResto = () => {
+const DetailsResto = ({navigation}) => {
   const empresaDetail = useSelector((state) => state.empresaDetail);
   const {location} = empresaDetail
   console.log(location)
@@ -128,6 +128,12 @@ const DetailsResto = () => {
             </Marker>
           </MapView>
         </View>
+<View style={globalStyles.btn}>
+  <TouchableOpacity onPress={() => navigation.navigate("Coments")}>
+  <Text> Agrega algun comentario
+    </Text>
+  </TouchableOpacity>
+</View> 
       </View>
     </View>
   );

@@ -11,8 +11,7 @@ import AddMenuResto from "../Screens/AddMenuResto.js";
 import DetailsResto from "../Screens/DetailsResto";
 import ProfileUser from '../Screens/ProfileUser.js';
 import GlobalLogin from "../Screens/GlobalLogin.js";
-import WebViewScreen from "../Screens/WebViewScreen"
-
+import WebViewScreen from "../Screens/WebViewScreen";
 import AwaitEmail from "../Screens/AwaitEmail.js";
 import NavHome from "../Screens/NavHome.js";
 import NavDetail from "../Screens/NavDetail";
@@ -21,6 +20,7 @@ import ProfileResto from "../Screens/ProfileResto";
 //------------Styles y otros ---------
 import globalStyles from "../Screens/GlobalStyles";
 import { Text } from 'react-native'
+import Coments from "../Screens/Coments";
 
 const Stack = createNativeStackNavigator();
 
@@ -103,7 +103,22 @@ export default Navigator = () => {
           }}
         />
         {/* //============// */}
-
+        <Stack.Screen
+          name="Coments"
+          component={Coments}
+          options={{
+            headerTitle: "Coments",
+            title: "Coments",
+            headerTitleAlign: "center",
+            headerStyle: {
+              backgroundColor: "#f6efd2",
+            },
+            headerTintColor: "#392c28",
+            headerTitleStyle: {
+              fontSize: 25,
+            },
+          }}
+          />
         <Stack.Screen
           name="GlobalLogin"
           component={GlobalLogin}
