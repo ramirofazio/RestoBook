@@ -107,6 +107,57 @@ const globalStyles = StyleSheet.create({
     borderRadius: 25
   },
   /// --------------------------------------------ACA TERMINAN  LOS ESTILOS DE LAS CARDS HOM -------
+  //------------------------------CARDS MENU-----------------------------------------------------------------
+  cardsMenuContainer: {
+    flex: 1,
+    alignSelf: "center",
+    backgroundColor: "#f6efd3",
+    marginVertical: 5,
+    // paddingHorizontal: 5,
+    paddingVertical: 5,
+    borderRadius: 25,
+    width: "100%",
+    height: 150
+  },
+  cardsMenuDescriptionContainer: {
+    maxHeight: '120%',
+    height: '100%',
+    width: '75%',
+    alignSelf: 'flex-start',
+    justifyContent: 'space-around',
+    paddingHorizontal: 10
+  },
+  cardsMenuTitle: {
+    fontSize: 25,
+    fontWeight: "bold",
+    textAlign: "left",
+    width: '100%'
+  },
+  cardsMenuDescriptionText: {
+    textAlign: 'left',
+    fontSize: 15,
+    color: 'grey',
+    marginTop: -15
+    
+  },
+  containerImgCardMenu: {
+    width: "25%",
+    maxHeight: '5%',
+    alignSelf: "flex-end",
+    alignItems: "flex-end",
+    marginTop: '-37%',
+    marginRight: '3.5%'
+  },
+  cardsMenuimg: {
+    // marginTop: 5,
+    // backgroundColor: "red",
+    width: 110,
+    height: 120,
+    borderRadius: 25,
+    justifyContent: "center"
+  },
+  //------------------------------------------------------------------------------------------------------
+
   // --------------------------------------------CATEGORIAS LOCAL --------------------------------------------
   categoriesView: {
     backgroundColor: "white",
