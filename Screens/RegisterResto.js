@@ -14,7 +14,8 @@ import {
   Text,
   StyleSheet,
   ScrollView,
-  TouchableOpacity
+  TouchableOpacity,
+  Pressable
 } from "react-native";
 //
 //----------FORMIK y YUP------------------
@@ -132,7 +133,15 @@ const RegisterResto = ({ navigation }) => {
 
   return (
     <View style={globalStyles.Home}>
-      <View style={globalStyles.inputComponent}>
+      <View style={{
+        backgroundColor: '#e8b595',
+        width: '80%',
+        alignSelf: 'center',
+        marginTop: 15,
+        borderRadius: 10,
+        maxWidth: '100%',  
+      }}
+      >
         <GooglePlacesAutocomplete
           placeholder='Completa tu direccion'
           nearbyPlacesAPI='GooglePlacesSearch'
@@ -148,20 +157,23 @@ const RegisterResto = ({ navigation }) => {
           styles={{
             container: {
               flex: 0,
-              width: '150%',
+              width: '100%',
               padding: 0,
               alignSelf: 'center',
             },
             textInput: {
+              marginTop: 4,
               fontSize: 14.5,
               fontWeight: 'bold',
-              width: '130%',
+              width: '80%',
               backgroundColor: 'transparent',
               textAlign: 'center',
+              overflow: 'hidden'
             },
             textInputContainer: {
               alignItems: 'center',
               height: 18,
+              overflow: 'hidden'
             },
             listView: {
               borderRadius: 13,
@@ -329,6 +341,18 @@ const RegisterResto = ({ navigation }) => {
               {props.touched.cuit && props.errors.cuit ? (
                 <Text style={globalStyles.errorText}>{props.errors.cuit}</Text>
               ) : null}
+              
+              <Pressable onPress={() => setIsVisible(true) }>
+                <View style={globalStyles.inputComponent}>
+                  <TextInput
+                    style={globalStyles.texts}
+                    editable={false}
+                    placeholder="Select Category"
+                    value={state.category}
+                    onPressIn={() => setIsVisible(true)}
+                  />
+                </View>
+              </Pressable>
 
               <View style={{ alignItems: "center" }}>
                 <TouchableOpacity
@@ -361,13 +385,7 @@ const RegisterResto = ({ navigation }) => {
       </Formik>
 
       <View style={globalStyles.inputComponent}>
-        <TextInput
-          style={globalStyles.texts}
-          editable={false}
-          placeholder="Select Category"
-          value={state.category}
-          onPressIn={() => setIsVisible(true)}
-        />
+      
         <BottomSheet
           isVisible={isVisible}
           containerStyle={{ backgroundColor: 'rgba(0.5,0.25,0,0.2)' }}
@@ -377,7 +395,10 @@ const RegisterResto = ({ navigation }) => {
               key={index}
               containerStyle={{ backgroundColor: 'rgba(0.5,0.25,0,0.7)' }}
               style={{ borderWidth: 1, borderColor: '#cccccc' }}
-              onPress={(e) => setState({ ...state, category: categoria }) && setIsVisible(false)}
+              onPress={() => {
+                setState({ ...state, category: categoria }) 
+                setIsVisible(false)
+              }}
             >
               <ListItem.Content>
                 <ListItem.Title style={{ height: 35, color: '#FFF', padding: 8 }}>{categoria}</ListItem.Title>
@@ -429,7 +450,7 @@ const styles = StyleSheet.create({
     padding: 25,
   },
   inputGroup: {
-    height: 50,
+    height: 15,
     padding: 0,
     marginBottom: 15,
     borderBottomWidth: 1,

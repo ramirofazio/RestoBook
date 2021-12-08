@@ -1,5 +1,7 @@
 //----------REACT UTILS-----------
 import React, { useState, useEffect } from "react";
+import axios from 'axios';
+import Constants from 'expo-constants'
 //
 //
 //----------REDUX UTILS-----------
@@ -7,7 +9,7 @@ import { useSelector } from "react-redux";
 //
 //
 //----------REACT-NATIVE UTILS-----------
-import { View, Text, StyleSheet, Image, Linking, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet,Image, Linking, TouchableOpacity, Modal, TextInput, Picker } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import MapView, { Marker } from "react-native-maps";
 //import DateTimePicker from '@react-native-community/datetimepicker';
@@ -36,20 +38,42 @@ const auth = getAuth();
 //
 //---------------------------------------------------------------------------------------//
 //
-const DetailsResto = ({ navigation }) => {
+const DetailsResto = ({navigation}) => {
+  const [precioCabeza, setPrecioCabeza] = useState()
+  const [cantLugares, setCantLugares] = useState()
   const empresaDetail = useSelector((state) => state.empresaDetail);
-  const { location } = empresaDetail
-
-
-  //console.log(location)
+  const [modalVisible, setModalVisible] = useState(false)
+  const {manifest} = Constants;
+  const {location} = empresaDetail
   const number = "+541168020511"
   //WhatsApp
-  const handleWhatsAppPress = async () => {
-
+  const handleWhatsAppPress = async() => {
     await Linking.openURL(`whatsapp://send?text=Hola RestoBook&phone=${number}`)
   }
   const [menuArr, setMenuArr] = useState([]);
   //Tiene que desactivar el boton en los comercios que no sean del logueado
+  console.log(empresaDetail)
+  const onPressReservar= async (cantLugares, precioCabeza) => {
+    // const uri = `http://${manifest.debuggerHost.split(':').shift()}:19006`;
+    // console.log(uri)
+    const url = await axios(
+      {
+        method: 'POST',
+        // url: `${uri}/checkout`,
+        url : 'http://192.168.0.10:19006/checkout',
+        data: {
+          restoName: empresaDetail.title,
+          quantity: cantLugares,
+          unit_price: precioCabeza
+        }
+      }
+    )
+    setModalVisible(false)
+    console.log(url.data)
+    navigation.navigate("WebViewScreen", {
+      url: url.data
+    })
+  }
 
   useEffect(() => {
     const q = query(collection(firebase.db, "Restos"));
@@ -173,14 +197,12 @@ const DetailsResto = ({ navigation }) => {
             Add a food to see it!
           </Text>
         )}
-        <View>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("WebViewScreen")}
-            style={globalStyles.btn}>
-            <Text><MaterialIcons name="payment" size={20} color="black" ></MaterialIcons> Pagar: $100 de tu reserva
-            </Text>
-          </TouchableOpacity>
-        </View>
+          <View style={globalStyles.btn} onTouchStart={() => setModalVisible(!modalVisible)}>
+            <TouchableOpacity >
+              <Text><MaterialIcons name="payment" size={20} color="black" ></MaterialIcons> Quiero Reservar !
+              </Text>
+            </TouchableOpacity>
+          </View> 
         <View style={styles.googleMapsContainer}>
           <MapView
             style={styles.googleMaps}
@@ -203,7 +225,42 @@ const DetailsResto = ({ navigation }) => {
           </MapView>
         </View>
       </View>
+            <Modal
+              animationType="slide"
+              transparent={true}
+              visible={modalVisible}
+              onRequestClose={() => {
+                setModalVisible(!modalVisible);
+              }}
+            >
+              <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                  <TouchableOpacity
+                    style={globalStyles.touchLog}
+                    onPress={() => setModalVisible(!modalVisible)}
+                  >
+                    <Text
+                      onPress={() => setModalVisible(false)}
+                    > X </Text>
+                  </TouchableOpacity>
+                  <Text>Selecciona la cantidad de lugares</Text>
+                    <TextInput placeholder='Cantidad de lugares' style={{backgroundColor: '#bd967e', width: '80%'}} keyboardType='numeric' onChangeText={ (value) => setCantLugares(parseInt(value))}>
+                  </TextInput>
+                  <Text>Precio por cabeza otorgado por Empresa seria:</Text>
+                  <TextInput placeholder='Cantidad de lugares' style={{backgroundColor: '#bd967e', width: '80%'}} keyboardType='numeric' onChangeText={ (value) => setPrecioCabeza(parseInt(value))}>
+                  </TextInput>
+                  <Text style={{fontSize: 30, color:'blue'}}>Precio por cabeza ${precioCabeza}</Text>
+                  <TouchableOpacity
+                    style={globalStyles.touchLog}
+                    onPress={() => onPressReservar( cantLugares, precioCabeza )}
+                  >
+                    <Text>Reservar mi lugar por ${cantLugares*precioCabeza}</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </Modal>
     </View>
+    
   );
 };
 const styles = StyleSheet.create({
@@ -238,13 +295,11 @@ const styles = StyleSheet.create({
     height: 250,
     padding: 10,
     borderWidth: 0,
-    //borderRadius: 50
   },
   googleMapsContainer: {
     flex: 1,
     padding: 10,
     borderRadius: 20,
-    //backgroundColor: "red"
   },
   googleMaps: {
     height: 250,
@@ -275,6 +330,30 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     marginTop: 10,
     backgroundColor: '#ffd964'
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: '10%',
+    //backgroundColor: "blur",
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 20,
+    width: "90%",
+    height: "90%",
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 30,
+      height: 30,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
   },
 });
 
