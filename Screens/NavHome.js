@@ -25,6 +25,7 @@ import Btn from "./Helpers/Btns.js";
 //
 //-------STYLES-------
 import globalStyles from "./GlobalStyles.js";
+import CurrentUser from "../Redux/Actions/CurrentUser.js";
 //
 //
 //-------INITIALIZATIONS-------
@@ -34,27 +35,27 @@ const auth = getAuth();
 export default function NavHome({ title, navigation }) {
   const dispatch = useDispatch();
   const currentId = useSelector((state) => state.currentId);
-  const hasCommerce = useSelector( state => state.commerce)
+  const hasCommerce = useSelector((state) => state.commerce);
   //Esto lo tenemos que manejar con una propiedad de cada user, dsps lo corregimos
   const [commerce, isCommerce] = useState(false);
   const loggedId = useSelector((state) => state.currentId);
-  
+
   useEffect(() => {
     const q = query(collection(firebase.db, "Users"));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       querySnapshot.forEach((doc) => {
         let obj = doc.data();
         // obj.idResto = doc.id;
-        if ( doc.id === loggedId ) {
+        if (doc.id === loggedId) {
           if (obj.commerce === true) {
             isCommerce(true);
           }
         }
-        console.log("commerce?", commerce);
+        //console.log("commerce?", commerce);
       });
     });
   }, [loggedId, hasCommerce]);
- 
+
   //__________________________________________________________________________________
   onAuthStateChanged(auth, (usuarioFirebase) => {
     if (!usuarioFirebase?.emailVerified) {
@@ -63,8 +64,10 @@ export default function NavHome({ title, navigation }) {
     }
   });
 
-  const signOutAndAlert = () => {
+  const signOutAndClearRedux = () => {
     signOut(auth);
+    dispatch(CurrentUser(null));
+    dispatch(CurrentId(null));
   };
 
   return (
@@ -91,7 +94,9 @@ export default function NavHome({ title, navigation }) {
           <TouchableOpacity
             style={globalStyles.btn}
             onPress={() =>
-              currentId ? signOutAndAlert() : navigation.navigate("GlobalLogin")
+              currentId
+                ? signOutAndClearRedux()
+                : navigation.navigate("GlobalLogin")
             }
           >
             <Text>{currentId ? "Log out" : "Log in"}</Text>

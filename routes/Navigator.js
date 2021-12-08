@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-//import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from "@react-navigation/native";
-
+//
 //----------IMP SCREENS-----------
 import Home from "../Screens/Home";
 import RegisterResto from "../Screens/RegisterResto.js";
@@ -12,12 +11,13 @@ import DetailsResto from "../Screens/DetailsResto";
 import ProfileUser from '../Screens/ProfileUser.js';
 import GlobalLogin from "../Screens/GlobalLogin.js";
 import WebViewScreen from "../Screens/WebViewScreen"
-
 import AwaitEmail from "../Screens/AwaitEmail.js";
 import NavHome from "../Screens/NavHome.js";
 import NavDetail from "../Screens/NavDetail";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import ProfileResto from "../Screens/ProfileResto";
+//
+//
 //------------Styles y otros ---------
 import globalStyles from "../Screens/GlobalStyles";
 import { Text } from 'react-native'
@@ -72,7 +72,7 @@ export default Navigator = () => {
               fontSize: 25,
             },
           }}
-          />
+        />
 
         <Stack.Screen
           name="DetailsResto"
@@ -84,7 +84,7 @@ export default Navigator = () => {
             },
           })}
         />
-        
+
         {/* Mercado Pago */}
         <Stack.Screen
           name="WebViewScreen"
@@ -141,7 +141,7 @@ export default Navigator = () => {
         <Stack.Screen
           name="ProfileUser"
           component={ProfileUser}
-          options={{
+          options={({ navigation }) => ({
             headerTitle: "Profile",
             title: 'Profile',
             headerTitleAlign: "center",
@@ -163,14 +163,14 @@ export default Navigator = () => {
               fontSize: 25
             },
 
-          }}
+          })}
         />
         <Stack.Screen
           name="ProfileResto"
           component={ProfileResto}
           options={{
             headerTitle: "Profile",
-            title: 'Profile',
+            title: 'Profile Resto',
             headerTitleAlign: "center",
             headerStyle: {
               backgroundColor: '#f6efd2',

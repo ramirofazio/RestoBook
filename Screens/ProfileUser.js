@@ -25,9 +25,15 @@ import {
   sendPasswordResetEmail,
   signOut,
 } from "firebase/auth";
-import { doc, onSnapshot, collection, query, getDoc } from "firebase/firestore";
-//------------------------------
-//------ICONS-------------------
+import {
+  doc,
+  onSnapshot,
+  collection,
+  query,
+  getDoc,
+  getDocs,
+  where,
+} from "firebase/firestore";
 import StarFilled from "react-native-vector-icons/AntDesign";
 import TagOutlined from "react-native-vector-icons/AntDesign";
 //--------------------------------
@@ -106,6 +112,7 @@ const ProfileUser = ({ navigation }) => {
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
         let obj = docSnap.data();
+        console.log("obj", obj);
         setImage(obj.profileImage);
         setCurrentUser(obj);
         setNewUserInfo(obj);
@@ -254,20 +261,20 @@ const ProfileUser = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <ScrollView style={styles.container} contentContainerStyle={{ flex: 1 }}>
-        <View style={styles.imgContainer}>
+        <View style={globalStyles.imgContainer}>
           {image && !uploading ? (
             <TouchableOpacity onPress={openImagePickerAsync}>
               <Image
                 source={{
                   uri: CLOUDINARY_CONSTANT + image,
                 }}
-                style={styles.img}
+                style={globalStyles.imgProfile}
               />
             </TouchableOpacity>
           ) : (
-            <ActivityIndicator size="large" color="#5555" style={styles.img} />
+            <ActivityIndicator size="large" color="#5555" style={globalStyles.imgProfile} />
           )}
-          <View style={styles.nombreContainer}>
+          <View style={globalStyles.nombreContainer}>
             <Text
               style={{
                 fontSize: 25,
@@ -303,20 +310,20 @@ const ProfileUser = ({ navigation }) => {
                 setModalVisible(!modalVisible);
               }}
             >
-              <View style={styles.centeredView}>
-                <View style={styles.modalView}>
+              <View style={globalStyles.centeredView}>
+                <View style={globalStyles.modalView}>
                   <TouchableOpacity
                     style={globalStyles.touchLog}
                     onPress={() => setModalVisible(!modalVisible)}
                   >
                     <Text
                       onPress={() => setModalVisible(false)}
-                      style={styles.textStyle}
+                      style={globalStyles.textStyle}
                     >
                       X
                     </Text>
                   </TouchableOpacity>
-                  <Text style={styles.modalText}>Edit your Username</Text>
+                  <Text style={globalStyles.modalText}>Edit your Username</Text>
                   <Text>Nombre</Text>
                   <TextInput
                     style={globalStyles.texts}
@@ -406,7 +413,7 @@ const ProfileUser = ({ navigation }) => {
           ])}
           scrollEventThrottle={1}
         >
-          {myFavourites.length ? myFavourites.map((resto) => {
+          {myFavourites?.length ? myFavourites.map((resto) => {
             return (
               <View style={{ width: windowWidth, height: 250 }}>
                 <CardFavourite
@@ -450,34 +457,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#e6c2bf",
   },
-  img: {
-    height: 150,
-    width: 150,
-    borderRadius: 200,
-    // resizeMode: 'contain' // esta linea es para que se adapte al tam;o de la imagen
-  },
-  imgContainer: {
-    flex: 2,
-    flexDirection: "row",
-    // backgroundColor: 'red',
-    maxHeight: "25%",
-    maxWidth: "100%",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingHorizontal: 10,
-    paddingVertical: 15,
-  },
-  nombreContainer: {
-    flex: 2,
-    // backgroundColor: 'grey',
-    // marginHorizontal: 5,
-    maxWidth: "60%",
-    width: "100%",
-    height: "100%",
-    justifyContent: "center",
-    alignItems: "center",
-    alignSelf: "flex-end",
-  },
+ 
   FavouriteContainer: {
     overflow: "scroll",
     backgroundColor: "#5555",
@@ -485,53 +465,12 @@ const styles = StyleSheet.create({
     height: "20%",
   },
 
-
   //----------------------- modal css?? ---------------------------------
-  centeredView: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 22,
-    //backgroundColor: "blur",
-  },
-  modalView: {
-    margin: 20,
-    backgroundColor: "white",
-    borderRadius: 20,
-    padding: 35,
-    width: "90%",
-    height: "90%",
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 30,
-      height: 30,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-  },
   buttonOpen: {
     backgroundColor: "#F194FF",
   },
   buttonClose: {
     backgroundColor: "#2196F3",
-  },
-  textStyle: {
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center",
-  },
-  modalText: {
-    marginBottom: 15,
-    textAlign: "center",
-    fontSize: 30,
-    fontWeight: "bold",
   },
   botton: {
     borderRadius: 20,
@@ -541,6 +480,11 @@ const styles = StyleSheet.create({
   },
   bottonClose: {
     backgroundColor: "#2196F3",
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
   },
 });
 

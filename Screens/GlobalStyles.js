@@ -41,7 +41,7 @@ const globalStyles = StyleSheet.create({
     resizeMode: 'contain' // esta linea es para que se adapte al tam;o de la imagen
   },
   
-  //////CARD HOME/////////////////////////////////////////////////
+  // --------------------------------------------CARD HOME --------------------------------------------
   cardsContainer: {
     flex: 1,
     alignSelf: "center",
@@ -106,9 +106,8 @@ const globalStyles = StyleSheet.create({
     height: 40,
     borderRadius: 25
   },
-  //////ACA TERMINAN  LOS ESTILOS DE LAS CARDS HOME/////////////////////
-
-  /////////////////////CATEGORIAS LOCAL////////////////////////////////
+  /// --------------------------------------------ACA TERMINAN  LOS ESTILOS DE LAS CARDS HOM -------
+  // --------------------------------------------CATEGORIAS LOCAL --------------------------------------------
   categoriesView: {
     backgroundColor: "white",
     borderRadius: 10,
@@ -118,9 +117,78 @@ const globalStyles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 13,
     padding: 1,
+    textAlign:"center"
   },
-  ////////////////////ACA TERMINA CATEGORIAS LOCALES//////////////////
+//----------------------------ACA TERMINA CATEGORIAS LOCALES --------------------------------------------
 
+// ---------------------------- PROFILE USER Y RESTO ----------------------------------------------------
+  imgContainer: {
+    flex: 2,
+    flexDirection: "row",
+    // backgroundColor: 'red',
+    maxHeight: "25%",
+    maxWidth: "100%",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: 10,
+    paddingVertical: 15,
+  },
+  imgProfile: {
+    height: 150,
+    width: 150,
+    borderRadius: 200,
+    // resizeMode: 'contain' // esta linea es para que se adapte al tam;o de la imagen
+  },
+  nombreContainer: {
+    flex: 2,
+    // backgroundColor: 'grey',
+    // marginHorizontal: 5,
+    maxWidth: "60%",
+    width: "100%",
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+    alignSelf: "flex-end",
+  },
+// ------------------------------------------------------------------------------------------------------
+//------------------------------MODAL PROFILES-----------------------------------------------------------
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+    //backgroundColor: "blur",
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    width: "90%",
+    height: "90%",
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 30,
+      height: 30,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+ 
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center",
+    fontSize: 30,
+    fontWeight: "bold",
+  },
+//------------------------------------------------------------------------------------------------------
   title: {
     fontSize: 25,
     fontWeight: "bold",

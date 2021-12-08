@@ -1,16 +1,20 @@
-import React from "react";
-import { Card, Text } from "react-native-elements";
-import { View, Image, StyleSheet, TouchableOpacity, Linking} from "react-native";
+
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AirbnbRating, Rating } from 'react-native-elements';
-//-------SCREENS--------
-import BtnFuncional from "../Screens/Helpers/BtnFuncional.js";
+import {
+  View,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  Linking,
+} from "react-native";
 //------ACTIONS---------
 import empresaDetail from "../Redux/Actions/empresaDetail.js";
 //-----STYLES----------
 import globalStyles from "../Screens/GlobalStyles.js";
 //------ICONS----------
-import { Icon, ListItem } from "react-native-elements";
+import { Icon, Text } from "react-native-elements";
 //----------FIREBASE UTILS-----------
 import firebase from "../database/firebase";
 import { getAuth } from "firebase/auth";
@@ -21,6 +25,7 @@ const auth = getAuth();
 
 const CardMenu = ({ resto, navigation }) => {
   //console.log(resto)
+  const [hearthColor, setHearthColor] = useState("grey");
   const dispatch = useDispatch();
   const categories = useSelector((state) => state.categoriesResto);
 
@@ -32,24 +37,24 @@ const CardMenu = ({ resto, navigation }) => {
   };
 
   const handleWhatsapp = async () => {
-    await Linking.openURL(`whatsapp://send?text=Hola ${resto.title}, mi nombre es Lucas y quiero generar una reserva&phone=${celphone}`)
-  }
+    await Linking.openURL(
+      `whatsapp://send?text=Hola ${resto.title}, mi nombre es Lucas y quiero generar una reserva&phone=${celphone}`
+    );
+  };
 
   
 
   return (
     <View style={globalStyles.cardsContainer}>
-      <TouchableOpacity
-        onPress={() => handleOnPress()}
-      >
+      <TouchableOpacity onPress={() => handleOnPress()}>
         <View style={globalStyles.containerImgCard}>
           <Image
             style={globalStyles.cardsHomeimg}
             source={
               resto.Img === ""
                 ? {
-                  uri: "https://images.vexels.com/media/users/3/204941/isolated/preview/d8bc6d74b3da7ee41fc99b6000c1e6a4-trazo-de-puntuacion-de-signo-de-interrogacion.png",
-                }
+                    uri: "https://images.vexels.com/media/users/3/204941/isolated/preview/d8bc6d74b3da7ee41fc99b6000c1e6a4-trazo-de-puntuacion-de-signo-de-interrogacion.png",
+                  }
                 : { uri: resto.Img }
             }
           />
@@ -82,21 +87,16 @@ const CardMenu = ({ resto, navigation }) => {
           /> */}
           </View>
 
-          <View >
+          <View>
             <View style={globalStyles.categoriesView}>
-            {/* {availableCommerces.map((resto) =>{
-              resto.includes(category) ? category = resto.categorie
-            })} */}
-              <Text style={globalStyles.categoriesText}>  Categoria de local</Text>
+              <Text style={globalStyles.categoriesText}>{resto.category}</Text>
             </View>
           </View>
         </View>
 
         <View style={globalStyles.btnContainerCard}>
           <View>
-            <TouchableOpacity
-              onPress={() => handleWhatsapp()}
-            >
+            <TouchableOpacity onPress={() => handleWhatsapp()}>
               <Image
                 style={globalStyles.wspImage}
                 // resizeMode="contain"
@@ -115,6 +115,9 @@ const CardMenu = ({ resto, navigation }) => {
                   address: resto.location.address,
                   img: resto.img
                 }
+                hearthColor === "grey"
+                  ? setHearthColor("red")
+                  : setHearthColor("grey")
                 // console.log(infoFavourite)
                 try {
                   let docRef = doc(firebase.db, "Users", auth.currentUser.uid);
@@ -123,13 +126,15 @@ const CardMenu = ({ resto, navigation }) => {
                   });
                   alert('Agregado a favoritos!')
                 } catch (e) {console.log(error)}
-              }}>
+              }} 
+            >
               <Icon
                 raised
-                name='heart'
-                type='antdesign'
-                color='grey'
-                iconStyle='red'
+                name="heart"
+                type="antdesign"
+                color={hearthColor}
+                style={{ border: "solid 1px blue" }}
+                iconStyle="red"
                 size={19}
               />
             </TouchableOpacity>
@@ -137,7 +142,6 @@ const CardMenu = ({ resto, navigation }) => {
         </View>
       </TouchableOpacity>
     </View>
-
   );
 };
 

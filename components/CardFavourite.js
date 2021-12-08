@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Image, TouchableOpacity, Text} from "react-native";
 import { useDispatch } from "react-redux";
 //-----STYLES----------
@@ -16,6 +16,7 @@ const CardFavourite = ({ resto, navigation }) => {
         dispatch(empresaDetail(resto));
         navigation.navigate("DetailsResto");
     };
+    const [hearthColor, setHearthColor] = useState("red");
 
 
     return (
@@ -76,14 +77,21 @@ const CardFavourite = ({ resto, navigation }) => {
 
         <View style={globalStyles.btnContainerCard}>  
           <View>
-            <TouchableOpacity 
-              onPress={() => {alert('desfaveé')}}>
+          <TouchableOpacity 
+              onPress={() => {
+                hearthColor === "grey"
+                  ? setHearthColor("red")
+                  : setHearthColor("grey");
+                alert('desfaveé')  
+              }} 
+            >
               <Icon
                 raised
-                name='heart'
-                type='antdesign'
-                color='grey'
-                iconStyle='red'
+                name="heart"
+                type="antdesign"
+                color={hearthColor}
+                style={{ border: "solid 1px blue" }}
+                iconStyle="red"
                 size={19}
               />
             </TouchableOpacity>

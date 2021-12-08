@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
-    "@mdi/font": "^6.5.95",
+    "@react-native-community/datetimepicker": "3.5.2",
     "@react-native-community/masked-view": "^0.1.11",
     "@react-native-firebase/app": "^13.1.0",
     "@react-navigation/drawer": "^6.1.8",
