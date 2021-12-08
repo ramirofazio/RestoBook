@@ -175,13 +175,13 @@ const ProfileResto = ({ navigation }) => {
                   paddingVertical: 15,
                 }}
               >
-                {currentUser?.location.address}
+                {currentUser?.location?.address}
               </Text>
               <TouchableOpacity
                 style={globalStyles.btn}
                 onPress={() => setModalVisible(true)}
               >
-                <Text>Edit</Text>
+                <Text>Editar</Text>
               </TouchableOpacity>
               <Modal
                 animationType="slide"
@@ -205,8 +205,8 @@ const ProfileResto = ({ navigation }) => {
                         X
                       </Text>
                     </TouchableOpacity>
-                    <Text style={globalStyles.modalText}>Edit your info</Text>
-                    <Text>Resto's Name</Text>
+                    <Text style={globalStyles.modalText}>Editar información</Text>
+                    <Text>Nombre del Resto</Text>
                     <TextInput
                       style={globalStyles.texts}
                       placeholder={currentUser?.title}
@@ -217,10 +217,10 @@ const ProfileResto = ({ navigation }) => {
                         })
                       }
                     />
-                    <Text>Adress</Text>
+                    <Text>Direccion</Text>
                     <TextInput
                       style={globalStyles.texts}
-                      placeholder={currentUser?.location.address}
+                      placeholder={currentUser?.location?.address}
                       onChangeText={(value) =>
                         setNewUserInfo({
                           ...newUserInfo,
@@ -259,7 +259,7 @@ const ProfileResto = ({ navigation }) => {
                           .doc(currentUser.idResto)
                           .update({
                             title: newUserInfo.title,
-                            address: newUserInfo.address,
+                            address: newUserInfo.location.address,
                             description: newUserInfo.description,
                           })
                           .then(alert("cambios guardados!"))
@@ -267,7 +267,7 @@ const ProfileResto = ({ navigation }) => {
                           .catch((error) => alert("error!"));
                       }}
                     >
-                      <Text>Save</Text>
+                      <Text>Guardar</Text>
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -287,7 +287,7 @@ const ProfileResto = ({ navigation }) => {
               </Text>
               
               <Text style={{ fontSize: 25, color: "#392c28", textAlign: "center" }}>
-                <Icon name='home'type='font-awesome-5'color='#392c28'size={25}/> My Commerces
+                <Icon name='home'type='font-awesome-5'color='#392c28'size={25}/> Mis Comercios
               </Text>
             <Divider orientation="horizontal" width={2} inset={true} insetType={"middle"} color={'black'} style={{marginVertical: 10}}/>
           <ScrollView
@@ -322,7 +322,7 @@ const ProfileResto = ({ navigation }) => {
               <TouchableOpacity onPress={() => alert('abro modal')} style={globalStyles.btnProfileResto}>
                   <Text style={{ fontSize: 25, color: "#392c28", textAlign: "center" }}>
                     <Icon name='clipboard-list' type='font-awesome-5'color='#392c28'size={24}/>
-                    Administrate Reservations
+                    Administrar Reservas
                     {/* 'clipboard-list' */}
                   </Text>
               </TouchableOpacity>
@@ -330,7 +330,7 @@ const ProfileResto = ({ navigation }) => {
               <TouchableOpacity onPress={() => alert('abro modal')} style={globalStyles.btnProfileResto}>
                   <Text style={{ fontSize: 25, color: "#392c28", textAlign: "center" }}>
                     <Icon name='street-view' type='font-awesome-5'color='#392c28'size={24}/>
-                    Edit available places
+                    Editar Lugares Disponibles
                     {/* street-view */}
                   </Text>
               </TouchableOpacity>
@@ -338,7 +338,7 @@ const ProfileResto = ({ navigation }) => {
               <TouchableOpacity onPress={() => alert('abro modal')} style={globalStyles.btnProfileResto}>
                   <Text style={{ fontSize: 25, color: "#392c28", textAlign: "center" }}>
                     <Icon name='clock' type='font-awesome-5'color='#392c28'size={24}/>
-                    Edit business hours
+                    Editar Horario Comercial
                     {/* clock */}
                   </Text>
               </TouchableOpacity> 
