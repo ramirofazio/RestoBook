@@ -259,8 +259,8 @@ const ProfileUser = ({ navigation }) => {
   const { width: windowWidth } = useWindowDimensions();
 
   return (
-    <View style={styles.container}>
-      <ScrollView style={styles.container} contentContainerStyle={{ flex: 1 }}>
+    <View style={globalStyles.Perfilcontainer}>
+      <ScrollView style={globalStyles.Perfilcontainer} contentContainerStyle={{ flex: 1 }}>
         <View style={globalStyles.imgContainer}>
           {image && !uploading ? (
             <TouchableOpacity onPress={openImagePickerAsync}>
@@ -394,14 +394,14 @@ const ProfileUser = ({ navigation }) => {
         </View>
         <Text style={{ fontSize: 25, color: "#392c28", textAlign: "center" }}>
           {" "}
-          <StarFilled name="star" color="#392c28" size={25} /> FAVORITOS
+          <StarFilled name="star" color="#392c28" size={25} /> My Favourites
         </Text>
           <Divider orientation="horizontal" width={2} inset={true} insetType={"middle"} color={'black'} style={{marginVertical: 10}}/>
         <ScrollView
           horizontal={true}
           pagingEnabled
           showsHorizontalScrollIndicator={false}
-          style={styles.FavouriteContainer}
+          style={globalStyles.FavouriteContainer}
           onScroll={Animated.event([
             {
               nativeEvent: {
@@ -453,18 +453,8 @@ const ProfileUser = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#e6c2bf",
-  },
+  
  
-  FavouriteContainer: {
-    overflow: "scroll",
-    backgroundColor: "#5555",
-    maxHeight: "30%",
-    height: "20%",
-  },
-
   //----------------------- modal css?? ---------------------------------
   buttonOpen: {
     backgroundColor: "#F194FF",

@@ -26,6 +26,7 @@ const auth = getAuth();
 const CardMenu = ({ resto, navigation }) => {
   //console.log(resto)
   const [hearthColor, setHearthColor] = useState("grey");
+  const [pressed, setPressed] = useState(false)
   const dispatch = useDispatch();
   const categories = useSelector((state) => state.categoriesResto);
 
@@ -115,6 +116,8 @@ const CardMenu = ({ resto, navigation }) => {
                   address: resto.location.address,
                   img: resto.img
                 }
+                // pressed === true && usuario logueado === false ? alert('logeate primero') : //ESTO ES PARA DECIR QUE
+                // SI UN USARUIO NO LOGUEADO QUIERE GUARDAR ALGO EN FAVS QUE SE LOGUEE PRIMERO
                 hearthColor === "grey"
                   ? setHearthColor("red")
                   : setHearthColor("grey")

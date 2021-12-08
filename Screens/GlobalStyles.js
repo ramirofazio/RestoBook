@@ -173,6 +173,10 @@ const globalStyles = StyleSheet.create({
 //----------------------------ACA TERMINA CATEGORIAS LOCALES --------------------------------------------
 
 // ---------------------------- PROFILE USER Y RESTO ----------------------------------------------------
+  Perfilcontainer: {
+    flex: 1,
+    backgroundColor: "#e6c2bf",
+  },
   imgContainer: {
     flex: 2,
     flexDirection: "row",
@@ -201,6 +205,26 @@ const globalStyles = StyleSheet.create({
     alignItems: "center",
     alignSelf: "flex-end",
   },
+  FavouriteContainer: {
+    overflow: "scroll",
+    backgroundColor: "#5555",
+    maxHeight: "30%",
+    height: "20%",
+  },
+  btnProfileResto : {
+    color: 'transparent',
+    borderWidth: 3,
+    borderColor: "black",
+    borderRadius: 15,
+    paddingVertical: 3,
+    paddingHorizontal: 3,
+    marginVertical: 4,
+    height: "8%",
+    width: '90%',
+    alignSelf: "center",
+    justifyContent: "center"
+  },
+
 // ------------------------------------------------------------------------------------------------------
 //------------------------------MODAL PROFILES-----------------------------------------------------------
   centeredView: {

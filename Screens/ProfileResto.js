@@ -1,32 +1,47 @@
-//----------REACT UTILS-----------
-import React, { useState, useEffect } from "react";
-//
-//
-//----------REDUX UTILS-----------
+import React, { useState, useRef, useEffect } from "react";
+import { CLOUDINARY_URL, CLOUDINARY_CONSTANT } from "@env";
 import { useSelector } from "react-redux";
-//
-//
-//----------REACT-NATIVE UTILS-----------
 import {
-    Text,
-    View,
-    StyleSheet,
-    Image,
-    TouchableOpacity,
-    TextInput,
-    Animated,
-    useWindowDimensions,
-    Alert,
-    Modal,
-    ActivityIndicator,
-    ScrollView,
-  } from "react-native";
-//
-//
-//----------FIREBASE UTILS-----------
+  Text,
+  View,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  TextInput,
+  Animated,
+  useWindowDimensions,
+  Alert,
+  Modal,
+  ActivityIndicator,
+  ScrollView,
+} from "react-native";
+import { Divider } from 'react-native-elements';
+import * as ImagePicker from "expo-image-picker";
+//------FIREBASE----------------
 import firebase from "../database/firebase";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { doc, onSnapshot, collection, query } from "firebase/firestore";
+import {
+  getAuth,
+  onAuthStateChanged,
+  sendPasswordResetEmail,
+  signOut,
+} from "firebase/auth";
+import {
+  doc,
+  onSnapshot,
+  collection,
+  query,
+  getDoc,
+  getDocs,
+  where,
+} from "firebase/firestore";
+//--------------------------------
+//---------STYLES-----------------
+import globalStyles from "./GlobalStyles";
+//--------------------------------
+//-------COMPONENTS---------------
+import CardReservation from "../components/CardReservation";
+import CardFavourite from "../components/CardFavourite";
+//---------------------------------
 
 //
 //
@@ -35,13 +50,10 @@ import { doc, onSnapshot, collection, query } from "firebase/firestore";
 //
 //
 //-------ICONS-------
+import { Icon } from "react-native-elements";
+//
+//
 
-//
-//
-//-------STYLES-------
-import globalStyles from "./GlobalStyles";
-//
-//
 //-------INITIALIZATIONS-------
 const auth = getAuth();
 //
@@ -124,168 +136,214 @@ const ProfileResto = ({ navigation }) => {
           })
           .catch((err) => console.log(err));
       };
-    return (
-        <View style={globalStyles.Home}>
-            <View style={globalStyles.imgContainer}>
-          {image && !uploading ? (
-            <TouchableOpacity onPress={openImagePickerAsync}>
-              <Image
-                source={{
-                  uri: CLOUDINARY_CONSTANT + image,
-                }}
-                style={globalStyles.imgProfile}
-              />
-            </TouchableOpacity>
-          ) : (
-            <ActivityIndicator size="large" color="#5555" style={globalStyles.imgProfile} />
-          )}
-          <View style={globalStyles.nombreContainer}>
-            <Text
-              style={{
-                fontSize: 25,
-                fontWeight: "bold",
-                color: "#392c28",
-                textAlignVertical: "top",
-              }}
-            >
-              {currentUser?.title}
-            </Text>
-            <Text
-              style={{
-                fontSize: 15,
-                fontWeight: "bold",
-                color: "#392c28",
-                paddingVertical: 15,
-              }}
-            >
-              {currentUser?.email}
-            </Text>
-            <TouchableOpacity
-              style={globalStyles.btn}
-              onPress={() => setModalVisible(true)}
-            >
-              <Text>Edit</Text>
-            </TouchableOpacity>
-            <Modal
-              animationType="slide"
-              transparent={true}
-              visible={modalVisible}
-              onRequestClose={() => {
-                Alert.alert("Modal has been closed.");
-                setModalVisible(!modalVisible);
-              }}
-            >
-              <View style={globalStyles.centeredView}>
-                <View style={globalStyles.modalView}>
-                  <TouchableOpacity
-                    style={globalStyles.touchLog}
-                    onPress={() => setModalVisible(!modalVisible)}
-                  >
-                    <Text
-                      onPress={() => setModalVisible(false)}
-                      style={globalStyles.textStyle}
-                    >
-                      X
-                    </Text>
-                  </TouchableOpacity>
-                  <Text style={globalStyles.modalText}>Edit your Username</Text>
-                  <Text>Nombre</Text>
-                  <TextInput
-                    style={globalStyles.texts}
-                    placeholder={currentUser?.name}
-                    onChangeText={(value) =>
-                      setNewUserInfo({
-                        ...newUserInfo,
-                        name: value,
-                      })
-                    }
-                  />
-                  <Text>Apellido</Text>
-                  <TextInput
-                    style={globalStyles.texts}
-                    placeholder={currentUser?.lastName}
-                    onChangeText={(value) =>
-                      setNewUserInfo({
-                        ...newUserInfo,
-                        lastName: value,
-                      })
-                    }
-                  />
-                  <Text>Celular</Text>
-                  <TextInput
-                    style={globalStyles.texts}
-                    placeholder={currentUser?.cel}
-                    onChangeText={(value) =>
-                      setNewUserInfo({
-                        ...newUserInfo,
-                        cel: value,
-                      })
-                    }
-                  />
-                  <TouchableOpacity
-                    style={globalStyles.touchLog}
-                    onPress={() => {
-                      sendPasswordResetEmail(auth, currentUser?.email)
-                        .then(alert("Revisa tu casilla y volve a ingresar!"))
-                        .then(signOut(auth))
-                        .then(setModalVisible(false))
-                        .then(navigation.navigate("RestoBook"));
-                    }}
-                  >
-                    <Text>Cambiar contraseña</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={globalStyles.touchLog}
-                    onPress={() => {
-                      firebase.db
-                        .collection("Users")
-                        .doc(currentUser.id)
-                        .update({
-                          name: newUserInfo.name,
-                          lastName: newUserInfo.lastName,
-                          cel: newUserInfo.cel,
-                        })
-                        .then(alert("cambios guardados!"))
-                        .then(setModalVisible(false))
-                        .catch((error) => alert("error!"));
-                    }}
-                  >
-                    <Text>Save</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </Modal>
-            <Text
-              style={{
-                fontSize: 15,
-                fontWeight: "bold",
-                color: "#392c28",
-                paddingVertical: 15,
-              }}
-            >
-              {currentUser?.description}
-            </Text>
-          </View>
-        </View>
-            <Text>Conectado!</Text>
-            <TouchableOpacity onPress={() => navigation.navigate("RestoBook")}>
-                <Text>Home</Text>
-            </TouchableOpacity>
-            <Text>Tus comercios: </Text>
 
-            {availableCommerces.length ? (
-                <View>
-                    {availableCommerces.map((element) => {
-                        return (
-                            <View>
-                                <Text>{element.title}</Text>
-                                <Text>{element.Description}</Text>
-                            </View>
-                        );
-                    })}
+      const scrollX = useRef(new Animated.Value(0)).current;
+      const { width: windowWidth } = useWindowDimensions();
+
+    return (
+        <View style={globalStyles.Perfilcontainer}>
+          <ScrollView style={globalStyles.Perfilcontainer} contentContainerStyle={{ flex: 1 }}>
+            <View style={globalStyles.imgContainer}>
+            {image && !uploading ? (
+              <TouchableOpacity onPress={openImagePickerAsync}>
+                <Image
+                  source={{
+                    uri: CLOUDINARY_CONSTANT + image,
+                  }}
+                  style={globalStyles.imgProfile}
+                />
+              </TouchableOpacity>
+            ) : (
+              <ActivityIndicator size="large" color="#5555" style={globalStyles.imgProfile} />
+            )}
+            <View style={globalStyles.nombreContainer}>
+              <Text
+                style={{
+                  fontSize: 25,
+                  fontWeight: "bold",
+                  color: "#392c28",
+                  textAlignVertical: "top",
+                }}
+              >
+                {currentUser?.title}
+              </Text>
+              <Text
+                style={{
+                  fontSize: 15,
+                  fontWeight: "bold",
+                  color: "#392c28",
+                  paddingVertical: 15,
+                }}
+              >
+                {currentUser?.address}
+              </Text>
+              <TouchableOpacity
+                style={globalStyles.btn}
+                onPress={() => setModalVisible(true)}
+              >
+                <Text>Edit</Text>
+              </TouchableOpacity>
+              <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {
+                  Alert.alert("Modal has been closed.");
+                  setModalVisible(!modalVisible);
+                }}
+              >
+                <View style={globalStyles.centeredView}>
+                  <View style={globalStyles.modalView}>
+                    <TouchableOpacity
+                      style={globalStyles.touchLog}
+                      onPress={() => setModalVisible(!modalVisible)}
+                    >
+                      <Text
+                        onPress={() => setModalVisible(false)}
+                        style={globalStyles.textStyle}
+                      >
+                        X
+                      </Text>
+                    </TouchableOpacity>
+                    <Text style={globalStyles.modalText}>Edit your info</Text>
+                    <Text>Resto's Name</Text>
+                    <TextInput
+                      style={globalStyles.texts}
+                      placeholder={currentUser?.title}
+                      onChangeText={(value) =>
+                        setNewUserInfo({
+                          ...newUserInfo,
+                          title: value,
+                        })
+                      }
+                    />
+                    <Text>Adress</Text>
+                    <TextInput
+                      style={globalStyles.texts}
+                      placeholder={currentUser?.address}
+                      onChangeText={(value) =>
+                        setNewUserInfo({
+                          ...newUserInfo,
+                          address: value,
+                        })
+                      }
+                    />
+                    <Text>Description</Text>
+                    <TextInput
+                      style={globalStyles.texts}
+                      placeholder={currentUser?.description}
+                      onChangeText={(value) =>
+                        setNewUserInfo({
+                          ...newUserInfo,
+                          description: value,
+                        })
+                      }
+                    />
+                    <TouchableOpacity
+                      style={globalStyles.touchLog}
+                      onPress={() => {
+                        sendPasswordResetEmail(auth, currentUser?.email)
+                          .then(alert("Revisa tu casilla y volve a ingresar!"))
+                          .then(signOut(auth))
+                          .then(setModalVisible(false))
+                          .then(navigation.navigate("RestoBook"));
+                      }}
+                    >
+                      <Text>Cambiar contraseña</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={globalStyles.touchLog}
+                      onPress={() => {
+                        firebase.db
+                          .collection("Users")
+                          .doc(currentUser.idResto)
+                          .update({
+                            title: newUserInfo.title,
+                            address: newUserInfo.address,
+                            description: newUserInfo.description,
+                          })
+                          .then(alert("cambios guardados!"))
+                          .then(setModalVisible(false))
+                          .catch((error) => alert("error!"));
+                      }}
+                    >
+                      <Text>Save</Text>
+                    </TouchableOpacity>
+                  </View>
                 </View>
-            ) : null}
-        </View>
+              </Modal>
+            </View>
+          </View>
+              <Text
+                style={{
+                  fontSize: 15,
+                  fontWeight: "bold",
+                  color: "#392c28",
+                  paddingVertical: 15,
+                  textAlign: "center"
+                }}
+              >
+                {currentUser?.description}
+              </Text>
+              
+              <Text style={{ fontSize: 25, color: "#392c28", textAlign: "center" }}>
+                <Icon name='home'type='font-awesome-5'color='#392c28'size={25}/> My Commerces
+              </Text>
+            <Divider orientation="horizontal" width={2} inset={true} insetType={"middle"} color={'black'} style={{marginVertical: 10}}/>
+          <ScrollView
+            horizontal={true}
+            pagingEnabled
+            showsHorizontalScrollIndicator={false}
+            style={globalStyles.FavouriteContainer}
+            onScroll={Animated.event([
+              {
+                nativeEvent: {
+                  contentOffset: {
+                    x: scrollX,
+                  },
+                },
+              },
+            ])}
+            scrollEventThrottle={1}
+          >
+            {availableCommerces.length ? (
+                  <View>
+                      {availableCommerces.map((element) => {
+                          return (
+                              <View>
+                                  <Text>{element.title}</Text>
+                                  <Text>{element.Description}</Text>
+                              </View>
+                          );
+                      })}
+                  </View>
+              ) : null}
+          </ScrollView>
+              <TouchableOpacity onPress={() => alert('abro modal')} style={globalStyles.btnProfileResto}>
+                  <Text style={{ fontSize: 25, color: "#392c28", textAlign: "center" }}>
+                    <Icon name='clipboard-list' type='font-awesome-5'color='#392c28'size={24}/>
+                    Administrate Reservations
+                    {/* 'clipboard-list' */}
+                  </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity onPress={() => alert('abro modal')} style={globalStyles.btnProfileResto}>
+                  <Text style={{ fontSize: 25, color: "#392c28", textAlign: "center" }}>
+                    <Icon name='street-view' type='font-awesome-5'color='#392c28'size={24}/>
+                    Edit available places
+                    {/* street-view */}
+                  </Text>
+              </TouchableOpacity>
+              
+              <TouchableOpacity onPress={() => alert('abro modal')} style={globalStyles.btnProfileResto}>
+                  <Text style={{ fontSize: 25, color: "#392c28", textAlign: "center" }}>
+                    <Icon name='clock' type='font-awesome-5'color='#392c28'size={24}/>
+                    Edit business hours
+                    {/* clock */}
+                  </Text>
+              </TouchableOpacity> 
+        </ScrollView>
+      </View>
     );
 };
 
