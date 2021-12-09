@@ -197,13 +197,10 @@ const RegisterResto = ({ navigation }) => {
           phone2: "",
           cuit: "",
           category: state.category,
-
           //img: "",
           lat: "",
           lng: "",
           address: "",
-          reservations: [],
-
         }}
         validationSchema={registerRestoSchema}
         onSubmit={(values) => {
