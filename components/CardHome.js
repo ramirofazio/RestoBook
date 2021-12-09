@@ -1,7 +1,6 @@
-
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { AirbnbRating, Rating, Card, Text } from 'react-native-elements';
+import { AirbnbRating, Rating, Card, Text, Icon } from "react-native-elements";
 import {
   View,
   Image,
@@ -14,11 +13,17 @@ import empresaDetail from "../Redux/Actions/empresaDetail.js";
 //-----STYLES----------
 import globalStyles from "../Screens/GlobalStyles.js";
 //------ICONS----------
-import { Icon, Text } from "react-native-elements";
+
 //----------FIREBASE UTILS-----------
 import firebase from "../database/firebase";
 import { getAuth } from "firebase/auth";
-import { doc, updateDoc, arrayUnion, arrayRemove,  getDoc, } from "firebase/firestore";
+import {
+  doc,
+  updateDoc,
+  arrayUnion,
+  arrayRemove,
+  getDoc,
+} from "firebase/firestore";
 //
 
 const auth = getAuth();
@@ -27,7 +32,7 @@ const CardMenu = ({ resto, navigation }) => {
   const userFavourites = useSelector((state) => state.favourites);
   const CurrentId = useSelector((state) => state.currentId);
   const [hearthColor, setHearthColor] = useState("grey");
-  const [pressed, setPressed] = useState(false)
+  const [pressed, setPressed] = useState(false);
   const dispatch = useDispatch();
   const categories = useSelector((state) => state.categoriesResto);
 
@@ -114,18 +119,18 @@ const CardMenu = ({ resto, navigation }) => {
             <Text style={globalStyles.cardsHomeTitle}>{resto.title}</Text>
           </View>
 
-          <View >
-          <AirbnbRating 
-            showRating={false}
-            size={20}
-            // reviews={["Bad", "OK", "Good", "Very Good","Amazing"]}
-            // reviewSize={17}
-            // starContainerStyle={{marginTop:-15}}
-            isDisabled={true} // este es para que los users no puedan cambiar
-            selectedColor='#f1c40f' 
-            unSelectedColor='lightgrey'
-          />
-          {/* <Rating
+          <View>
+            <AirbnbRating
+              showRating={false}
+              size={20}
+              // reviews={["Bad", "OK", "Good", "Very Good","Amazing"]}
+              // reviewSize={17}
+              // starContainerStyle={{marginTop:-15}}
+              isDisabled={true} // este es para que los users no puedan cambiar
+              selectedColor="#f1c40f"
+              unSelectedColor="lightgrey"
+            />
+            {/* <Rating
           showRating
             type= 'custom'
             // readonly={true} // este es para que los users no puedan cambiar
@@ -153,15 +158,15 @@ const CardMenu = ({ resto, navigation }) => {
               />
             </TouchableOpacity>
           </View>
-            
+
           <View>
-            <TouchableOpacity 
+            <TouchableOpacity
               onPress={() => {
                 // pressed === true && usuario logueado === false ? alert('logeate primero') : //ESTO ES PARA DECIR QUE
                 // SI UN USARUIO NO LOGUEADO QUIERE GUARDAR ALGO EN FAVS QUE SE LOGUEE PRIMERO
                 hearthColor === "grey"
                   ? addToFavourite()
-                  : removeFromFavourite()
+                  : removeFromFavourite();
               }}
             >
               <Icon
