@@ -219,7 +219,7 @@ const globalStyles = StyleSheet.create({
     paddingVertical: 3,
     paddingHorizontal: 3,
     marginVertical: 4,
-    height: "8%",
+    height: "9%",
     width: '90%',
     alignSelf: "center",
     justifyContent: "center"

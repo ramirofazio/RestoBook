@@ -320,24 +320,24 @@ const ProfileResto = ({ navigation }) => {
               ) : null}
           </ScrollView>
               <TouchableOpacity onPress={() => alert('abro modal')} style={globalStyles.btnProfileResto}>
-                  <Text style={{ fontSize: 25, color: "#392c28", textAlign: "center" }}>
                     <Icon name='clipboard-list' type='font-awesome-5'color='#392c28'size={24}/>
+                  <Text style={{ fontSize: 25, color: "#392c28", textAlign: "center" }}>
                     Administrar Reservas
                     {/* 'clipboard-list' */}
                   </Text>
               </TouchableOpacity>
 
               <TouchableOpacity onPress={() => alert('abro modal')} style={globalStyles.btnProfileResto}>
-                  <Text style={{ fontSize: 25, color: "#392c28", textAlign: "center" }}>
                     <Icon name='street-view' type='font-awesome-5'color='#392c28'size={24}/>
+                  <Text style={{ fontSize: 25, color: "#392c28", textAlign: "center" }}>
                     Editar Lugares Disponibles
                     {/* street-view */}
                   </Text>
               </TouchableOpacity>
               
               <TouchableOpacity onPress={() => alert('abro modal')} style={globalStyles.btnProfileResto}>
-                  <Text style={{ fontSize: 25, color: "#392c28", textAlign: "center" }}>
                     <Icon name='clock' type='font-awesome-5'color='#392c28'size={24}/>
+                  <Text style={{ fontSize: 25, color: "#392c28", textAlign: "center" }}>
                     Editar Horario Comercial
                     {/* clock */}
                   </Text>
