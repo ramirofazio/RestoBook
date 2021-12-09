@@ -127,15 +127,15 @@ export default function Home({ navigation }) {
   onAuthStateChanged(auth, (usuarioFirebase) => {
     if (usuarioFirebase?.emailVerified) {
       if (usuarioFirebase.displayName) {
-        console.log("entre a if")
+        //console.log("entre a if")
         setUsuarioGlobal(usuarioFirebase.displayName);
       } else {
-        console.log("entre a else")
+        //console.log("entre a else")
         const trimmedName = usuarioFirebase.email.split("@")[0];
         setUsuarioGlobal(trimmedName);
       }
     } else {
-      console.log("entre a else else")
+      //console.log("entre a else else")
       setUsuarioGlobal("");
     }
   });
