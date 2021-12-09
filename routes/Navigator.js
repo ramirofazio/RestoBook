@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+
 //
 //----------IMP SCREENS-----------
 import Home from "../Screens/Home";
@@ -8,7 +10,7 @@ import RegisterResto from "../Screens/RegisterResto.js";
 import AddUserScreen from "../Screens/RegisterUser.js";
 import AddMenuResto from "../Screens/AddMenuResto.js";
 import DetailsResto from "../Screens/DetailsResto";
-import ProfileUser from '../Screens/ProfileUser.js';
+import ProfileUser from "../Screens/ProfileUser.js";
 import GlobalLogin from "../Screens/GlobalLogin.js";
 import WebViewScreen from "../Screens/WebViewScreen";
 import AwaitEmail from "../Screens/AwaitEmail.js";
@@ -22,11 +24,31 @@ import AddReviewsRestorant from "../Screens/AddReviewsRestorant"
 //
 //------------Styles y otros ---------
 import globalStyles from "../Screens/GlobalStyles";
-import { Text } from 'react-native'
+import { Text } from "react-native";
 
 const Stack = createNativeStackNavigator();
+const auth = getAuth()
 
 export default Navigator = () => {
+  const [usuarioGlobal, setUsuarioGlobal] = useState("");
+
+
+  onAuthStateChanged(auth, (usuarioFirebase) => {
+    if (usuarioFirebase?.emailVerified) {
+      if (usuarioFirebase.displayName) {
+        //console.log("entre a if")
+        setUsuarioGlobal(usuarioFirebase.displayName);
+      } else {
+        //console.log("entre a else")
+        const trimmedName = usuarioFirebase.email.split("@")[0];
+        setUsuarioGlobal(trimmedName);
+      }
+    } else {
+      //console.log("entre a else else")
+      setUsuarioGlobal("");
+    }
+  });
+
   return (
     <NavigationContainer>
       <Stack.Navigator>
@@ -42,12 +64,14 @@ export default Navigator = () => {
             },
           })}
         />
-        <Stack.Screen name="RegisterUser" component={AddUserScreen} />
+        <Stack.Screen
+          name="RegisterUser"
+          component={AddUserScreen} />
         <Stack.Screen
           name="RegisterResto"
           component={RegisterResto}
           options={{
-            headerTitle: "RegisterResto",
+            headerTitle: "Register Resto",
             title: "Register Resto",
             headerTitleAlign: "center",
             headerStyle: {
@@ -63,8 +87,7 @@ export default Navigator = () => {
           name="AddMenuResto"
           component={AddMenuResto}
           options={{
-            headerTitle: "AddMenuResto",
-            title: "Add Your Menu",
+            headerTitle: "Agregar Menu",
             headerTitleAlign: "center",
             headerStyle: {
               backgroundColor: "#f6efd2",
@@ -92,7 +115,7 @@ export default Navigator = () => {
           name="WebViewScreen"
           component={WebViewScreen}
           options={{
-            headerTitle: "WebViewScreen",
+            headerTitle: "Pague Su Reserva",
             title: "WebViewScreen",
             headerTitleAlign: "center",
             headerStyle: {
@@ -154,7 +177,6 @@ export default Navigator = () => {
           }}
         />
 
-
         <Stack.Screen
           name="AwaitEmail"
           component={AwaitEmail}
@@ -174,45 +196,51 @@ export default Navigator = () => {
         <Stack.Screen
           name="ProfileUser"
           component={ProfileUser}
-          options={{
-            headerTitle: "Profile",
+
+          options={({ navigation }) => ({
+            headerTitle: " Mi Perfil",
             title: 'Profile',
+
             headerTitleAlign: "center",
             headerRight: () => (
-              <TouchableOpacity
-                style={globalStyles.btn}
-                onPress={() =>
-                  navigation.navigate('NavHome')
+              <Btn
+                nombre={
+                  usuarioGlobal !== ""
+                    ? `Create your resto, ${usuarioGlobal}!`
+                    : `Crea tu resto!`
                 }
-              >
-                <Text>Log out</Text>
-              </TouchableOpacity>
+                ruta="RegisterResto"
+                navigation={navigation}
+              />
             ),
             headerStyle: {
-              backgroundColor: '#f6efd2',
+              backgroundColor: "#f6efd2",
             },
-            headerTintColor: '#392c28',
+            headerTintColor: "#392c28",
             headerTitleStyle: {
-              fontSize: 25
+              fontSize: 25,
             },
 
-          }}
+
+          })}
+
         />
         <Stack.Screen
           name="ProfileResto"
           component={ProfileResto}
           options={{
-            headerTitle: "Profile",
+
+            headerTitle: " Mi Empresa",
             title: 'Profile',
+
             headerTitleAlign: "center",
             headerStyle: {
-              backgroundColor: '#f6efd2',
+              backgroundColor: "#f6efd2",
             },
-            headerTintColor: '#392c28',
+            headerTintColor: "#392c28",
             headerTitleStyle: {
-              fontSize: 25
+              fontSize: 25,
             },
-
           }}
         />
       </Stack.Navigator>

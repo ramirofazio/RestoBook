@@ -5,12 +5,13 @@ import React, { useState, useEffect } from "react";
 //----------REDUX UTILS-----------
 import { useDispatch, useSelector } from "react-redux";
 import CurrentId from "../Redux/Actions/CurrentId.js";
+import CurrentUser from "../Redux/Actions/CurrentUser.js";
+import UserFavourites from "../Redux/Actions/userFavourites.js";
 //
 //
 //----------REACT-NATIVE UTILS-----------
 import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 import UserOutlined from "react-native-vector-icons/AntDesign";
-//import TagOutlined from "react-native-vector-icons/AntDesign";
 import RestOutlined from "react-native-vector-icons/AntDesign";
 //
 //
@@ -26,7 +27,7 @@ import Btn from "./Helpers/Btns.js";
 //
 //-------STYLES-------
 import globalStyles from "./GlobalStyles.js";
-import CurrentUser from "../Redux/Actions/CurrentUser.js";
+
 //
 //
 //-------INITIALIZATIONS-------
@@ -35,7 +36,7 @@ const auth = getAuth();
 
 export default function NavHome({ title, navigation }) {
   const dispatch = useDispatch();
-  const currentId = useSelector((state) => state.currentId);
+
   const hasCommerce = useSelector((state) => state.commerce);
   //Esto lo tenemos que manejar con una propiedad de cada user, dsps lo corregimos
   const [commerce, isCommerce] = useState(false);
@@ -52,7 +53,6 @@ export default function NavHome({ title, navigation }) {
             isCommerce(true);
           }
         }
-        //console.log("commerce?", commerce);
       });
     });
   }, [loggedId, hasCommerce]);
@@ -69,6 +69,8 @@ export default function NavHome({ title, navigation }) {
     signOut(auth);
     dispatch(CurrentUser(null));
     dispatch(CurrentId(null));
+    dispatch(UserFavourites([]));
+    console.log();
   };
 
   return (
@@ -95,12 +97,12 @@ export default function NavHome({ title, navigation }) {
           <TouchableOpacity
             style={globalStyles.btn}
             onPress={() =>
-              currentId
+              loggedId
                 ? signOutAndClearRedux()
                 : navigation.navigate("GlobalLogin")
             }
           >
-            <Text>{currentId ? "Log out" : "Log in"}</Text>
+            <Text>{loggedId ? "Log out" : "Log in"}</Text>
           </TouchableOpacity>
 
           {loggedId && (

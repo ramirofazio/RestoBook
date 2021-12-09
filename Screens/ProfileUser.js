@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import { CLOUDINARY_URL, CLOUDINARY_CONSTANT } from "@env";
 import { useSelector } from "react-redux";
 import {
   Text,
@@ -14,7 +15,9 @@ import {
   ActivityIndicator,
   ScrollView,
 } from "react-native";
+import { Divider } from 'react-native-elements';
 import * as ImagePicker from "expo-image-picker";
+//------FIREBASE----------------
 import firebase from "../database/firebase";
 import {
   getAuth,
@@ -22,7 +25,6 @@ import {
   sendPasswordResetEmail,
   signOut,
 } from "firebase/auth";
-
 import {
   doc,
   onSnapshot,
@@ -32,13 +34,19 @@ import {
   getDocs,
   where,
 } from "firebase/firestore";
-import { CLOUDINARY_URL, CLOUDINARY_CONSTANT } from "@env";
-import globalStyles from "./GlobalStyles";
 import StarFilled from "react-native-vector-icons/AntDesign";
 import TagOutlined from "react-native-vector-icons/AntDesign";
-import CardHome from "../components/CardHome.js";
+//--------------------------------
+//---------STYLES-----------------
+import globalStyles from "./GlobalStyles";
+//--------------------------------
+//-------COMPONENTS---------------
 import CardReservation from "../components/CardReservation";
+import CardFavourite from "../components/CardFavourite";
+//---------------------------------
+
 const auth = getAuth();
+
 const reservas = [
   {
     id: 1,
@@ -72,29 +80,21 @@ const reservas = [
 // let CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/restobook/image/upload";
 let imgPerrito =
   "https://res.cloudinary.com/restobook/image/upload/samples/bike.jpg";
+
 const ProfileUser = ({ navigation }) => {
+
   const empresas = useSelector((state) => state.empresas);
+
+
   const loggedUser = useSelector((state) => state.currentUser);
+
   const loggedId = useSelector((state) => state.currentId);
   const [modalVisible, setModalVisible] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
   const [newUserInfo, setNewUserInfo] = useState({});
   const [uploading, setUploading] = useState(false);
   const [image, setImage] = useState("");
-
-  // useEffect(() => {
-  //   const q = query(collection(firebase.db, "Users"));
-  //   const unsubscribe = onSnapshot(q, (querySnapshot) => {
-  //     querySnapshot.forEach((doc) => {
-  //       if (doc.id === loggedId) {
-  //         let obj = doc.data();
-  //         setImage(obj.profileImage);
-  //         setCurrentUser(obj);
-  //         setNewUserInfo(obj);
-  //       }
-  //     });
-  //   });
-  // }, [loggedId]);
+  const [myFavourites, setMyFavourites] = useState([])
 
   useEffect(() => {
     const getInfo = async () => {
@@ -106,6 +106,8 @@ const ProfileUser = ({ navigation }) => {
         setImage(obj.profileImage);
         setCurrentUser(obj);
         setNewUserInfo(obj);
+        setMyFavourites(obj.favourites)
+        // console.log(obj.favourites)
       } else {
         alert("NO HAY INFO");
       }
@@ -247,22 +249,22 @@ const ProfileUser = ({ navigation }) => {
   const { width: windowWidth } = useWindowDimensions();
 
   return (
-    <View style={styles.container}>
-      <ScrollView style={styles.container} contentContainerStyle={{ flex: 1 }}>
-        <View style={styles.imgContainer}>
+    <View style={globalStyles.Perfilcontainer}>
+      <ScrollView style={globalStyles.Perfilcontainer} contentContainerStyle={{ flex: 1 }}>
+        <View style={globalStyles.imgContainer}>
           {image && !uploading ? (
             <TouchableOpacity onPress={openImagePickerAsync}>
               <Image
                 source={{
                   uri: CLOUDINARY_CONSTANT + image,
                 }}
-                style={styles.img}
+                style={globalStyles.imgProfile}
               />
             </TouchableOpacity>
           ) : (
-            <ActivityIndicator size="large" color="#5555" style={styles.img} />
+            <ActivityIndicator size="large" color="#5555" style={globalStyles.imgProfile} />
           )}
-          <View style={styles.nombreContainer}>
+          <View style={globalStyles.nombreContainer}>
             <Text
               style={{
                 fontSize: 25,
@@ -298,20 +300,20 @@ const ProfileUser = ({ navigation }) => {
                 setModalVisible(!modalVisible);
               }}
             >
-              <View style={styles.centeredView}>
-                <View style={styles.modalView}>
+              <View style={globalStyles.centeredView}>
+                <View style={globalStyles.modalView}>
                   <TouchableOpacity
                     style={globalStyles.touchLog}
                     onPress={() => setModalVisible(!modalVisible)}
                   >
                     <Text
                       onPress={() => setModalVisible(false)}
-                      style={styles.textStyle}
+                      style={globalStyles.textStyle}
                     >
                       X
                     </Text>
                   </TouchableOpacity>
-                  <Text style={styles.modalText}>Edit your Username</Text>
+                  <Text style={globalStyles.modalText}>Edit your Username</Text>
                   <Text>Nombre</Text>
                   <TextInput
                     style={globalStyles.texts}
@@ -382,13 +384,14 @@ const ProfileUser = ({ navigation }) => {
         </View>
         <Text style={{ fontSize: 25, color: "#392c28", textAlign: "center" }}>
           {" "}
-          <StarFilled name="star" color="#392c28" size={25} /> FAVORITOS
+          <StarFilled name="star" color="#392c28" size={25} /> My Favourites
         </Text>
+          <Divider orientation="horizontal" width={2} inset={true} insetType={"middle"} color={'black'} style={{marginVertical: 10}}/>
         <ScrollView
           horizontal={true}
           pagingEnabled
           showsHorizontalScrollIndicator={false}
-          style={styles.FavouriteContainer}
+          style={globalStyles.FavouriteContainer}
           onScroll={Animated.event([
             {
               nativeEvent: {
@@ -400,24 +403,27 @@ const ProfileUser = ({ navigation }) => {
           ])}
           scrollEventThrottle={1}
         >
-          {empresas.map((resto) => {
+          {myFavourites?.length ? myFavourites.map((resto) => {
             return (
               <View style={{ width: windowWidth, height: 250 }}>
-                <CardHome
+                <CardFavourite
                   key={resto.Id}
                   resto={resto}
                   navigation={navigation}
                   index={resto.Id}
                 >
                   {" "}
-                </CardHome>
+                </CardFavourite>
               </View>
             );
-          })}
+          })
+          : null
+          }
         </ScrollView>
-        <Text style={{ fontSize: 25, color: "#392c28", textAlign: "center" }}>
+        <Text style={{ fontSize: 25, color: "#392c28", textAlign: "center"  }}>
           <TagOutlined name="tag" color="#392c28" size={25} /> My Reservations
         </Text>
+         <Divider orientation="horizontal" width={2} inset={true} insetType={"middle"} color={'black'} style={{marginVertical: 5}}/>
         <ScrollView style={{ overflow: "scroll" }}>
           {reservas.map((persona) => {
             return (
@@ -435,102 +441,5 @@ const ProfileUser = ({ navigation }) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#e6c2bf",
-  },
-  img: {
-    height: 150,
-    width: 150,
-    borderRadius: 200,
-    // resizeMode: 'contain' // esta linea es para que se adapte al tam;o de la imagen
-  },
-  imgContainer: {
-    flex: 2,
-    flexDirection: "row",
-    // backgroundColor: 'red',
-    maxHeight: "25%",
-    maxWidth: "100%",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingHorizontal: 10,
-    paddingVertical: 15,
-  },
-  nombreContainer: {
-    flex: 2,
-    // backgroundColor: 'grey',
-    // marginHorizontal: 5,
-    maxWidth: "60%",
-    width: "100%",
-    height: "100%",
-    justifyContent: "center",
-    alignItems: "center",
-    alignSelf: "flex-end",
-  },
-  FavouriteContainer: {
-    overflow: "scroll",
-    backgroundColor: "#5555",
-    maxHeight: "30%",
-    height: "40%",
-  },
-  //----------------------- modal css?? ---------------------------------
-  centeredView: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 22,
-    //backgroundColor: "blur",
-  },
-  modalView: {
-    margin: 20,
-    backgroundColor: "white",
-    borderRadius: 20,
-    padding: 35,
-    width: "90%",
-    height: "90%",
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 30,
-      height: 30,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-  },
-  buttonOpen: {
-    backgroundColor: "#F194FF",
-  },
-  buttonClose: {
-    backgroundColor: "#2196F3",
-  },
-  textStyle: {
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center",
-  },
-  modalText: {
-    marginBottom: 15,
-    textAlign: "center",
-    fontSize: 30,
-    fontWeight: "bold",
-  },
-  botton: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-    //float: "right",
-  },
-  bottonClose: {
-    backgroundColor: "#2196F3",
-  },
-});
 
 export default ProfileUser;

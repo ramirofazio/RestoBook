@@ -247,6 +247,9 @@ const GlobalLogin = ({ navigation }) => {
                 </TouchableOpacity>
                 <BottomSheet isVisible={visible} style={styles.forgottenPass}>
                   <View>
+                    <TouchableOpacity onPress={() => isVisible(false)}>
+                      <Text>X</Text>
+                    </TouchableOpacity>
                     <TextInput
                       placeholder="........"
                       style={styles.inputForgotten}
@@ -271,7 +274,7 @@ const GlobalLogin = ({ navigation }) => {
     );
   } else {
     return (
-      //-------REGISTER-------------
+      //-------------------REGISTER---------------------
       <View>
         <Modal animationType="slide" transparent={true}>
           <View View style={globalStyles.Home}>
@@ -408,7 +411,7 @@ const GlobalLogin = ({ navigation }) => {
                     />
                   </View>
                   {props.touched.passwordConfirm &&
-                    props.errors.passwordConfirm ? (
+                  props.errors.passwordConfirm ? (
                     <Text style={globalStyles.errorText}>
                       {props.errors.passwordConfirm}
                     </Text>
