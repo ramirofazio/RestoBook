@@ -28,34 +28,17 @@ const handleForwardPress=()=> {
     webViewRef.current.goForward()
 }
 
+    //Devuelta al Home
     useEffect(() => {
         if (currentUrl.includes('/success')) {
             // console.log('URL SUCCESS', currentUrl);
             let paramsUrl = (new URL(currentUrl)).searchParams;
             let payment_id = paramsUrl.get('payment_id');
             let payment_status = paramsUrl.get('status');
-
             navigation.navigate('RestoBook');
-
-
-            // const eventInfoDB = {...eventInfo, payment_id, payment_status};
-            // console.log('FINAL EVENT', eventInfoDB);
-            
         }
     }, [currentUrl])
-
-    // Event.create(eventInfoDB)
-    //     .then(id=>{
-    //         user.addRelation({idMesa: id, userUserUUID: auth.currentUserUser.uid}); // no están declaradas las ID
-    //         Alert.alert('Tu mesa ha sido reservada');
-    //         navigation.replace('RestoBook');
-    //     })
-    //     .catch(e=> {
-    //         console.log(e);
-    //         Alert.alert('Ha ocurrido un error.');
-    //         navigation.replace('RestoBook');
-    //      }); 
-
+    
         return(
             <View style={styles.container}>
             <WebView

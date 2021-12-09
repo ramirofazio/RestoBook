@@ -19,14 +19,16 @@ mercadopago.configure({
 //   res.send("http://localhost:19006")
 // })
 
+const quantity = 4
+const unitePrice = 1000
 
 app.post('/checkout', (req, res) => {
   let preference = {
     external_reference: '1234567890',
               items:[{
-                   title: 'Mesa reservada',
-                   quantity: 1,
-                   unit_price: 100,
+                   title: 'Lugar reservado',
+                   quantity: quantity,
+                   unit_price: unitePrice,
                    currency_id:'ARG'
                   }],
     back_urls: {

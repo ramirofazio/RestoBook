@@ -26,6 +26,7 @@ import CardMenu from "../components/CardMenu";
 //
 //-------STYLES-------
 import globalStyles from "./GlobalStyles";
+import axios from "axios";
 
 //
 //
@@ -35,7 +36,7 @@ const auth = getAuth();
 //
 //---------------------------------------------------------------------------------------//
 //
-const DetailsResto = () => {
+const DetailsResto = ({navigation}) => {
   const empresaDetail = useSelector((state) => state.empresaDetail);
   const {location} = empresaDetail
   console.log(location)
@@ -47,6 +48,14 @@ const DetailsResto = () => {
 }
   const [menuArr, setMenuArr] = useState([]);
   //Tiene que desactivar el boton en los comercios que no sean del logueado
+
+  const urlMercadoPago = () =>{
+    axios({
+      method: "POST",
+      url: "http://localhost:19006/checkout"
+    })
+  }
+
 
   useEffect(() => {
     const q = query(collection(firebase.db, "Restos"));
@@ -101,12 +110,15 @@ const DetailsResto = () => {
             Add a food to see it!
           </Text>
         )}
+
           <View style={globalStyles.btn}>
             <TouchableOpacity onPress={() => navigation.navigate("WebViewScreen")}>
-              <Text><MaterialIcons name="payment" size={20} color="black" ></MaterialIcons> Pagar: $100 de tu reserva
+              <Text><MaterialIcons name="payment" size={20} color="black" ></MaterialIcons> Abona tu reserva
               </Text>
             </TouchableOpacity>
           </View> 
+
+
         <View style={styles.googleMapsContainer}>
           <MapView
             style={styles.googleMaps}
