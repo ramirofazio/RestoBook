@@ -2,7 +2,6 @@ const express = require("express");
 const morgan = require("morgan");
 
 const app = express();
-
 app.use(express.json());
 app.use(morgan('dev'));
 
@@ -13,14 +12,6 @@ mercadopago.configure({
   access_token:
     "TEST-6117189399019398-120220-b652cb60d6f3795955dd7ad49fe98a5e-1031166001",
 });
-
-// app.get("http://localhost:19006", (req, res) =>{
-//   res.send("http://localhost:19006")
-// })
-
-const quantity = 4
-const unitePrice = 1000
-
 
 app.post('/checkout', (req, res) => {
 
@@ -43,7 +34,6 @@ app.post('/checkout', (req, res) => {
       failure: "http://localhost:19006/cancel",
     },
     auto_return: 'approved',
-    // notification_url: 'http://192.168.0.10:19006'
   };
   mercadopago.preferences
     .create(preference)
