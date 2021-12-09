@@ -23,7 +23,7 @@ import {
   Modal,
   ActivityIndicator,
 } from "react-native";
-import { MaterialIcons } from "@expo/vector-icons";
+
 
 //
 //
@@ -34,7 +34,7 @@ import { doc, onSnapshot, collection, query, getDoc } from "firebase/firestore";
 //
 //
 //---------SCREENS---------------
-import SearchBar from "./SearchBar.js";
+/* import SearchBar from "./SearchBar.js"; */
 import CardHome from "../components/CardHome.js";
 import Btn from "./Helpers/Btns.js";
 //
@@ -140,6 +140,7 @@ export default function Home({ navigation }) {
       setUsuarioGlobal("");
     }
   });
+ const [searchTerm ,setSearchTerm ] = useState("");
 
   return (
     <ScrollView style={globalStyles.Home}>
@@ -207,7 +208,15 @@ export default function Home({ navigation }) {
         )}
       </View>
       <View>
-        <SearchBar />
+           <TextInput
+              style={styles.search}
+              onChangeText= {(event) => {
+                setSearchTerm(event);
+              }}
+              placeholder="Search..."
+              placeholderTextColor="black"
+              underlineColorAndroid="transparent"
+         /> 
       </View>
 
       <View style={globalStyles.btnHome}>
@@ -224,7 +233,13 @@ export default function Home({ navigation }) {
       </View>
       {availableCommerces.length && flagCards ? (
         <View>
-          {availableCommerces.map((resto) => {
+          {availableCommerces.filter((resto) => {
+if(searchTerm === ""){
+  return resto;
+}else{
+  return resto.title.toLowerCase().includes(searchTerm.toLowerCase())
+}
+          }).map((resto) => {
             return (
               <CardHome
                 key={resto.idResto}
@@ -244,6 +259,17 @@ export default function Home({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+  search:{
+height: 30,
+borderWidth: 1,
+borderColor: '#000',  
+marginBottom: 10,
+marginHorizontal: 16,
+borderRadius: 40,
+paddingHorizontal: 10,
+ 
+
+  },
   textContainer: {
     alignSelf: "center",
     justifyContent: "center",
