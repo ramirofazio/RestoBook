@@ -62,15 +62,10 @@ const DetailsResto = ({ navigation }) => {
     await Linking.openURL(`whatsapp://send?text=Hola RestoBook&phone=${number}`)
   }
   const [menuArr, setMenuArr] = useState([]);
-  //Tiene que desactivar el boton en los comercios que no sean del logueado
-  //console.log(empresaDetail)
   const onPressReservar = async (cantLugares, precioCabeza) => {
-    // const uri = `http://${manifest.debuggerHost.split(':').shift()}:19006`;
-    // console.log(uri)
     const url = await axios(
       {
         method: 'POST',
-        // url: `${uri}/checkout`,
         url: 'http://192.168.0.10:19006/checkout',
         data: {
           restoName: empresaDetail.title,
@@ -80,7 +75,6 @@ const DetailsResto = ({ navigation }) => {
       }
     )
     setModalVisible(false)
-    //console.log(url.data)
     navigation.navigate("WebViewScreen", {
       url: url.data
     })
