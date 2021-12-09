@@ -1,5 +1,7 @@
 //----------REACT UTILS-----------
 import React, { useState, useEffect } from "react";
+import axios from 'axios';
+import Constants from 'expo-constants'
 //
 //
 //----------REDUX UTILS-----------
@@ -7,14 +9,15 @@ import { useSelector } from "react-redux";
 //
 //
 //----------REACT-NATIVE UTILS-----------
-import { View, Text, StyleSheet,Image, Linking, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, Image, Linking, TouchableOpacity, Modal, TextInput, Picker } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import MapView, { Marker } from "react-native-maps";
+//import DateTimePicker from '@react-native-community/datetimepicker';
 //
 //
 //----------FIREBASE UTILS-----------
 import { getAuth } from "firebase/auth";
-import { onSnapshot, collection, query } from "firebase/firestore";
+import { onSnapshot, collection, query, doc, getDoc, updateDoc, arrayUnion } from "firebase/firestore";
 
 import firebase from "../database/firebase";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -26,7 +29,15 @@ import CardMenu from "../components/CardMenu";
 //
 //-------STYLES-------
 import globalStyles from "./GlobalStyles";
-import axios from "axios";
+//
+//
+//----------CONSTANTES--------------
+const ENTRADAS = "ENTRADAS"
+const PLATO_PRINCIPAL = "PLATO PRINCIPAL"
+const GUARNICION = 'GUARNICION'
+const BEBIDA = "BEBIDA"
+const POSTRES = "POSTRES"
+const TODOS = "TODOS"
 
 //
 //
@@ -36,28 +47,46 @@ const auth = getAuth();
 //
 //---------------------------------------------------------------------------------------//
 //
-const DetailsResto = ({navigation}) => {
+const DetailsResto = ({ navigation }) => {
+  const [precioCabeza, setPrecioCabeza] = useState()
+  const [cantLugares, setCantLugares] = useState()
+  const [modalVisible, setModalVisible] = useState(false)
+  const [menuCategory, setMenuCategory] = useState()
+
   const empresaDetail = useSelector((state) => state.empresaDetail);
-  const {location} = empresaDetail
-  console.log(location)
+  const { manifest } = Constants;
+  const { location } = empresaDetail
   const number = "+541168020511"
   //WhatsApp
-  const handleWhatsAppPress = async() => {
-    
+  const handleWhatsAppPress = async () => {
     await Linking.openURL(`whatsapp://send?text=Hola RestoBook&phone=${number}`)
-}
+  }
   const [menuArr, setMenuArr] = useState([]);
   //Tiene que desactivar el boton en los comercios que no sean del logueado
-
-  const urlMercadoPago = () =>{
-    axios({
-      method: "POST",
-      url: "http://localhost:19006/checkout"
+  //console.log(empresaDetail)
+  const onPressReservar = async (cantLugares, precioCabeza) => {
+    // const uri = `http://${manifest.debuggerHost.split(':').shift()}:19006`;
+    // console.log(uri)
+    const url = await axios(
+      {
+        method: 'POST',
+        // url: `${uri}/checkout`,
+        url: 'http://192.168.0.10:19006/checkout',
+        data: {
+          restoName: empresaDetail.title,
+          quantity: cantLugares,
+          unit_price: precioCabeza
+        }
+      }
+    )
+    setModalVisible(false)
+    //console.log(url.data)
+    navigation.navigate("WebViewScreen", {
+      url: url.data
     })
   }
 
-
-  useEffect(() => {
+  const getMenu = () => {
     const q = query(collection(firebase.db, "Restos"));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       let menu = [];
@@ -70,37 +99,175 @@ const DetailsResto = ({navigation}) => {
         }
       });
     });
+    setMenuCategory('')
+  }
+
+  useEffect(() => {
+    getMenu()
   }, []);
+
+  const getCurrentDate = () => {
+    let min = new Date().getMinutes().toString();
+    let hour = new Date().getHours().toString();
+    let date = new Date().getDate().toString();
+    let month = (new Date().getMonth() + 1).toString();
+    let year = new Date().getFullYear().toString();
+    return hour + min + date + month + year;// 22:10 12/10/2021
+  }
+  //console.log(getCurrentDate())
+
+  /*try {
+            let restoRef = doc(firebase.db, "Restos", idResto);
+            setSpinner(true);
+            await updateDoc(restoRef, {
+              menu: arrayUnion(newValues),
+            });
+            setSpinner(false);
+            navigation.navigate("DetailsResto");
+          } catch (err) {
+            console.log(err);
+          } */
+
+  // const handleReserva = async () => {
+  //   if (auth.currentUser) {
+  //     const reserva = {
+  //       idReserva: getCurrentDate(),
+  //       emailUser: auth.currentUser.email,
+  //       idUser: auth.currentUser.uid,
+  //       nameResto: empresaDetail.title,
+  //       idResto: empresaDetail.idResto
+  //     };
+
+  //     try {
+  //       let restoRef = doc(firebase.db, "Users", auth.currentUser.uid);
+  //       await updateDoc(restoRef, {
+  //         reservations: arrayUnion(reserva),
+  //       })
+  //     } catch (err) {
+  //       console.log(err);
+  //     }
+  //     try {
+  //       let restoRef = doc(firebase.db, "Restos", empresaDetail.idResto);
+  //       await updateDoc(restoRef, {
+  //         reservations: arrayUnion(reserva),
+  //       })
+  //     } catch (err) {
+  //       console.log(err);
+  //     }
+  //     alert("Su reserva ha sido registrada!")
+  //   } else {
+  //     alert("Logueate antes de reservar!")
+  //   }
+  // }
+
+  const handleCategory = async (category) => {
+    const docRef = doc(firebase.db, "Restos", empresaDetail.idResto);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      const menuResto = docSnap.data().menu;
+      //console.log(menuResto)
+      const result = menuResto.filter((menu) => menu.category === category.toLowerCase())
+
+      //console.log(result)
+      if (result.length === 0) {
+        alert("No hay comidas con esta categoria")
+        getMenu()
+      } else {
+        setMenuCategory(result)
+      }
+    }
+  }
+
+
+
   return (
     <View style={globalStyles.Home}>
-      <View style={styles.content}>
+      <View style={{ backgroundColor: "#333a" }}>
+        <Text style={{ textAlign: "center", fontSize: 30, marginVertical: 10, color: "#fff" }}>{empresaDetail.title}</Text>
+      </View>
+
+      <View>
+        <View style={{
+          paddingVertical: 2,
+          paddingHorizontal: 5,
+          marginVertical: 7,
+          marginHorizontal: 5,
+
+          borderWidth: 2,
+          borderColor: "#333a",
+          backgroundColor: "white",
+          borderRadius: 10,
+        }}>
+          <TouchableOpacity
+            onPress={() => getMenu()}
+          >
+            <Text style={{
+              fontWeight: "bold",
+              fontSize: 13,
+              padding: 1,
+              alignSelf: "center",
+            }}>Todas Las Comidas</Text>
+          </TouchableOpacity>
+        </View>
         <View style={styles.categoriesContainer}>
           <View style={globalStyles.categoriesView}>
-            <Text style={globalStyles.categoriesText}>Fast Food</Text>
+            <TouchableOpacity
+              onPress={() => handleCategory(ENTRADAS)}
+            >
+              <Text style={globalStyles.categoriesText}>Entradas</Text>
+            </TouchableOpacity>
+          </View>
+
+          <View style={globalStyles.categoriesView}>
+            <TouchableOpacity
+              onPress={() => handleCategory(PLATO_PRINCIPAL)}
+            >
+              <Text style={globalStyles.categoriesText}>Plato Principal</Text>
+            </TouchableOpacity>
           </View>
           <View style={globalStyles.categoriesView}>
-            <Text style={globalStyles.categoriesText}>Home-made pastas</Text>
+            <TouchableOpacity
+              onPress={() => handleCategory(GUARNICION)}
+            >
+              <Text style={globalStyles.categoriesText}>Guarnicion</Text>
+            </TouchableOpacity>
           </View>
           <View style={globalStyles.categoriesView}>
-            <Text style={globalStyles.categoriesText}>Meats</Text>
+            <TouchableOpacity
+              onPress={() => handleCategory(BEBIDA)}
+            >
+              <Text style={globalStyles.categoriesText}>Bebidas</Text>
+            </TouchableOpacity>
           </View>
+
+
           <View style={globalStyles.categoriesView}>
-            <Text style={globalStyles.categoriesText}>Deserts</Text>
+            <TouchableOpacity
+              onPress={() => handleCategory(POSTRES)}
+            >
+              <Text style={globalStyles.categoriesText}>Postres</Text>
+            </TouchableOpacity>
           </View>
-          <View style={globalStyles.categoriesView}>
-            <Text style={globalStyles.categoriesText}>Drinks</Text>
-          </View>
-        
+
+
+
         </View>
         {menuArr.length > 0 ? (
           <ScrollView style={styles.showMenu}>
-            {menuArr.map((menu, index) => {
+            {menuCategory ? menuCategory.map((menu, index) => {
               return (
                 <CardMenu key={index} menu={menu}>
                   {" "}
                 </CardMenu>
               );
-            })}
+            }) :
+              menuArr.map((menu, index) => {
+                return (
+                  <CardMenu key={index} menu={menu}>
+                    {" "}
+                  </CardMenu>
+                );
+              })}
           </ScrollView>
         ) : (
           <Text
@@ -110,15 +277,12 @@ const DetailsResto = ({navigation}) => {
             Add a food to see it!
           </Text>
         )}
-
-          <View style={globalStyles.btn}>
-            <TouchableOpacity onPress={() => navigation.navigate("WebViewScreen")}>
-              <Text><MaterialIcons name="payment" size={20} color="black" ></MaterialIcons> Abona tu reserva
-              </Text>
-            </TouchableOpacity>
-          </View> 
-
-
+        <View style={globalStyles.btn} onTouchStart={() => setModalVisible(!modalVisible)}>
+          <TouchableOpacity >
+            <Text><MaterialIcons name="payment" size={20} color="black" ></MaterialIcons> Quiero Reservar !
+            </Text>
+          </TouchableOpacity>
+        </View>
         <View style={styles.googleMapsContainer}>
           <MapView
             style={styles.googleMaps}
@@ -141,7 +305,42 @@ const DetailsResto = ({navigation}) => {
           </MapView>
         </View>
       </View>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <TouchableOpacity
+              style={globalStyles.touchLog}
+              onPress={() => setModalVisible(!modalVisible)}
+            >
+              <Text
+                onPress={() => setModalVisible(false)}
+              > X </Text>
+            </TouchableOpacity>
+            <Text>Selecciona la cantidad de lugares</Text>
+            <TextInput placeholder='Cantidad de lugares' style={{ backgroundColor: '#bd967e', width: '80%' }} keyboardType='numeric' onChangeText={(value) => setCantLugares(parseInt(value))}>
+            </TextInput>
+            <Text>Precio por cabeza otorgado por Empresa seria:</Text>
+            <TextInput placeholder='Cantidad de lugares' style={{ backgroundColor: '#bd967e', width: '80%' }} keyboardType='numeric' onChangeText={(value) => setPrecioCabeza(parseInt(value))}>
+            </TextInput>
+            <Text style={{ fontSize: 30, color: 'blue' }}>Precio por cabeza ${precioCabeza}</Text>
+            <TouchableOpacity
+              style={globalStyles.touchLog}
+              onPress={() => onPressReservar(cantLugares, precioCabeza)}
+            >
+              <Text>Reservar mi lugar por ${cantLugares * precioCabeza}</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </View>
+
   );
 };
 const styles = StyleSheet.create({
@@ -161,9 +360,7 @@ const styles = StyleSheet.create({
     color: "#333",
     letterSpacing: 1,
   },
-  content: {
-    padding: 10,
-  },
+
   categoriesContainer: {
     height: 33,
     alignItems: "center",
@@ -176,34 +373,32 @@ const styles = StyleSheet.create({
     height: 250,
     padding: 10,
     borderWidth: 0,
-    //borderRadius: 50
   },
   googleMapsContainer: {
     flex: 1,
     padding: 10,
     borderRadius: 20,
-    //backgroundColor: "red"
   },
   googleMaps: {
     height: 250,
     borderRadius: 30,
   },
-  wppIcon:{
-    height:30,
-    marginLeft:10,
+  wppIcon: {
+    height: 30,
+    marginLeft: 10,
     borderRadius: 10,
     width: 40,
     backgroundColor: '#ffd964',
     alignItems: "center",
     borderWidth: 1,
     borderColor: '#b39138',
-    
+
   },
-  img:{
+  img: {
     margin: 5,
-    height:20,
-    width:20,
-    alignItems:'center'
+    height: 20,
+    width: 20,
+    alignItems: 'center'
   },
   textContainer2: {
     alignSelf: "center",
@@ -213,6 +408,30 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     marginTop: 10,
     backgroundColor: '#ffd964'
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: '10%',
+    //backgroundColor: "blur",
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 20,
+    width: "90%",
+    height: "90%",
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 30,
+      height: 30,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
   },
 });
 
