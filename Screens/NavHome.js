@@ -54,7 +54,6 @@ export default function NavHome({ title, navigation }) {
             isCommerce(true);
           }
         }
-        //console.log("commerce?", commerce);
       });
     });
   }, [loggedId, hasCommerce]);

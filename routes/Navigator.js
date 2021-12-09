@@ -40,12 +40,14 @@ export default Navigator = () => {
             },
           })}
         />
-        <Stack.Screen name="RegisterUser" component={AddUserScreen} />
+        <Stack.Screen
+          name="RegisterUser"
+          component={AddUserScreen} />
         <Stack.Screen
           name="RegisterResto"
           component={RegisterResto}
           options={{
-            headerTitle: "RegisterResto",
+            headerTitle: "Register Resto",
             title: "Register Resto",
             headerTitleAlign: "center",
             headerStyle: {
@@ -61,8 +63,7 @@ export default Navigator = () => {
           name="AddMenuResto"
           component={AddMenuResto}
           options={{
-            headerTitle: "AddMenuResto",
-            title: "Add Your Menu",
+            headerTitle: "Agregar Menu",
             headerTitleAlign: "center",
             headerStyle: {
               backgroundColor: "#f6efd2",
@@ -90,7 +91,7 @@ export default Navigator = () => {
           name="WebViewScreen"
           component={WebViewScreen}
           options={{
-            headerTitle: "WebViewScreen",
+            headerTitle: "Pague Su Reserva",
             title: "WebViewScreen",
             headerTitleAlign: "center",
             headerStyle: {
@@ -140,16 +141,22 @@ export default Navigator = () => {
         <Stack.Screen
           name="ProfileUser"
           component={ProfileUser}
-          options={{
-            headerTitle: "Profile",
-            title: "Profile",
+
+          options={({ navigation }) => ({
+            headerTitle: " Mi Perfil",
+            title: 'Profile',
+
             headerTitleAlign: "center",
             headerRight: () => (
               <TouchableOpacity
                 style={globalStyles.btn}
-                onPress={() => navigation.navigate("NavHome")}
+
+                onPress={() =>
+                  navigation.navigate('RegisterResto')
+                }
+
               >
-                <Text>Log out</Text>
+                <Text>Create Resto</Text>
               </TouchableOpacity>
             ),
             headerStyle: {
@@ -159,14 +166,19 @@ export default Navigator = () => {
             headerTitleStyle: {
               fontSize: 25,
             },
-          }}
+
+
+          })}
+
         />
         <Stack.Screen
           name="ProfileResto"
           component={ProfileResto}
           options={{
-            headerTitle: "Profile",
-            title: "Profile",
+
+            headerTitle: " Mi Empresa",
+            title: 'Profile',
+
             headerTitleAlign: "center",
             headerStyle: {
               backgroundColor: "#f6efd2",

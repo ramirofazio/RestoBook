@@ -15,6 +15,7 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  Pressable
 } from "react-native";
 //
 //----------FORMIK y YUP------------------
@@ -122,7 +123,15 @@ const RegisterResto = ({ navigation }) => {
 
   return (
     <View style={globalStyles.Home}>
-      <View style={globalStyles.inputComponent}>
+      <View style={{
+        backgroundColor: '#e8b595',
+        width: '80%',
+        alignSelf: 'center',
+        marginTop: 15,
+        borderRadius: 10,
+        maxWidth: '100%',
+      }}
+      >
         <GooglePlacesAutocomplete
           placeholder="Completa tu direccion"
           nearbyPlacesAPI="GooglePlacesSearch"
@@ -143,20 +152,27 @@ const RegisterResto = ({ navigation }) => {
           styles={{
             container: {
               flex: 0,
-              width: "150%",
+
+              width: '100%',
+
               padding: 0,
               alignSelf: "center",
             },
             textInput: {
+              marginTop: 4,
               fontSize: 14.5,
-              fontWeight: "bold",
-              width: "130%",
-              backgroundColor: "transparent",
-              textAlign: "center",
+
+              fontWeight: 'bold',
+              width: '80%',
+              backgroundColor: 'transparent',
+              textAlign: 'center',
+              overflow: 'hidden'
+
             },
             textInputContainer: {
               alignItems: "center",
               height: 18,
+              overflow: 'hidden'
             },
             listView: {
               borderRadius: 13,
@@ -179,10 +195,13 @@ const RegisterResto = ({ navigation }) => {
           phone2: "",
           cuit: "",
           category: state.category,
-          // img: "",
-          lat: state.lat,
-          lng: state.lng,
-          address: state.address,
+
+          //img: "",
+          lat: "",
+          lng: "",
+          address: "",
+          reservations: [],
+
         }}
         validationSchema={registerRestoSchema}
         onSubmit={(values) => {
@@ -202,6 +221,7 @@ const RegisterResto = ({ navigation }) => {
                   category: state.category.toLowerCase(),
                   // img: values.img,
                   menu: [],
+                  reservations: [],
                   location: {
                     latitude: state.lat,
                     longitude: state.lng,
@@ -317,6 +337,18 @@ const RegisterResto = ({ navigation }) => {
                 <Text style={globalStyles.errorText}>{props.errors.cuit}</Text>
               ) : null}
 
+              <Pressable onPress={() => setIsVisible(true)}>
+                <View style={globalStyles.inputComponent}>
+                  <TextInput
+                    style={globalStyles.texts}
+                    editable={false}
+                    placeholder="Select Category"
+                    value={state.category}
+                    onPressIn={() => setIsVisible(true)}
+                  />
+                </View>
+              </Pressable>
+
               <View style={{ alignItems: "center" }}>
                 {/* <TouchableOpacity
                   style={globalStyles.touchLog}
@@ -346,30 +378,30 @@ const RegisterResto = ({ navigation }) => {
       </Formik>
 
       <View style={globalStyles.inputComponent}>
-        <TextInput
-          style={globalStyles.texts}
-          editable={false}
-          placeholder="Select Category"
-          value={state.category}
-          onPressIn={() => setIsVisible(true)}
-        />
+
         <BottomSheet
           isVisible={isVisible}
-          containerStyle={{ backgroundColor: "rgba(0.5,0.25,0,0.2)" }}
+
+          containerStyle={{ backgroundColor: '#333a' }}
+
         >
           {categories.map((categoria, index) => (
             <ListItem
               key={index}
-              containerStyle={{ backgroundColor: "rgba(0.5,0.25,0,0.7)" }}
-              style={{ borderWidth: 1, borderColor: "#cccccc" }}
-              onPress={(e) =>
-                setState({ ...state, category: categoria }) &&
+
+              containerStyle={{ backgroundColor: 'rgba(0.5,0.25,0,0.7)' }}
+              style={{ borderBottomWidth: 1, borderColor: '#333a', backgroundColor: "#fff0" }}
+              onPress={() => {
+                setState({ ...state, category: categoria })
                 setIsVisible(false)
-              }
+              }}
             >
-              <ListItem.Content>
+              <ListItem.Content
+                style={{ backgroundColor: "#0000", alignItems: "center" }}
+              >
                 <ListItem.Title
-                  style={{ height: 35, color: "#FFF", padding: 8 }}
+                  style={{ height: 35, color: '#fff', padding: 8 }}
+
                 >
                   {categoria}
                 </ListItem.Title>
@@ -378,12 +410,18 @@ const RegisterResto = ({ navigation }) => {
           ))}
           <ListItem
             key={999}
-            containerStyle={{ backgroundColor: "red" }}
-            style={{ borderWidth: 1, borderColor: "#cccccc" }}
+
+            containerStyle={{ backgroundColor: 'red' }}
+            style={{ borderBottomWidth: 1, borderColor: '#333a' }}
             onPress={() => setIsVisible(false)}
           >
-            <ListItem.Content style={{}}>
-              <ListItem.Title style={{ height: 35, color: "#FFF", padding: 8 }}>
+            <ListItem.Content
+              style={{ alignItems: "center" }}
+            >
+              <ListItem.Title
+                style={{ height: 35, color: '#FFF', padding: 8, fontSize: 20 }}
+              >
+
                 Cancel
               </ListItem.Title>
             </ListItem.Content>
@@ -421,7 +459,7 @@ const styles = StyleSheet.create({
     padding: 25,
   },
   inputGroup: {
-    height: 50,
+    height: 15,
     padding: 0,
     marginBottom: 15,
     borderBottomWidth: 1,

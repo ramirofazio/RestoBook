@@ -15,6 +15,7 @@ let initialState = {
   currentId: null,
   currentUser: null,
   empresaDetail: [],
+
   favourites: [],
   categoriesResto: [
     "Pizzas/Empanadas",
@@ -35,6 +36,7 @@ let initialState = {
     "Postre",
     "Plato Principal",
   ],
+
 };
 
 const RootReducer = (state = initialState, action) => {

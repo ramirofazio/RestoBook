@@ -73,7 +73,11 @@ const reservas = [
 let imgPerrito =
   "https://res.cloudinary.com/restobook/image/upload/samples/bike.jpg";
 const ProfileUser = ({ navigation }) => {
+
   const empresas = useSelector((state) => state.empresas);
+
+
+  const loggedUser = useSelector((state) => state.currentUser);
 
   const loggedId = useSelector((state) => state.currentId);
   const [modalVisible, setModalVisible] = useState(false);
@@ -298,40 +302,51 @@ const ProfileUser = ({ navigation }) => {
                       X
                     </Text>
                   </TouchableOpacity>
-                  <Text style={styles.modalText}>Edit your Username</Text>
-                  <Text>Nombre</Text>
-                  <TextInput
-                    style={globalStyles.texts}
-                    placeholder={currentUser?.name}
-                    onChangeText={(value) =>
-                      setNewUserInfo({
-                        ...newUserInfo,
-                        name: value,
-                      })
-                    }
-                  />
-                  <Text>Apellido</Text>
-                  <TextInput
-                    style={globalStyles.texts}
-                    placeholder={currentUser?.lastName}
-                    onChangeText={(value) =>
-                      setNewUserInfo({
-                        ...newUserInfo,
-                        lastName: value,
-                      })
-                    }
-                  />
-                  <Text>Celular</Text>
-                  <TextInput
-                    style={globalStyles.texts}
-                    placeholder={currentUser?.cel}
-                    onChangeText={(value) =>
-                      setNewUserInfo({
-                        ...newUserInfo,
-                        cel: value,
-                      })
-                    }
-                  />
+                  <Text style={styles.modalText}>Cambia Tu Usuario</Text>
+                  <View style={{ marginVertical: 25, width: "100%" }}>
+                    <Text style={{ textAlign: "center", marginBottom: -15 }}>Nombre: </Text>
+                    <View style={globalStyles.inputComponent}>
+                      <TextInput
+                        style={globalStyles.texts}
+                        placeholder={currentUser?.name}
+                        placeholderTextColor="#555"
+                        onChangeText={(value) =>
+                          setNewUserInfo({
+                            ...newUserInfo,
+                            name: value,
+                          })
+                        }
+                      />
+                    </View>
+                    <Text style={{ textAlign: "center", marginBottom: -15 }}>Apellido: </Text>
+                    <View style={globalStyles.inputComponent}>
+                      <TextInput
+                        style={globalStyles.texts}
+                        placeholder={currentUser?.lastName}
+                        placeholderTextColor="#555"
+                        onChangeText={(value) =>
+                          setNewUserInfo({
+                            ...newUserInfo,
+                            lastName: value,
+                          })
+                        }
+                      />
+                    </View>
+                    <Text style={{ textAlign: "center", marginBottom: -15 }}>Celular: </Text>
+                    <View style={globalStyles.inputComponent}>
+                      <TextInput
+                        style={globalStyles.texts}
+                        placeholder={currentUser?.cel}
+                        placeholderTextColor="#555"
+                        onChangeText={(value) =>
+                          setNewUserInfo({
+                            ...newUserInfo,
+                            cel: value,
+                          })
+                        }
+                      />
+                    </View>
+                  </View>
                   <TouchableOpacity
                     style={globalStyles.touchLog}
                     onPress={() => {
@@ -468,7 +483,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginTop: 22,
-    //backgroundColor: "blur",
+    backgroundColor: "#ffffff10",
   },
   modalView: {
     margin: 20,
@@ -504,7 +519,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   modalText: {
-    marginBottom: 15,
+    marginTop: 20,
     textAlign: "center",
     fontSize: 30,
     fontWeight: "bold",
