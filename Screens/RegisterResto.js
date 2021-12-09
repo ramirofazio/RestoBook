@@ -213,7 +213,8 @@ const RegisterResto = ({ navigation }) => {
                     latitude: state.lat,
                     longitude: state.lng,
                     address: state.address.toLowerCase()
-                  }
+                  },
+                  reviews:[]
                 })
                 .then(
                   firebase.db
