@@ -3,13 +3,13 @@ import React from "react";
 //
 //
 //----------REDUX UTILS-----------
+import { useDispatch } from "react-redux";
+import CurrentId from "../Redux/Actions/CurrentId.js";
+import CurrentUser from "../Redux/Actions/CurrentUser.js";
 //
 //
 //----------REACT-NATIVE UTILS-----------
-import {
-  View,
-  Text,
-} from "react-native";
+import { View, Text } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 //
 //
@@ -23,6 +23,7 @@ import { getAuth, signOut } from "firebase/auth";
 //
 //-------STYLES-------
 import globalStyles from "./GlobalStyles.js";
+
 //
 //
 //-------INITIALIZATIONS-------
@@ -32,13 +33,22 @@ const auth = getAuth();
 //---------------------------------------------------------------------------------------//
 //
 const AwaitEmail = ({ navigation }) => {
+  const dispatch = useDispatch();
+  const signOutAndClearRedux = () => {
+    signOut(auth);
+    dispatch(CurrentUser(null));
+    dispatch(CurrentId(null));
+  };
+
   return (
-    <View style={{
-      flex: 1,
-      backgroundColor: '#ffdfcb',
-      alignContent: "center",
-      justifyContent: "center"
-    }}>
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: "#ffdfcb",
+        alignContent: "center",
+        justifyContent: "center",
+      }}
+    >
       <Text style={globalStyles.text}>
         {" "}
         Please check your inbox, if it's empty click below
@@ -56,7 +66,7 @@ const AwaitEmail = ({ navigation }) => {
         <TouchableOpacity
           style={globalStyles.touchFlag}
           onPress={() => {
-            signOut(auth);
+            signOutAndClearRedux();
             navigation.navigate("RestoBook");
           }}
         >

@@ -19,7 +19,10 @@ import {
   StyleSheet,
   Alert,
   Modal,
+  Image,
 } from "react-native";
+
+import { BottomSheet } from "react-native-elements";
 
 //----------FIREBASE UTILS-----------
 import {
@@ -32,6 +35,7 @@ import {
   signInWithRedirect,
   getRedirectResult,
   onAuthStateChanged,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 
 import firebase from "../database/firebase";
@@ -97,9 +101,8 @@ const GlobalRegisterSchema = yup.object({
 });
 
 const GlobalLogin = ({ navigation }) => {
-  // const secureTextEntry = (handleChange) => {
-  //   handleChange(false)
-  // }
+  const [visible, isVisible] = useState(false);
+  const [forgottedMail, setForgottedMail] = useState("");
 
   const Glogin = async () => {
     try {
@@ -113,7 +116,7 @@ const GlobalLogin = ({ navigation }) => {
           result.idToken,
           result.accessToken
         );
-        console.log("step1");
+
         // const credential = (result.idToken, result.accessToken);
         signInWithCredential(auth, credential).catch((error) => {
           console.log(error);
@@ -135,13 +138,17 @@ const GlobalLogin = ({ navigation }) => {
       //------------LOGIN---------------
 
       <View style={globalStyles.Home}>
-        <Text style={{
-          fontSize: 25,
-          fontWeight: "bold",
-          paddingVertical: 5,
-          alignSelf: "center",
-          color: '#392c28'
-        }}>Login</Text>
+        <Text
+          style={{
+            fontSize: 25,
+            fontWeight: "bold",
+            paddingVertical: 5,
+            alignSelf: "center",
+            color: "#392c28",
+          }}
+        >
+          Login
+        </Text>
         <Formik
           initialValues={{
             email: "",
@@ -156,7 +163,7 @@ const GlobalLogin = ({ navigation }) => {
                 password
               );
               if (auth.currentUser.emailVerified) {
-                alert("Welcome");
+                //alert("Welcome");
                 navigation.navigate("RestoBook");
               } else {
                 navigation.navigate("AwaitEmail");
@@ -203,7 +210,11 @@ const GlobalLogin = ({ navigation }) => {
                     : setFlagSecureText(true)
                 }
               >
-                <Icon name={flagSecureText ? "eye-off" : "eye"} size={20} style={{ alignSelf: "center" }} />
+                <Icon
+                  name={flagSecureText ? "eye-off" : "eye"}
+                  size={20}
+                  style={{ alignSelf: "center" }}
+                />
               </TouchableOpacity>
               <View style={globalStyles.btnContainerLogin}>
                 <TouchableOpacity
@@ -212,20 +223,49 @@ const GlobalLogin = ({ navigation }) => {
                 >
                   <Text style={globalStyles.fontLog}>Log In</Text>
                 </TouchableOpacity>
-
                 <TouchableOpacity
-                  style={globalStyles.touchFlag}
-                  onPress={() => Glogin()}>
-                  <Text style={globalStyles.fontLog}>Log In with Google</Text>
+                  style={styles.googleButton}
+                  onPress={() => Glogin()}
+                >
+                  <Image source={require("../assets/googleIcon.png")}></Image>
                 </TouchableOpacity>
-
                 <TouchableOpacity
                   style={globalStyles.touchFlag}
                   onPress={() => setFlagLoginOrRegister(false)}
                 >
-                  <Text style={globalStyles.fontLog}>I dont have an account yet</Text>
+                  <Text style={globalStyles.fontLog}>
+                    I dont have an account yet
+                  </Text>
                 </TouchableOpacity>
-
+                <TouchableOpacity
+                  style={globalStyles.touchFlag}
+                  onPress={() => {
+                    isVisible(true);
+                  }}
+                >
+                  <Text style={globalStyles.fontLog}>Olvidé mi contraseña</Text>
+                </TouchableOpacity>
+                <BottomSheet isVisible={visible} style={styles.forgottenPass}>
+                  <View>
+                    <TouchableOpacity onPress={() => isVisible(false)}>
+                      <Text>X</Text>
+                    </TouchableOpacity>
+                    <TextInput
+                      placeholder="........"
+                      style={styles.inputForgotten}
+                      onChangeText={(value) => setForgottedMail(value)}
+                    ></TextInput>
+                    <TouchableOpacity
+                      onPress={() => {
+                        sendPasswordResetEmail(auth, forgottedMail)
+                          .then(alert("Revisa tu casilla!"))
+                          .then(isVisible(false));
+                      }}
+                    >
+                      <Text>Enviar</Text>
+                    </TouchableOpacity>
+                  </View>
+                </BottomSheet>
               </View>
             </View>
           )}
@@ -249,7 +289,7 @@ const GlobalLogin = ({ navigation }) => {
               }}
               validationSchema={GlobalRegisterSchema}
               onSubmit={async (values) => {
-                console.log(values);
+                //console.log(values);
                 try {
                   //-----AUTENTICA USER-----------
                   await createUserWithEmailAndPassword(
@@ -265,14 +305,15 @@ const GlobalLogin = ({ navigation }) => {
                         .doc(auth.currentUser.uid)
                         .set({
                           id: auth.currentUser.uid,
-                          name: values.name,
-                          lastName: values.lastName,
+                          name: values.name.toLowerCase(),
+                          lastName: values.lastName.toLowerCase(),
                           cel: values.cel,
-                          email: values.email,
+                          email: values.email.toLowerCase(),
                           commerce: false,
                           profileImage: DEFAULT_PROFILE_IMAGE,
                           reservations: [],
                           payments: [],
+                          favourites: [],
                         })
                         .then(sendEmailVerification(auth.currentUser))
                         .then(navigation.navigate("AwaitEmail"));
@@ -370,7 +411,7 @@ const GlobalLogin = ({ navigation }) => {
                     />
                   </View>
                   {props.touched.passwordConfirm &&
-                    props.errors.passwordConfirm ? (
+                  props.errors.passwordConfirm ? (
                     <Text style={globalStyles.errorText}>
                       {props.errors.passwordConfirm}
                     </Text>
@@ -388,19 +429,22 @@ const GlobalLogin = ({ navigation }) => {
                   <View style={globalStyles.btnContainerLogin}>
                     <TouchableOpacity
                       style={globalStyles.touchLog}
-                      onPress={() => { props.handleSubmit() && setFlagLoginOrRegister(true) }}
+                      onPress={() => {
+                        props.handleSubmit() && setFlagLoginOrRegister(true);
+                      }}
                     >
                       <Text style={globalStyles.fontLog}>Sign Up</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                       style={globalStyles.touchFlag}
-                      onPress={() => setFlagLoginOrRegister(true)}                    >
-                      <Text style={globalStyles.fontLog} >I have an account</Text>
+                      onPress={() => setFlagLoginOrRegister(true)}
+                    >
+                      <Text style={globalStyles.fontLog}>
+                        I have an account
+                      </Text>
                     </TouchableOpacity>
                   </View>
-
-
-                </View >
+                </View>
               )}
             </Formik>
           </View>
@@ -464,6 +508,26 @@ const styles = StyleSheet.create({
   },
   bottonClose: {
     backgroundColor: "#2196F3",
+  },
+  googleButton: {
+    marginTop: 10,
+  },
+  forgottenPass: {
+    backgroundColor: "antiquewhite",
+    height: "50%",
+    alignItems: "center",
+    justifyContent: "center",
+    alignContent: "center",
+    borderBottomWidth: 5,
+    borderBottomColor: "black",
+  },
+
+  inputForgotten: {
+    marginTop: 200,
+    justifyContent: "center",
+    alignItems: "center",
+
+    backgroundColor: "orange",
   },
 });
 

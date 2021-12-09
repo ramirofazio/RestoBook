@@ -32,7 +32,6 @@ export default function NavDetail({ navigation }) {
   const empresaDetail = useSelector((state) => state.empresaDetail);
   const [logged, setLogged] = useState(false);
   const [owner, isOwner] = useState(false);
-  console.log(empresaDetail)
   onAuthStateChanged(auth, (usuarioFirebase) => {
     if (usuarioFirebase?.emailVerified) {
       setLogged(true);
