@@ -21,6 +21,8 @@ import {
 //----------FORMIK y YUP------------------
 import { Formik } from 'formik';
 import * as yup from 'yup';
+import emailjs from 'emailjs-com'
+import axios from 'axios';
 
 //
 //
@@ -45,6 +47,8 @@ import { BottomSheet, ListItem } from "react-native-elements";
 //------IMAGINE PICKER---------
 import * as ImagePicker from "expo-image-picker";
 import SetCommerce from "../Redux/Actions/setCommerce";
+import{ init } from 'emailjs-com';
+init("user_IEK9t1hQIR3ugtExEH6BG");
 
 //
 //
@@ -113,7 +117,8 @@ const RegisterResto = ({ navigation }) => {
     } else {
       alert("Sorry, we need camera roll permissions to make this work!");
     }
-  };
+  }
+  
 
   const setStateAndRegion = (newLocation, formatedAddress) => {
     const { lat, lng } = newLocation;

@@ -59,7 +59,6 @@ export default function Home({ navigation }) {
   }, []);
   onAuthStateChanged(auth, (usuarioFirebase) => {
     if (usuarioFirebase?.emailVerified) {
-      console.log(loggedId)
       if (loggedId !== usuarioFirebase.uid) {
         dispatch(CurrentId(usuarioFirebase.uid));
         const unsub = onSnapshot(

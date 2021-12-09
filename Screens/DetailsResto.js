@@ -51,7 +51,7 @@ const DetailsResto = ({navigation}) => {
   }
   const [menuArr, setMenuArr] = useState([]);
   //Tiene que desactivar el boton en los comercios que no sean del logueado
-  console.log(empresaDetail)
+  // console.log(empresaDetail)
   const onPressReservar= async (cantLugares, precioCabeza) => {
     // const uri = `http://${manifest.debuggerHost.split(':').shift()}:19006`;
     // console.log(uri)
