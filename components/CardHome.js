@@ -1,6 +1,6 @@
-
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Card, Text } from "react-native-elements";
+
 import {
   View,
   Image,
@@ -9,7 +9,7 @@ import {
   Linking,
 } from "react-native";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import HeartOutlined from "react-native-vector-icons/AntDesign";
 import { Icon } from "react-native-elements";
 //-------SCREENS--------
@@ -20,12 +20,45 @@ import empresaDetail from "../Redux/Actions/empresaDetail.js";
 //-----STYLES----------
 import globalStyles from "../Screens/GlobalStyles.js";
 //
+//----------FIREBASE UTILS-----------
+import firebase from "../database/firebase";
+import { getAuth } from "firebase/auth";
+import {
+  doc,
+  updateDoc,
+  getDoc,
+  arrayUnion,
+  arrayRemove,
+} from "firebase/firestore";
+//
+
+const auth = getAuth();
+
 const CardMenu = ({ resto, navigation }) => {
-  //console.log(resto)
+  const userFavourites = useSelector((state) => state.favourites);
+  const CurrentId = useSelector((state) => state.currentId);
   const [hearthColor, setHearthColor] = useState("grey");
   const dispatch = useDispatch();
-
+  let infoFavourite = {
+    id: resto.idResto,
+    title: resto.title,
+    phone: resto.phone,
+    address: resto.location.address,
+    img: resto.img,
+  };
   const celphone = +541168020511;
+
+  useEffect(() => {
+    if (CurrentId) {
+      if (userFavourites.includes(resto.idResto)) {
+        setHearthColor("red");
+      } else {
+        setHearthColor("grey");
+      }
+    } else {
+      setHearthColor("grey");
+    }
+  }, [userFavourites]);
 
   const handleOnPress = () => {
     dispatch(empresaDetail(resto));
@@ -36,6 +69,36 @@ const CardMenu = ({ resto, navigation }) => {
     await Linking.openURL(
       `whatsapp://send?text=Hola ${resto.title}, mi nombre es Lucas y quiero generar una reserva&phone=${celphone}`
     );
+  };
+
+  const addToFavourite = async () => {
+    if (auth?.currentUser?.uid) {
+      console.log("ACA");
+      try {
+        let docRef = doc(firebase.db, "Users", auth.currentUser.uid);
+        await updateDoc(docRef, {
+          favourites: arrayUnion(infoFavourite),
+        });
+      } catch (e) {
+        alert("no estas logueado");
+        console.log("error add:", e);
+      }
+      setHearthColor("red");
+    }
+  };
+
+  const removeFromFavourite = async () => {
+    if (auth?.currentUser?.uid) {
+      try {
+        let docRef = doc(firebase.db, "Users", auth.currentUser.uid);
+        await updateDoc(docRef, {
+          favourites: arrayRemove(infoFavourite),
+        });
+      } catch (e) {
+        console.log("error remove:", e);
+      }
+      setHearthColor("grey");
+    }
   };
 
   return (
@@ -84,8 +147,8 @@ const CardMenu = ({ resto, navigation }) => {
             <TouchableOpacity
               onPress={() =>
                 hearthColor === "grey"
-                  ? setHearthColor("red")
-                  : setHearthColor("grey")
+                  ? addToFavourite()
+                  : removeFromFavourite()
               }
             >
               <Icon

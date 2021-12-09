@@ -5,6 +5,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CurrentId from "../Redux/Actions/CurrentId.js";
 import CurrentUser from "../Redux/Actions/CurrentUser.js";
+import UserFavourites from "../Redux/Actions/userFavourites.js";
 //
 //
 //----------REACT-NATIVE UTILS-----------
@@ -20,6 +21,7 @@ import {
   BottomSheet,
   TextInput,
   Modal,
+  ActivityIndicator,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 
@@ -44,6 +46,7 @@ import globalStyles from "./GlobalStyles.js";
 //-------INITIALIZATIONS-------
 const auth = getAuth();
 import { DEFAULT_PROFILE_IMAGE } from "@env";
+
 //
 //---------------------------------------------------------------------------------------//
 //
@@ -58,6 +61,7 @@ export default function Home({ navigation }) {
   });
   const [usuarioGlobal, setUsuarioGlobal] = useState("");
   const [availableCommerces, setAvailableCommerces] = useState([]);
+  const [flagCards, setFlagCards] = useState(false);
   //console.log(availableCommerces)
   const loggedUser = useSelector((state) => state.currentUser);
   const loggedId = useSelector((state) => state.currentId);
@@ -97,18 +101,28 @@ export default function Home({ navigation }) {
   });
 
   const getInfo = async () => {
-    const docRef = doc(firebase.db, "Users", auth.currentUser.uid);
-    const docSnap = await getDoc(docRef);
-    if (!docSnap.exists()) {
-      setGoogleUser({ ...googleUser, email: auth.currentUser.email });
-      isVisible(true);
-      // alert("Bienvenido! Por favor, completa estos datos antes de continuar");
+    try {
+      const docRef = doc(firebase.db, "Users", auth.currentUser.uid);
+      const docSnap = await getDoc(docRef);
+      if (!docSnap.exists()) {
+        setGoogleUser({ ...googleUser, email: auth.currentUser.email });
+        isVisible(true);
+        // alert("Bienvenido! Por favor, completa estos datos antes de continuar");
+      } else {
+        let obj = docSnap.data();
+        let idsFavourites = obj.favourites.map((element) => element.id);
+        dispatch(UserFavourites(idsFavourites));
+        setFlagCards(true);
+      }
+    } catch (e) {
+      console.log("error get", e);
     }
   };
   useEffect(() => {
     if (loggedId && auth.currentUser.uid) {
       getInfo();
     }
+    setFlagCards(true);
   }, [loggedId]);
 
   onAuthStateChanged(auth, (usuarioFirebase) => {
@@ -208,7 +222,7 @@ export default function Home({ navigation }) {
           navigation={navigation}
         />
       </View>
-      {availableCommerces.length ? (
+      {availableCommerces.length && flagCards ? (
         <View>
           {availableCommerces.map((resto) => {
             return (
@@ -220,7 +234,11 @@ export default function Home({ navigation }) {
             );
           })}
         </View>
-      ) : null}
+      ) : (
+        <View style={styles.loading}>
+          <ActivityIndicator size="large" color="#5555" />
+        </View>
+      )}
     </ScrollView>
   );
 }
@@ -292,5 +310,10 @@ const styles = StyleSheet.create({
   },
   googleTextinput: {
     padding: 10,
+  },
+  loading: {
+    height: 500,
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

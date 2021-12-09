@@ -8,9 +8,9 @@ import RegisterResto from "../Screens/RegisterResto.js";
 import AddUserScreen from "../Screens/RegisterUser.js";
 import AddMenuResto from "../Screens/AddMenuResto.js";
 import DetailsResto from "../Screens/DetailsResto";
-import ProfileUser from '../Screens/ProfileUser.js';
+import ProfileUser from "../Screens/ProfileUser.js";
 import GlobalLogin from "../Screens/GlobalLogin.js";
-import WebViewScreen from "../Screens/WebViewScreen"
+import WebViewScreen from "../Screens/WebViewScreen";
 import AwaitEmail from "../Screens/AwaitEmail.js";
 import NavHome from "../Screens/NavHome.js";
 import NavDetail from "../Screens/NavDetail";
@@ -20,7 +20,7 @@ import ProfileResto from "../Screens/ProfileResto";
 //
 //------------Styles y otros ---------
 import globalStyles from "../Screens/GlobalStyles";
-import { Text } from 'react-native'
+import { Text } from "react-native";
 
 const Stack = createNativeStackNavigator();
 
@@ -122,7 +122,6 @@ export default Navigator = () => {
           }}
         />
 
-
         <Stack.Screen
           name="AwaitEmail"
           component={AwaitEmail}
@@ -142,45 +141,52 @@ export default Navigator = () => {
         <Stack.Screen
           name="ProfileUser"
           component={ProfileUser}
+
           options={({ navigation }) => ({
             headerTitle: " Mi Perfil",
             title: 'Profile',
+
             headerTitleAlign: "center",
             headerRight: () => (
               <TouchableOpacity
                 style={globalStyles.btn}
+
                 onPress={() =>
                   navigation.navigate('RegisterResto')
                 }
+
               >
                 <Text>Create Resto</Text>
               </TouchableOpacity>
             ),
             headerStyle: {
-              backgroundColor: '#f6efd2',
+              backgroundColor: "#f6efd2",
             },
-            headerTintColor: '#392c28',
+            headerTintColor: "#392c28",
             headerTitleStyle: {
-              fontSize: 25
+              fontSize: 25,
             },
 
+
           })}
+
         />
         <Stack.Screen
           name="ProfileResto"
           component={ProfileResto}
           options={{
+
             headerTitle: " Mi Empresa",
             title: 'Profile',
+
             headerTitleAlign: "center",
             headerStyle: {
-              backgroundColor: '#f6efd2',
+              backgroundColor: "#f6efd2",
             },
-            headerTintColor: '#392c28',
+            headerTintColor: "#392c28",
             headerTitleStyle: {
-              fontSize: 25
+              fontSize: 25,
             },
-
           }}
         />
       </Stack.Navigator>
