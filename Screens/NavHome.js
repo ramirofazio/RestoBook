@@ -86,10 +86,10 @@ export default function NavHome({ title, navigation }) {
         }}
       >
         <View style={globalStyles.containerTitle}>
-          <Image
+          {/* <Image
             source={require("../assets/icon.png")}
             style={globalStyles.img}
-          />
+          /> */}
           <Text style={globalStyles.title}>{title}</Text>
         </View>
         <View style={globalStyles.btnContainer}>
@@ -102,12 +102,12 @@ export default function NavHome({ title, navigation }) {
                 : navigation.navigate("GlobalLogin")
             }
           >
-            <Text>{loggedId ? "Log out" : "Log in"}</Text>
+            <Text style={globalStyles.btnText}>{loggedId ? "Log out" : "Log in"}</Text>
           </TouchableOpacity>
 
           {loggedId && (
             <Btn
-              nombre={<UserOutlined name="user" color="#392c28" size={15} />}
+              nombre={<UserOutlined name="user" color="#ECCDAA" size={15} />}
               ruta="ProfileUser"
               navigation={navigation}
             />
@@ -115,7 +115,7 @@ export default function NavHome({ title, navigation }) {
 
           {commerce && loggedId && (
             <Btn
-              nombre={<RestOutlined name="rest" color="#392c28" size={15} />}
+              nombre={<RestOutlined name="rest" color="#ECCDAA" size={15} />}
               ruta="ProfileResto"
               navigation={navigation}
             />

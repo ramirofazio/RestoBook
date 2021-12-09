@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { AirbnbRating, Rating, Card, Text } from 'react-native-elements';
+import { AirbnbRating, Rating, Card, Text, Icon } from 'react-native-elements';
 import {
   View,
   Image,
@@ -14,7 +14,7 @@ import empresaDetail from "../Redux/Actions/empresaDetail.js";
 //-----STYLES----------
 import globalStyles from "../Screens/GlobalStyles.js";
 //------ICONS----------
-import { Icon, Text } from "react-native-elements";
+
 //----------FIREBASE UTILS-----------
 import firebase from "../database/firebase";
 import { getAuth } from "firebase/auth";

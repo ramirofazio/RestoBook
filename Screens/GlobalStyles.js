@@ -6,7 +6,7 @@ import { StyleSheet } from "react-native";
 const globalStyles = StyleSheet.create({
   Home: {
     flex: 1,
-    backgroundColor: '#ffdfcb'
+    backgroundColor: '#fdfdfd',
   },
   btnHome: {
     marginTop: 10,
@@ -16,25 +16,37 @@ const globalStyles = StyleSheet.create({
   },
   btnText: {
     fontSize: 12.5,
-    color: "#392c28",
+    color: "#eccdaa",
+    fontWeight: 'bold',
+   
+    
   },
   btnContainer: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-around",
     width: 160,
+    
   },
   Container: {
     alignItems: "center",
   },
   btn: {
-    backgroundColor: '#ffd964',
+    backgroundColor: '#161616',
     paddingVertical: 8,
     paddingHorizontal: 9,
-    borderRadius: 10,
+    borderRadius: 15,
     alignItems: "center",
-    borderWidth: 1,
-    borderColor: '#b39138',
+    borderWidth: 2,
+    borderColor: '#eccdaa',
+    shadowColor: "#fdfdfd",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 60,
+    shadowRadius: 4.84,
+    elevation: 10
   },
   img: {
     height: 40,
@@ -46,14 +58,23 @@ const globalStyles = StyleSheet.create({
   cardsContainer: {
     flex: 1,
     alignSelf: "center",
-    backgroundColor: "#f6efd3",
+    backgroundColor: "#f2f2f2",
     marginHorizontal: 10,
     marginVertical: 5,
     paddingHorizontal: 5,
     paddingVertical: 5,
     borderRadius: 25,
     width: "95%",
-    height: 150
+    height: 150,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 4.84,
+
+    elevation: 5,
   },
   menuCardsContainer: {
     flex: 1,
@@ -106,13 +127,16 @@ const globalStyles = StyleSheet.create({
     width: '100%',
     fontSize: 13,
     fontWeight: "bold",
+   
   },
   cardsHomeTitle: {
     // backgroundColor: "#5555",
     fontSize: 25,
     fontWeight: "bold",
     textAlign: "center",
-    width: '100%'
+    width: '100%',
+    color: '#161616',
+    
   },
   btnContainerCard: {
     // backgroundColor: 'violet',
@@ -122,12 +146,14 @@ const globalStyles = StyleSheet.create({
     alignSelf: "flex-end",
     alignItems: "center",
     marginTop: -120,
-    justifyContent: "space-around"
+    justifyContent: "space-around",
+    
   },
   wspImage: {
     width: 40,
     height: 40,
-    borderRadius: 25
+    borderRadius: 25,
+    
   },
   /// --------------------------------------------ACA TERMINAN  LOS ESTILOS DE LAS CARDS HOM -------
   //------------------------------CARDS MENU-----------------------------------------------------------------
@@ -154,13 +180,15 @@ const globalStyles = StyleSheet.create({
     fontSize: 25,
     fontWeight: "bold",
     textAlign: "left",
-    width: '100%'
+    width: '100%',
+    
   },
   cardsMenuDescriptionText: {
     textAlign: 'left',
     fontSize: 15,
     color: 'grey',
-    marginTop: -15
+    marginTop: -15,
+    
     
   },
   containerImgCardMenu: {
@@ -183,20 +211,22 @@ const globalStyles = StyleSheet.create({
 
   // --------------------------------------------CATEGORIAS LOCAL --------------------------------------------
   categoriesView: {
-    backgroundColor: "white",
-    borderRadius: 10,
+    backgroundColor: "#4E4E4E",
+    borderRadius: 15,
     paddingVertical: 2,
     paddingHorizontal: 5,
-    borderWidth: 2,
-    borderColor: "#333a",
+    borderWidth: 1,
+    // borderColor: "#161616",
 
     //backgroundColor: "red",
   },
   categoriesText: {
-    fontWeight: "bold",
     fontSize: 13,
     padding: 1,
-    textAlign:"center"
+    textAlign:"center",
+    color: '#ECCEAB',
+    
+    fontWeight: "bold",
   },
 //----------------------------ACA TERMINA CATEGORIAS LOCALES --------------------------------------------
 
@@ -290,6 +320,8 @@ const globalStyles = StyleSheet.create({
     textAlign: "center",
     fontSize: 30,
     fontWeight: "bold",
+
+
   },
 //------------------------------------------------------------------------------------------------------
   title: {
@@ -297,21 +329,23 @@ const globalStyles = StyleSheet.create({
     fontWeight: "bold",
     paddingVertical: 10,
     paddingHorizontal: 5,
-    color: '#392c28'
+    color: '#ECCDAA',
+   
   },
   componentTitle: {
     alignSelf: "center",
     marginTop: 10,
     fontSize: 30,
-    color: "#392c28"
-
+    
   },
   containerTitle: {
     flexDirection: "row",
+    
   },
   navHome: {
     flexDirection: "row",
     width: "100%",
+    backgroundColor: "#161616"
   },
   touchLog: {
     marginTop: 10,
@@ -336,7 +370,9 @@ const globalStyles = StyleSheet.create({
   fontLog: {
     color: "#392c28",
     fontWeight: "bold",
-    textAlign: "center"
+    textAlign: "center",
+ 
+
   },
   btnContainerLogin: {
     flex: 6,
@@ -350,6 +386,8 @@ const globalStyles = StyleSheet.create({
     textAlign: "center",
     fontSize: 20,
     width: "100%",
+    
+
   },
   texts: {
     color: "#000",
@@ -357,10 +395,12 @@ const globalStyles = StyleSheet.create({
     width: "100%",
     fontSize: 14.5,
     fontWeight: "bold",
+    
     paddingVertical: 1,
   },
   textDownButton: {
     textAlign: "center",
+    
     width: "100%",
     fontSize: 13,
     marginTop: 5,
@@ -369,6 +409,7 @@ const globalStyles = StyleSheet.create({
     textAlign: "center",
     width: "100%",
     fontSize: 12,
+    
   },
   textContainer: {
     flex: 1,

@@ -248,9 +248,10 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     justifyContent: "center",
     width: "90%",
-    borderColor: "#bd967e",
+    borderColor: "#000000",
+    backgroundColor: '#161616',
     borderRadius: 10,
-    borderWidth: 3,
+    borderWidth: 4,
     marginTop: 10,
   },
   textContainer2: {
@@ -268,7 +269,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     paddingVertical: 5,
     fontWeight: "bold",
-    color: "#392c28",
+    color: "#FDFDFD",
   },
 
   textContainer2: {

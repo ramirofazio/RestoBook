@@ -36,7 +36,7 @@ export default Navigator = () => {
               <NavHome navigation={navigation} title={"Resto Book"} />
             ),
             headerStyle: {
-              backgroundColor: "#f6efd2",
+              backgroundColor: "#161616",
             },
           })}
         />
