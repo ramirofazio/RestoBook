@@ -82,13 +82,13 @@ const ProfileUser = ({ navigation }) => {
       "idResto": "JyZ4DGShfFONQVE9y4fj",
       "idUser": "sNYshQ9DEYggznBVA38DF2BNXfM2",
       "img": "",
-      "location":  {
+      "location": {
         "address": "",
         "latitude": -34.61315,
         "longitude": -58.37723,
       },
-      "menu":  [
-         {
+      "menu": [
+        {
           "description": "Las pastas de gran ",
           "foodName": "Pastas feas",
           "img": "file:///var/mobile/Containers/Data/Application/D09EF3A7-9869-49DF-8A6A-63D51A6363EE/Library/Caches/ExponentExperienceData/%2540anonymous%252FRestoBook-536ab453-cf09-435d-b7e1-150ec487fa5a/ImagePicker/6B864B78-4D6C-41D6-833C-0C10064237A7.jpg",
@@ -100,7 +100,7 @@ const ProfileUser = ({ navigation }) => {
       "razonSocial": "",
       "title": "McDonald Fran",
     },
-     {
+    {
       "category": "",
       "cuit": "123456789",
       "description": "El restaurante de Ramiro ",
@@ -108,13 +108,13 @@ const ProfileUser = ({ navigation }) => {
       "idResto": "XqjVxo9rTjxfZ0RNPQeT",
       "idUser": "tBsnBsAtBWeIvTmUUc8MUlB5x882",
       "img": "",
-      "location":  {
+      "location": {
         "address": "",
         "latitude": -34.61315,
         "longitude": -58.37723,
       },
-      "menu":  [
-         {
+      "menu": [
+        {
           "description": "hamburguesas con jamon y queso",
           "foodName": "hamburguesas",
           "img": "",
@@ -126,7 +126,7 @@ const ProfileUser = ({ navigation }) => {
       "razonSocial": "",
       "title": "Rami Resto",
     },
-     {
+    {
       "category": "",
       "cuit": "272818181",
       "description": "Vivo abajo del puente ",
@@ -134,18 +134,18 @@ const ProfileUser = ({ navigation }) => {
       "idResto": "dt88DfXbO8crYQo0DyUo",
       "idUser": "sNYshQ9DEYggznBVA38DF2BNXfM2",
       "img": "",
-      "location":  {
+      "location": {
         "address": "",
         "latitude": -34.61315,
         "longitude": -58.37723,
       },
-      "menu":  [],
+      "menu": [],
       "phone": "272818181",
       "phone2": "272828272",
       "razonSocial": "",
       "title": "London Bridge",
     },
-     {
+    {
       "category": "Hamburguesas",
       "cuit": "27282828181",
       "description": "Sjskskskskakska",
@@ -153,13 +153,13 @@ const ProfileUser = ({ navigation }) => {
       "idResto": "jtviznmMDLe0mFuXTusB",
       "idUser": "sNYshQ9DEYggznBVA38DF2BNXfM2",
       "img": "",
-      "location":  {
+      "location": {
         "address": "San Lorenzo 2551, Resistencia, Chaco, Argentina",
         "latitude": -27.4768112,
         "longitude": -59.00318550000001,
       },
-      "menu":  [
-         {
+      "menu": [
+        {
           "description": "Jajajaja",
           "foodName": "Jdsjakka",
           "img": "file:///var/mobile/Containers/Data/Application/D09EF3A7-9869-49DF-8A6A-63D51A6363EE/Library/Caches/ExponentExperienceData/%2540anonymous%252FRestoBook-536ab453-cf09-435d-b7e1-150ec487fa5a/ImagePicker/4E105187-B861-4C29-BA8E-5216A2D3D18A.jpg",
@@ -409,40 +409,51 @@ const ProfileUser = ({ navigation }) => {
                       X
                     </Text>
                   </TouchableOpacity>
-                  <Text style={styles.modalText}>Edit your Username</Text>
-                  <Text>Nombre</Text>
-                  <TextInput
-                    style={globalStyles.texts}
-                    placeholder={currentUser?.name}
-                    onChangeText={(value) =>
-                      setNewUserInfo({
-                        ...newUserInfo,
-                        name: value,
-                      })
-                    }
-                  />
-                  <Text>Apellido</Text>
-                  <TextInput
-                    style={globalStyles.texts}
-                    placeholder={currentUser?.lastName}
-                    onChangeText={(value) =>
-                      setNewUserInfo({
-                        ...newUserInfo,
-                        lastName: value,
-                      })
-                    }
-                  />
-                  <Text>Celular</Text>
-                  <TextInput
-                    style={globalStyles.texts}
-                    placeholder={currentUser?.cel}
-                    onChangeText={(value) =>
-                      setNewUserInfo({
-                        ...newUserInfo,
-                        cel: value,
-                      })
-                    }
-                  />
+                  <Text style={styles.modalText}>Cambia Tu Usuario</Text>
+                  <View style={{ marginVertical: 25, width: "100%" }}>
+                    <Text style={{ textAlign: "center", marginBottom: -15 }}>Nombre: </Text>
+                    <View style={globalStyles.inputComponent}>
+                      <TextInput
+                        style={globalStyles.texts}
+                        placeholder={currentUser?.name}
+                        placeholderTextColor="#555"
+                        onChangeText={(value) =>
+                          setNewUserInfo({
+                            ...newUserInfo,
+                            name: value,
+                          })
+                        }
+                      />
+                    </View>
+                    <Text style={{ textAlign: "center", marginBottom: -15 }}>Apellido: </Text>
+                    <View style={globalStyles.inputComponent}>
+                      <TextInput
+                        style={globalStyles.texts}
+                        placeholder={currentUser?.lastName}
+                        placeholderTextColor="#555"
+                        onChangeText={(value) =>
+                          setNewUserInfo({
+                            ...newUserInfo,
+                            lastName: value,
+                          })
+                        }
+                      />
+                    </View>
+                    <Text style={{ textAlign: "center", marginBottom: -15 }}>Celular: </Text>
+                    <View style={globalStyles.inputComponent}>
+                      <TextInput
+                        style={globalStyles.texts}
+                        placeholder={currentUser?.cel}
+                        placeholderTextColor="#555"
+                        onChangeText={(value) =>
+                          setNewUserInfo({
+                            ...newUserInfo,
+                            cel: value,
+                          })
+                        }
+                      />
+                    </View>
+                  </View>
                   <TouchableOpacity
                     style={globalStyles.touchLog}
                     onPress={() => {
@@ -579,7 +590,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginTop: 22,
-    //backgroundColor: "blur",
+    backgroundColor: "#ffffff10",
   },
   modalView: {
     margin: 20,
@@ -615,7 +626,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   modalText: {
-    marginBottom: 15,
+    marginTop: 20,
     textAlign: "center",
     fontSize: 30,
     fontWeight: "bold",

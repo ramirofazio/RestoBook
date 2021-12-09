@@ -139,7 +139,7 @@ const RegisterResto = ({ navigation }) => {
         alignSelf: 'center',
         marginTop: 15,
         borderRadius: 10,
-        maxWidth: '100%',  
+        maxWidth: '100%',
       }}
       >
         <GooglePlacesAutocomplete
@@ -341,8 +341,8 @@ const RegisterResto = ({ navigation }) => {
               {props.touched.cuit && props.errors.cuit ? (
                 <Text style={globalStyles.errorText}>{props.errors.cuit}</Text>
               ) : null}
-              
-              <Pressable onPress={() => setIsVisible(true) }>
+
+              <Pressable onPress={() => setIsVisible(true)}>
                 <View style={globalStyles.inputComponent}>
                   <TextInput
                     style={globalStyles.texts}
@@ -385,29 +385,46 @@ const RegisterResto = ({ navigation }) => {
       </Formik>
 
       <View style={globalStyles.inputComponent}>
-      
+
         <BottomSheet
           isVisible={isVisible}
-          containerStyle={{ backgroundColor: 'rgba(0.5,0.25,0,0.2)' }}
+          containerStyle={{ backgroundColor: '#333a' }}
         >
           {categories.map((categoria, index) => (
             <ListItem
               key={index}
               containerStyle={{ backgroundColor: 'rgba(0.5,0.25,0,0.7)' }}
-              style={{ borderWidth: 1, borderColor: '#cccccc' }}
+              style={{ borderBottomWidth: 1, borderColor: '#333a', backgroundColor: "#fff0" }}
               onPress={() => {
-                setState({ ...state, category: categoria }) 
+                setState({ ...state, category: categoria })
                 setIsVisible(false)
               }}
             >
-              <ListItem.Content>
-                <ListItem.Title style={{ height: 35, color: '#FFF', padding: 8 }}>{categoria}</ListItem.Title>
+              <ListItem.Content
+                style={{ backgroundColor: "#0000", alignItems: "center" }}
+              >
+                <ListItem.Title
+                  style={{ height: 35, color: '#fff', padding: 8 }}
+                >
+                  {categoria}
+                </ListItem.Title>
               </ListItem.Content>
             </ListItem>
           ))}
-          <ListItem key={999} containerStyle={{ backgroundColor: 'red' }} style={{ borderWidth: 1, borderColor: '#cccccc' }} onPress={() => setIsVisible(false)}>
-            <ListItem.Content style={{}}>
-              <ListItem.Title style={{ height: 35, color: '#FFF', padding: 8 }}>Cancel</ListItem.Title>
+          <ListItem
+            key={999}
+            containerStyle={{ backgroundColor: 'red' }}
+            style={{ borderBottomWidth: 1, borderColor: '#333a' }}
+            onPress={() => setIsVisible(false)}
+          >
+            <ListItem.Content
+              style={{ alignItems: "center" }}
+            >
+              <ListItem.Title
+                style={{ height: 35, color: '#FFF', padding: 8, fontSize: 20 }}
+              >
+                Cancel
+              </ListItem.Title>
             </ListItem.Content>
           </ListItem>
         </BottomSheet>

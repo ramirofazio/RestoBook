@@ -40,12 +40,14 @@ export default Navigator = () => {
             },
           })}
         />
-        <Stack.Screen name="RegisterUser" component={AddUserScreen} />
+        <Stack.Screen
+          name="RegisterUser"
+          component={AddUserScreen} />
         <Stack.Screen
           name="RegisterResto"
           component={RegisterResto}
           options={{
-            headerTitle: "RegisterResto",
+            headerTitle: "Register Resto",
             title: "Register Resto",
             headerTitleAlign: "center",
             headerStyle: {
@@ -61,8 +63,7 @@ export default Navigator = () => {
           name="AddMenuResto"
           component={AddMenuResto}
           options={{
-            headerTitle: "AddMenuResto",
-            title: "Add Your Menu",
+            headerTitle: "Agregar Menu",
             headerTitleAlign: "center",
             headerStyle: {
               backgroundColor: "#f6efd2",
@@ -90,7 +91,7 @@ export default Navigator = () => {
           name="WebViewScreen"
           component={WebViewScreen}
           options={{
-            headerTitle: "WebViewScreen",
+            headerTitle: "Pague Su Reserva",
             title: "WebViewScreen",
             headerTitleAlign: "center",
             headerStyle: {
@@ -141,8 +142,8 @@ export default Navigator = () => {
         <Stack.Screen
           name="ProfileUser"
           component={ProfileUser}
-          options={ ({navigation}) =>({
-            headerTitle: "Profile",
+          options={({ navigation }) => ({
+            headerTitle: " Mi Perfil",
             title: 'Profile',
             headerTitleAlign: "center",
             headerRight: () => (
@@ -169,7 +170,7 @@ export default Navigator = () => {
           name="ProfileResto"
           component={ProfileResto}
           options={{
-            headerTitle: "Profile",
+            headerTitle: " Mi Empresa",
             title: 'Profile',
             headerTitleAlign: "center",
             headerStyle: {
