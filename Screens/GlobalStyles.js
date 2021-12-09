@@ -9,7 +9,7 @@ const globalStyles = StyleSheet.create({
     backgroundColor: '#ffdfcb'
   },
   btnHome: {
-    marginTop: 10,
+    marginVertical: 10,
     flexDirection: "row",
     justifyContent: "space-around",
 
@@ -21,7 +21,7 @@ const globalStyles = StyleSheet.create({
   btnContainer: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-around",
+    justifyContent: "space-between",
     width: 160,
   },
   Container: {
@@ -41,7 +41,7 @@ const globalStyles = StyleSheet.create({
     width: 40,
     resizeMode: 'contain' // esta linea es para que se adapte al tam;o de la imagen
   },
-  
+
   // --------------------------------------------CARD HOME --------------------------------------------
   cardsContainer: {
     flex: 1,
@@ -161,7 +161,7 @@ const globalStyles = StyleSheet.create({
     fontSize: 15,
     color: 'grey',
     marginTop: -15
-    
+
   },
   containerImgCardMenu: {
     width: "25%",
@@ -196,11 +196,11 @@ const globalStyles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 13,
     padding: 1,
-    textAlign:"center"
+    textAlign: "center"
   },
-//----------------------------ACA TERMINA CATEGORIAS LOCALES --------------------------------------------
+  //----------------------------ACA TERMINA CATEGORIAS LOCALES --------------------------------------------
 
-// ---------------------------- PROFILE USER Y RESTO ----------------------------------------------------
+  // ---------------------------- PROFILE USER Y RESTO ----------------------------------------------------
   Perfilcontainer: {
     flex: 1,
     backgroundColor: "#e6c2bf",
@@ -239,7 +239,7 @@ const globalStyles = StyleSheet.create({
     maxHeight: "30%",
     height: "20%",
   },
-  btnProfileResto : {
+  btnProfileResto: {
     color: 'transparent',
     borderWidth: 3,
     borderColor: "black",
@@ -253,8 +253,8 @@ const globalStyles = StyleSheet.create({
     justifyContent: "center"
   },
 
-// ------------------------------------------------------------------------------------------------------
-//------------------------------MODAL PROFILES-----------------------------------------------------------
+  // ------------------------------------------------------------------------------------------------------
+  //------------------------------MODAL PROFILES-----------------------------------------------------------
   centeredView: {
     flex: 1,
     justifyContent: "center",
@@ -279,7 +279,7 @@ const globalStyles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
- 
+
   textStyle: {
     color: "white",
     fontWeight: "bold",
@@ -291,7 +291,7 @@ const globalStyles = StyleSheet.create({
     fontSize: 30,
     fontWeight: "bold",
   },
-//------------------------------------------------------------------------------------------------------
+  //------------------------------------------------------------------------------------------------------
   title: {
     fontSize: 25,
     fontWeight: "bold",

@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+
 //
 //----------IMP SCREENS-----------
 import Home from "../Screens/Home";
@@ -16,6 +18,7 @@ import NavHome from "../Screens/NavHome.js";
 import NavDetail from "../Screens/NavDetail";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import ProfileResto from "../Screens/ProfileResto";
+import Btn from "../Screens/Helpers/Btns";
 //
 //
 //------------Styles y otros ---------
@@ -23,8 +26,28 @@ import globalStyles from "../Screens/GlobalStyles";
 import { Text } from "react-native";
 
 const Stack = createNativeStackNavigator();
+const auth = getAuth()
 
 export default Navigator = () => {
+  const [usuarioGlobal, setUsuarioGlobal] = useState("");
+
+
+  onAuthStateChanged(auth, (usuarioFirebase) => {
+    if (usuarioFirebase?.emailVerified) {
+      if (usuarioFirebase.displayName) {
+        //console.log("entre a if")
+        setUsuarioGlobal(usuarioFirebase.displayName);
+      } else {
+        //console.log("entre a else")
+        const trimmedName = usuarioFirebase.email.split("@")[0];
+        setUsuarioGlobal(trimmedName);
+      }
+    } else {
+      //console.log("entre a else else")
+      setUsuarioGlobal("");
+    }
+  });
+
   return (
     <NavigationContainer>
       <Stack.Navigator>
@@ -148,16 +171,15 @@ export default Navigator = () => {
 
             headerTitleAlign: "center",
             headerRight: () => (
-              <TouchableOpacity
-                style={globalStyles.btn}
-
-                onPress={() =>
-                  navigation.navigate('RegisterResto')
+              <Btn
+                nombre={
+                  usuarioGlobal !== ""
+                    ? `Create your resto, ${usuarioGlobal}!`
+                    : `Crea tu resto!`
                 }
-
-              >
-                <Text>Create Resto</Text>
-              </TouchableOpacity>
+                ruta="RegisterResto"
+                navigation={navigation}
+              />
             ),
             headerStyle: {
               backgroundColor: "#f6efd2",

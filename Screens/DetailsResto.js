@@ -9,7 +9,7 @@ import { useSelector } from "react-redux";
 //
 //
 //----------REACT-NATIVE UTILS-----------
-import { View, Text, StyleSheet, Image, Linking, TouchableOpacity, Modal, TextInput, Picker } from "react-native";
+import { View, Text, StyleSheet, Image, Linking, TouchableOpacity, Modal, TextInput } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import MapView, { Marker } from "react-native-maps";
 //import DateTimePicker from '@react-native-community/datetimepicker';
@@ -17,7 +17,7 @@ import MapView, { Marker } from "react-native-maps";
 //
 //----------FIREBASE UTILS-----------
 import { getAuth } from "firebase/auth";
-import { onSnapshot, collection, query, doc, getDoc, updateDoc, arrayUnion } from "firebase/firestore";
+import { onSnapshot, collection, query, doc, getDoc } from "firebase/firestore";
 
 import firebase from "../database/firebase";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -37,20 +37,21 @@ const PLATO_PRINCIPAL = "PLATO PRINCIPAL"
 const GUARNICION = 'GUARNICION'
 const BEBIDA = "BEBIDA"
 const POSTRES = "POSTRES"
-const TODOS = "TODOS"
-
 //
 //
 //-------INITIALIZATIONS-------
 const auth = getAuth();
-
 //
 //---------------------------------------------------------------------------------------//
 //
 const DetailsResto = ({ navigation }) => {
+
+  //--------------------------MERCADO PAGO--------------------------
   const [precioCabeza, setPrecioCabeza] = useState()
   const [cantLugares, setCantLugares] = useState()
   const [modalVisible, setModalVisible] = useState(false)
+
+  //--------------------------FILTROS CATEGORY--------------------------
   const [menuCategory, setMenuCategory] = useState()
 
   const empresaDetail = useSelector((state) => state.empresaDetail);
@@ -100,60 +101,6 @@ const DetailsResto = ({ navigation }) => {
     getMenu()
   }, []);
 
-  const getCurrentDate = () => {
-    let min = new Date().getMinutes().toString();
-    let hour = new Date().getHours().toString();
-    let date = new Date().getDate().toString();
-    let month = (new Date().getMonth() + 1).toString();
-    let year = new Date().getFullYear().toString();
-    return hour + min + date + month + year;// 22:10 12/10/2021
-  }
-  //console.log(getCurrentDate())
-
-  /*try {
-            let restoRef = doc(firebase.db, "Restos", idResto);
-            setSpinner(true);
-            await updateDoc(restoRef, {
-              menu: arrayUnion(newValues),
-            });
-            setSpinner(false);
-            navigation.navigate("DetailsResto");
-          } catch (err) {
-            console.log(err);
-          } */
-
-  // const handleReserva = async () => {
-  //   if (auth.currentUser) {
-  //     const reserva = {
-  //       idReserva: getCurrentDate(),
-  //       emailUser: auth.currentUser.email,
-  //       idUser: auth.currentUser.uid,
-  //       nameResto: empresaDetail.title,
-  //       idResto: empresaDetail.idResto
-  //     };
-
-  //     try {
-  //       let restoRef = doc(firebase.db, "Users", auth.currentUser.uid);
-  //       await updateDoc(restoRef, {
-  //         reservations: arrayUnion(reserva),
-  //       })
-  //     } catch (err) {
-  //       console.log(err);
-  //     }
-  //     try {
-  //       let restoRef = doc(firebase.db, "Restos", empresaDetail.idResto);
-  //       await updateDoc(restoRef, {
-  //         reservations: arrayUnion(reserva),
-  //       })
-  //     } catch (err) {
-  //       console.log(err);
-  //     }
-  //     alert("Su reserva ha sido registrada!")
-  //   } else {
-  //     alert("Logueate antes de reservar!")
-  //   }
-  // }
-
   const handleCategory = async (category) => {
     const docRef = doc(firebase.db, "Restos", empresaDetail.idResto);
     const docSnap = await getDoc(docRef);
@@ -171,7 +118,6 @@ const DetailsResto = ({ navigation }) => {
       }
     }
   }
-
 
 
   return (
