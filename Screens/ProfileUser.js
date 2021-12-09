@@ -82,8 +82,12 @@ let imgPerrito =
   "https://res.cloudinary.com/restobook/image/upload/samples/bike.jpg";
 
 const ProfileUser = ({ navigation }) => {
+
   const empresas = useSelector((state) => state.empresas);
+
+
   const loggedUser = useSelector((state) => state.currentUser);
+
   const loggedId = useSelector((state) => state.currentId);
   const [modalVisible, setModalVisible] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
@@ -91,20 +95,6 @@ const ProfileUser = ({ navigation }) => {
   const [uploading, setUploading] = useState(false);
   const [image, setImage] = useState("");
   const [myFavourites, setMyFavourites] = useState([])
-
-  // useEffect(() => {
-  //   const q = query(collection(firebase.db, "Users"));
-  //   const unsubscribe = onSnapshot(q, (querySnapshot) => {
-  //     querySnapshot.forEach((doc) => {
-  //       if (doc.id === loggedId) {
-  //         let obj = doc.data();
-  //         setImage(obj.profileImage);
-  //         setCurrentUser(obj);
-  //         setNewUserInfo(obj);
-  //       }
-  //     });
-  //   });
-  // }, [loggedId]);
 
   useEffect(() => {
     const getInfo = async () => {
@@ -117,7 +107,7 @@ const ProfileUser = ({ navigation }) => {
         setCurrentUser(obj);
         setNewUserInfo(obj);
         setMyFavourites(obj.favourites)
-        console.log(obj.favourites)
+        // console.log(obj.favourites)
       } else {
         alert("NO HAY INFO");
       }
@@ -451,31 +441,5 @@ const ProfileUser = ({ navigation }) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  
- 
-  //----------------------- modal css?? ---------------------------------
-  buttonOpen: {
-    backgroundColor: "#F194FF",
-  },
-  buttonClose: {
-    backgroundColor: "#2196F3",
-  },
-  botton: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-    //float: "right",
-  },
-  bottonClose: {
-    backgroundColor: "#2196F3",
-  },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-  },
-});
 
 export default ProfileUser;

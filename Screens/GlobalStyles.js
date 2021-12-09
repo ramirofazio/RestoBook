@@ -11,7 +11,8 @@ const globalStyles = StyleSheet.create({
   btnHome: {
     marginTop: 10,
     flexDirection: "row",
-    justifyContent: "space-around"
+    justifyContent: "space-around",
+
   },
   btnText: {
     fontSize: 12.5,
@@ -54,6 +55,22 @@ const globalStyles = StyleSheet.create({
     width: "95%",
     height: 150
   },
+  menuCardsContainer: {
+    flex: 1,
+    display: "flex",
+    flexDirection: "row",
+    alignSelf: "center",
+    width: "95%",
+    height: 150,
+    marginVertical: 10,
+    paddingHorizontal: 15,
+    paddingVertical: 15,
+    justifyContent: "space-around",
+
+    backgroundColor: "#f6efd3",
+    borderRadius: 25,
+
+  },
   containerImgCard: {
     width: "31.6%",
     maxHeight: '5%',
@@ -68,6 +85,12 @@ const globalStyles = StyleSheet.create({
     height: 120,
     borderRadius: 25,
     justifyContent: "center"
+  },
+  cardsMenuimg: {
+    width: 80,
+    height: 80,
+    borderRadius: 25,
+
   },
   cardsDescriptionContainer: {
     // backgroundColor: 'green',
@@ -162,7 +185,12 @@ const globalStyles = StyleSheet.create({
   categoriesView: {
     backgroundColor: "white",
     borderRadius: 10,
-    padding: 2,
+    paddingVertical: 2,
+    paddingHorizontal: 5,
+    borderWidth: 2,
+    borderColor: "#333a",
+
+    //backgroundColor: "red",
   },
   categoriesText: {
     fontWeight: "bold",
@@ -324,10 +352,12 @@ const globalStyles = StyleSheet.create({
     width: "100%",
   },
   texts: {
+    color: "#000",
     textAlign: "center",
     width: "100%",
     fontSize: 14.5,
     fontWeight: "bold",
+    paddingVertical: 1,
   },
   textDownButton: {
     textAlign: "center",

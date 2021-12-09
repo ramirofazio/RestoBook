@@ -14,19 +14,20 @@ import {
   Text,
   StyleSheet,
   ScrollView,
-  TouchableOpacity
+  TouchableOpacity,
+  Pressable
 } from "react-native";
 //
 //----------FORMIK y YUP------------------
-import { Formik } from 'formik';
-import * as yup from 'yup';
+import { Formik } from "formik";
+import * as yup from "yup";
 
 //
 //
 //----------GOOGLE MAPS---------------
 import MapView, { Marker } from "react-native-maps";
-import { GOOGLE_API_KEY } from '@env'
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import { GOOGLE_API_KEY } from "@env";
+import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 //
 //
 //----------FIREBASE UTILS-----------
@@ -54,40 +55,30 @@ const auth = getAuth();
 //
 
 const registerRestoSchema = yup.object({
-  email: yup.string()
-    .required(),
-  title: yup.string()
-    .required()
-    .min(3)
-    .max(15),
-  description: yup.string()
-    .required()
-    .min(10)
-    .max(60),
-  phone: yup.number()
-    .required(),
+  email: yup.string().required(),
+  title: yup.string().required().min(3).max(15),
+  description: yup.string().required().min(10).max(60),
+  phone: yup.number().required(),
   phone2: yup.number(),
-  cuit: yup.number()
-    .required(),
-})
+  cuit: yup.number().required(),
+});
 
 const RegisterResto = ({ navigation }) => {
-
   const initialRegion = {
-    latitude: -34.6131500,
-    longitude: -58.3772300,
+    latitude: -34.61315,
+    longitude: -58.37723,
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
-  }
-  const dispatch = useDispatch()
-  const [isVisible, setIsVisible] = useState(false)
+  };
+  const dispatch = useDispatch();
+  const [isVisible, setIsVisible] = useState(false);
   const [region, setRegion] = useState(initialRegion);
   const [state, setState] = useState({
-    lat: -34.6131500,
-    lng: -58.3772300,
+    lat: -34.61315,
+    lng: -58.37723,
     address: "",
-    category: '',
-  })
+    category: "",
+  });
   const categories = useSelector((state) => state.categoriesResto);
 
   let id = null;
@@ -97,22 +88,22 @@ const RegisterResto = ({ navigation }) => {
     }
   });
 
-  const handleOnPressPickImage = async (handleChange) => {
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (status === "granted") {
-      let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.All,
-        allowsEditing: true,
-        aspect: [4, 3],
-        quality: 1,
-      });
-      if (!result.cancelled) {
-        handleChange(result.uri);
-      }
-    } else {
-      alert("Sorry, we need camera roll permissions to make this work!");
-    }
-  };
+  // const handleOnPressPickImage = async (handleChange) => {
+  //   const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+  //   if (status === "granted") {
+  //     let result = await ImagePicker.launchImageLibraryAsync({
+  //       mediaTypes: ImagePicker.MediaTypeOptions.All,
+  //       allowsEditing: true,
+  //       aspect: [4, 3],
+  //       quality: 1,
+  //     });
+  //     if (!result.cancelled) {
+  //       handleChange(result.uri);
+  //     }
+  //   } else {
+  //     alert("Sorry, we need camera roll permissions to make this work!");
+  //   }
+  // };
 
   const setStateAndRegion = (newLocation, formatedAddress) => {
     const { lat, lng } = newLocation;
@@ -121,58 +112,76 @@ const RegisterResto = ({ navigation }) => {
       longitude: lng,
       latitudeDelta: 0.004757,
       longitudeDelta: 0.006866,
-    })
+    });
     setState({
       ...state,
       address: formatedAddress,
       lat: lat,
-      lng: lng
-    })
-  }
+      lng: lng,
+    });
+  };
 
   return (
     <View style={globalStyles.Home}>
-      <View style={globalStyles.inputComponent}>
+      <View style={{
+        backgroundColor: '#e8b595',
+        width: '80%',
+        alignSelf: 'center',
+        marginTop: 15,
+        borderRadius: 10,
+        maxWidth: '100%',
+      }}
+      >
         <GooglePlacesAutocomplete
-          placeholder='Completa tu direccion'
-          nearbyPlacesAPI='GooglePlacesSearch'
+          placeholder="Completa tu direccion"
+          nearbyPlacesAPI="GooglePlacesSearch"
           debounce={400}
           enablePoweredByContainer={false}
           query={{
             key: GOOGLE_API_KEY,
-            language: 'en',
+            language: "en",
           }}
           minLength={3}
-          onPress={(data, details = null) => setStateAndRegion(details.geometry.location, details.formatted_address)}
+          onPress={(data, details = null) =>
+            setStateAndRegion(
+              details.geometry.location,
+              details.formatted_address
+            )
+          }
           fetchDetails={true}
           styles={{
             container: {
               flex: 0,
-              width: '150%',
+
+              width: '100%',
+
               padding: 0,
-              alignSelf: 'center',
+              alignSelf: "center",
             },
             textInput: {
+              marginTop: 4,
               fontSize: 14.5,
+
               fontWeight: 'bold',
-              width: '130%',
+              width: '80%',
               backgroundColor: 'transparent',
               textAlign: 'center',
+              overflow: 'hidden'
+
             },
             textInputContainer: {
-              alignItems: 'center',
+              alignItems: "center",
               height: 18,
+              overflow: 'hidden'
             },
             listView: {
               borderRadius: 13,
-              backgroundColor: '#f6efd2',
+              backgroundColor: "#f6efd2",
             },
-            description: {
-            },
+            description: {},
             row: {
-              backgroundColor: '#f6efd2',
+              backgroundColor: "#f6efd2",
             },
-
           }}
         />
       </View>
@@ -186,10 +195,13 @@ const RegisterResto = ({ navigation }) => {
           phone2: "",
           cuit: "",
           category: state.category,
-          img: "",
-          lat: state.lat,
-          lng: state.lng,
-          address: state.address,
+
+          //img: "",
+          lat: "",
+          lng: "",
+          address: "",
+          reservations: [],
+
         }}
         validationSchema={registerRestoSchema}
         onSubmit={(values) => {
@@ -207,26 +219,22 @@ const RegisterResto = ({ navigation }) => {
                   phone2: values.phone2,
                   cuit: values.cuit,
                   category: state.category.toLowerCase(),
-                  img: values.img,
+                  // img: values.img,
                   menu: [],
+                  reservations: [],
                   location: {
                     latitude: state.lat,
                     longitude: state.lng,
-                    address: state.address.toLowerCase()
-                  }
+                    address: state.address.toLowerCase(),
+                  },
                 })
                 .then(
-                  firebase.db
-                    .collection("Users")
-                    .doc(id)
-                    .update({
-                      commerce: true
-                    })
+                  firebase.db.collection("Users").doc(id).update({
+                    commerce: true,
+                  })
                 )
-                .then(
-                  dispatch(SetCommerce())
-                )
-                .then(navigation.navigate("RestoBook"))
+                .then(dispatch(SetCommerce()))
+                .then(navigation.navigate("RestoBook"));
             } catch (error) {
               console.log(error);
             }
@@ -238,7 +246,6 @@ const RegisterResto = ({ navigation }) => {
         {(props) => (
           <View>
             <ScrollView>
-
               <View style={globalStyles.inputComponent}>
                 <TextInput
                   style={globalStyles.texts}
@@ -278,7 +285,9 @@ const RegisterResto = ({ navigation }) => {
               </View>
 
               {props.touched.description && props.errors.description ? (
-                <Text style={globalStyles.errorText}>{props.errors.description}</Text>
+                <Text style={globalStyles.errorText}>
+                  {props.errors.description}
+                </Text>
               ) : null}
 
               <View style={globalStyles.inputComponent}>
@@ -304,12 +313,13 @@ const RegisterResto = ({ navigation }) => {
                   value={props.values.phone2}
                   onBlur={props.handleBlur("phone2")}
                   keyboardType="numeric"
-
                 />
               </View>
 
               {props.touched.phone2 && props.errors.phone2 ? (
-                <Text style={globalStyles.errorText}>{props.errors.phone2}</Text>
+                <Text style={globalStyles.errorText}>
+                  {props.errors.phone2}
+                </Text>
               ) : null}
 
               <View style={globalStyles.inputComponent}>
@@ -320,7 +330,6 @@ const RegisterResto = ({ navigation }) => {
                   value={props.values.cuit}
                   onBlur={props.handleBlur("cuit")}
                   keyboardType="numeric"
-
                 />
               </View>
 
@@ -328,8 +337,20 @@ const RegisterResto = ({ navigation }) => {
                 <Text style={globalStyles.errorText}>{props.errors.cuit}</Text>
               ) : null}
 
+              <Pressable onPress={() => setIsVisible(true)}>
+                <View style={globalStyles.inputComponent}>
+                  <TextInput
+                    style={globalStyles.texts}
+                    editable={false}
+                    placeholder="Select Category"
+                    value={state.category}
+                    onPressIn={() => setIsVisible(true)}
+                  />
+                </View>
+              </Pressable>
+
               <View style={{ alignItems: "center" }}>
-                <TouchableOpacity
+                {/* <TouchableOpacity
                   style={globalStyles.touchLog}
                   onPress={() => {
                     handleOnPressPickImage(props.handleChange("img"));
@@ -340,7 +361,7 @@ const RegisterResto = ({ navigation }) => {
                       ? "Change Image"
                       : "Select Image"}
                   </Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
               </View>
 
               <View style={{ alignItems: "center" }}>
@@ -352,74 +373,85 @@ const RegisterResto = ({ navigation }) => {
                 </TouchableOpacity>
               </View>
             </ScrollView>
-
           </View>
-
         )}
       </Formik>
 
       <View style={globalStyles.inputComponent}>
-        <TextInput
-          style={globalStyles.texts}
-          editable={false}
-          placeholder="Select Category"
-          value={state.category}
-          onPressIn={() => setIsVisible(true)}
-        />
+
         <BottomSheet
           isVisible={isVisible}
-          containerStyle={{ backgroundColor: 'rgba(0.5,0.25,0,0.2)' }}
+
+          containerStyle={{ backgroundColor: '#333a' }}
+
         >
           {categories.map((categoria, index) => (
             <ListItem
               key={index}
+
               containerStyle={{ backgroundColor: 'rgba(0.5,0.25,0,0.7)' }}
-              style={{ borderWidth: 1, borderColor: '#cccccc' }}
-              onPress={(e) => setState({ ...state, category: categoria }) && setIsVisible(false)}
+              style={{ borderBottomWidth: 1, borderColor: '#333a', backgroundColor: "#fff0" }}
+              onPress={() => {
+                setState({ ...state, category: categoria })
+                setIsVisible(false)
+              }}
             >
-              <ListItem.Content>
-                <ListItem.Title style={{ height: 35, color: '#FFF', padding: 8 }}>{categoria}</ListItem.Title>
+              <ListItem.Content
+                style={{ backgroundColor: "#0000", alignItems: "center" }}
+              >
+                <ListItem.Title
+                  style={{ height: 35, color: '#fff', padding: 8 }}
+
+                >
+                  {categoria}
+                </ListItem.Title>
               </ListItem.Content>
             </ListItem>
           ))}
-          <ListItem key={999} containerStyle={{ backgroundColor: 'red' }} style={{ borderWidth: 1, borderColor: '#cccccc' }} onPress={() => setIsVisible(false)}>
-            <ListItem.Content style={{}}>
-              <ListItem.Title style={{ height: 35, color: '#FFF', padding: 8 }}>Cancel</ListItem.Title>
+          <ListItem
+            key={999}
+
+            containerStyle={{ backgroundColor: 'red' }}
+            style={{ borderBottomWidth: 1, borderColor: '#333a' }}
+            onPress={() => setIsVisible(false)}
+          >
+            <ListItem.Content
+              style={{ alignItems: "center" }}
+            >
+              <ListItem.Title
+                style={{ height: 35, color: '#FFF', padding: 8, fontSize: 20 }}
+              >
+
+                Cancel
+              </ListItem.Title>
             </ListItem.Content>
           </ListItem>
         </BottomSheet>
       </View>
 
-
       <View style={{ flex: 3 }}>
-
         <View style={styles.googleMapsContainer}>
-          <MapView
-            style={styles.googleMaps}
-            region={region}
-          >
-
+          <MapView style={styles.googleMaps} region={region}>
             <Marker
               draggable
-              title='Your Resto'
+              title="Your Resto"
               coordinate={region}
-              onDragEnd={event => {
-                const { latitude, longitude } = event.nativeEvent.coordinate
+              onDragEnd={(event) => {
+                const { latitude, longitude } = event.nativeEvent.coordinate;
                 const newLocation = {
                   lat: latitude,
-                  lng: longitude
-                }
-                setStateAndRegion(newLocation)
+                  lng: longitude,
+                };
+                setStateAndRegion(newLocation);
               }}
-              pinColor='#0072B5'
-            >
-            </Marker>
+              pinColor="#0072B5"
+            ></Marker>
           </MapView>
         </View>
       </View>
-    </View >
-  )
-}
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -427,7 +459,7 @@ const styles = StyleSheet.create({
     padding: 25,
   },
   inputGroup: {
-    height: 50,
+    height: 15,
     padding: 0,
     marginBottom: 15,
     borderBottomWidth: 1,
@@ -446,10 +478,10 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   googleMaps: {
-    borderColor: '#034F84',
+    borderColor: "#034F84",
     borderWidth: 1,
     borderRadius: 50,
-    height: 250
-  }
+    height: 250,
+  },
 });
 export default RegisterResto;

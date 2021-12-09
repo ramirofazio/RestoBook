@@ -1,7 +1,7 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { AirbnbRating, Rating } from 'react-native-elements';
+import { AirbnbRating, Rating, Card, Text } from 'react-native-elements';
 import {
   View,
   Image,
@@ -18,19 +18,39 @@ import { Icon, Text } from "react-native-elements";
 //----------FIREBASE UTILS-----------
 import firebase from "../database/firebase";
 import { getAuth } from "firebase/auth";
-import { doc, updateDoc, arrayUnion } from "firebase/firestore";
+import { doc, updateDoc, arrayUnion, arrayRemove,  getDoc, } from "firebase/firestore";
 //
 
 const auth = getAuth();
 
 const CardMenu = ({ resto, navigation }) => {
-  //console.log(resto)
+  const userFavourites = useSelector((state) => state.favourites);
+  const CurrentId = useSelector((state) => state.currentId);
   const [hearthColor, setHearthColor] = useState("grey");
   const [pressed, setPressed] = useState(false)
   const dispatch = useDispatch();
   const categories = useSelector((state) => state.categoriesResto);
 
+  let infoFavourite = {
+    id: resto.idResto,
+    title: resto.title,
+    phone: resto.phone,
+    address: resto.location.address,
+    img: resto.img,
+  };
   const celphone = +541168020511;
+
+  useEffect(() => {
+    if (CurrentId) {
+      if (userFavourites.includes(resto.idResto)) {
+        setHearthColor("red");
+      } else {
+        setHearthColor("grey");
+      }
+    } else {
+      setHearthColor("grey");
+    }
+  }, [userFavourites]);
 
   const handleOnPress = () => {
     dispatch(empresaDetail(resto));
@@ -43,7 +63,35 @@ const CardMenu = ({ resto, navigation }) => {
     );
   };
 
-  
+  const addToFavourite = async () => {
+    if (auth?.currentUser?.uid) {
+      console.log("ACA");
+      try {
+        let docRef = doc(firebase.db, "Users", auth.currentUser.uid);
+        await updateDoc(docRef, {
+          favourites: arrayUnion(infoFavourite),
+        });
+      } catch (e) {
+        alert("no estas logueado");
+        console.log("error add:", e);
+      }
+      setHearthColor("red");
+    }
+  };
+
+  const removeFromFavourite = async () => {
+    if (auth?.currentUser?.uid) {
+      try {
+        let docRef = doc(firebase.db, "Users", auth.currentUser.uid);
+        await updateDoc(docRef, {
+          favourites: arrayRemove(infoFavourite),
+        });
+      } catch (e) {
+        console.log("error remove:", e);
+      }
+      setHearthColor("grey");
+    }
+  };
 
   return (
     <View style={globalStyles.cardsContainer}>
@@ -108,28 +156,13 @@ const CardMenu = ({ resto, navigation }) => {
             
           <View>
             <TouchableOpacity 
-              onPress={async () => {
-                let infoFavourite = {
-                  id: resto.idResto,
-                  title: resto.title,
-                  phone: resto.phone,
-                  address: resto.location.address,
-                  img: resto.img
-                }
+              onPress={() => {
                 // pressed === true && usuario logueado === false ? alert('logeate primero') : //ESTO ES PARA DECIR QUE
                 // SI UN USARUIO NO LOGUEADO QUIERE GUARDAR ALGO EN FAVS QUE SE LOGUEE PRIMERO
                 hearthColor === "grey"
-                  ? setHearthColor("red")
-                  : setHearthColor("grey")
-                // console.log(infoFavourite)
-                try {
-                  let docRef = doc(firebase.db, "Users", auth.currentUser.uid);
-                  await updateDoc(docRef, {
-                    favourites: arrayUnion(infoFavourite),
-                  });
-                  alert('Agregado a favoritos!')
-                } catch (e) {console.log(error)}
-              }} 
+                  ? addToFavourite()
+                  : removeFromFavourite()
+              }}
             >
               <Icon
                 raised

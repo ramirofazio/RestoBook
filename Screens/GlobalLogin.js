@@ -247,6 +247,9 @@ const GlobalLogin = ({ navigation }) => {
                 </TouchableOpacity>
                 <BottomSheet isVisible={visible} style={styles.forgottenPass}>
                   <View>
+                    <TouchableOpacity onPress={() => isVisible(false)}>
+                      <Text>X</Text>
+                    </TouchableOpacity>
                     <TextInput
                       placeholder="........"
                       style={styles.inputForgotten}
@@ -408,7 +411,7 @@ const GlobalLogin = ({ navigation }) => {
                     />
                   </View>
                   {props.touched.passwordConfirm &&
-                    props.errors.passwordConfirm ? (
+                  props.errors.passwordConfirm ? (
                     <Text style={globalStyles.errorText}>
                       {props.errors.passwordConfirm}
                     </Text>
