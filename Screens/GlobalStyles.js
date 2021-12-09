@@ -41,8 +41,8 @@ const globalStyles = StyleSheet.create({
     width: 40,
     resizeMode: 'contain' // esta linea es para que se adapte al tam;o de la imagen
   },
-
-  //////CARD HOME/////////////////////////////////////////////////
+  
+  // --------------------------------------------CARD HOME --------------------------------------------
   cardsContainer: {
     flex: 1,
     alignSelf: "center",
@@ -95,13 +95,17 @@ const globalStyles = StyleSheet.create({
   cardsDescriptionContainer: {
     // backgroundColor: 'green',
     maxHeight: '120%',
-    height: 120,
+    height: '90%',
     width: '35%',
     alignSelf: "center",
     justifyContent: "space-around"
   },
   cardsDescriptionText: {
-    textAlign: "center"
+    // backgroundColor: 'lightblue',
+    textAlign: 'center',
+    width: '100%',
+    fontSize: 13,
+    fontWeight: "bold",
   },
   cardsHomeTitle: {
     // backgroundColor: "#5555",
@@ -125,9 +129,59 @@ const globalStyles = StyleSheet.create({
     height: 40,
     borderRadius: 25
   },
-  //////ACA TERMINAN  LOS ESTILOS DE LAS CARDS HOME/////////////////////
+  /// --------------------------------------------ACA TERMINAN  LOS ESTILOS DE LAS CARDS HOM -------
+  //------------------------------CARDS MENU-----------------------------------------------------------------
+  cardsMenuContainer: {
+    flex: 1,
+    alignSelf: "center",
+    backgroundColor: "#f6efd3",
+    marginVertical: 5,
+    // paddingHorizontal: 5,
+    paddingVertical: 5,
+    borderRadius: 25,
+    width: "100%",
+    height: 150
+  },
+  cardsMenuDescriptionContainer: {
+    maxHeight: '120%',
+    height: '100%',
+    width: '75%',
+    alignSelf: 'flex-start',
+    justifyContent: 'space-around',
+    paddingHorizontal: 10
+  },
+  cardsMenuTitle: {
+    fontSize: 25,
+    fontWeight: "bold",
+    textAlign: "left",
+    width: '100%'
+  },
+  cardsMenuDescriptionText: {
+    textAlign: 'left',
+    fontSize: 15,
+    color: 'grey',
+    marginTop: -15
+    
+  },
+  containerImgCardMenu: {
+    width: "25%",
+    maxHeight: '5%',
+    alignSelf: "flex-end",
+    alignItems: "flex-end",
+    marginTop: '-37%',
+    marginRight: '3.5%'
+  },
+  cardsMenuimg: {
+    // marginTop: 5,
+    // backgroundColor: "red",
+    width: 110,
+    height: 120,
+    borderRadius: 25,
+    justifyContent: "center"
+  },
+  //------------------------------------------------------------------------------------------------------
 
-  /////////////////////CATEGORIAS LOCAL////////////////////////////////
+  // --------------------------------------------CATEGORIAS LOCAL --------------------------------------------
   categoriesView: {
     backgroundColor: "white",
     borderRadius: 10,
@@ -142,9 +196,102 @@ const globalStyles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 13,
     padding: 1,
+    textAlign:"center"
   },
-  ////////////////////ACA TERMINA CATEGORIAS LOCALES//////////////////
+//----------------------------ACA TERMINA CATEGORIAS LOCALES --------------------------------------------
 
+// ---------------------------- PROFILE USER Y RESTO ----------------------------------------------------
+  Perfilcontainer: {
+    flex: 1,
+    backgroundColor: "#e6c2bf",
+  },
+  imgContainer: {
+    flex: 2,
+    flexDirection: "row",
+    // backgroundColor: 'red',
+    maxHeight: "25%",
+    maxWidth: "100%",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: 10,
+    paddingVertical: 15,
+  },
+  imgProfile: {
+    height: 150,
+    width: 150,
+    borderRadius: 200,
+    // resizeMode: 'contain' // esta linea es para que se adapte al tam;o de la imagen
+  },
+  nombreContainer: {
+    flex: 2,
+    // backgroundColor: 'grey',
+    // marginHorizontal: 5,
+    maxWidth: "60%",
+    width: "100%",
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+    alignSelf: "flex-end",
+  },
+  FavouriteContainer: {
+    overflow: "scroll",
+    backgroundColor: "#5555",
+    maxHeight: "30%",
+    height: "20%",
+  },
+  btnProfileResto : {
+    color: 'transparent',
+    borderWidth: 3,
+    borderColor: "black",
+    borderRadius: 15,
+    paddingVertical: 3,
+    paddingHorizontal: 3,
+    marginVertical: 4,
+    height: "9%",
+    width: '90%',
+    alignSelf: "center",
+    justifyContent: "center"
+  },
+
+// ------------------------------------------------------------------------------------------------------
+//------------------------------MODAL PROFILES-----------------------------------------------------------
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+    //backgroundColor: "blur",
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    width: "90%",
+    height: "90%",
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 30,
+      height: 30,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+ 
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center",
+    fontSize: 30,
+    fontWeight: "bold",
+  },
+//------------------------------------------------------------------------------------------------------
   title: {
     fontSize: 25,
     fontWeight: "bold",
