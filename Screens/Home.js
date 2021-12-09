@@ -9,6 +9,7 @@ import UserFavourites from "../Redux/Actions/userFavourites.js";
 //
 //
 //----------REACT-NATIVE UTILS-----------
+import { BottomSheet, ListItem } from "react-native-elements";
 
 import {
   View,
@@ -18,12 +19,11 @@ import {
   StyleSheet,
   Button,
   TouchableOpacity,
-  BottomSheet,
   TextInput,
   Modal,
   ActivityIndicator,
 } from "react-native";
-import { MaterialIcons } from "@expo/vector-icons";
+//import { MaterialIcons } from "@expo/vector-icons";
 
 //
 //
@@ -62,9 +62,17 @@ export default function Home({ navigation }) {
   const [usuarioGlobal, setUsuarioGlobal] = useState("");
   const [availableCommerces, setAvailableCommerces] = useState([]);
   const [flagCards, setFlagCards] = useState(false);
+
+  //--------------FILTRADO MODAL-------------------------
+  const [allRestos, setAllRestos] = useState()
+  const [category, setCategory] = useState();
+  const [visibleFiltros, isVisibleFiltros] = useState(false);
+
+
   //console.log(availableCommerces)
   const loggedUser = useSelector((state) => state.currentUser);
   const loggedId = useSelector((state) => state.currentId);
+  const categories = useSelector((state) => state.categoriesResto);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -77,12 +85,12 @@ export default function Home({ navigation }) {
         arr.push(obj);
       });
       setAvailableCommerces(arr);
+      setAllRestos(arr);
     });
   }, []);
 
   onAuthStateChanged(auth, (usuarioFirebase) => {
     if (usuarioFirebase?.emailVerified) {
-      //console.log(loggedId)
       if (loggedId !== usuarioFirebase.uid) {
         dispatch(CurrentId(usuarioFirebase.uid));
         const unsub = onSnapshot(
@@ -128,27 +136,42 @@ export default function Home({ navigation }) {
   onAuthStateChanged(auth, (usuarioFirebase) => {
     if (usuarioFirebase?.emailVerified) {
       if (usuarioFirebase.displayName) {
-        console.log("entre a if")
+        //console.log("entre a if")
         setUsuarioGlobal(usuarioFirebase.displayName);
       } else {
-        console.log("entre a else")
+        //console.log("entre a else")
         const trimmedName = usuarioFirebase.email.split("@")[0];
         setUsuarioGlobal(trimmedName);
       }
     } else {
-      console.log("entre a else else")
+      //console.log("entre a else else")
       setUsuarioGlobal("");
     }
   });
 
+
+  const handleCategory = async (category) => {
+    setCategory(category)
+    if (!category) setAvailableCommerces(allRestos)
+    const result = availableCommerces.filter((resto) => resto.category === category.toLowerCase())
+    if (result.length === 0) {
+      alert("No hay Empresas con esta Categoria")
+      setCategory("")
+      setAvailableCommerces(allRestos)
+    } else {
+      setAvailableCommerces(result)
+    }
+  }
+
+
   return (
-    <ScrollView style={globalStyles.Home}>
+    <View style={globalStyles.Home}>
       {/* <BottomSheet isVisible={false}>
-        <View>
-          <Text>Hola!</Text>
+    <View>
+    <Text>Hola!</Text>
         </View>
       </BottomSheet> */}
-      <Modal visible={visible} style={styles.googleUserModal}>
+      <Modal Modal visible={visible} style={styles.googleUserModal} >
         <View style={styles.googleUserForm}>
           <TextInput
             style={styles.googleTextinput}
@@ -198,7 +221,7 @@ export default function Home({ navigation }) {
             <Text>Enviar</Text>
           </TouchableOpacity>
         </View>
-      </Modal>
+      </Modal >
       <View style={styles.textContainer}>
         {usuarioGlobal !== "" ? (
           <Text style={styles.text}>{` Welcome ${usuarioGlobal}`}</Text>
@@ -211,35 +234,107 @@ export default function Home({ navigation }) {
       </View>
 
       <View style={globalStyles.btnHome}>
-        {/* <Btn nombre="Categorias" ruta="#" navigation={navigation} /> */}
-        <Btn
-          nombre={
-            usuarioGlobal !== ""
-              ? `Create your resto, ${usuarioGlobal}!`
-              : `Crea tu resto!`
-          }
-          ruta="RegisterResto"
-          navigation={navigation}
-        />
-      </View>
-      {availableCommerces.length && flagCards ? (
+
+        <TouchableOpacity
+          style={globalStyles.btn}
+          onPress={() => alert("Me ordeno x Title")}
+        >
+          <Text style={globalStyles.btnText}>Ordenamiento</Text>
+        </TouchableOpacity>
+
+        {/*----------------------------------------FILTRADO------------------------------------------- */}
         <View>
-          {availableCommerces.map((resto) => {
-            return (
-              <CardHome
-                key={resto.idResto}
-                resto={resto}
-                navigation={navigation}
-              ></CardHome>
-            );
-          })}
+          <TextInput
+            style={globalStyles.btn}
+            editable={false}
+            placeholder="Buscar por Categoria"
+            textAlign="center"
+            placeholderTextColor="#000"
+            value={category}
+            onPressIn={() => isVisibleFiltros(true)}
+          />
+          <BottomSheet
+            isVisible={visibleFiltros}
+            containerStyle={{ backgroundColor: '#333a' }}
+          >
+            <ListItem
+              containerStyle={{ backgroundColor: 'rgba(0.5,0.25,0,0.7)' }}
+              style={{ borderBottomWidth: 1, borderColor: '#333a', backgroundColor: "#fff0" }}
+              onPress={() => {
+                handleCategory(null)
+                isVisibleFiltros(false)
+              }}
+            >
+              <ListItem.Content
+                style={{ backgroundColor: "#0000", alignItems: "center" }}
+              >
+                <ListItem.Title
+                  style={{ height: 35, color: '#fff', padding: 8 }}
+                >
+                  Todos
+                </ListItem.Title>
+              </ListItem.Content>
+            </ListItem>
+            {categories.map((categoria, index) => (
+              <ListItem
+                key={index}
+                containerStyle={{ backgroundColor: 'rgba(0.5,0.25,0,0.7)' }}
+                style={{ borderBottomWidth: 1, borderColor: '#333a', backgroundColor: "#fff0" }}
+                onPress={() => {
+                  handleCategory(categoria)
+                  isVisibleFiltros(false)
+                }}
+              >
+                <ListItem.Content
+                  style={{ backgroundColor: "#0000", alignItems: "center" }}
+                >
+                  <ListItem.Title
+                    style={{ height: 35, color: '#fff', padding: 8 }}
+                  >
+                    {categoria}
+                  </ListItem.Title>
+                </ListItem.Content>
+              </ListItem>
+            ))}
+            <ListItem
+              key={999}
+              containerStyle={{ backgroundColor: '#d14545' }}
+              style={{ borderBottomWidth: 1, borderColor: '#333a' }}
+              onPress={() => isVisibleFiltros(false)}
+            >
+              <ListItem.Content style={{ alignItems: "center" }}>
+                <ListItem.Title
+                  style={{ height: 35, color: '#FFF', padding: 8, fontSize: 20 }}
+                >
+                  Cancelar
+                </ListItem.Title>
+              </ListItem.Content>
+            </ListItem>
+          </BottomSheet>
         </View>
-      ) : (
-        <View style={styles.loading}>
-          <ActivityIndicator size="large" color="#5555" />
-        </View>
-      )}
-    </ScrollView>
+      </View>
+
+
+      <ScrollView>
+        {availableCommerces.length && flagCards ? (
+          <View>
+            {availableCommerces.map((resto) => {
+              return (
+                <CardHome
+                  key={resto.idResto}
+                  resto={resto}
+                  navigation={navigation}
+                ></CardHome>
+              );
+            })}
+          </View>
+        ) : (
+          <View style={styles.loading}>
+            <ActivityIndicator size="large" color="#5555" />
+          </View>
+        )}
+      </ScrollView>
+    </View>
   );
 }
 

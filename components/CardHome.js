@@ -13,7 +13,6 @@ import empresaDetail from "../Redux/Actions/empresaDetail.js";
 //-----STYLES----------
 import globalStyles from "../Screens/GlobalStyles.js";
 //------ICONS----------
-
 //----------FIREBASE UTILS-----------
 import firebase from "../database/firebase";
 import { getAuth } from "firebase/auth";
