@@ -167,7 +167,7 @@ export default function Home({ navigation }) {
     if (!category) setAvailableCommerces(allRestos)
     const result = availableCommerces.filter((resto) => resto.category === category.toLowerCase())
     if (result.length === 0) {
-      alert("No hay comidas con esta categoria")
+      alert("No hay Empresas con esta Categoria")
       setCategory("")
       setAvailableCommerces(allRestos)
     } else {
@@ -177,13 +177,13 @@ export default function Home({ navigation }) {
 
 
   return (
-    <ScrollView style={globalStyles.Home}>
+    <View style={globalStyles.Home}>
       {/* <BottomSheet isVisible={false}>
-        <View>
-          <Text>Hola!</Text>
+    <View>
+    <Text>Hola!</Text>
         </View>
       </BottomSheet> */}
-      <Modal visible={visible} style={styles.googleUserModal}>
+      <Modal Modal visible={visible} style={styles.googleUserModal} >
         <View style={styles.googleUserForm}>
           <TextInput
             style={styles.googleTextinput}
@@ -233,7 +233,7 @@ export default function Home({ navigation }) {
             <Text>Enviar</Text>
           </TouchableOpacity>
         </View>
-      </Modal>
+      </Modal >
       <View style={styles.textContainer}>
         {usuarioGlobal !== "" ? (
           <Text style={styles.text}>{` Welcome ${usuarioGlobal}`}</Text>
@@ -246,23 +246,22 @@ export default function Home({ navigation }) {
       </View>
 
       <View style={globalStyles.btnHome}>
-        {/* <Btn nombre="Categorias" ruta="#" navigation={navigation} /> */}
-        <Btn
-          nombre={
-            usuarioGlobal !== ""
-              ? `Create your resto, ${usuarioGlobal}!`
-              : `Crea tu resto!`
-          }
-          ruta="RegisterResto"
-          navigation={navigation}
-        />
+
+        <TouchableOpacity
+          style={globalStyles.btnFiltrosHome}
+          onPress={() => alert("Me ordeno x Title")}
+        >
+          <Text style={globalStyles.btnTextFiltro}>Ordenamiento</Text>
+        </TouchableOpacity>
+
         {/*----------------------------------------FILTRADO------------------------------------------- */}
         <View>
           <TextInput
-            style={globalStyles.btn}
+            style={globalStyles.btnFiltrosHome}
             editable={false}
             placeholder="Buscar por Categoria"
-            placeholderTextColor="#000"
+            textAlign="center"
+            placeholderTextColor="#161616"
             value={category}
             onPressIn={() => isVisibleFiltros(true)}
           />
@@ -325,27 +324,29 @@ export default function Home({ navigation }) {
             </ListItem>
           </BottomSheet>
         </View>
-
-
       </View>
-      {availableCommerces.length && flagCards ? (
-        <View>
-          {availableCommerces.map((resto) => {
-            return (
-              <CardHome
-                key={resto.idResto}
-                resto={resto}
-                navigation={navigation}
-              ></CardHome>
-            );
-          })}
-        </View>
-      ) : (
-        <View style={styles.loading}>
-          <ActivityIndicator size="large" color="#5555" />
-        </View>
-      )}
-    </ScrollView>
+
+
+      <ScrollView>
+        {availableCommerces.length && flagCards ? (
+          <View>
+            {availableCommerces.map((resto) => {
+              return (
+                <CardHome
+                  key={resto.idResto}
+                  resto={resto}
+                  navigation={navigation}
+                ></CardHome>
+              );
+            })}
+          </View>
+        ) : (
+          <View style={styles.loading}>
+            <ActivityIndicator size="large" color="#5555" />
+          </View>
+        )}
+      </ScrollView>
+    </View>
   );
 }
 
@@ -354,9 +355,10 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     justifyContent: "center",
     width: "90%",
-    borderColor: "#bd967e",
+    borderColor: "#000000",
+    backgroundColor: '#161616',
     borderRadius: 10,
-    borderWidth: 3,
+    borderWidth: 4,
     marginTop: 10,
   },
   textContainer2: {
@@ -374,7 +376,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     paddingVertical: 5,
     fontWeight: "bold",
-    color: "#392c28",
+    color: "#FDFDFD",
   },
 
   textContainer2: {
