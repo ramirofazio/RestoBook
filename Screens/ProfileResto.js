@@ -179,8 +179,9 @@ const ProfileResto = ({ navigation }) => {
               style={{
                 fontSize: 25,
                 fontWeight: "bold",
-                color: "#392c28",
+                color: "#161616",
                 textAlignVertical: "top",
+                textTransform: "capitalize"
               }}
             >
               {currentUser?.title}
@@ -189,49 +190,47 @@ const ProfileResto = ({ navigation }) => {
               style={{
                 fontSize: 15,
                 fontWeight: "bold",
-                color: "#392c28",
+                color: "#161616",
                 paddingVertical: 15,
+                textTransform: "capitalize"
               }}
             >
               {currentUser?.location?.address}
             </Text>
-
-
-
             <TouchableOpacity
-              style={globalStyles.btn}
-              onPress={() => setModalEditVisible(true)}
+              style={globalStyles.btnLogin}
+              onPress={() => setModalVisible(true)}
             >
-              <Text>Editar</Text>
+              <Text style={globalStyles.texts}>Editar</Text>
             </TouchableOpacity>
-
-
             <Modal
               animationType="slide"
               transparent={true}
-              visible={modalEditVisible}
+              visible={modalVisible}
               onRequestClose={() => {
                 Alert.alert("Modal has been closed.");
-                setModalEditVisible(!modalEditVisible);
+                setModalVisible(!modalVisible);
               }}
             >
               <View style={globalStyles.centeredView}>
                 <View style={globalStyles.modalView}>
                   <TouchableOpacity
-                    style={globalStyles.touchLog}
+                    style={globalStyles.btnTodasComidas}
                     onPress={() => setModalEditVisible(!modalEditVisible)}
                   >
                     <Text
-                      style={globalStyles.textStyle}
+                      style={globalStyles.texts}
                     >
                       X
                     </Text>
                   </TouchableOpacity>
                   <Text style={globalStyles.modalText}>Editar información</Text>
-                  <Text>Nombre del Resto</Text>
+                  <Text style={globalStyles.texts}>Nombre del Resto:</Text>
                   <TextInput
-                    style={globalStyles.texts}
+                    style={globalStyles.inputComponent}
                     placeholder={currentUser?.title}
+                    placeholderTextColor="#666"
+                    textAlign="center"
                     onChangeText={(value) =>
                       setNewUserInfo({
                         ...newUserInfo,
@@ -239,10 +238,12 @@ const ProfileResto = ({ navigation }) => {
                       })
                     }
                   />
-                  <Text>Direccion</Text>
+                  <Text style={globalStyles.texts}>Direccion:</Text>
                   <TextInput
-                    style={globalStyles.texts}
+                    style={globalStyles.inputComponent}
                     placeholder={currentUser?.location?.address}
+                    placeholderTextColor="#666"
+                    textAlign="center"
                     onChangeText={(value) =>
                       setNewUserInfo({
                         ...newUserInfo,
@@ -250,10 +251,12 @@ const ProfileResto = ({ navigation }) => {
                       })
                     }
                   />
-                  <Text>Description</Text>
+                  <Text style={globalStyles.texts}>Description:</Text>
                   <TextInput
-                    style={globalStyles.texts}
+                    style={globalStyles.inputComponent}
                     placeholder={currentUser?.description}
+                    placeholderTextColor="#666"
+                    textAlign="center"
                     onChangeText={(value) =>
                       setNewUserInfo({
                         ...newUserInfo,
@@ -262,7 +265,7 @@ const ProfileResto = ({ navigation }) => {
                     }
                   />
                   <TouchableOpacity
-                    style={globalStyles.touchLog}
+                    style={globalStyles.btnLogin}
                     onPress={() => {
                       sendPasswordResetEmail(auth, currentUser?.email)
                         .then(alert("Revisa tu casilla y volve a ingresar!"))
@@ -271,10 +274,10 @@ const ProfileResto = ({ navigation }) => {
                         .then(navigation.navigate("RestoBook"));
                     }}
                   >
-                    <Text>Cambiar contraseña</Text>
+                    <Text style={globalStyles.texts}>Cambiar contraseña</Text>
                   </TouchableOpacity>
                   <TouchableOpacity
-                    style={globalStyles.touchLog}
+                    style={globalStyles.btnLogin}
                     onPress={() => {
                       firebase.db
                         .collection("Users")
@@ -289,31 +292,30 @@ const ProfileResto = ({ navigation }) => {
                         .catch((error) => alert("error!"));
                     }}
                   >
-                    <Text>Guardar</Text>
+                    <Text style={globalStyles.texts}>Guardar</Text>
                   </TouchableOpacity>
                 </View>
               </View>
             </Modal>
-
-
           </View>
         </View>
         <Text
           style={{
-            fontSize: 15,
+            fontSize: 20,
             fontWeight: "bold",
-            color: "#392c28",
+            color: "#161616",
             paddingVertical: 15,
-            textAlign: "center"
+            textAlign: "center",
+            textTransform: "capitalize"
           }}
         >
           {currentUser?.description}
         </Text>
 
-        <Text style={{ fontSize: 25, color: "#392c28", textAlign: "center" }}>
-          <Icon name='home' type='font-awesome-5' color='#392c28' size={25} /> Mis Comercios
+        <Text style={{ fontSize: 25, color: "#161616", textAlign: "center" }}>
+          <Icon name='home' type='font-awesome-5' color='#161616' size={25} /> Mis Comercios
         </Text>
-        <Divider orientation="horizontal" width={2} inset={true} insetType={"middle"} color={'black'} style={{ marginVertical: 10 }} />
+        <Divider orientation="horizontal" width={2} inset={true} insetType={"middle"} color={'rgba(00, 00, 00, .5)'} style={{ marginVertical: 10 }} />
         <ScrollView
           horizontal={true}
           pagingEnabled
@@ -385,7 +387,7 @@ const ProfileResto = ({ navigation }) => {
                     <Text>Horario para reservar</Text>
                   </TouchableOpacity>
 
-                  
+
 
                 </View>
                 <TextInput
@@ -433,6 +435,7 @@ const ProfileResto = ({ navigation }) => {
 
 
 
+        {/*-----------------------------------CSS LAIAL-----------------------------------------*/}
         {/* <TouchableOpacity onPress={() => alert('abro modal')} style={globalStyles.btnProfileResto}>
                     <Icon name='street-view' type='font-awesome-5'color='#392c28'size={24}/>
                   <Text style={{ fontSize: 25, color: "#392c28", textAlign: "center" }}>
@@ -440,6 +443,21 @@ const ProfileResto = ({ navigation }) => {
                   </Text>
               </TouchableOpacity> */}
 
+        {/* <TouchableOpacity onPress={() => alert('abro modal')} style={globalStyles.btnProfileResto}>
+          <Icon name='clipboard-list' type='font-awesome-5' color='#392c28' size={24} />
+          <Text style={{ fontSize: 25, color: "#392c28", textAlign: "center" }}>
+            Administrar Reservas
+            {/* 'clipboard-list' 
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={() => alert('abro modal')} style={globalStyles.btnProfileResto}>
+          <Icon name='street-view' type='font-awesome-5' color='#392c28' size={24} />
+          <Text style={{ fontSize: 25, color: "#392c28", textAlign: "center" }}>
+            Editar Lugares Disponibles
+            {/* street-view 
+          </Text>
+        </TouchableOpacity> */}
 
         <TouchableOpacity onPress={() => alert('abro modal')} style={globalStyles.btnProfileResto}>
           <Icon name='clock' type='font-awesome-5' color='#392c28' size={24} />
@@ -448,8 +466,6 @@ const ProfileResto = ({ navigation }) => {
             {/* clock */}
           </Text>
         </TouchableOpacity>
-
-
       </ScrollView>
     </View>
   );
