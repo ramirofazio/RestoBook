@@ -277,6 +277,7 @@ export default function Home({ navigation }) {
             editable={false}
             placeholder="Buscar por Categoria"
             textAlign="center"
+            fontWeight= "bold"
             placeholderTextColor="#161616"
             value={category}
             onPressIn={() => isVisibleFiltros(true)}

@@ -23,6 +23,7 @@ const globalStyles = StyleSheet.create({
   btnTextFiltro: {
     fontSize: 14,
     color: "#161616",
+    fontWeight: "bold"
   },
   btnContainer: {
     flexDirection: "row",
