@@ -1,5 +1,5 @@
 //----------REACT UTILS-----------
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 //
 //
 //----------REDUX UTILS-----------
@@ -34,6 +34,8 @@ import firebase from "../database/firebase";
 import { onAuthStateChanged, getAuth } from "firebase/auth";
 //
 //
+//---------------------EXPO----------------------
+import * as Location from 'expo-location';
 //---------SCREENS & COMPONENTS---------------
 //
 //
@@ -42,7 +44,6 @@ import globalStyles from "./GlobalStyles";
 import { BottomSheet, ListItem } from "react-native-elements";
 //
 //------IMAGINE PICKER---------
-import * as ImagePicker from "expo-image-picker";
 import SetCommerce from "../Redux/Actions/setCommerce";
 import{ init } from 'emailjs-com';
 init("user_IEK9t1hQIR3ugtExEH6BG");
@@ -73,6 +74,9 @@ const RegisterResto = ({ navigation }) => {
   };
   const dispatch = useDispatch();
   const [isVisible, setIsVisible] = useState(false);
+
+  //-------------GEOLOCATION-------------
+  const [userLocation, setUserLocation] = useState({})
   const [region, setRegion] = useState(initialRegion);
   const [state, setState] = useState({
     lat: -34.61315,
@@ -80,6 +84,7 @@ const RegisterResto = ({ navigation }) => {
     address: "",
     category: "",
   });
+  //----------------------------------------
   const categories = useSelector((state) => state.categoriesResto);
 
   let id = null;
@@ -89,24 +94,21 @@ const RegisterResto = ({ navigation }) => {
     }
   });
 
-  const handleOnPressPickImage = async (handleChange) => {
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (status === "granted") {
-      let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.All,
-        allowsEditing: true,
-        aspect: [4, 3],
-        quality: 1,
-      });
-      if (!result.cancelled) {
-        handleChange(result.uri);
+  useEffect(() => {
+    const getUserLocation = async () => {
+      const {status} = await Location.requestForegroundPermissionsAsync()
+      if (status !== 'granted') {
+        console.log('Permission to access location was denied');
+        return;
       }
-    } else {
-      alert("Sorry, we need camera roll permissions to make this work!");
+      console.log(status)
+      let location = await Location.getCurrentPositionAsync();
+      setUserLocation(location)
     }
-  }
+    getUserLocation()
+  }, [])
   
-
+   
   const setStateAndRegion = (newLocation, formatedAddress) => {
     const { lat, lng } = newLocation;
     setRegion({

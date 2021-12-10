@@ -10,7 +10,6 @@ import UserFavourites from "../Redux/Actions/userFavourites.js";
 //
 //----------REACT-NATIVE UTILS-----------
 import { BottomSheet, ListItem } from "react-native-elements";
-
 import {
   View,
   Image,
@@ -24,9 +23,10 @@ import {
   ActivityIndicator,
 } from "react-native";
 //import { MaterialIcons } from "@expo/vector-icons";
-
 //
 //
+//---------------------EXPO----------------------
+import * as Location from 'expo-location';
 //----------FIREBASE UTILS-----------
 import firebase from "../database/firebase";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
@@ -67,7 +67,8 @@ export default function Home({ navigation }) {
   const [allRestos, setAllRestos] = useState()
   const [category, setCategory] = useState();
   const [visibleFiltros, isVisibleFiltros] = useState(false);
-
+  //---------------GEOLOCATION------------------------//
+  const [userLocation, setUserLocation] = useState({})
 
   //console.log(availableCommerces)
   const loggedUser = useSelector((state) => state.currentUser);
@@ -94,7 +95,7 @@ export default function Home({ navigation }) {
       if (loggedId !== usuarioFirebase.uid) {
         dispatch(CurrentId(usuarioFirebase.uid));
         const unsub = onSnapshot(
-          doc(firebase.db, "Restos", usuarioFirebase.uid),
+          doc(firebase.db, "Users", usuarioFirebase.uid),
           (doc) => {
             if (doc.exists()) {
               dispatch(CurrentUser(doc.data()));
@@ -107,6 +108,16 @@ export default function Home({ navigation }) {
       dispatch(CurrentUser(null));
     }
   });
+
+  const getUserLocation = async () => {
+    const {status} = await Location.requestForegroundPermissionsAsync()
+    if (status !== 'granted') {
+      console.log('Permission to access location was denied');
+      return;
+    }
+    let location = await Location.getCurrentPositionAsync();
+    setUserLocation(location)
+  }
 
   const getInfo = async () => {
     try {
@@ -129,6 +140,7 @@ export default function Home({ navigation }) {
   useEffect(() => {
     if (loggedId && auth.currentUser.uid) {
       getInfo();
+      getUserLocation()
     }
     setFlagCards(true);
   }, [loggedId]);

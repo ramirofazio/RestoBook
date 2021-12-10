@@ -13,7 +13,7 @@ let initialState = {
   menus: [],
   commerce: false,
   currentId: null,
-  currentUser: null,
+  currentUser: {},
   empresaDetail: [],
 
   favourites: [],
