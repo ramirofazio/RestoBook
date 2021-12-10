@@ -5,3 +5,4 @@ export const CURRENT_ID = "CURRENT_ID";
 export const CURRENT_USER = "CURRENT_USER";
 export const SET_COMMERCE = "SET_COMMERCE";
 export const USER_FAVOURITES = "USER_FAVOURITES";
+export const SET_USER_LOCATION = "SET_USER_LOCATION"

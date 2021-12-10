@@ -1,5 +1,5 @@
 //----------REACT UTILS-----------
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 //
 //
 //----------REDUX UTILS-----------
@@ -27,6 +27,7 @@ import * as yup from 'yup';
 import MapView, { Marker } from "react-native-maps";
 import { GOOGLE_API_KEY } from "@env";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import MapViewDirections from 'react-native-maps-directions';
 //
 //
 //----------FIREBASE UTILS-----------
@@ -76,14 +77,16 @@ const RegisterResto = ({ navigation }) => {
   const [isVisible, setIsVisible] = useState(false);
 
   //-------------GEOLOCATION-------------
-  const [userLocation, setUserLocation] = useState({})
-  const [region, setRegion] = useState(initialRegion);
+  const userCoordinates = useSelector(state => state.userCoordinates)
+  const [userLocation, setUserLocation] = useState(userCoordinates || initialRegion)
+  const [restoLocation, setRestoLocation] = useState();
   const [state, setState] = useState({
     lat: -34.61315,
     lng: -58.37723,
     address: "",
     category: "",
   });
+  const mapRef = useRef(null);
   //----------------------------------------
   const categories = useSelector((state) => state.categoriesResto);
 
@@ -101,17 +104,30 @@ const RegisterResto = ({ navigation }) => {
         console.log('Permission to access location was denied');
         return;
       }
-      console.log(status)
-      let location = await Location.getCurrentPositionAsync();
-      setUserLocation(location)
+      console.log('Location permissions granted')
+      let {coords} = await Location.getCurrentPositionAsync();
+      const userRegion = {
+        latitude: coords.latitude,
+        longitude: coords.longitude,
+        latitudeDelta: 0.004757,
+        longitudeDelta: 0.006866,
+      }
+      setUserLocation(userRegion)
     }
     getUserLocation()
   }, [])
   
+  useEffect(() => {
+    if (!userLocation || !restoLocation) return 
+    //Zoom & fit to markers
+    mapRef.current.fitToSuppliedMarkers(['userLocation', 'restoLocation'], {
+      edgePadding: { top: 50, right: 50, bottom: 50, left: 50 }
+    })
+  }, [userLocation, restoLocation])
    
   const setStateAndRegion = (newLocation, formatedAddress) => {
     const { lat, lng } = newLocation;
-    setRegion({
+    setRestoLocation({
       latitude: lat,
       longitude: lng,
       latitudeDelta: 0.004757,
@@ -432,11 +448,16 @@ const RegisterResto = ({ navigation }) => {
 
       <View style={{ flex: 3 }}>
         <View style={styles.googleMapsContainer}>
-          <MapView style={styles.googleMaps} region={region}>
+          <MapView 
+            ref={mapRef}
+            style={styles.googleMaps} 
+            region={userLocation}
+          >
+          { userLocation && (
             <Marker
               draggable
-              title="Your Resto"
-              coordinate={region}
+              title="Your location"
+              coordinate={userLocation}
               onDragEnd={(event) => {
                 const { latitude, longitude } = event.nativeEvent.coordinate;
                 const newLocation = {
@@ -446,8 +467,36 @@ const RegisterResto = ({ navigation }) => {
                 setStateAndRegion(newLocation);
               }}
               pinColor="#0072B5"
-            ></Marker>
-          </MapView>
+              identifier="userLocation"
+           />
+          )}
+          { restoLocation && (
+            <Marker
+              draggable
+              title="Resto location"
+              coordinate={restoLocation}
+              onDragEnd={(event) => {
+                const { latitude, longitude } = event.nativeEvent.coordinate;
+                const newLocation = {
+                  lat: latitude,
+                  lng: longitude,
+                };
+                setStateAndRegion(newLocation);
+              }}
+              pinColor="#0072B5"
+              identifier="restoLocation"
+           />
+          )}
+          { userLocation && restoLocation && (
+            <MapViewDirections
+              apikey={GOOGLE_API_KEY}
+              strokeWidth={1.5}
+              strokeColor="gray"
+              origin={userLocation}
+              destination={restoLocation}
+            />
+          )}
+         </MapView>
         </View>
       </View>
     </View>

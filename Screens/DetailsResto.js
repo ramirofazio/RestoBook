@@ -1,7 +1,6 @@
 //----------REACT UTILS-----------
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from 'axios';
-import Constants from 'expo-constants'
 //
 //
 //----------REDUX UTILS-----------
@@ -11,7 +10,11 @@ import { useSelector } from "react-redux";
 //----------REACT-NATIVE UTILS-----------
 import { View, Text, StyleSheet, Image, Linking, TouchableOpacity, Modal, TextInput, Picker } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
+//---------------------GEOLOCATION-------------------
+import { GOOGLE_API_KEY } from "@env";
 import MapView, { Marker } from "react-native-maps";
+import MapViewDirections from 'react-native-maps-directions';
+//----------------------------------------------------
 //import DateTimePicker from '@react-native-community/datetimepicker';
 //
 //
@@ -53,7 +56,11 @@ const DetailsResto = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false)
   const [menuCategory, setMenuCategory] = useState()
   const empresaDetail = useSelector((state) => state.empresaDetail);
+  //--------------------GEOLOCATION-------------------------------
   const { location } = empresaDetail
+  const userLocation = useSelector(state => state.userCoordinates)
+  const mapRef = useRef(null)
+  //--------------------------------------------------------------
   const number = "+541168020511"
   //WhatsApp
   const handleWhatsAppPress = async () => {
@@ -77,7 +84,19 @@ const DetailsResto = ({ navigation }) => {
       url: url.data
     })
   }
-
+  useEffect(() => {
+    const q = doc(firebase.db, "Restos", empresaDetail.idResto);
+    const unsubscribe = onSnapshot(q, (doc) => {
+      console.log('Mi resto: ',doc.data())
+    });
+  }, []);
+  useEffect(() => {
+    if (!userLocation || !location) return 
+    //Zoom & fit to markers
+    mapRef.current.fitToSuppliedMarkers(['userLocation', 'restoLocation'], {
+      edgePadding: { top: 50, right: 50, bottom: 50, left: 50 }
+    })
+  }, [])
   const getMenu = () => {
     const q = query(collection(firebase.db, "Restos"));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
@@ -93,21 +112,10 @@ const DetailsResto = ({ navigation }) => {
     });
     setMenuCategory('')
   }
-
   useEffect(() => {
     getMenu()
   }, []);
-
-  const getCurrentDate = () => {
-    let min = new Date().getMinutes().toString();
-    let hour = new Date().getHours().toString();
-    let date = new Date().getDate().toString();
-    let month = (new Date().getMonth() + 1).toString();
-    let year = new Date().getFullYear().toString();
-    return hour + min + date + month + year;// 22:10 12/10/2021
-  }
   //console.log(getCurrentDate())
-
   /*try {
             let restoRef = doc(firebase.db, "Restos", idResto);
             setSpinner(true);
@@ -119,7 +127,6 @@ const DetailsResto = ({ navigation }) => {
           } catch (err) {
             console.log(err);
           } */
-
   // const handleReserva = async () => {
   //   if (auth.currentUser) {
   //     const reserva = {
@@ -151,7 +158,6 @@ const DetailsResto = ({ navigation }) => {
   //     alert("Logueate antes de reservar!")
   //   }
   // }
-
   const handleCategory = async (category) => {
     const docRef = doc(firebase.db, "Restos", empresaDetail.idResto);
     const docSnap = await getDoc(docRef);
@@ -169,8 +175,6 @@ const DetailsResto = ({ navigation }) => {
       }
     }
   }
-
-
 
   return (
     <View style={globalStyles.Home}>
@@ -277,6 +281,7 @@ const DetailsResto = ({ navigation }) => {
         </View>
         <View style={styles.googleMapsContainer}>
           <MapView
+            ref={mapRef}
             style={styles.googleMaps}
             initialRegion={{
               latitude: location.latitude,
@@ -286,14 +291,32 @@ const DetailsResto = ({ navigation }) => {
             }}
           >
             <Marker
+              title="Resto Location"
               coordinate={{
                 latitude: location.latitude,
                 longitude: location.longitude,
               }}
               pinColor='#0072B5'
-            >
-
-            </Marker>
+              identifier="restoLocation"
+            />
+            <Marker
+              title="Your location"
+              coordinate={userLocation}
+              pinColor="#0072B5"
+              identifier="userLocation"
+           />
+           { userLocation && location && (
+            <MapViewDirections
+              apikey={GOOGLE_API_KEY}
+              strokeWidth={1.5}
+              strokeColor="gray"
+              origin={userLocation}
+              destination={{
+                latitude: location.latitude,
+                longitude: location.longitude
+              }}
+            />
+          )}
           </MapView>
         </View>
       </View>

@@ -46,6 +46,7 @@ import globalStyles from "./GlobalStyles.js";
 //-------INITIALIZATIONS-------
 const auth = getAuth();
 import { DEFAULT_PROFILE_IMAGE } from "@env";
+import setUserLocation from "../Redux/Actions/setUserLocation.js";
 
 //
 //---------------------------------------------------------------------------------------//
@@ -67,9 +68,6 @@ export default function Home({ navigation }) {
   const [allRestos, setAllRestos] = useState()
   const [category, setCategory] = useState();
   const [visibleFiltros, isVisibleFiltros] = useState(false);
-  //---------------GEOLOCATION------------------------//
-  const [userLocation, setUserLocation] = useState({})
-
   //console.log(availableCommerces)
   const loggedUser = useSelector((state) => state.currentUser);
   const loggedId = useSelector((state) => state.currentId);
@@ -115,8 +113,16 @@ export default function Home({ navigation }) {
       console.log('Permission to access location was denied');
       return;
     }
-    let location = await Location.getCurrentPositionAsync();
-    setUserLocation(location)
+    console.log('Permission granted, reading user coordinates...')
+    let {coords} = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced});
+    console.log(coords)
+    const location = {
+      latitude: coords.latitude,
+      longitude: coords.longitude,
+      latitudeDelta: 0.004757,
+      longitudeDelta: 0.006866,
+    } 
+    dispatch(setUserLocation(location))
   }
 
   const getInfo = async () => {
