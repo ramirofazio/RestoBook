@@ -51,24 +51,27 @@ export default function NavDetail({ navigation }) {
     }
   });
   return (
-    <View style={styles.container}>
-      <View style={styles.navDetail}>
-        <View style={styles.info}>
-          <Image
-            source={require("../assets/icon.png")}
-            style={globalStyles.img}
-          />
-          <Text style={styles.title}>Resto Book</Text>
+    <View style={globalStyles.navHome}>
+      <View style={{
+          display: "flex",
+          flexDirection: "row",
+          width: "90%",
+          paddingHorizontal: 5,
+          marginHorizontal: -10,
+        }}>
+        <View style={globalStyles.containerTitle}>
+          <Text style={globalStyles.title}>Resto Book</Text>
         </View>
-        <View style={styles.btnMenu}>
-          {owner &&
-            <Btn
-              nombre="Add Food!"
-              ruta="AddMenuResto"
-              navigation={navigation}
-            />
-          }
+        <View style={globalStyles.btnContainer}>
+            {owner &&
+              <Btn
+                nombre="Agregar Comida!"
+                ruta="AddMenuResto"
+                navigation={navigation}
+              />
+            }
         </View>
+
       </View>
     </View>
   );

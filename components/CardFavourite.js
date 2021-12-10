@@ -22,14 +22,25 @@ const CardFavourite = ({ resto, navigation }) => {
     return (
         <View style={{
             alignSelf: "center",
-            backgroundColor: "#f6efd3",
+            backgroundColor: "#f2f2f2",
             marginHorizontal: 10,
             marginVertical: 10,
             paddingHorizontal: 5,
             paddingVertical: 5,
             borderRadius: 25,
+            borderWidth: 1,
+            borderColor: "rgba(22, 22, 22, .2)",
             width: "95%",
-            height: '80%'}}>
+            height: '80%',
+            shadowColor: "#161616",
+            shadowOffset: {
+              width: 1,
+              height: 2,
+            },
+            shadowOpacity: 3,
+            shadowRadius: 5,
+            elevation: 10,
+        }}>
       <TouchableOpacity
         onPress={() => handleOnPress()}
       >
@@ -57,8 +68,8 @@ const CardFavourite = ({ resto, navigation }) => {
                     reverse
                     name='map-marker-alt'
                     type='font-awesome-5'
-                    color='grey'
-                    reverseColor='#ffd964'
+                    color='#eecdaa'
+                    reverseColor='#161616'
                     size={11}
                 /> {resto.address}</Text>
           </View>
@@ -68,8 +79,8 @@ const CardFavourite = ({ resto, navigation }) => {
                     reverse
                     name='phone-alt'
                     type='font-awesome-5'
-                    color='grey'
-                    reverseColor='#ffd964'
+                    color='#eecdaa'
+                    reverseColor='#161616'
                     size={11}
                 /> {resto.phone}</Text>
           </View>

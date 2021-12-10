@@ -245,20 +245,20 @@ export default function Home({ navigation }) {
       <View style={globalStyles.btnHome}>
 
         <TouchableOpacity
-          style={globalStyles.btn}
+          style={globalStyles.btnFiltrosHome}
           onPress={() => alert("Me ordeno x Title")}
         >
-          <Text style={globalStyles.btnText}>Ordenamiento</Text>
+          <Text style={globalStyles.btnTextFiltro}>Ordenamiento</Text>
         </TouchableOpacity>
 
         {/*----------------------------------------FILTRADO------------------------------------------- */}
         <View>
           <TextInput
-            style={globalStyles.btn}
+            style={globalStyles.btnFiltrosHome}
             editable={false}
             placeholder="Buscar por Categoria"
             textAlign="center"
-            placeholderTextColor="#000"
+            placeholderTextColor="#161616"
             value={category}
             onPressIn={() => isVisibleFiltros(true)}
           />
@@ -367,9 +367,10 @@ paddingHorizontal: 10,
     alignSelf: "center",
     justifyContent: "center",
     width: "90%",
-    borderColor: "#bd967e",
+    borderColor: "#000000",
+    backgroundColor: '#161616',
     borderRadius: 10,
-    borderWidth: 3,
+    borderWidth: 4,
     marginTop: 10,
   },
   textContainer2: {
@@ -387,7 +388,7 @@ paddingHorizontal: 10,
     textAlign: "center",
     paddingVertical: 5,
     fontWeight: "bold",
-    color: "#392c28",
+    color: "#FDFDFD",
   },
 
   textContainer2: {
