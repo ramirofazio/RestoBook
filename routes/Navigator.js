@@ -18,12 +18,14 @@ import NavHome from "../Screens/NavHome.js";
 import NavDetail from "../Screens/NavDetail";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import ProfileResto from "../Screens/ProfileResto";
-import Btn from "../Screens/Helpers/Btns";
+import ListReviews from "../Screens/ListReviews";
+import AddReviewsRestorant from "../Screens/AddReviewsRestorant"
 //
 //
 //------------Styles y otros ---------
 import globalStyles from "../Screens/GlobalStyles";
 import { Text } from "react-native";
+import Btn from "../Screens/Helpers/Btns";
 
 const Stack = createNativeStackNavigator();
 const auth = getAuth()
@@ -129,7 +131,38 @@ export default Navigator = () => {
           }}
         />
         {/* //============// */}
-
+        <Stack.Screen
+          name="ListReviews"
+          component={ListReviews}
+          options={{
+            headerTitle: "ListReviews",
+            title: "ListReviews",
+            headerTitleAlign: "center",
+            headerStyle: {
+              backgroundColor: "#f6efd2",
+            },
+            headerTintColor: "#392c28",
+            headerTitleStyle: {
+              fontSize: 25,
+            },
+          }}
+          />
+           <Stack.Screen
+          name="AddReviewsRestorant"
+          component={AddReviewsRestorant}
+          options={{
+            headerTitle: "AddReviewsRestorant",
+            title: "AddReviewsRestorant",
+            headerTitleAlign: "center",
+            headerStyle: {
+              backgroundColor: "#f6efd2",
+            },
+            headerTintColor: "#392c28",
+            headerTitleStyle: {
+              fontSize: 25,
+            },
+          }}
+          />
         <Stack.Screen
           name="GlobalLogin"
           component={GlobalLogin}
