@@ -38,7 +38,7 @@ let initialState = {
   ],
   sectoresResto: [
     "Terraza",
-    "Salón principal",
+    "Salón Principal",
     "Patio",
     "Vereda",
   ],
