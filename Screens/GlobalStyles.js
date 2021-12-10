@@ -4,7 +4,7 @@ import { StyleSheet } from "react-native";
 
 
 const globalStyles = StyleSheet.create({
-//------------------------------------------HOME---------------------------------------------  
+  //------------------------------------------HOME---------------------------------------------  
   Home: {
     flex: 1,
     backgroundColor: '#fdfdfd',
@@ -18,12 +18,11 @@ const globalStyles = StyleSheet.create({
     fontSize: 14,
     color: "#eccdaa",
     fontWeight: 'bold',
-    textAlign: "center" 
+    textAlign: "center"
   },
   btnTextFiltro: {
     fontSize: 14,
     color: "#161616",
-    fontWeight: 'bold', 
   },
   btnContainer: {
     flexDirection: "row",
@@ -31,7 +30,7 @@ const globalStyles = StyleSheet.create({
     justifyContent: "space-around",
     width: '40%',
     // backgroundColor: 'red'
-    
+
   },
   Container: {
     alignItems: "center",
@@ -44,7 +43,7 @@ const globalStyles = StyleSheet.create({
     alignItems: "center",
     borderWidth: 2,
     borderColor: '#eccdaa',
-    
+
     shadowColor: "#fdfdfd",
     shadowOffset: {
       width: 0,
@@ -64,7 +63,7 @@ const globalStyles = StyleSheet.create({
     justifyContent: 'center',
     borderWidth: 2,
     borderColor: '#eccdaa',
-    
+
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -156,7 +155,7 @@ const globalStyles = StyleSheet.create({
     width: '100%',
     fontSize: 13,
     fontWeight: "bold",
-   
+
   },
   cardsHomeTitle: {
     // backgroundColor: "#5555",
@@ -165,7 +164,7 @@ const globalStyles = StyleSheet.create({
     textAlign: "center",
     width: '100%',
     color: '#161616',
-    
+
   },
   btnContainerCard: {
     // backgroundColor: 'violet',
@@ -176,31 +175,31 @@ const globalStyles = StyleSheet.create({
     alignItems: "center",
     marginTop: -120,
     justifyContent: "space-around",
-    
+
   },
   wspImage: {
     width: 40,
     height: 40,
     borderRadius: 25,
-    
+
   },
   /// --------------------------------------------ACA TERMINAN  LOS ESTILOS DE LAS CARDS HOM -------
   //------------------------------CARDS MENU y DETAIL RESTO-----------------------------------------------------------------
-  headerResto : {
-    backgroundColor: "#eccdaa", 
-        marginBottom: 10,
-        borderColor: 'rgba(22, 22, 22, .2)',
-        borderBottomWidth: 1,
-        justifyContent: 'center',
-        shadowColor: "#161616",
-        shadowOffset: {
-          width: 0,
-          height: 2,
-        },
-        shadowOpacity: 60,
-        shadowRadius: 4.84,
+  headerResto: {
+    backgroundColor: "#eccdaa",
+    marginBottom: 10,
+    borderColor: 'rgba(22, 22, 22, .2)',
+    borderBottomWidth: 1,
+    justifyContent: 'center',
+    shadowColor: "#161616",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 60,
+    shadowRadius: 4.84,
 
-        elevation: 5,
+    elevation: 5,
   },
   cardsMenuContainer: {
     flex: 1,
@@ -226,7 +225,7 @@ const globalStyles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "left",
     width: '100%',
-    
+
   },
   cardsMenuDescriptionText: {
     textAlign: 'left',
@@ -252,25 +251,25 @@ const globalStyles = StyleSheet.create({
     justifyContent: "center"
   },
 
-  btnTodasComidas : {
-          marginVertical: 7,
-          width: "95%",
-          height: "7%",
-          alignSelf: "center",
-          justifyContent: "center",
-          borderWidth: 2,
-          borderColor: "#eccdaa",
-          backgroundColor: "#f2f2f2",
-          borderRadius: 25,
-          shadowColor: "#000",
-          shadowOffset: {
-            width: 0,
-            height: 2,
-          },
-          shadowOpacity: 0.2,
-          shadowRadius: 4.84,
+  btnTodasComidas: {
+    marginVertical: 7,
+    width: "95%",
+    height: "7%",
+    alignSelf: "center",
+    justifyContent: "center",
+    borderWidth: 2,
+    borderColor: "#eccdaa",
+    backgroundColor: "#f2f2f2",
+    borderRadius: 25,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 4.84,
 
-          elevation: 5,
+    elevation: 5,
   },
   categoriesViewDetail: {
     backgroundColor: "#4E4E4E",
@@ -280,14 +279,14 @@ const globalStyles = StyleSheet.create({
     paddingVertical: 2,
     paddingHorizontal: 5,
     shadowColor: "#161616",
-          shadowOffset: {
-            width: 0,
-            height: 2,
-          },
-          shadowOpacity: 60,
-          shadowRadius: 4.84,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 60,
+    shadowRadius: 4.84,
 
-          elevation: 8,
+    elevation: 8,
   },
   //------------------------------------------------------------------------------------------------------
 
@@ -305,9 +304,9 @@ const globalStyles = StyleSheet.create({
   categoriesText: {
     fontSize: 13,
     padding: 1,
-    textAlign:"center",
+    textAlign: "center",
     color: '#ECCEAB',
-    
+
     fontWeight: "bold",
   },
   //----------------------------ACA TERMINA CATEGORIAS LOCALES --------------------------------------------
@@ -433,7 +432,7 @@ const globalStyles = StyleSheet.create({
     },
     shadowOpacity: 0.58,
     shadowRadius: 16.00,
-    
+
     elevation: 100,
   },
   //------------------------------------------------------------------------------------------------------
@@ -443,17 +442,17 @@ const globalStyles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 5,
     color: '#ECCDAA',
-   
+
   },
   componentTitle: {
     alignSelf: "center",
     marginTop: 10,
     fontSize: 30,
-    
+
   },
   containerTitle: {
     flexDirection: "row",
-    
+
   },
   navHome: {
     flexDirection: "row",
@@ -484,7 +483,7 @@ const globalStyles = StyleSheet.create({
     color: "#392c28",
     fontWeight: "bold",
     textAlign: "center",
- 
+
 
   },
   btnContainerLogin: {
@@ -495,7 +494,7 @@ const globalStyles = StyleSheet.create({
     maxHeight: '70%',
     height: '100%'
   },
-  btnLogin : {
+  btnLogin: {
     marginVertical: 7,
     width: "95%",
     height: 30,
@@ -519,7 +518,7 @@ const globalStyles = StyleSheet.create({
     textAlign: "center",
     fontSize: 20,
     width: "100%",
-    
+
 
   },
   texts: {
@@ -528,12 +527,12 @@ const globalStyles = StyleSheet.create({
     width: "100%",
     fontSize: 14.5,
     fontWeight: "bold",
-    
+    // marginBottom: -10,
     paddingVertical: 1,
   },
   textDownButton: {
     textAlign: "center",
-    
+
     width: "100%",
     fontSize: 13,
     marginTop: 5,
@@ -542,7 +541,7 @@ const globalStyles = StyleSheet.create({
     textAlign: "center",
     width: "100%",
     fontSize: 12,
-    
+
   },
   textContainer: {
     flex: 1,
@@ -557,7 +556,7 @@ const globalStyles = StyleSheet.create({
   },
   inputComponent: {
     alignSelf: "center",
-    marginTop: 15,
+    marginVertical: 10,
     borderRadius: 10,
     backgroundColor: 'rgba(22, 22, 22, .2)',
     maxWidth: '100%',

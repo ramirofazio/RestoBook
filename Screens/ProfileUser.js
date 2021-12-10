@@ -307,17 +307,18 @@ const ProfileUser = ({ navigation }) => {
                     onPress={() => setModalVisible(!modalVisible)}
                   >
                     <Text
-                      onPress={() => setModalVisible(false)}
                       style={globalStyles.texts}
                     >
                       X
                     </Text>
                   </TouchableOpacity>
                   <Text style={globalStyles.modalText}>Edita tu informacion</Text>
-                  <Text style={globalStyles.texts}>Nombre</Text>
+                  <Text style={globalStyles.texts}>Nombre:</Text>
                   <TextInput
                     style={globalStyles.inputComponent}
                     placeholder={currentUser?.name}
+                    placeholderTextColor="#666"
+                    textAlign="center"
                     onChangeText={(value) =>
                       setNewUserInfo({
                         ...newUserInfo,
@@ -325,10 +326,12 @@ const ProfileUser = ({ navigation }) => {
                       })
                     }
                   />
-                  <Text style={globalStyles.texts}>Apellido</Text>
+                  <Text style={globalStyles.texts}>Apellido:</Text>
                   <TextInput
                     style={globalStyles.inputComponent}
                     placeholder={currentUser?.lastName}
+                    placeholderTextColor="#666"
+                    textAlign="center"
                     onChangeText={(value) =>
                       setNewUserInfo({
                         ...newUserInfo,
@@ -336,10 +339,12 @@ const ProfileUser = ({ navigation }) => {
                       })
                     }
                   />
-                  <Text style={globalStyles.texts}>Celular</Text>
+                  <Text style={globalStyles.texts}>Celular:</Text>
                   <TextInput
                     style={globalStyles.inputComponent}
                     placeholder={currentUser?.cel}
+                    placeholderTextColor="#666"
+                    textAlign="center"
                     onChangeText={(value) =>
                       setNewUserInfo({
                         ...newUserInfo,
@@ -386,7 +391,7 @@ const ProfileUser = ({ navigation }) => {
           {" "}
           <StarFilled name="star" color="#161616" size={25} /> Mis Favoritos
         </Text>
-          <Divider orientation="horizontal" width={2} inset={true} insetType={"middle"} color={'rgba(00, 00, 00, .5)'} style={{marginVertical: 10}}/>
+        <Divider orientation="horizontal" width={2} inset={true} insetType={"middle"} color={'rgba(00, 00, 00, .5)'} style={{ marginVertical: 10 }} />
         <ScrollView
           horizontal={true}
           pagingEnabled
@@ -417,13 +422,13 @@ const ProfileUser = ({ navigation }) => {
               </View>
             );
           })
-          : null
+            : null
           }
         </ScrollView>
-        <Text style={{ fontSize: 25, color: "#161616", textAlign: "center",  marginTop: 5 }}>
+        <Text style={{ fontSize: 25, color: "#161616", textAlign: "center", marginTop: 5 }}>
           <TagOutlined name="tag" color="#161616" size={25} /> Mis Reservas
         </Text>
-         <Divider orientation="horizontal" width={2} inset={true} insetType={"middle"} color={'rgba(00, 00, 00, .5)'} style={{marginVertical: 5}}/>
+        <Divider orientation="horizontal" width={2} inset={true} insetType={"middle"} color={'rgba(00, 00, 00, .5)'} style={{ marginVertical: 5 }} />
         <ScrollView style={{ overflow: "scroll" }}>
           {reservas.map((persona) => {
             return (
