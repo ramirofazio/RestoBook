@@ -193,7 +193,7 @@ const DetailsResto = ({ navigation }) => {
 
 
         </View>
-        {menuArr.length > 0 ? (
+        {menuArr.length > 0 ? 
           <ScrollView style={styles.showMenu}>
             {menuCategory ? menuCategory.map((menu, index) => {
               return (
@@ -210,7 +210,7 @@ const DetailsResto = ({ navigation }) => {
                 );
               })}
           </ScrollView>
-        ) : (
+         : (
           <Text
             style={{ alignSelf: "center", fontSize: 30, marginVertical: 30 }}
           >
