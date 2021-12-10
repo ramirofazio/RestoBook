@@ -177,12 +177,17 @@ const ProfileResto = ({ navigation }) => {
               >
                 {currentUser?.location?.address}
               </Text>
+
+
+
               <TouchableOpacity
                 style={globalStyles.btn}
                 onPress={() => setModalVisible(true)}
               >
                 <Text>Editar</Text>
               </TouchableOpacity>
+
+
               <Modal
                 animationType="slide"
                 transparent={true}
@@ -272,6 +277,8 @@ const ProfileResto = ({ navigation }) => {
                   </View>
                 </View>
               </Modal>
+
+
             </View>
           </View>
               <Text
@@ -319,21 +326,98 @@ const ProfileResto = ({ navigation }) => {
                   </View>
               ) : null}
           </ScrollView>
-              <TouchableOpacity onPress={() => alert('abro modal')} style={globalStyles.btnProfileResto}>
+
+
+
+                      {/* MODAL DE ADMINISTRAR RESERVAS */}
+
+              <TouchableOpacity onPress={() => setModalVisible(true)} style={globalStyles.btnProfileResto}>
                     <Icon name='clipboard-list' type='font-awesome-5'color='#392c28'size={24}/>
                   <Text style={{ fontSize: 25, color: "#392c28", textAlign: "center" }}>
                     Administrar Reservas
-                    {/* 'clipboard-list' */}
                   </Text>
+
+                  <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {
+                  Alert.alert("Modal has been closed.");
+                  setModalVisible(!modalVisible);
+                }}
+              >
+
+                <TouchableOpacity
+                      style={globalStyles.touchLog}
+                      onPress={() => setModalVisible(!modalVisible)}
+                    >
+                      <Text
+                        onPress={() => setModalVisible(false)}
+                        style={globalStyles.textStyle}
+                      >
+                        X
+                      </Text>
+                    </TouchableOpacity>
+
+
+                <View style={globalStyles.centeredView}>
+                  <View style={globalStyles.modalView}>
+                    <Text style={globalStyles.modalText}>Administración de reserva</Text>
+                    <Text
+                    style={globalStyles.touchLog}
+                    >Horario para reservar</Text>
+                    <TextInput
+                      
+                    />
+                    <Text 
+                    style={globalStyles.touchLog}> 
+                       
+                    Cantidad de lugares disponibles</Text>
+                    <TouchableOpacity
+                    />
+                    <TextInput
+                      
+                    />
+
+
+                    <Text
+                    style={globalStyles.touchLog}
+                    >Sectores disponibles</Text>
+                    <TextInput
+                      
+                    />
+
+                     <Text
+                    style={globalStyles.touchLog}
+                    >Resumen</Text>
+                    <TextInput
+                      
+                    />
+
+
+
+                    <TouchableOpacity
+                      style={globalStyles.touchLog}
+                    >
+                      <Text>Guardar</Text>
+                    </TouchableOpacity>
+                    
+                  </View>
+                </View>
+              </Modal>
+                      
+
               </TouchableOpacity>
 
-              <TouchableOpacity onPress={() => alert('abro modal')} style={globalStyles.btnProfileResto}>
+              
+
+              {/* <TouchableOpacity onPress={() => alert('abro modal')} style={globalStyles.btnProfileResto}>
                     <Icon name='street-view' type='font-awesome-5'color='#392c28'size={24}/>
                   <Text style={{ fontSize: 25, color: "#392c28", textAlign: "center" }}>
                     Editar Lugares Disponibles
-                    {/* street-view */}
                   </Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
+              
               
               <TouchableOpacity onPress={() => alert('abro modal')} style={globalStyles.btnProfileResto}>
                     <Icon name='clock' type='font-awesome-5'color='#392c28'size={24}/>
@@ -342,6 +426,8 @@ const ProfileResto = ({ navigation }) => {
                     {/* clock */}
                   </Text>
               </TouchableOpacity> 
+
+
         </ScrollView>
       </View>
     );

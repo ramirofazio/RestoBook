@@ -36,6 +36,12 @@ let initialState = {
     "Postre",
     "Plato Principal",
   ],
+  sectoresResto: [
+    "Terraza",
+    "Salón principal",
+    "Patio",
+    "Vereda",
+  ],
 
 };
 
