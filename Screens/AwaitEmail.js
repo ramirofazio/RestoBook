@@ -50,27 +50,26 @@ const AwaitEmail = ({ navigation }) => {
       }}
     >
       <Text style={globalStyles.text}>
-        {" "}
-        Please check your inbox, if it's empty click below
+        Por favor, chequea tu bandeja de entrada y spam.
       </Text>
       <View style={{ alignItems: "center" }}>
         <TouchableOpacity
           style={globalStyles.touchLog}
           onPress={() => {
             firebase.fireAuth.currentUser.sendEmailVerification();
-            alert("Email sent. Check spam section!!");
+            alert("Mail enviado, chequea en Spam!");
           }}
         >
-          <Text style={globalStyles.fontLog}>Resend</Text>
+          <Text style={globalStyles.fontLog}>Reenviar</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={globalStyles.touchFlag}
           onPress={() => {
             signOutAndClearRedux();
-            navigation.navigate("RestoBook");
+            navigation.navigate("GlobalLogin");
           }}
         >
-          <Text style={globalStyles.fontLog}>Go back to Login</Text>
+          <Text style={globalStyles.fontLog}>Volver a Login</Text>
         </TouchableOpacity>
       </View>
     </View>

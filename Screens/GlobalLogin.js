@@ -102,8 +102,10 @@ const GlobalRegisterSchema = yup.object({
 
 const GlobalLogin = ({ navigation }) => {
   const [visible, isVisible] = useState(false);
+  const [forgottvisible, isforgottVisible] = useState(false);
   const [forgottedMail, setForgottedMail] = useState("");
-
+  const [flagLoginOrRegister, setFlagLoginOrRegister] = useState(true);
+  const [flagSecureText, setFlagSecureText] = useState(true);
   const Glogin = async () => {
     try {
       const result = await Google.logInAsync({
@@ -129,9 +131,6 @@ const GlobalLogin = ({ navigation }) => {
       alert("login: Error" + message);
     }
   };
-
-  const [flagLoginOrRegister, setFlagLoginOrRegister] = useState(true);
-  const [flagSecureText, setFlagSecureText] = useState(true);
 
   if (flagLoginOrRegister) {
     return (
@@ -231,7 +230,10 @@ const GlobalLogin = ({ navigation }) => {
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={globalStyles.touchFlag}
-                  onPress={() => setFlagLoginOrRegister(false)}
+                  onPress={() => {
+                    setFlagLoginOrRegister(false);
+                    isVisible(true);
+                  }}
                 >
                   <Text style={globalStyles.fontLog}>
                     I dont have an account yet
@@ -240,14 +242,17 @@ const GlobalLogin = ({ navigation }) => {
                 <TouchableOpacity
                   style={globalStyles.touchFlag}
                   onPress={() => {
-                    isVisible(true);
+                    isforgottVisible(true);
                   }}
                 >
                   <Text style={globalStyles.fontLog}>Olvidé mi contraseña</Text>
                 </TouchableOpacity>
-                <BottomSheet isVisible={visible} style={styles.forgottenPass}>
+                <BottomSheet
+                  isVisible={forgottvisible}
+                  style={styles.forgottenPass}
+                >
                   <View>
-                    <TouchableOpacity onPress={() => isVisible(false)}>
+                    <TouchableOpacity onPress={() => isforgottVisible(false)}>
                       <Text>X</Text>
                     </TouchableOpacity>
                     <TextInput
@@ -259,7 +264,7 @@ const GlobalLogin = ({ navigation }) => {
                       onPress={() => {
                         sendPasswordResetEmail(auth, forgottedMail)
                           .then(alert("Revisa tu casilla!"))
-                          .then(isVisible(false));
+                          .then(isforgottVisible(false));
                       }}
                     >
                       <Text>Enviar</Text>
@@ -276,7 +281,7 @@ const GlobalLogin = ({ navigation }) => {
     return (
       //-------------------REGISTER---------------------
       <View>
-        <Modal animationType="slide" transparent={true}>
+        <Modal animationType="slide" transparent={true} visible={visible}>
           <View View style={globalStyles.Home}>
             <Formik
               initialValues={{
@@ -316,6 +321,8 @@ const GlobalLogin = ({ navigation }) => {
                           favourites: [],
                         })
                         .then(sendEmailVerification(auth.currentUser))
+                        .then(setFlagLoginOrRegister(true))
+                        .then(isVisible(false))
                         .then(navigation.navigate("AwaitEmail"));
                     }
                   });
