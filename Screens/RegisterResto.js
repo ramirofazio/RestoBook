@@ -471,7 +471,7 @@ const RegisterResto = ({ navigation }) => {
                 };
                 setStateAndRegion(newLocation);
               }}
-              pinColor="#0072B5"
+              pinColor="#eccdaa"
               identifier="userLocation"
            />
           )}

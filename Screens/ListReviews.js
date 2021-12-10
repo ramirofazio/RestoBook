@@ -48,10 +48,11 @@ export default function ListReviews({navigation, reviews}){
             { reviews?.length >0 ? (
                 <ScrollView style={styles.showMenu}>
                              {
-                                 reviews.map(review => <CardReviews reseña={review}></CardReviews>)
+                                 reviews.map(review => <CardReviews reseña={review} key={review.createAt}></CardReviews>)
                              }
                         </ScrollView>) : <Text> Este negocio aun no tiene comentarios</Text>}
         </View>
+
                 )
 }
 const styles = StyleSheet.create({

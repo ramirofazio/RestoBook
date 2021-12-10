@@ -248,7 +248,8 @@ export default function Home({ navigation }) {
           <Text style={styles.text}>Welcome to Resto Book</Text>
         )}
       </View>
-      <View>
+
+      <View >
         <TextInput
           style={styles.search}
           onChangeText={(event) => {

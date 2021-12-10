@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
         borderWidth: 2, 
         borderColor: 'black', 
         borderStyle: 'dotted',
-        backgroundColor: '#d0d0d0',
+        backgroundColor: '#fdfdfd',
         shadowColor: "#161616",
         shadowOffset: {
           width: 0,

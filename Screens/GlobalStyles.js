@@ -254,7 +254,7 @@ const globalStyles = StyleSheet.create({
   btnTodasComidas: {
     marginVertical: 7,
     width: "95%",
-    height: "7%",
+    height: 30,
     alignSelf: "center",
     justifyContent: "center",
     borderWidth: 2,
@@ -314,7 +314,7 @@ const globalStyles = StyleSheet.create({
   // ---------------------------- PROFILE USER Y RESTO ----------------------------------------------------
   Perfilcontainer: {
     flex: 1,
-    backgroundColor: "#d0d0d0",
+    backgroundColor: "#f2f2f2",
   },
   imgContainer: {
     flex: 2,
@@ -347,7 +347,7 @@ const globalStyles = StyleSheet.create({
   },
   FavouriteContainer: {
     overflow: "scroll",
-    backgroundColor: "#ecceab",
+    backgroundColor: "#d0d0d0",
     maxHeight: "30%",
     height: "20%",
   },

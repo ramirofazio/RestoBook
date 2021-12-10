@@ -142,8 +142,8 @@ const DetailsResto = ({ navigation }) => {
   
   return (
     <ScrollView style={globalStyles.Home}>
-      <View style={{ backgroundColor: "#333a" }}>
-        <Text style={{ textAlign: "center", fontSize: 30, marginVertical: 10, color: "#fff" }}>{empresaDetail.title}</Text>
+      <View style={globalStyles.headerResto}>
+        <Text style={{ textAlign: "center", fontSize: 30, paddingVertical: 3, color: "#161616", letterSpacing: 1 }}>{empresaDetail.title}</Text>
       </View>
     
       <View>
