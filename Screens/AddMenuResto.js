@@ -45,8 +45,6 @@ const AddMenuResto = ({ navigation }) => {
   const idResto = empresaDetail.idResto;
   const [isVisible, setIsVisible] = useState(false);
   const [category, setCategory] = useState();
-
-
   const categories = useSelector((state) => state.categoriesMenu);
 
 
