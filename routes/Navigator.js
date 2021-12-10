@@ -74,9 +74,9 @@ export default Navigator = () => {
             title: "Register Resto",
             headerTitleAlign: "center",
             headerStyle: {
-              backgroundColor: "#f6efd2",
+              backgroundColor: "#161616",
             },
-            headerTintColor: "#392c28",
+            headerTintColor: '#ECCDAA',
             headerTitleStyle: {
               fontSize: 25,
             },
@@ -86,12 +86,13 @@ export default Navigator = () => {
           name="AddMenuResto"
           component={AddMenuResto}
           options={{
+            title: 'Agregar Menu',
             headerTitle: "Agregar Menu",
             headerTitleAlign: "center",
             headerStyle: {
-              backgroundColor: "#f6efd2",
+              backgroundColor: "#161616",
             },
-            headerTintColor: "#392c28",
+            headerTintColor: '#ECCDAA',
             headerTitleStyle: {
               fontSize: 25,
             },
@@ -104,8 +105,9 @@ export default Navigator = () => {
           options={({ navigation }) => ({
             headerTitle: () => <NavDetail navigation={navigation} />,
             headerStyle: {
-              backgroundColor: "#f6efd2",
+              backgroundColor: "#161616",
             },
+            headerTintColor: '#ECCDAA'
           })}
         />
 
@@ -136,9 +138,9 @@ export default Navigator = () => {
             title: "Resto Book",
             headerTitleAlign: "center",
             headerStyle: {
-              backgroundColor: "#f6efd2",
+              backgroundColor: "#161616",
             },
-            headerTintColor: "#392c28",
+            headerTintColor: '#ECCDAA',
             headerTitleStyle: {
               fontSize: 25,
             },
@@ -153,9 +155,9 @@ export default Navigator = () => {
             title: "Verify Email",
             headerTitleAlign: "center",
             headerStyle: {
-              backgroundColor: "#f6efd2",
+              backgroundColor: "#161616",
             },
-            headerTintColor: "#392c28",
+            headerTintColor: '#ECCDAA',
             headerTitleStyle: {
               fontSize: 25,
             },
@@ -166,15 +168,14 @@ export default Navigator = () => {
           component={ProfileUser}
 
           options={({ navigation }) => ({
-            headerTitle: " Mi Perfil",
-            title: 'Profile',
-
-            headerTitleAlign: "center",
+            headerTitle: "Perfil",
+            title: 'Perfil',
+            headerTitleAlign: "left",
             headerRight: () => (
               <Btn
                 nombre={
                   usuarioGlobal !== ""
-                    ? `Create your resto, ${usuarioGlobal}!`
+                    ? `Crea tu resto, ${usuarioGlobal}!`
                     : `Crea tu resto!`
                 }
                 ruta="RegisterResto"
@@ -182,9 +183,9 @@ export default Navigator = () => {
               />
             ),
             headerStyle: {
-              backgroundColor: "#f6efd2",
+              backgroundColor: "#161616",
             },
-            headerTintColor: "#392c28",
+            headerTintColor: '#ECCDAA',
             headerTitleStyle: {
               fontSize: 25,
             },
@@ -203,9 +204,9 @@ export default Navigator = () => {
 
             headerTitleAlign: "center",
             headerStyle: {
-              backgroundColor: "#f6efd2",
+              backgroundColor: "#161616",
             },
-            headerTintColor: "#392c28",
+            headerTintColor: '#ECCDAA',
             headerTitleStyle: {
               fontSize: 25,
             },

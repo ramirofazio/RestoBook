@@ -236,20 +236,20 @@ export default function Home({ navigation }) {
       <View style={globalStyles.btnHome}>
 
         <TouchableOpacity
-          style={globalStyles.btn}
+          style={globalStyles.btnFiltrosHome}
           onPress={() => alert("Me ordeno x Title")}
         >
-          <Text style={globalStyles.btnText}>Ordenamiento</Text>
+          <Text style={globalStyles.btnTextFiltro}>Ordenamiento</Text>
         </TouchableOpacity>
 
         {/*----------------------------------------FILTRADO------------------------------------------- */}
         <View>
           <TextInput
-            style={globalStyles.btn}
+            style={globalStyles.btnFiltrosHome}
             editable={false}
             placeholder="Buscar por Categoria"
             textAlign="center"
-            placeholderTextColor="#000"
+            placeholderTextColor="#161616"
             value={category}
             onPressIn={() => isVisibleFiltros(true)}
           />

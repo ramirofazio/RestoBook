@@ -161,8 +161,9 @@ const ProfileResto = ({ navigation }) => {
                 style={{
                   fontSize: 25,
                   fontWeight: "bold",
-                  color: "#392c28",
+                  color: "#161616",
                   textAlignVertical: "top",
+                  textTransform: "capitalize"
                 }}
               >
                 {currentUser?.title}
@@ -171,17 +172,18 @@ const ProfileResto = ({ navigation }) => {
                 style={{
                   fontSize: 15,
                   fontWeight: "bold",
-                  color: "#392c28",
+                  color: "#161616",
                   paddingVertical: 15,
+                  textTransform: "capitalize"
                 }}
               >
                 {currentUser?.location?.address}
               </Text>
               <TouchableOpacity
-                style={globalStyles.btn}
+                style={globalStyles.btnLogin}
                 onPress={() => setModalVisible(true)}
               >
-                <Text>Editar</Text>
+                <Text style={globalStyles.texts}>Editar</Text>
               </TouchableOpacity>
               <Modal
                 animationType="slide"
@@ -195,20 +197,20 @@ const ProfileResto = ({ navigation }) => {
                 <View style={globalStyles.centeredView}>
                   <View style={globalStyles.modalView}>
                     <TouchableOpacity
-                      style={globalStyles.touchLog}
+                      style={globalStyles.btnTodasComidas}
                       onPress={() => setModalVisible(!modalVisible)}
                     >
                       <Text
                         onPress={() => setModalVisible(false)}
-                        style={globalStyles.textStyle}
+                        style={globalStyles.texts}
                       >
                         X
                       </Text>
                     </TouchableOpacity>
                     <Text style={globalStyles.modalText}>Editar información</Text>
-                    <Text>Nombre del Resto</Text>
+                    <Text style={globalStyles.texts}>Nombre del Resto</Text>
                     <TextInput
-                      style={globalStyles.texts}
+                      style={globalStyles.inputComponent}
                       placeholder={currentUser?.title}
                       onChangeText={(value) =>
                         setNewUserInfo({
@@ -217,9 +219,9 @@ const ProfileResto = ({ navigation }) => {
                         })
                       }
                     />
-                    <Text>Direccion</Text>
+                    <Text style={globalStyles.texts}>Direccion</Text>
                     <TextInput
-                      style={globalStyles.texts}
+                       style={globalStyles.inputComponent}
                       placeholder={currentUser?.location?.address}
                       onChangeText={(value) =>
                         setNewUserInfo({
@@ -228,9 +230,9 @@ const ProfileResto = ({ navigation }) => {
                         })
                       }
                     />
-                    <Text>Description</Text>
+                    <Text style={globalStyles.texts}>Description</Text>
                     <TextInput
-                      style={globalStyles.texts}
+                       style={globalStyles.inputComponent}
                       placeholder={currentUser?.description}
                       onChangeText={(value) =>
                         setNewUserInfo({
@@ -240,7 +242,7 @@ const ProfileResto = ({ navigation }) => {
                       }
                     />
                     <TouchableOpacity
-                      style={globalStyles.touchLog}
+                      style={globalStyles.btnLogin}
                       onPress={() => {
                         sendPasswordResetEmail(auth, currentUser?.email)
                           .then(alert("Revisa tu casilla y volve a ingresar!"))
@@ -249,10 +251,10 @@ const ProfileResto = ({ navigation }) => {
                           .then(navigation.navigate("RestoBook"));
                       }}
                     >
-                      <Text>Cambiar contraseña</Text>
+                      <Text style={globalStyles.texts}>Cambiar contraseña</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                      style={globalStyles.touchLog}
+                      style={globalStyles.btnLogin}
                       onPress={() => {
                         firebase.db
                           .collection("Users")
@@ -267,7 +269,7 @@ const ProfileResto = ({ navigation }) => {
                           .catch((error) => alert("error!"));
                       }}
                     >
-                      <Text>Guardar</Text>
+                      <Text style={globalStyles.texts}>Guardar</Text>
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -276,20 +278,21 @@ const ProfileResto = ({ navigation }) => {
           </View>
               <Text
                 style={{
-                  fontSize: 15,
+                  fontSize: 20,
                   fontWeight: "bold",
-                  color: "#392c28",
+                  color: "#161616",
                   paddingVertical: 15,
-                  textAlign: "center"
+                  textAlign: "center",
+                  textTransform: "capitalize"
                 }}
               >
                 {currentUser?.description}
               </Text>
               
-              <Text style={{ fontSize: 25, color: "#392c28", textAlign: "center" }}>
-                <Icon name='home'type='font-awesome-5'color='#392c28'size={25}/> Mis Comercios
+              <Text style={{ fontSize: 25, color: "#161616", textAlign: "center" }}>
+                <Icon name='home'type='font-awesome-5'color='#161616'size={25}/> Mis Comercios
               </Text>
-            <Divider orientation="horizontal" width={2} inset={true} insetType={"middle"} color={'black'} style={{marginVertical: 10}}/>
+            <Divider orientation="horizontal" width={2} inset={true} insetType={"middle"} color={'rgba(00, 00, 00, .5)'} style={{marginVertical: 10}}/>
           <ScrollView
             horizontal={true}
             pagingEnabled
