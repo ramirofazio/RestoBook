@@ -1,7 +1,7 @@
 //----------REACT UTILS-----------
 import React, { useState, useEffect } from "react";
-import axios from 'axios';
-import Constants from 'expo-constants'
+import axios from "axios";
+import Constants from "expo-constants";
 //
 //
 //----------REDUX UTILS-----------
@@ -9,7 +9,16 @@ import { useSelector } from "react-redux";
 //
 //
 //----------REACT-NATIVE UTILS-----------
-import { View, Text, StyleSheet, Image, Linking, TouchableOpacity, Modal, TextInput } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  Linking,
+  TouchableOpacity,
+  Modal,
+  TextInput,
+} from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import MapView, { Marker } from "react-native-maps";
 //import DateTimePicker from '@react-native-community/datetimepicker';
@@ -32,11 +41,11 @@ import globalStyles from "./GlobalStyles";
 //
 //
 //----------CONSTANTES--------------
-const ENTRADAS = "ENTRADAS"
-const PLATO_PRINCIPAL = "PLATO PRINCIPAL"
-const GUARNICION = 'GUARNICION'
-const BEBIDA = "BEBIDA"
-const POSTRES = "POSTRES"
+const ENTRADAS = "ENTRADAS";
+const PLATO_PRINCIPAL = "PLATO PRINCIPAL";
+const GUARNICION = "GUARNICION";
+const BEBIDA = "BEBIDA";
+const POSTRES = "POSTRES";
 //
 //
 //-------INITIALIZATIONS-------
@@ -45,41 +54,40 @@ const auth = getAuth();
 //---------------------------------------------------------------------------------------//
 //
 const DetailsResto = ({ navigation }) => {
-
   //--------------------------MERCADO PAGO--------------------------
-  const [precioCabeza, setPrecioCabeza] = useState()
-  const [cantLugares, setCantLugares] = useState()
-  const [modalVisible, setModalVisible] = useState(false)
+  const [precioCabeza, setPrecioCabeza] = useState();
+  const [cantLugares, setCantLugares] = useState();
+  const [modalVisible, setModalVisible] = useState(false);
 
   //--------------------------FILTROS CATEGORY--------------------------
-  const [menuCategory, setMenuCategory] = useState()
+  const [menuCategory, setMenuCategory] = useState();
 
   const empresaDetail = useSelector((state) => state.empresaDetail);
   const { manifest } = Constants;
-  const { location } = empresaDetail
-  const number = "+541168020511"
+  const { location } = empresaDetail;
+  const number = "+541168020511";
   //WhatsApp
   const handleWhatsAppPress = async () => {
-    await Linking.openURL(`whatsapp://send?text=Hola RestoBook&phone=${number}`)
-  }
+    await Linking.openURL(
+      `whatsapp://send?text=Hola RestoBook&phone=${number}`
+    );
+  };
   const [menuArr, setMenuArr] = useState([]);
   const onPressReservar = async (cantLugares, precioCabeza) => {
-    const url = await axios(
-      {
-        method: 'POST',
-        url: 'http://192.168.0.10:19006/checkout',
-        data: {
-          restoName: empresaDetail.title,
-          quantity: cantLugares,
-          unit_price: precioCabeza
-        }
-      }
-    )
-    setModalVisible(false)
+    const url = await axios({
+      method: "POST",
+      url: "http://192.168.0.10:19006/checkout",
+      data: {
+        restoName: empresaDetail.title,
+        quantity: cantLugares,
+        unit_price: precioCabeza,
+      },
+    });
+    setModalVisible(false);
     navigation.navigate("WebViewScreen", {
-      url: url.data
-    })
-  }
+      url: url.data,
+    });
+  };
 
   const getMenu = () => {
     const q = query(collection(firebase.db, "Restos"));
@@ -87,18 +95,17 @@ const DetailsResto = ({ navigation }) => {
       let menu = [];
       querySnapshot.forEach((doc) => {
         if (doc.id === empresaDetail.idResto) {
-          //console.log("yes!");
           let obj = doc.data();
           menu = obj.menu;
           setMenuArr(menu);
         }
       });
     });
-    setMenuCategory('')
-  }
+    setMenuCategory("");
+  };
 
   useEffect(() => {
-    getMenu()
+    getMenu();
   }, []);
 
   const handleCategory = async (category) => {
@@ -106,108 +113,108 @@ const DetailsResto = ({ navigation }) => {
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
       const menuResto = docSnap.data().menu;
-      //console.log(menuResto)
-      const result = menuResto.filter((menu) => menu.category === category.toLowerCase())
 
-      //console.log(result)
+      const result = menuResto.filter(
+        (menu) => menu.category === category.toLowerCase()
+      );
+
       if (result.length === 0) {
-        alert("No hay comidas con esta categoria")
-        getMenu()
+        alert("No hay comidas con esta categoria");
+        getMenu();
       } else {
-        setMenuCategory(result)
+        setMenuCategory(result);
       }
     }
-  }
-
+  };
 
   return (
     <View style={globalStyles.Home}>
       <View style={{ backgroundColor: "#333a" }}>
-        <Text style={{ textAlign: "center", fontSize: 30, marginVertical: 10, color: "#fff" }}>{empresaDetail.title}</Text>
+        <Text
+          style={{
+            textAlign: "center",
+            fontSize: 30,
+            marginVertical: 10,
+            color: "#fff",
+          }}
+        >
+          {empresaDetail.title}
+        </Text>
       </View>
 
       <View>
-        <View style={{
-          paddingVertical: 2,
-          paddingHorizontal: 5,
-          marginVertical: 7,
-          marginHorizontal: 5,
+        <View
+          style={{
+            paddingVertical: 2,
+            paddingHorizontal: 5,
+            marginVertical: 7,
+            marginHorizontal: 5,
 
-          borderWidth: 2,
-          borderColor: "#333a",
-          backgroundColor: "white",
-          borderRadius: 10,
-        }}>
-          <TouchableOpacity
-            onPress={() => getMenu()}
-          >
-            <Text style={{
-              fontWeight: "bold",
-              fontSize: 13,
-              padding: 1,
-              alignSelf: "center",
-            }}>Todas Las Comidas</Text>
+            borderWidth: 2,
+            borderColor: "#333a",
+            backgroundColor: "white",
+            borderRadius: 10,
+          }}
+        >
+          <TouchableOpacity onPress={() => getMenu()}>
+            <Text
+              style={{
+                fontWeight: "bold",
+                fontSize: 13,
+                padding: 1,
+                alignSelf: "center",
+              }}
+            >
+              Todas Las Comidas
+            </Text>
           </TouchableOpacity>
         </View>
         <View style={styles.categoriesContainer}>
           <View style={globalStyles.categoriesView}>
-            <TouchableOpacity
-              onPress={() => handleCategory(ENTRADAS)}
-            >
+            <TouchableOpacity onPress={() => handleCategory(ENTRADAS)}>
               <Text style={globalStyles.categoriesText}>Entradas</Text>
             </TouchableOpacity>
           </View>
 
           <View style={globalStyles.categoriesView}>
-            <TouchableOpacity
-              onPress={() => handleCategory(PLATO_PRINCIPAL)}
-            >
+            <TouchableOpacity onPress={() => handleCategory(PLATO_PRINCIPAL)}>
               <Text style={globalStyles.categoriesText}>Plato Principal</Text>
             </TouchableOpacity>
           </View>
           <View style={globalStyles.categoriesView}>
-            <TouchableOpacity
-              onPress={() => handleCategory(GUARNICION)}
-            >
+            <TouchableOpacity onPress={() => handleCategory(GUARNICION)}>
               <Text style={globalStyles.categoriesText}>Guarnicion</Text>
             </TouchableOpacity>
           </View>
           <View style={globalStyles.categoriesView}>
-            <TouchableOpacity
-              onPress={() => handleCategory(BEBIDA)}
-            >
+            <TouchableOpacity onPress={() => handleCategory(BEBIDA)}>
               <Text style={globalStyles.categoriesText}>Bebidas</Text>
             </TouchableOpacity>
           </View>
 
-
           <View style={globalStyles.categoriesView}>
-            <TouchableOpacity
-              onPress={() => handleCategory(POSTRES)}
-            >
+            <TouchableOpacity onPress={() => handleCategory(POSTRES)}>
               <Text style={globalStyles.categoriesText}>Postres</Text>
             </TouchableOpacity>
           </View>
-
-
-
         </View>
         {menuArr.length > 0 ? (
           <ScrollView style={styles.showMenu}>
-            {menuCategory ? menuCategory.map((menu, index) => {
-              return (
-                <CardMenu key={index} menu={menu}>
-                  {" "}
-                </CardMenu>
-              );
-            }) :
-              menuArr.map((menu, index) => {
-                return (
-                  <CardMenu key={index} menu={menu}>
-                    {" "}
-                  </CardMenu>
-                );
-              })}
+            {menuCategory
+              ? menuCategory.map((menu, index) => {
+                  return (
+                    <CardMenu key={index} menu={menu}>
+                      {" "}
+                    </CardMenu>
+                  );
+                })
+              : menuArr.map((menu, index) => {
+                  return (
+                    <CardMenu key={index} menu={menu}>
+                      {" "}
+                    </CardMenu>
+                  );
+                })}
           </ScrollView>
         ) : (
           <Text
@@ -217,9 +224,18 @@ const DetailsResto = ({ navigation }) => {
             Add a food to see it!
           </Text>
         )}
-        <View style={globalStyles.btn} onTouchStart={() => setModalVisible(!modalVisible)}>
-          <TouchableOpacity >
-            <Text><MaterialIcons name="payment" size={20} color="black" ></MaterialIcons> Quiero Reservar !
+        <View
+          style={globalStyles.btn}
+          onTouchStart={() => setModalVisible(!modalVisible)}
+        >
+          <TouchableOpacity>
+            <Text>
+              <MaterialIcons
+                name="payment"
+                size={20}
+                color="black"
+              ></MaterialIcons>{" "}
+              Quiero Reservar !
             </Text>
           </TouchableOpacity>
         </View>
@@ -238,10 +254,8 @@ const DetailsResto = ({ navigation }) => {
                 latitude: location.latitude,
                 longitude: location.longitude,
               }}
-              pinColor='#0072B5'
-            >
-
-            </Marker>
+              pinColor="#0072B5"
+            ></Marker>
           </MapView>
         </View>
       </View>
@@ -259,17 +273,25 @@ const DetailsResto = ({ navigation }) => {
               style={globalStyles.touchLog}
               onPress={() => setModalVisible(!modalVisible)}
             >
-              <Text
-                onPress={() => setModalVisible(false)}
-              > X </Text>
+              <Text onPress={() => setModalVisible(false)}> X </Text>
             </TouchableOpacity>
             <Text>Selecciona la cantidad de lugares</Text>
-            <TextInput placeholder='Cantidad de lugares' style={{ backgroundColor: '#bd967e', width: '80%' }} keyboardType='numeric' onChangeText={(value) => setCantLugares(parseInt(value))}>
-            </TextInput>
+            <TextInput
+              placeholder="Cantidad de lugares"
+              style={{ backgroundColor: "#bd967e", width: "80%" }}
+              keyboardType="numeric"
+              onChangeText={(value) => setCantLugares(parseInt(value))}
+            ></TextInput>
             <Text>Precio por cabeza otorgado por Empresa seria:</Text>
-            <TextInput placeholder='Cantidad de lugares' style={{ backgroundColor: '#bd967e', width: '80%' }} keyboardType='numeric' onChangeText={(value) => setPrecioCabeza(parseInt(value))}>
-            </TextInput>
-            <Text style={{ fontSize: 30, color: 'blue' }}>Precio por cabeza ${precioCabeza}</Text>
+            <TextInput
+              placeholder="Cantidad de lugares"
+              style={{ backgroundColor: "#bd967e", width: "80%" }}
+              keyboardType="numeric"
+              onChangeText={(value) => setPrecioCabeza(parseInt(value))}
+            ></TextInput>
+            <Text style={{ fontSize: 30, color: "blue" }}>
+              Precio por cabeza ${precioCabeza}
+            </Text>
             <TouchableOpacity
               style={globalStyles.touchLog}
               onPress={() => onPressReservar(cantLugares, precioCabeza)}
@@ -280,7 +302,6 @@ const DetailsResto = ({ navigation }) => {
         </View>
       </Modal>
     </View>
-
   );
 };
 const styles = StyleSheet.create({
@@ -328,17 +349,16 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     borderRadius: 10,
     width: 40,
-    backgroundColor: '#ffd964',
+    backgroundColor: "#ffd964",
     alignItems: "center",
     borderWidth: 1,
-    borderColor: '#b39138',
-
+    borderColor: "#b39138",
   },
   img: {
     margin: 5,
     height: 20,
     width: 20,
-    alignItems: 'center'
+    alignItems: "center",
   },
   textContainer2: {
     alignSelf: "center",
@@ -347,13 +367,13 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 3,
     marginTop: 10,
-    backgroundColor: '#ffd964'
+    backgroundColor: "#ffd964",
   },
   centeredView: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: '10%',
+    marginTop: "10%",
     //backgroundColor: "blur",
   },
   modalView: {

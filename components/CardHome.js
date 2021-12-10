@@ -22,18 +22,29 @@ import {
   arrayUnion,
   arrayRemove,
   getDoc,
+  onSnapshot,
 } from "firebase/firestore";
 //
 
 const auth = getAuth();
 
 const CardMenu = ({ resto, navigation }) => {
-  const userFavourites = useSelector((state) => state.favourites);
+  // const userFavourites = useSelector((state) => state.favourites);
+  const [userFavourites, setUserFavourites] = useState();
   const CurrentId = useSelector((state) => state.currentId);
   const [hearthColor, setHearthColor] = useState("grey");
   const [pressed, setPressed] = useState(false);
   const dispatch = useDispatch();
   const categories = useSelector((state) => state.categoriesResto);
+
+  useEffect(() => {
+    if (CurrentId) {
+      const q = doc(firebase.db, "Users", CurrentId);
+      const unsubscribe = onSnapshot(q, (doc) => {
+        setUserFavourites(doc.data().favourites);
+      });
+    }
+  }, [CurrentId]);
 
   let infoFavourite = {
     id: resto.idResto,
@@ -46,7 +57,8 @@ const CardMenu = ({ resto, navigation }) => {
 
   useEffect(() => {
     if (CurrentId) {
-      if (userFavourites.includes(resto.idResto)) {
+      let idFavourites = userFavourites?.map((element) => element.id);
+      if (idFavourites?.includes(resto.idResto)) {
         setHearthColor("red");
       } else {
         setHearthColor("grey");
@@ -69,7 +81,6 @@ const CardMenu = ({ resto, navigation }) => {
 
   const addToFavourite = async () => {
     if (auth?.currentUser?.uid) {
-      console.log("ACA");
       try {
         let docRef = doc(firebase.db, "Users", auth.currentUser.uid);
         await updateDoc(docRef, {

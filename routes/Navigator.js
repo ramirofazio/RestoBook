@@ -16,6 +16,7 @@ import WebViewScreen from "../Screens/WebViewScreen";
 import AwaitEmail from "../Screens/AwaitEmail.js";
 import NavHome from "../Screens/NavHome.js";
 import NavDetail from "../Screens/NavDetail";
+import SelectCommerce from "../Screens/SelectCommerce";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import ProfileResto from "../Screens/ProfileResto";
 import Btn from "../Screens/Helpers/Btns";
@@ -26,24 +27,20 @@ import globalStyles from "../Screens/GlobalStyles";
 import { Text } from "react-native";
 
 const Stack = createNativeStackNavigator();
-const auth = getAuth()
+const auth = getAuth();
 
 export default Navigator = () => {
   const [usuarioGlobal, setUsuarioGlobal] = useState("");
 
-
   onAuthStateChanged(auth, (usuarioFirebase) => {
     if (usuarioFirebase?.emailVerified) {
       if (usuarioFirebase.displayName) {
-        //console.log("entre a if")
         setUsuarioGlobal(usuarioFirebase.displayName);
       } else {
-        //console.log("entre a else")
         const trimmedName = usuarioFirebase.email.split("@")[0];
         setUsuarioGlobal(trimmedName);
       }
     } else {
-      //console.log("entre a else else")
       setUsuarioGlobal("");
     }
   });
@@ -63,9 +60,7 @@ export default Navigator = () => {
             },
           })}
         />
-        <Stack.Screen
-          name="RegisterUser"
-          component={AddUserScreen} />
+        <Stack.Screen name="RegisterUser" component={AddUserScreen} />
         <Stack.Screen
           name="RegisterResto"
           component={RegisterResto}
@@ -164,10 +159,9 @@ export default Navigator = () => {
         <Stack.Screen
           name="ProfileUser"
           component={ProfileUser}
-
           options={({ navigation }) => ({
             headerTitle: " Mi Perfil",
-            title: 'Profile',
+            title: "Profile",
 
             headerTitleAlign: "center",
             headerRight: () => (
@@ -188,18 +182,32 @@ export default Navigator = () => {
             headerTitleStyle: {
               fontSize: 25,
             },
-
-
           })}
-
         />
         <Stack.Screen
           name="ProfileResto"
           component={ProfileResto}
           options={{
-
             headerTitle: " Mi Empresa",
-            title: 'Profile',
+            title: "Profile",
+
+            headerTitleAlign: "center",
+            headerStyle: {
+              backgroundColor: "#f6efd2",
+            },
+            headerTintColor: "#392c28",
+            headerTitleStyle: {
+              fontSize: 25,
+            },
+          }}
+        />
+
+        <Stack.Screen
+          name="SelectCommerce"
+          component={SelectCommerce}
+          options={{
+            headerTitle: "Selecciona tu local",
+            title: "Tu local",
 
             headerTitleAlign: "center",
             headerStyle: {

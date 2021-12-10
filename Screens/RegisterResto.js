@@ -1,5 +1,5 @@
 //----------REACT UTILS-----------
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 //
 //
 //----------REDUX UTILS-----------
@@ -15,12 +15,12 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
-  Pressable
+  Pressable,
 } from "react-native";
 //
 //----------FORMIK y YUP------------------
-import { Formik } from 'formik';
-import * as yup from 'yup';
+import { Formik } from "formik";
+import * as yup from "yup";
 //
 //
 //----------GOOGLE MAPS---------------
@@ -32,6 +32,15 @@ import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplet
 //----------FIREBASE UTILS-----------
 import firebase from "../database/firebase";
 import { onAuthStateChanged, getAuth } from "firebase/auth";
+import {
+  doc,
+  onSnapshot,
+  collection,
+  query,
+  getDoc,
+  getDocs,
+  where,
+} from "firebase/firestore";
 //
 //
 //---------SCREENS & COMPONENTS---------------
@@ -44,7 +53,7 @@ import { BottomSheet, ListItem } from "react-native-elements";
 //------IMAGINE PICKER---------
 import * as ImagePicker from "expo-image-picker";
 import SetCommerce from "../Redux/Actions/setCommerce";
-import{ init } from 'emailjs-com';
+import { init } from "emailjs-com";
 init("user_IEK9t1hQIR3ugtExEH6BG");
 
 //
@@ -65,6 +74,22 @@ const registerRestoSchema = yup.object({
 });
 
 const RegisterResto = ({ navigation }) => {
+  const currentId = useSelector((state) => state.currentId);
+  const [currentUser, setcurrentUser] = useState({});
+  useEffect(() => {
+    const getInfo = async () => {
+      const docRef = doc(firebase.db, "Users", currentId);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        let obj = docSnap.data();
+        setcurrentUser(obj);
+      } else {
+        alert("NO HAY INFO");
+      }
+    };
+    getInfo();
+  }, []);
+
   const initialRegion = {
     latitude: -34.61315,
     longitude: -58.37723,
@@ -104,8 +129,7 @@ const RegisterResto = ({ navigation }) => {
     } else {
       alert("Sorry, we need camera roll permissions to make this work!");
     }
-  }
-  
+  };
 
   const setStateAndRegion = (newLocation, formatedAddress) => {
     const { lat, lng } = newLocation;
@@ -125,14 +149,15 @@ const RegisterResto = ({ navigation }) => {
 
   return (
     <View style={globalStyles.Home}>
-      <View style={{
-        backgroundColor: '#e8b595',
-        width: '80%',
-        alignSelf: 'center',
-        marginTop: 15,
-        borderRadius: 10,
-        maxWidth: '100%',
-      }}
+      <View
+        style={{
+          backgroundColor: "#e8b595",
+          width: "80%",
+          alignSelf: "center",
+          marginTop: 15,
+          borderRadius: 10,
+          maxWidth: "100%",
+        }}
       >
         <GooglePlacesAutocomplete
           placeholder="Completa tu direccion"
@@ -155,7 +180,7 @@ const RegisterResto = ({ navigation }) => {
             container: {
               flex: 0,
 
-              width: '100%',
+              width: "100%",
 
               padding: 0,
               alignSelf: "center",
@@ -164,17 +189,16 @@ const RegisterResto = ({ navigation }) => {
               marginTop: 4,
               fontSize: 14.5,
 
-              fontWeight: 'bold',
-              width: '80%',
-              backgroundColor: 'transparent',
-              textAlign: 'center',
-              overflow: 'hidden'
-
+              fontWeight: "bold",
+              width: "80%",
+              backgroundColor: "transparent",
+              textAlign: "center",
+              overflow: "hidden",
             },
             textInputContainer: {
               alignItems: "center",
               height: 18,
-              overflow: 'hidden'
+              overflow: "hidden",
             },
             listView: {
               borderRadius: 13,
@@ -228,10 +252,15 @@ const RegisterResto = ({ navigation }) => {
                   },
                 })
                 .then(
-                  firebase.db.collection("Users").doc(id).update({
-                    commerce: true,
-                  })
+                  currentUser.commerce
+                    ? firebase.db.collection("Users").doc(id).update({
+                        multiCommerce: true,
+                      })
+                    : firebase.db.collection("Users").doc(id).update({
+                        commerce: true,
+                      })
                 )
+
                 .then(dispatch(SetCommerce()))
                 .then(navigation.navigate("RestoBook"));
             } catch (error) {
@@ -377,30 +406,29 @@ const RegisterResto = ({ navigation }) => {
       </Formik>
 
       <View style={globalStyles.inputComponent}>
-
         <BottomSheet
           isVisible={isVisible}
-
-          containerStyle={{ backgroundColor: '#333a' }}
-
+          containerStyle={{ backgroundColor: "#333a" }}
         >
           {categories.map((categoria, index) => (
             <ListItem
               key={index}
-
-              containerStyle={{ backgroundColor: 'rgba(0.5,0.25,0,0.7)' }}
-              style={{ borderBottomWidth: 1, borderColor: '#333a', backgroundColor: "#fff0" }}
+              containerStyle={{ backgroundColor: "rgba(0.5,0.25,0,0.7)" }}
+              style={{
+                borderBottomWidth: 1,
+                borderColor: "#333a",
+                backgroundColor: "#fff0",
+              }}
               onPress={() => {
-                setState({ ...state, category: categoria })
-                setIsVisible(false)
+                setState({ ...state, category: categoria });
+                setIsVisible(false);
               }}
             >
               <ListItem.Content
                 style={{ backgroundColor: "#0000", alignItems: "center" }}
               >
                 <ListItem.Title
-                  style={{ height: 35, color: '#fff', padding: 8 }}
-
+                  style={{ height: 35, color: "#fff", padding: 8 }}
                 >
                   {categoria}
                 </ListItem.Title>
@@ -409,18 +437,14 @@ const RegisterResto = ({ navigation }) => {
           ))}
           <ListItem
             key={999}
-
-            containerStyle={{ backgroundColor: 'red' }}
-            style={{ borderBottomWidth: 1, borderColor: '#333a' }}
+            containerStyle={{ backgroundColor: "red" }}
+            style={{ borderBottomWidth: 1, borderColor: "#333a" }}
             onPress={() => setIsVisible(false)}
           >
-            <ListItem.Content
-              style={{ alignItems: "center" }}
-            >
+            <ListItem.Content style={{ alignItems: "center" }}>
               <ListItem.Title
-                style={{ height: 35, color: '#FFF', padding: 8, fontSize: 20 }}
+                style={{ height: 35, color: "#FFF", padding: 8, fontSize: 20 }}
               >
-
                 Cancel
               </ListItem.Title>
             </ListItem.Content>

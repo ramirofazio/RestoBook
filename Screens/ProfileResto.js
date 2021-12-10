@@ -67,28 +67,48 @@ const auth = getAuth();
 
 const ProfileResto = ({ navigation }) => {
   const loggedId = useSelector((state) => state.currentId);
-
-  const [availableCommerces, setAvailableCommerces] = useState([]);
+  const commerceInfo = useSelector((state) => state.commerceInfo);
+  const [availableCommerces, setAvailableCommerces] = useState({});
   const [image, setImage] = useState("");
   const [currentUser, setCurrentUser] = useState({});
   const [modalVisible, setModalVisible] = useState(false);
   const [newUserInfo, setNewUserInfo] = useState({});
   const [uploading, setUploading] = useState(false);
-  useEffect(() => {
-    const q = query(
-      collection(firebase.db, "Restos"),
-      where("idUser", "==", loggedId)
-    );
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        let obj = doc.data();
 
-        setImage(obj.restoImage);
+  useEffect(() => {
+    const getInfo = async () => {
+      const docRef = doc(firebase.db, "Restos", commerceInfo);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        let obj = docSnap.data();
         setAvailableCommerces(obj);
-      });
-    });
+      } else {
+        alert("NO HAY INFO");
+      }
+    };
+    getInfo();
+  }, [commerceInfo]);
+
+  useEffect(() => {
+    return () => {
+      setAvailableCommerces({});
+    };
   }, []);
-  console.log("available en resto", availableCommerces);
+  // useEffect(() => {
+  //   const q = query(
+  //     collection(firebase.db, "Restos"),
+  //     where("idUser", "==", loggedId)
+  //   );
+  //   const unsubscribe = onSnapshot(q, (querySnapshot) => {
+  //     querySnapshot.forEach((doc) => {
+  //       let obj = doc.data();
+
+  //       setImage(obj.restoImage);
+  //       setAvailableCommerces(obj);
+  //     });
+  //   });
+  // }, []);
+  // console.log("available en resto", availableCommerces);
 
   let openImagePickerAsync = async () => {
     setUploading(true);

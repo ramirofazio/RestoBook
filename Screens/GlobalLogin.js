@@ -294,7 +294,6 @@ const GlobalLogin = ({ navigation }) => {
               }}
               validationSchema={GlobalRegisterSchema}
               onSubmit={async (values) => {
-                //console.log(values);
                 try {
                   //-----AUTENTICA USER-----------
                   await createUserWithEmailAndPassword(
@@ -315,6 +314,7 @@ const GlobalLogin = ({ navigation }) => {
                           cel: values.cel,
                           email: values.email.toLowerCase(),
                           commerce: false,
+                          multiCommerce: false,
                           profileImage: DEFAULT_PROFILE_IMAGE,
                           reservations: [],
                           payments: [],

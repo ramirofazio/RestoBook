@@ -89,7 +89,18 @@ const ProfileUser = ({ navigation }) => {
   const [newUserInfo, setNewUserInfo] = useState({});
   const [uploading, setUploading] = useState(false);
   const [image, setImage] = useState("");
-  const [myFavourites, setMyFavourites] = useState([]);
+  const [myFavourites, setMyFavourites] = useState();
+
+  useEffect(() => {
+    const q = doc(firebase.db, "Users", loggedId);
+    const unsubscribe = onSnapshot(q, (doc) => {
+      setMyFavourites(doc.data().favourites);
+    });
+  }, [loggedId]);
+
+  // useEffect(() => {
+  //   console.log("state favs", myFavourites);
+  // }, [myFavourites]);
 
   useEffect(() => {
     const getInfo = async () => {
@@ -97,11 +108,11 @@ const ProfileUser = ({ navigation }) => {
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
         let obj = docSnap.data();
-        console.log("obj", obj);
+
         setImage(obj.profileImage);
         setCurrentUser(obj);
         setNewUserInfo(obj);
-        setMyFavourites(obj.favourites);
+        // setMyFavourites(obj.favourites);
         // console.log(obj.favourites)
       } else {
         alert("NO HAY INFO");
@@ -329,7 +340,7 @@ const ProfileUser = ({ navigation }) => {
           scrollEventThrottle={1}
         >
           {myFavourites?.length
-            ? myFavourites.map((resto) => {
+            ? myFavourites?.map((resto) => {
                 return (
                   <View style={{ width: windowWidth, height: 250 }}>
                     <CardFavourite
