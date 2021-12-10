@@ -62,6 +62,7 @@ export default function Home({ navigation }) {
   const [usuarioGlobal, setUsuarioGlobal] = useState("");
   const [availableCommerces, setAvailableCommerces] = useState([]);
   const [flagCards, setFlagCards] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
   //--------------FILTRADO MODAL-------------------------
   const [allRestos, setAllRestos] = useState()
@@ -148,7 +149,6 @@ export default function Home({ navigation }) {
       setUsuarioGlobal("");
     }
   });
- const [searchTerm ,setSearchTerm ] = useState("");
 
 
   const handleCategory = async (category) => {
@@ -231,15 +231,15 @@ export default function Home({ navigation }) {
         )}
       </View>
       <View>
-           <TextInput
-              style={styles.search}
-              onChangeText= {(event) => {
-                setSearchTerm(event);
-              }}
-              placeholder="Search..."
-              placeholderTextColor="black"
-              underlineColorAndroid="transparent"
-         /> 
+        <TextInput
+          style={styles.search}
+          onChangeText={(event) => {
+            setSearchTerm(event);
+          }}
+          placeholder="Search..."
+          placeholderTextColor="black"
+          underlineColorAndroid="transparent"
+        />
       </View>
 
       <View style={globalStyles.btnHome}>
@@ -325,13 +325,13 @@ export default function Home({ navigation }) {
       <ScrollView>
         {availableCommerces.length && flagCards ? (
           <View>
-             {availableCommerces.filter((resto) => {
-if(searchTerm === ""){
-  return resto;
-}else{
-  return resto.title.toLowerCase().includes(searchTerm.toLowerCase())
-}
-          }).map((resto) => {
+            {availableCommerces.filter((resto) => {
+              if (searchTerm === "") {
+                return resto;
+              } else {
+                return resto.title.toLowerCase().includes(searchTerm.toLowerCase())
+              }
+            }).map((resto) => {
               return (
                 <CardHome
                   key={resto.idResto}
@@ -352,15 +352,15 @@ if(searchTerm === ""){
 }
 
 const styles = StyleSheet.create({
-  search:{
-height: 30,
-borderWidth: 1,
-borderColor: '#000',  
-marginBottom: 10,
-marginHorizontal: 16,
-borderRadius: 40,
-paddingHorizontal: 10,
- 
+  search: {
+    height: 30,
+    borderWidth: 1,
+    borderColor: '#000',
+    marginBottom: 10,
+    marginHorizontal: 16,
+    borderRadius: 40,
+    paddingHorizontal: 10,
+
 
   },
   textContainer: {
