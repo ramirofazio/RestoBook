@@ -5,10 +5,10 @@ import globalStyles from "../Screens/GlobalStyles";
 
 const CardMenu = ({ menu }) => {
   return (
-    <View style={globalStyles.cardsMenuContainer}>
+    <View style={globalStyles.menuCardsContainer}>
       <View style={globalStyles.cardsMenuDescriptionContainer}>
         <Card.Title style={globalStyles.cardsMenuTitle}>{menu.foodName}</Card.Title>
-          <Card.Divider orientation="horizontal" width={1} inset={true} insetType={"right"} color={'grey'} style={{margin: -25}}/>
+          <Card.Divider orientation="horizontal" width={1} inset={true} insetType={"right"} color={'rgba(22, 22, 22, .2)'} style={{marginTop: -25}}/>
         <Text style={globalStyles.cardsMenuDescriptionText}>{menu.description}</Text>
         <Text style={styles.textPrice}>$ {menu.price}</Text>
       </View>

@@ -140,30 +140,18 @@ const DetailsResto = ({ navigation }) => {
       </View>
     
       <View>
-        <View style={{
-          paddingVertical: 2,
-          paddingHorizontal: 5,
-          marginVertical: 7,
-          marginHorizontal: 5,
-
-          borderWidth: 2,
-          borderColor: "#333a",
-          backgroundColor: "white",
-          borderRadius: 10,
-        }}>
-          <TouchableOpacity
-            onPress={() => getMenu()}
-          >
+        <View style={globalStyles.btnTodasComidas}>
+          <TouchableOpacity onPress={() => getMenu()} >
             <Text style={{
               fontWeight: "bold",
-              fontSize: 13,
+              fontSize: 15,
               padding: 1,
               alignSelf: "center",
             }}>Todas Las Comidas</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.categoriesContainer}>
-          <View style={globalStyles.categoriesView}>
+          <View style={globalStyles.categoriesViewDetail}>
             <TouchableOpacity
               onPress={() => handleCategory(ENTRADAS)}
             >
@@ -171,21 +159,21 @@ const DetailsResto = ({ navigation }) => {
             </TouchableOpacity>
           </View>
 
-          <View style={globalStyles.categoriesView}>
+          <View style={globalStyles.categoriesViewDetail}>
             <TouchableOpacity
               onPress={() => handleCategory(PLATO_PRINCIPAL)}
             >
               <Text style={globalStyles.categoriesText}>Plato Principal</Text>
             </TouchableOpacity>
           </View>
-          <View style={globalStyles.categoriesView}>
+          <View style={globalStyles.categoriesViewDetail}>
             <TouchableOpacity
               onPress={() => handleCategory(GUARNICION)}
             >
               <Text style={globalStyles.categoriesText}>Guarnicion</Text>
             </TouchableOpacity>
           </View>
-          <View style={globalStyles.categoriesView}>
+          <View style={globalStyles.categoriesViewDetail}>
             <TouchableOpacity
               onPress={() => handleCategory(BEBIDA)}
             >
@@ -194,7 +182,7 @@ const DetailsResto = ({ navigation }) => {
           </View>
 
 
-          <View style={globalStyles.categoriesView}>
+          <View style={globalStyles.categoriesViewDetail}>
             <TouchableOpacity
               onPress={() => handleCategory(POSTRES)}
             >
@@ -230,9 +218,9 @@ const DetailsResto = ({ navigation }) => {
             Add a food to see it!
           </Text>
         )}
-        <View style={globalStyles.btn} onTouchStart={() => setModalVisible(!modalVisible)}>
-          <TouchableOpacity >
-            <Text><MaterialIcons name="payment" size={20} color="black" ></MaterialIcons> Quiero Reservar !
+        <View onTouchStart={() => setModalVisible(!modalVisible)}>
+          <TouchableOpacity style={globalStyles.btnFiltrosHome} >
+            <Text style={globalStyles.btnTextFiltro}><MaterialIcons name="payment" size={20} color="#161616" ></MaterialIcons> Quiero Reservar !
             </Text>
           </TouchableOpacity>
         </View>
@@ -251,7 +239,7 @@ const DetailsResto = ({ navigation }) => {
                 latitude: location.latitude,
                 longitude: location.longitude,
               }}
-              pinColor='#0072B5'
+              pinColor='#eccdaa'
             >
 
             </Marker>
@@ -265,29 +253,30 @@ const DetailsResto = ({ navigation }) => {
         onRequestClose={() => {
           setModalVisible(!modalVisible);
         }}
-        >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
+      >
+        <View style={globalStyles.centeredView}>
+          <View style={globalStyles.modalView}>
             <TouchableOpacity
-              style={globalStyles.touchLog}
+              style={globalStyles.btnTodasComidas}
               onPress={() => setModalVisible(!modalVisible)}
             >
-              <Text
+              <Text 
+              style={globalStyles.texts}
                 onPress={() => setModalVisible(false)}
                 > X </Text>
             </TouchableOpacity>
-            <Text>Selecciona la cantidad de lugares</Text>
-            <TextInput placeholder='Cantidad de lugares' style={{ backgroundColor: '#bd967e', width: '80%' }} keyboardType='numeric' onChangeText={(value) => setCantLugares(parseInt(value))}>
+            <Text style={globalStyles.texts}>Selecciona la cantidad de lugares</Text>
+            <TextInput placeholder='Cantidad de lugares' style={globalStyles.inputComponent} keyboardType='numeric' onChangeText={(value) => setCantLugares(parseInt(value))}>
             </TextInput>
-            <Text>Precio por cabeza otorgado por Empresa seria:</Text>
-            <TextInput placeholder='Cantidad de lugares' style={{ backgroundColor: '#bd967e', width: '80%' }} keyboardType='numeric' onChangeText={(value) => setPrecioCabeza(parseInt(value))}>
+            <Text style={globalStyles.texts}>Precio por cabeza otorgado por Empresa seria:</Text>
+            <TextInput placeholder='Cantidad de lugares' style={globalStyles.inputComponent} keyboardType='numeric' onChangeText={(value) => setPrecioCabeza(parseInt(value))}>
             </TextInput>
-            <Text style={{ fontSize: 30, color: 'blue' }}>Precio por cabeza ${precioCabeza}</Text>
+            <Text style={globalStyles.modalText}>Precio por persona ${precioCabeza}</Text>
             <TouchableOpacity
-              style={globalStyles.touchLog}
+              style={globalStyles.btnLogin}
               onPress={() => onPressReservar(cantLugares, precioCabeza)}
-              >
-              <Text>Reservar mi lugar por ${cantLugares * precioCabeza}</Text>
+            >
+              <Text style={globalStyles.texts}>Reservar mi lugar por ${cantLugares * precioCabeza}</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -328,7 +317,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     borderRadius: 20,
-    marginBottom: 5,
+    margin: 5,
   },
   showMenu: {
     height: 250,
@@ -338,11 +327,11 @@ const styles = StyleSheet.create({
   googleMapsContainer: {
     flex: 1,
     padding: 10,
-    borderRadius: 20,
+    borderRadius: 50,
   },
   googleMaps: {
     height: 250,
-    borderRadius: 30,
+    borderRadius: 100,
   },
   wppIcon:{
     height:30,
@@ -385,14 +374,17 @@ const styles = StyleSheet.create({
     width: "90%",
     height: "90%",
     alignItems: "center",
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
     shadowColor: "#000",
     shadowOffset: {
-      width: 30,
-      height: 30,
+      width: 0,
+      height: 12,
     },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
+    shadowOpacity: 0.58,
+    shadowRadius: 16.00,
+    
+    elevation: 100,
   },
 });
 
