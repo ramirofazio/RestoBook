@@ -274,7 +274,7 @@ const GlobalLogin = ({ navigation }) => {
     );
   } else {
     return (
-      //-------REGISTER-------------
+      //-------------------REGISTER---------------------
       <View>
         <Modal animationType="slide" transparent={true}>
           <View View style={globalStyles.Home}>

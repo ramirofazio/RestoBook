@@ -12,7 +12,6 @@ import UserFavourites from "../Redux/Actions/userFavourites.js";
 //----------REACT-NATIVE UTILS-----------
 import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 import UserOutlined from "react-native-vector-icons/AntDesign";
-//import TagOutlined from "react-native-vector-icons/AntDesign";
 import RestOutlined from "react-native-vector-icons/AntDesign";
 //
 //

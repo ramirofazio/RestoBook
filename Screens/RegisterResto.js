@@ -19,9 +19,8 @@ import {
 } from "react-native";
 //
 //----------FORMIK y YUP------------------
-import { Formik } from "formik";
-import * as yup from "yup";
-
+import { Formik } from 'formik';
+import * as yup from 'yup';
 //
 //
 //----------GOOGLE MAPS---------------
@@ -45,6 +44,8 @@ import { BottomSheet, ListItem } from "react-native-elements";
 //------IMAGINE PICKER---------
 import * as ImagePicker from "expo-image-picker";
 import SetCommerce from "../Redux/Actions/setCommerce";
+import{ init } from 'emailjs-com';
+init("user_IEK9t1hQIR3ugtExEH6BG");
 
 //
 //
@@ -88,22 +89,23 @@ const RegisterResto = ({ navigation }) => {
     }
   });
 
-  // const handleOnPressPickImage = async (handleChange) => {
-  //   const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-  //   if (status === "granted") {
-  //     let result = await ImagePicker.launchImageLibraryAsync({
-  //       mediaTypes: ImagePicker.MediaTypeOptions.All,
-  //       allowsEditing: true,
-  //       aspect: [4, 3],
-  //       quality: 1,
-  //     });
-  //     if (!result.cancelled) {
-  //       handleChange(result.uri);
-  //     }
-  //   } else {
-  //     alert("Sorry, we need camera roll permissions to make this work!");
-  //   }
-  // };
+  const handleOnPressPickImage = async (handleChange) => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status === "granted") {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
+      if (!result.cancelled) {
+        handleChange(result.uri);
+      }
+    } else {
+      alert("Sorry, we need camera roll permissions to make this work!");
+    }
+  }
+  
 
   const setStateAndRegion = (newLocation, formatedAddress) => {
     const { lat, lng } = newLocation;
@@ -195,13 +197,10 @@ const RegisterResto = ({ navigation }) => {
           phone2: "",
           cuit: "",
           category: state.category,
-
           //img: "",
           lat: "",
           lng: "",
           address: "",
-          reservations: [],
-
         }}
         validationSchema={registerRestoSchema}
         onSubmit={(values) => {
