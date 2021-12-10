@@ -269,7 +269,7 @@ const ProfileUser = ({ navigation }) => {
               style={{
                 fontSize: 25,
                 fontWeight: "bold",
-                color: "#392c28",
+                color: "#161616",
                 textAlignVertical: "top",
               }}
             >
@@ -279,17 +279,17 @@ const ProfileUser = ({ navigation }) => {
               style={{
                 fontSize: 15,
                 fontWeight: "bold",
-                color: "#392c28",
+                color: "#161616",
                 paddingVertical: 15,
               }}
             >
               {currentUser?.email}
             </Text>
             <TouchableOpacity
-              style={globalStyles.btn}
+              style={globalStyles.btnLogin}
               onPress={() => setModalVisible(true)}
             >
-              <Text>Edit</Text>
+              <Text style={globalStyles.texts}>Editar</Text>
             </TouchableOpacity>
             <Modal
               animationType="slide"
@@ -303,20 +303,20 @@ const ProfileUser = ({ navigation }) => {
               <View style={globalStyles.centeredView}>
                 <View style={globalStyles.modalView}>
                   <TouchableOpacity
-                    style={globalStyles.touchLog}
+                    style={globalStyles.btnTodasComidas}
                     onPress={() => setModalVisible(!modalVisible)}
                   >
                     <Text
                       onPress={() => setModalVisible(false)}
-                      style={globalStyles.textStyle}
+                      style={globalStyles.texts}
                     >
                       X
                     </Text>
                   </TouchableOpacity>
-                  <Text style={globalStyles.modalText}>Edit your Username</Text>
-                  <Text>Nombre</Text>
+                  <Text style={globalStyles.modalText}>Edita tu informacion</Text>
+                  <Text style={globalStyles.texts}>Nombre</Text>
                   <TextInput
-                    style={globalStyles.texts}
+                    style={globalStyles.inputComponent}
                     placeholder={currentUser?.name}
                     onChangeText={(value) =>
                       setNewUserInfo({
@@ -325,9 +325,9 @@ const ProfileUser = ({ navigation }) => {
                       })
                     }
                   />
-                  <Text>Apellido</Text>
+                  <Text style={globalStyles.texts}>Apellido</Text>
                   <TextInput
-                    style={globalStyles.texts}
+                    style={globalStyles.inputComponent}
                     placeholder={currentUser?.lastName}
                     onChangeText={(value) =>
                       setNewUserInfo({
@@ -336,9 +336,9 @@ const ProfileUser = ({ navigation }) => {
                       })
                     }
                   />
-                  <Text>Celular</Text>
+                  <Text style={globalStyles.texts}>Celular</Text>
                   <TextInput
-                    style={globalStyles.texts}
+                    style={globalStyles.inputComponent}
                     placeholder={currentUser?.cel}
                     onChangeText={(value) =>
                       setNewUserInfo({
@@ -348,7 +348,7 @@ const ProfileUser = ({ navigation }) => {
                     }
                   />
                   <TouchableOpacity
-                    style={globalStyles.touchLog}
+                    style={globalStyles.btnLogin}
                     onPress={() => {
                       sendPasswordResetEmail(auth, currentUser?.email)
                         .then(alert("Revisa tu casilla y volve a ingresar!"))
@@ -357,10 +357,10 @@ const ProfileUser = ({ navigation }) => {
                         .then(navigation.navigate("RestoBook"));
                     }}
                   >
-                    <Text>Cambiar contraseña</Text>
+                    <Text style={globalStyles.texts}>Cambiar contraseña</Text>
                   </TouchableOpacity>
                   <TouchableOpacity
-                    style={globalStyles.touchLog}
+                    style={globalStyles.btnLogin}
                     onPress={() => {
                       firebase.db
                         .collection("Users")
@@ -375,18 +375,18 @@ const ProfileUser = ({ navigation }) => {
                         .catch((error) => alert("error!"));
                     }}
                   >
-                    <Text>Save</Text>
+                    <Text style={globalStyles.texts}>Guardar cambios</Text>
                   </TouchableOpacity>
                 </View>
               </View>
             </Modal>
           </View>
         </View>
-        <Text style={{ fontSize: 25, color: "#392c28", textAlign: "center" }}>
+        <Text style={{ fontSize: 25, color: "#161616", textAlign: "center", marginTop: 5 }}>
           {" "}
-          <StarFilled name="star" color="#392c28" size={25} /> My Favourites
+          <StarFilled name="star" color="#161616" size={25} /> Mis Favoritos
         </Text>
-          <Divider orientation="horizontal" width={2} inset={true} insetType={"middle"} color={'black'} style={{marginVertical: 10}}/>
+          <Divider orientation="horizontal" width={2} inset={true} insetType={"middle"} color={'rgba(00, 00, 00, .5)'} style={{marginVertical: 10}}/>
         <ScrollView
           horizontal={true}
           pagingEnabled
@@ -420,10 +420,10 @@ const ProfileUser = ({ navigation }) => {
           : null
           }
         </ScrollView>
-        <Text style={{ fontSize: 25, color: "#392c28", textAlign: "center"  }}>
-          <TagOutlined name="tag" color="#392c28" size={25} /> My Reservations
+        <Text style={{ fontSize: 25, color: "#161616", textAlign: "center",  marginTop: 5 }}>
+          <TagOutlined name="tag" color="#161616" size={25} /> Mis Reservas
         </Text>
-         <Divider orientation="horizontal" width={2} inset={true} insetType={"middle"} color={'black'} style={{marginVertical: 5}}/>
+         <Divider orientation="horizontal" width={2} inset={true} insetType={"middle"} color={'rgba(00, 00, 00, .5)'} style={{marginVertical: 5}}/>
         <ScrollView style={{ overflow: "scroll" }}>
           {reservas.map((persona) => {
             return (

@@ -20,6 +20,7 @@ import {
   Alert,
   Modal,
   Image,
+  KeyboardAvoidingView
 } from "react-native";
 
 import { BottomSheet } from "react-native-elements";
@@ -139,13 +140,7 @@ const GlobalLogin = ({ navigation }) => {
 
       <View style={globalStyles.Home}>
         <Text
-          style={{
-            fontSize: 25,
-            fontWeight: "bold",
-            paddingVertical: 5,
-            alignSelf: "center",
-            color: "#392c28",
-          }}
+          style={{ textAlign: "center", fontSize: 30, paddingVertical: 5, color: "#161616", letterSpacing: 1 }}
         >
           Login
         </Text>
@@ -218,7 +213,7 @@ const GlobalLogin = ({ navigation }) => {
               </TouchableOpacity>
               <View style={globalStyles.btnContainerLogin}>
                 <TouchableOpacity
-                  style={globalStyles.touchLog}
+                  style={globalStyles.btnTodasComidas}
                   onPress={() => props.handleSubmit()}
                 >
                   <Text style={globalStyles.fontLog}>Log In</Text>
@@ -227,18 +222,18 @@ const GlobalLogin = ({ navigation }) => {
                   style={styles.googleButton}
                   onPress={() => Glogin()}
                 >
-                  <Image source={require("../assets/googleIcon.png")}></Image>
+                  <Image style={globalStyles.img} source={require("../assets/googleIcon2.png")}></Image>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  style={globalStyles.touchFlag}
+                  style={globalStyles.btnLogin}
                   onPress={() => setFlagLoginOrRegister(false)}
                 >
                   <Text style={globalStyles.fontLog}>
-                    I dont have an account yet
+                    No tengo una cuenta todavia
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  style={globalStyles.touchFlag}
+                  style={globalStyles.btnLogin}
                   onPress={() => {
                     isVisible(true);
                   }}
@@ -277,7 +272,17 @@ const GlobalLogin = ({ navigation }) => {
       //-------------------REGISTER---------------------
       <View>
         <Modal animationType="slide" transparent={true}>
-          <View View style={globalStyles.Home}>
+          <View View style={globalStyles.centeredView}>
+            <View style={globalStyles.modalView}>
+              <TouchableOpacity
+              style={globalStyles.btnTodasComidas}
+              onPress={() => setModalVisible(!modalVisible)}
+            >
+              <Text
+                style={globalStyles.texts}
+                onPress={() => setModalVisible(false)}
+              > X </Text>
+            </TouchableOpacity>
             <Formik
               initialValues={{
                 name: "",
@@ -325,9 +330,13 @@ const GlobalLogin = ({ navigation }) => {
               }}
             >
               {(props) => (
+                  <KeyboardAvoidingView
+                      behavior={Platform.OS === "ios" ? "padding" : "height"}
+                      style={globalStyles.modalInputContainer}
+                    >
+                      
                 <View style={globalStyles.modalInputContainer}>
-                  <Text style={styles.modalText}>Register to RestoBook</Text>
-
+                  <Text style={styles.modalText}>Registrarse en RestoBook</Text>
                   <View style={globalStyles.inputComponent}>
                     <TextInput
                       style={globalStyles.texts}
@@ -428,25 +437,27 @@ const GlobalLogin = ({ navigation }) => {
                   </TouchableOpacity>
                   <View style={globalStyles.btnContainerLogin}>
                     <TouchableOpacity
-                      style={globalStyles.touchLog}
+                      style={globalStyles.btnLogin}
                       onPress={() => {
                         props.handleSubmit() && setFlagLoginOrRegister(true);
                       }}
                     >
-                      <Text style={globalStyles.fontLog}>Sign Up</Text>
+                      <Text style={globalStyles.fontLog}>Registrarse</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                      style={globalStyles.touchFlag}
+                      style={globalStyles.btnLogin}
                       onPress={() => setFlagLoginOrRegister(true)}
                     >
                       <Text style={globalStyles.fontLog}>
-                        I have an account
+                        Ya tengo una cuenta
                       </Text>
                     </TouchableOpacity>
                   </View>
                 </View>
+                    </KeyboardAvoidingView>
               )}
             </Formik>
+            </View>
           </View>
         </Modal>
       </View>

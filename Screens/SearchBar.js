@@ -25,10 +25,10 @@ export default function Search({ }) {
         <TextInput onSubmitEditing={handleSubmit} style={styles.texto} placeholder="Search..." placeholderTextColor="#0808088f" onChangeText={handleInputChange} value={title} />
       </Animatable.View>
       </View>
-      <TouchableOpacity  onPress={handleSubmit}>
       <View style={styles.touchableOpacity}>
         <Feather name="search" style={styles.iconStyle} />
       </View>
+      <TouchableOpacity  onPress={handleSubmit}>
       </TouchableOpacity>
     </View>
   );
@@ -37,34 +37,56 @@ export default function Search({ }) {
 const styles = StyleSheet.create({
 
   container: {
-    margin:10,
+    marginVertical:10,
     backgroundColor: "#F0EEEE",
     height: 35,
     flexDirection: "row",
-    marginRight: 16,
+    width: '90%',
     borderRadius: 40,
-    marginLeft:16,
+    alignSelf: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 4.84,
+    elevation: 7
   },
   textInput: {
     fontFamily: "Gotham-Book",
+    // color: "#ECCDAA",
     fontSize: 40,
     flex: 1,
-    color: "#080808",
     paddingLeft: 3,
     width:'70%',
   },
   texto:{
-    padding:10
+    paddingHorizontal:15,
+    marginVertical:5,
+    textAlign: 'left',
+    justifyContent: "center"
   },
   iconStyle: {
     fontSize: 20,
     width:20,
     height:20,
+    color: '#ECCDAA'
   },
   touchableOpacity: {
-    marginTop: 4,
     justifyContent:'center',
-    width:'20%',
-    flexDirection:'row'
+    alignItems:'center',
+    width:'15%',
+    height: '100%',
+    borderRadius: 40, 
+    backgroundColor: '#161616',
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 4.84,
+    elevation: 5
   },
 });
