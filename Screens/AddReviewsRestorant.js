@@ -9,34 +9,33 @@ import { doc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 
 
 export default function AddReviewsRestorant({navigation}) {
-    const currentId = useSelector((state) => state.currentId)
+    const  currentUser = useSelector((state) => state.currentUser)
     const empresaDetail = useSelector((state) => state.empresaDetail);
     const [rating, setRating] = useState(null)
     const [review, setReview] = useState("")
     const [errorReview, setErrorReview] = useState(null)
-   const empresaDetail= empresaDetail.idResto
-
-     addReview = async () => {
+    addReview = async () => {
         if(!validForm()){
             return
         }
         const newValues = {
-            currentId: currentId,
-            empresaDetail: empresaDetail,
+            idUser:  currentUser.id,
+            fotoUser: currentUser.profileImage,
+            idResto: empresaDetail.idResto,
             review: review,
             rating: rating,
+            createAt: new Date(),
         }
-           try {
-             let restoRef = doc(firebase.db, "Restos", empresaDetail);
-             await updateDoc(restoRef, {
+        try {
+            let restoRef = doc(firebase.db, "Restos", empresaDetail.idResto);
+            await updateDoc(restoRef, {
                reviews: arrayUnion(newValues),
             });
             navigation.goBack()
-           } catch (err) {
-             console.log(err);
-           }
+        } catch (err) {
+            console.log(err);
+           } 
         }
-    }
     const validForm = () => {
         setErrorReview(null)
         let isValue = true
@@ -44,7 +43,6 @@ export default function AddReviewsRestorant({navigation}) {
         setErrorReview("Completá tu comentario", 3000)
         isValue=false
         }
-
         return isValue
     }
     return (
@@ -79,6 +77,7 @@ export default function AddReviewsRestorant({navigation}) {
             </Modal>
             </View>
     )
+    }
 const styles = StyleSheet.create({
     container: {
         flex: 1,

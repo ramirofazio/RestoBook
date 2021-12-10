@@ -25,6 +25,7 @@ import AddReviewsRestorant from "../Screens/AddReviewsRestorant"
 //------------Styles y otros ---------
 import globalStyles from "../Screens/GlobalStyles";
 import { Text } from "react-native";
+import Btn from "../Screens/Helpers/Btns";
 
 const Stack = createNativeStackNavigator();
 const auth = getAuth()

@@ -47,6 +47,8 @@ const auth = getAuth();
 //---------------------------------------------------------------------------------------//
 //
 const DetailsResto = ({ navigation }) => {
+  //--------------------------REVIEWS-------------------------------
+  const [reviews, setReviews] = useState()
 
   //--------------------------MERCADO PAGO--------------------------
   const [precioCabeza, setPrecioCabeza] = useState()
@@ -121,13 +123,22 @@ const DetailsResto = ({ navigation }) => {
     }
   }
 
+  /// Prueba ///
+  useEffect(() => {
+    const q = doc(firebase.db, "Restos", empresaDetail.idResto);
+    const unsubscribe = onSnapshot(q, (doc) => {
+      setReviews(doc.data().reviews)
+    });
+  }, []);
+  ///
+
 
   return (
-    <View style={globalStyles.Home}>
+    <ScrollView style={globalStyles.Home}>
       <View style={{ backgroundColor: "#333a" }}>
         <Text style={{ textAlign: "center", fontSize: 30, marginVertical: 10, color: "#fff" }}>{empresaDetail.title}</Text>
       </View>
-
+    
       <View>
         <View style={{
           paddingVertical: 2,
@@ -254,7 +265,7 @@ const DetailsResto = ({ navigation }) => {
         onRequestClose={() => {
           setModalVisible(!modalVisible);
         }}
-      >
+        >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <TouchableOpacity
@@ -263,7 +274,7 @@ const DetailsResto = ({ navigation }) => {
             >
               <Text
                 onPress={() => setModalVisible(false)}
-              > X </Text>
+                > X </Text>
             </TouchableOpacity>
             <Text>Selecciona la cantidad de lugares</Text>
             <TextInput placeholder='Cantidad de lugares' style={{ backgroundColor: '#bd967e', width: '80%' }} keyboardType='numeric' onChangeText={(value) => setCantLugares(parseInt(value))}>
@@ -275,17 +286,25 @@ const DetailsResto = ({ navigation }) => {
             <TouchableOpacity
               style={globalStyles.touchLog}
               onPress={() => onPressReservar(cantLugares, precioCabeza)}
-            >
+              >
               <Text>Reservar mi lugar por ${cantLugares * precioCabeza}</Text>
             </TouchableOpacity>
           </View>
         </View>
       </Modal>
-    </View>
+      <View style={styles.listReviews}>
+                  <ListReviews navigation={navigation} reviews={reviews}/>
+                </View>
+      <View>
+      </View>
+    </ScrollView>
 
   );
 };
 const styles = StyleSheet.create({
+  listReviews:{
+    
+  },
   container: {
     flex: 1,
     backgroundColor: "pink",

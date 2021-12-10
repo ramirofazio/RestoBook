@@ -1,14 +1,16 @@
-import React,{useState} from 'react'
-import { StyleSheet, Text, View } from 'react-native';
+import React,{useState} from 'react';
+import { useSelector } from "react-redux";
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { onAuthStateChanged, getAuth } from "firebase/auth";
 import { Button } from 'react-native-elements';
-import empresaDetail from '../Redux/Actions/empresaDetail';
+import CardReviews from "../components/CardReviews";
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import empresaDetail from '../Redux/Actions/empresaDetail';
 const auth=getAuth();
 
-export default function ListReviews({navigation}){
+export default function ListReviews({navigation, reviews}){
+    const empresaDetail = useSelector((state) => state.empresaDetail)
     const [userLogged, setUserLogged] = useState(false)
-    
    onAuthStateChanged(auth, (usuarioFirebase) => {
        if(usuarioFirebase){
            setUserLogged(true)
@@ -31,8 +33,8 @@ export default function ListReviews({navigation}){
                         name:"square-edit-outline",
                         color:"white"
                     }}
-                    />
-                ) : (
+                    /> 
+                        ) : (
                     <Text
                     style={styles.mustLoginText}
                     onPress={()=> navigation.navigate("GlobalLogin")}
@@ -42,10 +44,15 @@ export default function ListReviews({navigation}){
                         Pulsa aqui para iniciar sesion 
                     </Text>
                     </Text>
-                )
-            }
+                )}
+            { reviews?.length >0 ? (
+                <ScrollView style={styles.showMenu}>
+                             {
+                                 reviews.map(review => <CardReviews reseña={review}></CardReviews>)
+                             }
+                        </ScrollView>) : <Text> Este negocio aun no tiene comentarios</Text>}
         </View>
-    )
+                )
 }
 const styles = StyleSheet.create({
     container:{
