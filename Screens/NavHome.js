@@ -79,10 +79,10 @@ export default function NavHome({ title, navigation }) {
         style={{
           display: "flex",
           flexDirection: "row",
-          justifyContent: "space-between",
+          justifyContent: "space-around",
           width: "100%",
-          paddingHorizontal: 15,
-          marginHorizontal: -13,
+          paddingHorizontal: 5,
+          marginHorizontal: -10,
         }}
       >
         <View style={globalStyles.containerTitle}>

@@ -24,8 +24,9 @@ const globalStyles = StyleSheet.create({
   btnContainer: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
-    width: 160,
+    justifyContent: "space-around",
+    width: '40%',
+    // backgroundColor: 'red'
     
   },
   Container: {
@@ -344,7 +345,7 @@ const globalStyles = StyleSheet.create({
   navHome: {
     flexDirection: "row",
     width: "100%",
-    backgroundColor: "#161616"
+    backgroundColor: "#161616",
   },
   touchLog: {
     marginTop: 10,
