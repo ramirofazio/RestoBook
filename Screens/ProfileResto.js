@@ -15,7 +15,7 @@ import {
   ActivityIndicator,
   ScrollView,
 } from "react-native";
-import { Divider } from 'react-native-elements';
+import { Divider, ListItem } from 'react-native-elements';
 import * as ImagePicker from "expo-image-picker";
 //------FIREBASE----------------
 import firebase from "../database/firebase";
@@ -49,8 +49,8 @@ import CardFavourite from "../components/CardFavourite";
 
 //
 //
-//---------TIME PICKER----------------------
-
+//---------CHECKBOX----------------------
+import Checkbox from 'expo-checkbox';
 //
 //-------ICONS-------
 import { Icon } from "react-native-elements";
@@ -65,6 +65,7 @@ const auth = getAuth();
 
 const ProfileResto = ({ navigation }) => {
   const loggedId = useSelector((state) => state.currentId);
+  const sectoresResto = useSelector((state) => state.sectoresResto);
 
   const [availableCommerces, setAvailableCommerces] = useState([]);
   const [image, setImage] = useState("");
@@ -72,6 +73,8 @@ const ProfileResto = ({ navigation }) => {
   const [modalAdminReservasVisible, setModalVisibleAdminReservas] = useState(false);
   const [modalEditVisible, setModalEditVisible] = useState(false)
   const [newUserInfo, setNewUserInfo] = useState({});
+  const [sectorState, setSectorState] = useState([])
+  // const [cantLugares, setCantLugares] = useState(0)
 
 
   useEffect(() => {
@@ -158,6 +161,16 @@ const ProfileResto = ({ navigation }) => {
     // setDate(currentDate);
   };
 
+  const handleSectores = (sector) => {
+    if (!sectorState.includes(sector)) {
+      setSectorState([...sectorState, sector])
+    } else {
+      const eliminado = sectorState.filter((sectorS) => sectorS !== sector)
+      setSectorState(eliminado)
+      console.log(sectorState)
+    }
+  }
+
   return (
     <View style={globalStyles.Perfilcontainer}>
       <ScrollView style={globalStyles.Perfilcontainer} contentContainerStyle={{ flex: 1 }}>
@@ -199,17 +212,17 @@ const ProfileResto = ({ navigation }) => {
             </Text>
             <TouchableOpacity
               style={globalStyles.btnLogin}
-              onPress={() => setModalVisible(true)}
+              onPress={() => setModalEditVisible(true)}
             >
               <Text style={globalStyles.texts}>Editar</Text>
             </TouchableOpacity>
             <Modal
               animationType="slide"
               transparent={true}
-              visible={modalVisible}
+              visible={modalEditVisible}
               onRequestClose={() => {
                 Alert.alert("Modal has been closed.");
-                setModalVisible(!modalVisible);
+                setModalEditVisible(!modalEditVisible);
               }}
             >
               <View style={globalStyles.centeredView}>
@@ -362,7 +375,7 @@ const ProfileResto = ({ navigation }) => {
             visible={modalAdminReservasVisible}
             onRequestClose={() => {
               Alert.alert("Modal has been closed.");
-              setModalVisibleAdminReservas(!modalVisible);
+              setModalVisibleAdminReservas(!modalVisibleAdminReservas);
             }}
           >
 
@@ -378,7 +391,11 @@ const ProfileResto = ({ navigation }) => {
                     X
                   </Text>
                 </TouchableOpacity>
+
+
                 <Text style={globalStyles.modalText}>Administración de reserva</Text>
+
+
                 <View>
                   <TouchableOpacity
                     style={globalStyles.touchLog}
@@ -386,37 +403,63 @@ const ProfileResto = ({ navigation }) => {
                   >
                     <Text>Horario para reservar</Text>
                   </TouchableOpacity>
-
-
-
                 </View>
                 <TextInput
-
                 />
                 <Text
-                  style={globalStyles.touchLog}>
-
-                  Cantidad de lugares disponibles</Text>
+                  style={globalStyles.texts}>
+                  Cantidad de lugares disponibles:</Text>
                 <TouchableOpacity
                 />
-                <TextInput
-
-                />
-
 
                 <Text
-                  style={globalStyles.touchLog}
-                >Sectores disponibles</Text>
-                <TextInput
-
-                />
+                  style={globalStyles.texts}
+                >Sectores disponibles: </Text>
+                <View style={{ display: "flex", flexDirection: "row" }}>
+                  {sectoresResto.map((sector) => (
+                    <TouchableOpacity
+                      style={{
+                        alignItems: "center",
+                        borderRadius: 10,
+                        marginHorizontal: 5,
+                        backgroundColor: "#bd967e",
+                      }}
+                      onPress={() => handleSectores(sector)}
+                    >
+                      <Text style={{ padding: 7 }}>{sector}</Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
 
                 <Text
-                  style={globalStyles.touchLog}
-                >Resumen</Text>
-                <TextInput
+                  style={globalStyles.texts}
+                >Resumen:</Text>
+                <View style={{ borderWidth: 2, borderColor: "red" }}>
+                  {sectorState !== [] ? sectorState.map((sector) => {
+                    let counter = 0
+                    return (
+                      <View style={{ borderWidth: 2, borderColor: "green", display: "flex", flexDirection: "row", justifyContent: "space-around" }}>
+                        <Text style={{ marginRight: 45 }}>▪️{sector}</Text>
 
-                />
+                        <TouchableOpacity
+                          onPress={() => counter + 1}
+                        >
+                          <Text>+</Text>
+                        </TouchableOpacity>
+
+                        <Text>{counter}</Text>
+
+                        <TouchableOpacity
+                          onPress={() => counter - 1}
+                        >
+                          <Text>-</Text>
+                        </TouchableOpacity>
+
+                      </View>
+                    )
+                  }) : null}
+
+                </View>
 
 
 
@@ -433,32 +476,6 @@ const ProfileResto = ({ navigation }) => {
 
         </TouchableOpacity>
 
-
-
-        {/*-----------------------------------CSS LAIAL-----------------------------------------*/}
-        {/* <TouchableOpacity onPress={() => alert('abro modal')} style={globalStyles.btnProfileResto}>
-                    <Icon name='street-view' type='font-awesome-5'color='#392c28'size={24}/>
-                  <Text style={{ fontSize: 25, color: "#392c28", textAlign: "center" }}>
-                    Editar Lugares Disponibles
-                  </Text>
-              </TouchableOpacity> */}
-
-        {/* <TouchableOpacity onPress={() => alert('abro modal')} style={globalStyles.btnProfileResto}>
-          <Icon name='clipboard-list' type='font-awesome-5' color='#392c28' size={24} />
-          <Text style={{ fontSize: 25, color: "#392c28", textAlign: "center" }}>
-            Administrar Reservas
-            {/* 'clipboard-list' 
-          </Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={() => alert('abro modal')} style={globalStyles.btnProfileResto}>
-          <Icon name='street-view' type='font-awesome-5' color='#392c28' size={24} />
-          <Text style={{ fontSize: 25, color: "#392c28", textAlign: "center" }}>
-            Editar Lugares Disponibles
-            {/* street-view 
-          </Text>
-        </TouchableOpacity> */}
-
         <TouchableOpacity onPress={() => alert('abro modal')} style={globalStyles.btnProfileResto}>
           <Icon name='clock' type='font-awesome-5' color='#392c28' size={24} />
           <Text style={{ fontSize: 25, color: "#392c28", textAlign: "center" }}>
@@ -467,7 +484,7 @@ const ProfileResto = ({ navigation }) => {
           </Text>
         </TouchableOpacity>
       </ScrollView>
-    </View>
+    </View >
   );
 };
 
