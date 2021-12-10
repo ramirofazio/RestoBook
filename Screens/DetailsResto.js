@@ -259,6 +259,7 @@ const DetailsResto = ({ navigation }) => {
            />
            { userLocation && location && (
             <MapViewDirections
+              lineDashPattern={[0]}
               apikey={GOOGLE_API_KEY}
               strokeWidth={1.5}
               strokeColor="gray"

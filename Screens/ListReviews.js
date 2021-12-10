@@ -1,10 +1,10 @@
 import React,{useState} from 'react';
 import { useSelector } from "react-redux";
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { onAuthStateChanged, getAuth } from "firebase/auth";
-import { Button } from 'react-native-elements';
+import { Icon } from 'react-native-elements';
+import globalStyles from './GlobalStyles';
 import CardReviews from "../components/CardReviews";
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import empresaDetail from '../Redux/Actions/empresaDetail';
 const auth=getAuth();
 
@@ -23,20 +23,27 @@ export default function ListReviews({navigation, reviews}){
         <View>
             {
                 userLogged ? (
-                    <Button
-                    buttonStyle={styles.btnAddReview}
-                    title="Escribe una opinion"
-                    titleStyle={styles.btnTitleAddReview}
+                    <TouchableOpacity 
+                    style={globalStyles.btnFiltrosHome}
                     onPress={() => navigation.navigate("AddReviewsRestorant")}
-                    icon={{
-                        type:"material-community",
-                        name:"square-edit-outline",
-                        color:"white"
-                    }}
-                    /> 
+                    >
+                        <Icon name='square-edit-outline' type='material-community' color='#161616' size={25} /> 
+                        <Text style={globalStyles.texts}>Escribe una opinion</Text>
+                    </TouchableOpacity>
+                    // <Button
+                    // buttonStyle={globalStyles.btnFiltrosHome}
+                    // title="Escribe una opinion"
+                    // titleStyle={globalStyles.texts}
+                    // onPress={() => navigation.navigate("AddReviewsRestorant")}
+                    // icon={{
+                    //     type:"material-community",
+                    //     name:"square-edit-outline",
+                    //     color:"#161616"
+                    // }}
+                    // /> 
                         ) : (
                     <Text
-                    style={styles.mustLoginText}
+                    style={globalStyles.texts}
                     onPress={()=> navigation.navigate("GlobalLogin")}
                     >
                         Para escribir una opinion es necesario estar logeado.{" "}

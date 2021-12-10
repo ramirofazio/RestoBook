@@ -65,6 +65,7 @@ const globalStyles = StyleSheet.create({
     borderWidth: 2,
     borderColor: '#eccdaa',
 
+    
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
