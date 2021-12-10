@@ -228,8 +228,9 @@ const RegisterResto = ({ navigation }) => {
                   location: {
                     latitude: state.lat,
                     longitude: state.lng,
-                    address: state.address.toLowerCase(),
+                    address: state.address.toLowerCase()
                   },
+                  reviews:[]
                 })
                 .then(
                   firebase.db.collection("Users").doc(id).update({

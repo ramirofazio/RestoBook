@@ -25,6 +25,8 @@ import { MaterialIcons } from "@expo/vector-icons";
 //
 //---------SCREENS & COMPONENTS---------------
 import CardMenu from "../components/CardMenu";
+import ListReviews from "./ListReviews"
+import AddReviewsRestorant from "./AddReviewsRestorant";
 //
 //
 //-------STYLES-------
@@ -45,6 +47,8 @@ const auth = getAuth();
 //---------------------------------------------------------------------------------------//
 //
 const DetailsResto = ({ navigation }) => {
+  //--------------------------REVIEWS-------------------------------
+  const [reviews, setReviews] = useState()
 
   //--------------------------MERCADO PAGO--------------------------
   const [precioCabeza, setPrecioCabeza] = useState()
@@ -61,7 +65,7 @@ const DetailsResto = ({ navigation }) => {
   //WhatsApp
   const handleWhatsAppPress = async () => {
     await Linking.openURL(`whatsapp://send?text=Hola RestoBook&phone=${number}`)
-  }
+}
   const [menuArr, setMenuArr] = useState([]);
   const onPressReservar = async (cantLugares, precioCabeza) => {
     const url = await axios(
@@ -119,13 +123,22 @@ const DetailsResto = ({ navigation }) => {
     }
   }
 
+  /// Prueba ///
+  useEffect(() => {
+    const q = doc(firebase.db, "Restos", empresaDetail.idResto);
+    const unsubscribe = onSnapshot(q, (doc) => {
+      setReviews(doc.data().reviews)
+    });
+  }, []);
+  ///
+
 
   return (
-    <View style={globalStyles.Home}>
-      <View style={globalStyles.headerResto}>
-        <Text style={{ textAlign: "center", fontSize: 30, paddingVertical: 3, color: "#161616", letterSpacing: 1 }}>{empresaDetail.title}</Text>
+    <ScrollView style={globalStyles.Home}>
+      <View style={{ backgroundColor: "#333a" }}>
+        <Text style={{ textAlign: "center", fontSize: 30, marginVertical: 10, color: "#fff" }}>{empresaDetail.title}</Text>
       </View>
-
+    
       <View>
         <View style={globalStyles.btnTodasComidas}>
           <TouchableOpacity onPress={() => getMenu()} >
@@ -250,7 +263,7 @@ const DetailsResto = ({ navigation }) => {
               <Text 
               style={globalStyles.texts}
                 onPress={() => setModalVisible(false)}
-              > X </Text>
+                > X </Text>
             </TouchableOpacity>
             <Text style={globalStyles.texts}>Selecciona la cantidad de lugares</Text>
             <TextInput placeholder='Cantidad de lugares' style={globalStyles.inputComponent} keyboardType='numeric' onChangeText={(value) => setCantLugares(parseInt(value))}>
@@ -268,11 +281,19 @@ const DetailsResto = ({ navigation }) => {
           </View>
         </View>
       </Modal>
-    </View>
+      <View style={styles.listReviews}>
+                  <ListReviews navigation={navigation} reviews={reviews}/>
+                </View>
+      <View>
+      </View>
+    </ScrollView>
 
   );
 };
 const styles = StyleSheet.create({
+  listReviews:{
+    
+  },
   container: {
     flex: 1,
     backgroundColor: "pink",
@@ -312,22 +333,22 @@ const styles = StyleSheet.create({
     height: 250,
     borderRadius: 100,
   },
-  wppIcon: {
-    height: 30,
-    marginLeft: 10,
+  wppIcon:{
+    height:30,
+    marginLeft:10,
     borderRadius: 10,
     width: 40,
     backgroundColor: '#ffd964',
     alignItems: "center",
     borderWidth: 1,
     borderColor: '#b39138',
-
+    
   },
-  img: {
+  img:{
     margin: 5,
-    height: 20,
-    width: 20,
-    alignItems: 'center'
+    height:20,
+    width:20,
+    alignItems:'center'
   },
   textContainer2: {
     alignSelf: "center",
