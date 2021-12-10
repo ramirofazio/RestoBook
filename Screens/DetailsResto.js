@@ -52,9 +52,7 @@ const DetailsResto = ({ navigation }) => {
   const [cantLugares, setCantLugares] = useState()
   const [modalVisible, setModalVisible] = useState(false)
   const [menuCategory, setMenuCategory] = useState()
-
   const empresaDetail = useSelector((state) => state.empresaDetail);
-  const { manifest } = Constants;
   const { location } = empresaDetail
   const number = "+541168020511"
   //WhatsApp

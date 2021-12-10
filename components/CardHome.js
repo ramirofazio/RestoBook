@@ -17,7 +17,7 @@ import globalStyles from "../Screens/GlobalStyles.js";
 //----------FIREBASE UTILS-----------
 import firebase from "../database/firebase";
 import { getAuth } from "firebase/auth";
-import { doc, updateDoc, arrayUnion, arrayRemove,  getDoc, } from "firebase/firestore";
+import { doc, updateDoc, arrayUnion, arrayRemove, getDoc, } from "firebase/firestore";
 //
 
 const auth = getAuth();
@@ -101,8 +101,8 @@ const CardMenu = ({ resto, navigation }) => {
             source={
               resto.Img === ""
                 ? {
-                    uri: "https://images.vexels.com/media/users/3/204941/isolated/preview/d8bc6d74b3da7ee41fc99b6000c1e6a4-trazo-de-puntuacion-de-signo-de-interrogacion.png",
-                  }
+                  uri: "https://images.vexels.com/media/users/3/204941/isolated/preview/d8bc6d74b3da7ee41fc99b6000c1e6a4-trazo-de-puntuacion-de-signo-de-interrogacion.png",
+                }
                 : { uri: resto.Img }
             }
           />
@@ -114,17 +114,17 @@ const CardMenu = ({ resto, navigation }) => {
           </View>
 
           <View >
-          <AirbnbRating 
-            showRating={false}
-            size={20}
-            // reviews={["Bad", "OK", "Good", "Very Good","Amazing"]}
-            // reviewSize={17}
-            // starContainerStyle={{marginTop:-15}}
-            isDisabled={true} // este es para que los users no puedan cambiar
-            selectedColor='#f1c40f' 
-            unSelectedColor='lightgrey'
-          />
-          {/* <Rating
+            <AirbnbRating
+              showRating={false}
+              size={20}
+              // reviews={["Bad", "OK", "Good", "Very Good","Amazing"]}
+              // reviewSize={17}
+              // starContainerStyle={{marginTop:-15}}
+              isDisabled={true} // este es para que los users no puedan cambiar
+              selectedColor='#f1c40f'
+              unSelectedColor='lightgrey'
+            />
+            {/* <Rating
           showRating
             type= 'custom'
             // readonly={true} // este es para que los users no puedan cambiar
@@ -152,9 +152,9 @@ const CardMenu = ({ resto, navigation }) => {
               />
             </TouchableOpacity>
           </View>
-            
+
           <View>
-            <TouchableOpacity 
+            <TouchableOpacity
               onPress={() => {
                 // pressed === true && usuario logueado === false ? alert('logeate primero') : //ESTO ES PARA DECIR QUE
                 // SI UN USARUIO NO LOGUEADO QUIERE GUARDAR ALGO EN FAVS QUE SE LOGUEE PRIMERO

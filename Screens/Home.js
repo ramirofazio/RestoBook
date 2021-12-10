@@ -9,7 +9,7 @@ import UserFavourites from "../Redux/Actions/userFavourites.js";
 //
 //
 //----------REACT-NATIVE UTILS-----------
-
+import { BottomSheet, ListItem } from "react-native-elements";
 import {
   View,
   Image,
@@ -18,15 +18,15 @@ import {
   StyleSheet,
   Button,
   TouchableOpacity,
-  BottomSheet,
   TextInput,
   Modal,
   ActivityIndicator,
 } from "react-native";
-import { MaterialIcons } from "@expo/vector-icons";
-
+//import { MaterialIcons } from "@expo/vector-icons";
 //
 //
+//---------------------EXPO----------------------
+import * as Location from 'expo-location';
 //----------FIREBASE UTILS-----------
 import firebase from "../database/firebase";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
@@ -62,9 +62,18 @@ export default function Home({ navigation }) {
   const [usuarioGlobal, setUsuarioGlobal] = useState("");
   const [availableCommerces, setAvailableCommerces] = useState([]);
   const [flagCards, setFlagCards] = useState(false);
+
+  //--------------FILTRADO MODAL-------------------------
+  const [allRestos, setAllRestos] = useState()
+  const [category, setCategory] = useState();
+  const [visibleFiltros, isVisibleFiltros] = useState(false);
+  //---------------GEOLOCATION------------------------//
+  const [userLocation, setUserLocation] = useState({})
+
   //console.log(availableCommerces)
   const loggedUser = useSelector((state) => state.currentUser);
   const loggedId = useSelector((state) => state.currentId);
+  const categories = useSelector((state) => state.categoriesResto);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -77,6 +86,7 @@ export default function Home({ navigation }) {
         arr.push(obj);
       });
       setAvailableCommerces(arr);
+      setAllRestos(arr);
     });
   }, []);
 
@@ -85,7 +95,7 @@ export default function Home({ navigation }) {
       if (loggedId !== usuarioFirebase.uid) {
         dispatch(CurrentId(usuarioFirebase.uid));
         const unsub = onSnapshot(
-          doc(firebase.db, "Restos", usuarioFirebase.uid),
+          doc(firebase.db, "Users", usuarioFirebase.uid),
           (doc) => {
             if (doc.exists()) {
               dispatch(CurrentUser(doc.data()));
@@ -98,6 +108,16 @@ export default function Home({ navigation }) {
       dispatch(CurrentUser(null));
     }
   });
+
+  const getUserLocation = async () => {
+    const {status} = await Location.requestForegroundPermissionsAsync()
+    if (status !== 'granted') {
+      console.log('Permission to access location was denied');
+      return;
+    }
+    let location = await Location.getCurrentPositionAsync();
+    setUserLocation(location)
+  }
 
   const getInfo = async () => {
     try {
@@ -120,6 +140,7 @@ export default function Home({ navigation }) {
   useEffect(() => {
     if (loggedId && auth.currentUser.uid) {
       getInfo();
+      getUserLocation()
     }
     setFlagCards(true);
   }, [loggedId]);
@@ -139,6 +160,21 @@ export default function Home({ navigation }) {
       setUsuarioGlobal("");
     }
   });
+
+
+  const handleCategory = async (category) => {
+    setCategory(category)
+    if (!category) setAvailableCommerces(allRestos)
+    const result = availableCommerces.filter((resto) => resto.category === category.toLowerCase())
+    if (result.length === 0) {
+      alert("No hay comidas con esta categoria")
+      setCategory("")
+      setAvailableCommerces(allRestos)
+    } else {
+      setAvailableCommerces(result)
+    }
+  }
+
 
   return (
     <ScrollView style={globalStyles.Home}>
@@ -220,6 +256,77 @@ export default function Home({ navigation }) {
           ruta="RegisterResto"
           navigation={navigation}
         />
+        {/*----------------------------------------FILTRADO------------------------------------------- */}
+        <View>
+          <TextInput
+            style={globalStyles.btn}
+            editable={false}
+            placeholder="Buscar por Categoria"
+            placeholderTextColor="#000"
+            value={category}
+            onPressIn={() => isVisibleFiltros(true)}
+          />
+          <BottomSheet
+            isVisible={visibleFiltros}
+            containerStyle={{ backgroundColor: '#333a' }}
+          >
+            <ListItem
+              containerStyle={{ backgroundColor: 'rgba(0.5,0.25,0,0.7)' }}
+              style={{ borderBottomWidth: 1, borderColor: '#333a', backgroundColor: "#fff0" }}
+              onPress={() => {
+                handleCategory(null)
+                isVisibleFiltros(false)
+              }}
+            >
+              <ListItem.Content
+                style={{ backgroundColor: "#0000", alignItems: "center" }}
+              >
+                <ListItem.Title
+                  style={{ height: 35, color: '#fff', padding: 8 }}
+                >
+                  Todos
+                </ListItem.Title>
+              </ListItem.Content>
+            </ListItem>
+            {categories.map((categoria, index) => (
+              <ListItem
+                key={index}
+                containerStyle={{ backgroundColor: 'rgba(0.5,0.25,0,0.7)' }}
+                style={{ borderBottomWidth: 1, borderColor: '#333a', backgroundColor: "#fff0" }}
+                onPress={() => {
+                  handleCategory(categoria)
+                  isVisibleFiltros(false)
+                }}
+              >
+                <ListItem.Content
+                  style={{ backgroundColor: "#0000", alignItems: "center" }}
+                >
+                  <ListItem.Title
+                    style={{ height: 35, color: '#fff', padding: 8 }}
+                  >
+                    {categoria}
+                  </ListItem.Title>
+                </ListItem.Content>
+              </ListItem>
+            ))}
+            <ListItem
+              key={999}
+              containerStyle={{ backgroundColor: '#d14545' }}
+              style={{ borderBottomWidth: 1, borderColor: '#333a' }}
+              onPress={() => isVisibleFiltros(false)}
+            >
+              <ListItem.Content style={{ alignItems: "center" }}>
+                <ListItem.Title
+                  style={{ height: 35, color: '#FFF', padding: 8, fontSize: 20 }}
+                >
+                  Cancelar
+                </ListItem.Title>
+              </ListItem.Content>
+            </ListItem>
+          </BottomSheet>
+        </View>
+
+
       </View>
       {availableCommerces.length && flagCards ? (
         <View>
