@@ -144,11 +144,11 @@ const RegisterResto = ({ navigation }) => {
   return (
     <View style={globalStyles.Home}>
       <View style={{
-        backgroundColor: '#e8b595',
+        // backgroundColor: '#e8b595',
         width: '80%',
         alignSelf: 'center',
-        marginTop: 15,
-        borderRadius: 10,
+        marginTop: 10,
+        // borderRadius: 15,
         maxWidth: '100%',
       }}
       >
@@ -172,9 +172,9 @@ const RegisterResto = ({ navigation }) => {
           styles={{
             container: {
               flex: 0,
-
-              width: '100%',
-
+              borderRadius: 10,
+              width: '75%',
+              backgroundColor: '#e8e8e8',
               padding: 0,
               alignSelf: "center",
             },
@@ -184,23 +184,27 @@ const RegisterResto = ({ navigation }) => {
 
               fontWeight: 'bold',
               width: '80%',
-              backgroundColor: 'transparent',
+              backgroundColor: 'rgba(22, 22, 22, .2)',
+              borderRadius: 10,
               textAlign: 'center',
               overflow: 'hidden'
 
             },
             textInputContainer: {
               alignItems: "center",
-              height: 18,
-              overflow: 'hidden'
+              height: 30,
+              overflow: 'hidden',
+              borderRadius: 10,
             },
             listView: {
-              borderRadius: 13,
-              backgroundColor: "#f6efd2",
+              borderRadius: 15,
+              backgroundColor: "#161616",
+              // borderRadius: 25,
             },
             description: {},
             row: {
-              backgroundColor: "#f6efd2",
+              backgroundColor: "#eccdaa",
+              // borderRadius: 25,
             },
           }}
         />
@@ -280,7 +284,7 @@ const RegisterResto = ({ navigation }) => {
               <View style={globalStyles.inputComponent}>
                 <TextInput
                   style={globalStyles.texts}
-                  placeholder="Title"
+                  placeholder="Titulo"
                   onChangeText={props.handleChange("title")}
                   value={props.values.title}
                   onBlur={props.handleBlur("title")}
@@ -294,7 +298,7 @@ const RegisterResto = ({ navigation }) => {
               <View style={globalStyles.inputComponent}>
                 <TextInput
                   style={globalStyles.texts}
-                  placeholder="Description"
+                  placeholder="Descripcion"
                   onChangeText={props.handleChange("description")}
                   value={props.values.description}
                   onBlur={props.handleBlur("description")}
@@ -310,7 +314,7 @@ const RegisterResto = ({ navigation }) => {
               <View style={globalStyles.inputComponent}>
                 <TextInput
                   style={globalStyles.texts}
-                  placeholder="Phone"
+                  placeholder="Numero de whatsapp"
                   onChangeText={props.handleChange("phone")}
                   value={props.values.phone}
                   onBlur={props.handleBlur("phone")}
@@ -325,7 +329,7 @@ const RegisterResto = ({ navigation }) => {
               <View style={globalStyles.inputComponent}>
                 <TextInput
                   style={globalStyles.texts}
-                  placeholder="Phone 2"
+                  placeholder="Telefono 2"
                   onChangeText={props.handleChange("phone2")}
                   value={props.values.phone2}
                   onBlur={props.handleBlur("phone2")}
@@ -359,7 +363,7 @@ const RegisterResto = ({ navigation }) => {
                   <TextInput
                     style={globalStyles.texts}
                     editable={false}
-                    placeholder="Select Category"
+                    placeholder="Selecciona categoria de local"
                     value={state.category}
                     onPressIn={() => setIsVisible(true)}
                   />
@@ -383,10 +387,10 @@ const RegisterResto = ({ navigation }) => {
 
               <View style={{ alignItems: "center" }}>
                 <TouchableOpacity
-                  style={globalStyles.touchLog}
+                  style={globalStyles.btnLogin}
                   onPress={() => props.handleSubmit()}
                 >
-                  <Text style={globalStyles.fontLog}>Create</Text>
+                  <Text style={globalStyles.texts}>Crear</Text>
                 </TouchableOpacity>
               </View>
             </ScrollView>
@@ -406,8 +410,8 @@ const RegisterResto = ({ navigation }) => {
             <ListItem
               key={index}
 
-              containerStyle={{ backgroundColor: 'rgba(0.5,0.25,0,0.7)' }}
-              style={{ borderBottomWidth: 1, borderColor: '#333a', backgroundColor: "#fff0" }}
+              containerStyle={{ backgroundColor: 'rgba(251, 245, 245,0.8)' }}
+              style={{ borderBottomWidth: 1, borderColor: '#161616', backgroundColor: "#fff0" }}
               onPress={() => {
                 setState({ ...state, category: categoria })
                 setIsVisible(false)
@@ -417,7 +421,7 @@ const RegisterResto = ({ navigation }) => {
                 style={{ backgroundColor: "#0000", alignItems: "center" }}
               >
                 <ListItem.Title
-                  style={{ height: 35, color: '#fff', padding: 8 }}
+                  style={{ height: 35, color: '#161616', paddingVertical: 5, fontWeight: "bold" }}
 
                 >
                   {categoria}
@@ -428,18 +432,18 @@ const RegisterResto = ({ navigation }) => {
           <ListItem
             key={999}
 
-            containerStyle={{ backgroundColor: 'red' }}
-            style={{ borderBottomWidth: 1, borderColor: '#333a' }}
+            containerStyle={{ backgroundColor: '#eccdaa' }}
+            style={{ borderBottomWidth: 1, borderColor: '#ffff' }}
             onPress={() => setIsVisible(false)}
           >
             <ListItem.Content
               style={{ alignItems: "center" }}
             >
               <ListItem.Title
-                style={{ height: 35, color: '#FFF', padding: 8, fontSize: 20 }}
+                style={{ height: 35, color: '#161616', fontSize: 20 }}
               >
 
-                Cancel
+                Cancelar
               </ListItem.Title>
             </ListItem.Content>
           </ListItem>

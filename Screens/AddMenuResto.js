@@ -190,12 +190,12 @@ const AddMenuResto = ({ navigation }) => {
               <Text style={globalStyles.errorText}>{props.errors.price}</Text>
             ) : null}
             <TouchableOpacity
-              style={globalStyles.touchLog}
+              style={globalStyles.btnTodasComidas}
               onPress={() => {
                 handleOnPressPickImage(props.handleChange("img"));
               }}
             >
-              <Text style={{ textAlign: "center" }}>
+              <Text style={globalStyles.texts}>
                 {props.values.img && props.values.img.length > 0
                   ? "Cambiar Imagen"
                   : "Seleccionar Imagen"}
@@ -207,12 +207,12 @@ const AddMenuResto = ({ navigation }) => {
                 style={{ width: 200, height: 200, borderRadius: 15 }}
               />
             ) : null}
-            <View>
+            <View style={globalStyles.btnTodasComidas}>
               <TouchableOpacity
-                style={globalStyles.touchLog}
+                
                 onPress={() => props.handleSubmit()}
               >
-                <Text style={globalStyles.fontLog}>Agregar!</Text>
+                <Text style={globalStyles.texts}>Agregar!</Text>
               </TouchableOpacity>
             </View>
           </View>
