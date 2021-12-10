@@ -15,7 +15,6 @@ let initialState = {
   currentId: null,
   currentUser: {},
   empresaDetail: [],
-
   favourites: [],
   categoriesResto: [
     "Pizzas/Empanadas",
