@@ -10,7 +10,6 @@ import UserFavourites from "../Redux/Actions/userFavourites.js";
 //
 //----------REACT-NATIVE UTILS-----------
 import { BottomSheet, ListItem } from "react-native-elements";
-
 import {
   View,
   Image,
@@ -22,11 +21,13 @@ import {
   TextInput,
   Modal,
   ActivityIndicator,
+  Pressable,
 } from "react-native";
 //import { MaterialIcons } from "@expo/vector-icons";
-
 //
 //
+//---------------------EXPO----------------------
+import * as Location from "expo-location";
 //----------FIREBASE UTILS-----------
 import firebase from "../database/firebase";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
@@ -34,10 +35,10 @@ import { doc, onSnapshot, collection, query, getDoc } from "firebase/firestore";
 //
 //
 //---------SCREENS---------------
-import SearchBar from "./SearchBar.js";
+/* import SearchBar from "./SearchBar.js"; */
 import CardHome from "../components/CardHome.js";
 import Btn from "./Helpers/Btns.js";
-//
+/* import Search from "./Search.js"; */
 //
 //-------STYLES-------
 import globalStyles from "./GlobalStyles.js";
@@ -46,10 +47,13 @@ import globalStyles from "./GlobalStyles.js";
 //-------INITIALIZATIONS-------
 const auth = getAuth();
 import { DEFAULT_PROFILE_IMAGE } from "@env";
+import setUserLocation from "../Redux/Actions/setUserLocation.js";
 
 //
 //---------------------------------------------------------------------------------------//
-//
+import * as Animatable from "react-native-animatable";
+import { Feather } from "@expo/vector-icons";
+
 export default function Home({ navigation }) {
   //------LOGIN JOSE------------
   const [visible, isVisible] = useState(false);
@@ -62,12 +66,12 @@ export default function Home({ navigation }) {
   const [usuarioGlobal, setUsuarioGlobal] = useState("");
   const [availableCommerces, setAvailableCommerces] = useState([]);
   const [flagCards, setFlagCards] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
   //--------------FILTRADO MODAL-------------------------
   const [allRestos, setAllRestos] = useState();
   const [category, setCategory] = useState();
   const [visibleFiltros, isVisibleFiltros] = useState(false);
-
   const loggedUser = useSelector((state) => state.currentUser);
   const loggedId = useSelector((state) => state.currentId);
   const categories = useSelector((state) => state.categoriesResto);
@@ -92,7 +96,7 @@ export default function Home({ navigation }) {
       if (loggedId !== usuarioFirebase.uid) {
         dispatch(CurrentId(usuarioFirebase.uid));
         const unsub = onSnapshot(
-          doc(firebase.db, "Restos", usuarioFirebase.uid),
+          doc(firebase.db, "Users", usuarioFirebase.uid),
           (doc) => {
             if (doc.exists()) {
               dispatch(CurrentUser(doc.data()));
@@ -105,6 +109,26 @@ export default function Home({ navigation }) {
       dispatch(CurrentUser(null));
     }
   });
+
+  const getUserLocation = async () => {
+    const { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== "granted") {
+      console.log("Permission to access location was denied");
+      return;
+    }
+    console.log("Permission granted, reading user coordinates...");
+    let { coords } = await Location.getCurrentPositionAsync({
+      accuracy: Location.Accuracy.Balanced,
+    });
+    console.log(coords);
+    const location = {
+      latitude: coords.latitude,
+      longitude: coords.longitude,
+      latitudeDelta: 0.004757,
+      longitudeDelta: 0.006866,
+    };
+    dispatch(setUserLocation(location));
+  };
 
   const getInfo = async () => {
     try {
@@ -125,6 +149,7 @@ export default function Home({ navigation }) {
   useEffect(() => {
     if (loggedId && auth.currentUser.uid) {
       getInfo();
+      getUserLocation();
     }
     setFlagCards(true);
   }, [loggedId]);
@@ -222,29 +247,46 @@ export default function Home({ navigation }) {
           <Text style={styles.text}>Welcome to Resto Book</Text>
         )}
       </View>
-      <View>
-        <SearchBar />
+      <View style={styles.container}>
+        <View style={styles.textInput}>
+          <Animatable.View animation="zoomIn" duration={1200}>
+            <TextInput
+              style={styles.texto}
+              onChangeText={(event) => {
+                setSearchTerm(event);
+              }}
+              placeholder="Search..."
+              placeholderTextColor="black"
+              underlineColorAndroid="transparent"
+            />
+          </Animatable.View>
+        </View>
+        <View style={styles.touchableOpacity}>
+          <Feather name="search" style={styles.iconStyle} />
+        </View>
       </View>
 
       <View style={globalStyles.btnHome}>
         <TouchableOpacity
-          style={globalStyles.btn}
+          style={globalStyles.btnFiltrosHome}
           onPress={() => alert("Me ordeno x Title")}
         >
-          <Text style={globalStyles.btnText}>Ordenamiento</Text>
+          <Text style={globalStyles.btnTextFiltro}>Ordenamiento</Text>
         </TouchableOpacity>
 
         {/*----------------------------------------FILTRADO------------------------------------------- */}
         <View>
-          <TextInput
-            style={globalStyles.btn}
-            editable={false}
-            placeholder="Buscar por Categoria"
-            textAlign="center"
-            placeholderTextColor="#000"
-            value={category}
-            onPressIn={() => isVisibleFiltros(true)}
-          />
+          <Pressable onPress={() => isVisibleFiltros(true)}>
+            <TextInput
+              style={globalStyles.btnFiltrosHome}
+              editable={false}
+              placeholder="Buscar por Categoria"
+              textAlign="center"
+              placeholderTextColor="#161616"
+              value={category}
+              onPressIn={() => isVisibleFiltros(true)}
+            />
+          </Pressable>
           <BottomSheet
             isVisible={visibleFiltros}
             containerStyle={{ backgroundColor: "#333a" }}
@@ -322,15 +364,25 @@ export default function Home({ navigation }) {
       <ScrollView>
         {availableCommerces.length && flagCards ? (
           <View>
-            {availableCommerces.map((resto) => {
-              return (
-                <CardHome
-                  key={resto.idResto}
-                  resto={resto}
-                  navigation={navigation}
-                ></CardHome>
-              );
-            })}
+            {availableCommerces
+              .filter((resto) => {
+                if (searchTerm === "") {
+                  return resto;
+                } else {
+                  return resto.title
+                    .toLowerCase()
+                    .includes(searchTerm.toLowerCase());
+                }
+              })
+              .map((resto) => {
+                return (
+                  <CardHome
+                    key={resto.idResto}
+                    resto={resto}
+                    navigation={navigation}
+                  ></CardHome>
+                );
+              })}
           </View>
         ) : (
           <View style={styles.loading}>
@@ -347,9 +399,10 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     justifyContent: "center",
     width: "90%",
-    borderColor: "#bd967e",
+    borderColor: "#000000",
+    backgroundColor: "#161616",
     borderRadius: 10,
-    borderWidth: 3,
+    borderWidth: 4,
     marginTop: 10,
   },
   textContainer2: {
@@ -367,7 +420,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     paddingVertical: 5,
     fontWeight: "bold",
-    color: "#392c28",
+    color: "#FDFDFD",
   },
 
   textContainer2: {
@@ -414,5 +467,58 @@ const styles = StyleSheet.create({
     height: 500,
     alignItems: "center",
     justifyContent: "center",
+  },
+  container: {
+    marginVertical: 10,
+    backgroundColor: "#F0EEEE",
+    height: 35,
+    flexDirection: "row",
+    width: "90%",
+    borderRadius: 40,
+    alignSelf: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 4.84,
+    elevation: 7,
+  },
+  textInput: {
+    fontFamily: "Gotham-Book",
+    // color: "#ECCDAA",
+    fontSize: 40,
+    flex: 1,
+    paddingLeft: 3,
+    width: "70%",
+  },
+  texto: {
+    paddingHorizontal: 15,
+    marginVertical: 5,
+    textAlign: "left",
+    justifyContent: "center",
+  },
+  iconStyle: {
+    fontSize: 20,
+    width: 20,
+    height: 20,
+    color: "#ECCDAA",
+  },
+  touchableOpacity: {
+    justifyContent: "center",
+    alignItems: "center",
+    width: "15%",
+    height: "100%",
+    borderRadius: 40,
+    backgroundColor: "#161616",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 4.84,
+    elevation: 5,
   },
 });

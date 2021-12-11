@@ -1,5 +1,5 @@
 //----------REACT UTILS-----------
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 //
 //
 //----------REDUX UTILS-----------
@@ -27,6 +27,7 @@ import * as yup from "yup";
 import MapView, { Marker } from "react-native-maps";
 import { GOOGLE_API_KEY } from "@env";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import MapViewDirections from "react-native-maps-directions";
 //
 //
 //----------FIREBASE UTILS-----------
@@ -43,6 +44,8 @@ import {
 } from "firebase/firestore";
 //
 //
+//---------------------EXPO----------------------
+import * as Location from "expo-location";
 //---------SCREENS & COMPONENTS---------------
 //
 //
@@ -51,7 +54,6 @@ import globalStyles from "./GlobalStyles";
 import { BottomSheet, ListItem } from "react-native-elements";
 //
 //------IMAGINE PICKER---------
-import * as ImagePicker from "expo-image-picker";
 import SetCommerce from "../Redux/Actions/setCommerce";
 import { init } from "emailjs-com";
 init("user_IEK9t1hQIR3ugtExEH6BG");
@@ -98,13 +100,21 @@ const RegisterResto = ({ navigation }) => {
   };
   const dispatch = useDispatch();
   const [isVisible, setIsVisible] = useState(false);
-  const [region, setRegion] = useState(initialRegion);
+
+  //-------------GEOLOCATION-------------
+  const userCoordinates = useSelector((state) => state.userCoordinates);
+  const [userLocation, setUserLocation] = useState(
+    userCoordinates || initialRegion
+  );
+  const [restoLocation, setRestoLocation] = useState();
   const [state, setState] = useState({
     lat: -34.61315,
     lng: -58.37723,
     address: "",
     category: "",
   });
+  const mapRef = useRef(null);
+  //----------------------------------------
   const categories = useSelector((state) => state.categoriesResto);
 
   let id = null;
@@ -114,26 +124,37 @@ const RegisterResto = ({ navigation }) => {
     }
   });
 
-  const handleOnPressPickImage = async (handleChange) => {
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (status === "granted") {
-      let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.All,
-        allowsEditing: true,
-        aspect: [4, 3],
-        quality: 1,
-      });
-      if (!result.cancelled) {
-        handleChange(result.uri);
+  useEffect(() => {
+    const getUserLocation = async () => {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        console.log("Permission to access location was denied");
+        return;
       }
-    } else {
-      alert("Sorry, we need camera roll permissions to make this work!");
-    }
-  };
+      console.log("Location permissions granted");
+      let { coords } = await Location.getCurrentPositionAsync();
+      const userRegion = {
+        latitude: coords.latitude,
+        longitude: coords.longitude,
+        latitudeDelta: 0.004757,
+        longitudeDelta: 0.006866,
+      };
+      setUserLocation(userRegion);
+    };
+    getUserLocation();
+  }, []);
+
+  useEffect(() => {
+    if (!userLocation || !restoLocation) return;
+    //Zoom & fit to markers
+    mapRef.current.fitToSuppliedMarkers(["userLocation", "restoLocation"], {
+      edgePadding: { top: 50, right: 50, bottom: 50, left: 50 },
+    });
+  }, [userLocation, restoLocation]);
 
   const setStateAndRegion = (newLocation, formatedAddress) => {
     const { lat, lng } = newLocation;
-    setRegion({
+    setRestoLocation({
       latitude: lat,
       longitude: lng,
       latitudeDelta: 0.004757,
@@ -151,11 +172,11 @@ const RegisterResto = ({ navigation }) => {
     <View style={globalStyles.Home}>
       <View
         style={{
-          backgroundColor: "#e8b595",
+          // backgroundColor: '#e8b595',
           width: "80%",
           alignSelf: "center",
-          marginTop: 15,
-          borderRadius: 10,
+          marginTop: 10,
+          // borderRadius: 15,
           maxWidth: "100%",
         }}
       >
@@ -179,9 +200,9 @@ const RegisterResto = ({ navigation }) => {
           styles={{
             container: {
               flex: 0,
-
-              width: "100%",
-
+              borderRadius: 10,
+              width: "75%",
+              backgroundColor: "#e8e8e8",
               padding: 0,
               alignSelf: "center",
             },
@@ -191,22 +212,26 @@ const RegisterResto = ({ navigation }) => {
 
               fontWeight: "bold",
               width: "80%",
-              backgroundColor: "transparent",
+              backgroundColor: "rgba(22, 22, 22, .2)",
+              borderRadius: 10,
               textAlign: "center",
               overflow: "hidden",
             },
             textInputContainer: {
               alignItems: "center",
-              height: 18,
+              height: 30,
               overflow: "hidden",
+              borderRadius: 10,
             },
             listView: {
-              borderRadius: 13,
-              backgroundColor: "#f6efd2",
+              borderRadius: 15,
+              backgroundColor: "#161616",
+              // borderRadius: 25,
             },
             description: {},
             row: {
-              backgroundColor: "#f6efd2",
+              backgroundColor: "#eccdaa",
+              // borderRadius: 25,
             },
           }}
         />
@@ -250,6 +275,7 @@ const RegisterResto = ({ navigation }) => {
                     longitude: state.lng,
                     address: state.address.toLowerCase(),
                   },
+                  reviews: [],
                 })
                 .then(
                   currentUser.commerce
@@ -291,7 +317,7 @@ const RegisterResto = ({ navigation }) => {
               <View style={globalStyles.inputComponent}>
                 <TextInput
                   style={globalStyles.texts}
-                  placeholder="Title"
+                  placeholder="Titulo"
                   onChangeText={props.handleChange("title")}
                   value={props.values.title}
                   onBlur={props.handleBlur("title")}
@@ -305,7 +331,7 @@ const RegisterResto = ({ navigation }) => {
               <View style={globalStyles.inputComponent}>
                 <TextInput
                   style={globalStyles.texts}
-                  placeholder="Description"
+                  placeholder="Descripcion"
                   onChangeText={props.handleChange("description")}
                   value={props.values.description}
                   onBlur={props.handleBlur("description")}
@@ -321,7 +347,7 @@ const RegisterResto = ({ navigation }) => {
               <View style={globalStyles.inputComponent}>
                 <TextInput
                   style={globalStyles.texts}
-                  placeholder="Phone"
+                  placeholder="Numero de whatsapp"
                   onChangeText={props.handleChange("phone")}
                   value={props.values.phone}
                   onBlur={props.handleBlur("phone")}
@@ -336,7 +362,7 @@ const RegisterResto = ({ navigation }) => {
               <View style={globalStyles.inputComponent}>
                 <TextInput
                   style={globalStyles.texts}
-                  placeholder="Phone 2"
+                  placeholder="Telefono 2"
                   onChangeText={props.handleChange("phone2")}
                   value={props.values.phone2}
                   onBlur={props.handleBlur("phone2")}
@@ -370,7 +396,7 @@ const RegisterResto = ({ navigation }) => {
                   <TextInput
                     style={globalStyles.texts}
                     editable={false}
-                    placeholder="Select Category"
+                    placeholder="Selecciona categoria de local"
                     value={state.category}
                     onPressIn={() => setIsVisible(true)}
                   />
@@ -394,10 +420,10 @@ const RegisterResto = ({ navigation }) => {
 
               <View style={{ alignItems: "center" }}>
                 <TouchableOpacity
-                  style={globalStyles.touchLog}
+                  style={globalStyles.btnLogin}
                   onPress={() => props.handleSubmit()}
                 >
-                  <Text style={globalStyles.fontLog}>Create</Text>
+                  <Text style={globalStyles.texts}>Crear</Text>
                 </TouchableOpacity>
               </View>
             </ScrollView>
@@ -413,10 +439,10 @@ const RegisterResto = ({ navigation }) => {
           {categories.map((categoria, index) => (
             <ListItem
               key={index}
-              containerStyle={{ backgroundColor: "rgba(0.5,0.25,0,0.7)" }}
+              containerStyle={{ backgroundColor: "rgba(251, 245, 245,0.8)" }}
               style={{
                 borderBottomWidth: 1,
-                borderColor: "#333a",
+                borderColor: "#161616",
                 backgroundColor: "#fff0",
               }}
               onPress={() => {
@@ -428,7 +454,12 @@ const RegisterResto = ({ navigation }) => {
                 style={{ backgroundColor: "#0000", alignItems: "center" }}
               >
                 <ListItem.Title
-                  style={{ height: 35, color: "#fff", padding: 8 }}
+                  style={{
+                    height: 35,
+                    color: "#161616",
+                    paddingVertical: 5,
+                    fontWeight: "bold",
+                  }}
                 >
                   {categoria}
                 </ListItem.Title>
@@ -437,15 +468,15 @@ const RegisterResto = ({ navigation }) => {
           ))}
           <ListItem
             key={999}
-            containerStyle={{ backgroundColor: "red" }}
-            style={{ borderBottomWidth: 1, borderColor: "#333a" }}
+            containerStyle={{ backgroundColor: "#eccdaa" }}
+            style={{ borderBottomWidth: 1, borderColor: "#ffff" }}
             onPress={() => setIsVisible(false)}
           >
             <ListItem.Content style={{ alignItems: "center" }}>
               <ListItem.Title
-                style={{ height: 35, color: "#FFF", padding: 8, fontSize: 20 }}
+                style={{ height: 35, color: "#161616", fontSize: 20 }}
               >
-                Cancel
+                Cancelar
               </ListItem.Title>
             </ListItem.Content>
           </ListItem>
@@ -454,21 +485,51 @@ const RegisterResto = ({ navigation }) => {
 
       <View style={{ flex: 3 }}>
         <View style={styles.googleMapsContainer}>
-          <MapView style={styles.googleMaps} region={region}>
-            <Marker
-              draggable
-              title="Your Resto"
-              coordinate={region}
-              onDragEnd={(event) => {
-                const { latitude, longitude } = event.nativeEvent.coordinate;
-                const newLocation = {
-                  lat: latitude,
-                  lng: longitude,
-                };
-                setStateAndRegion(newLocation);
-              }}
-              pinColor="#0072B5"
-            ></Marker>
+          <MapView ref={mapRef} style={styles.googleMaps} region={userLocation}>
+            {userLocation && (
+              <Marker
+                draggable
+                title="Your location"
+                coordinate={userLocation}
+                onDragEnd={(event) => {
+                  const { latitude, longitude } = event.nativeEvent.coordinate;
+                  const newLocation = {
+                    lat: latitude,
+                    lng: longitude,
+                  };
+                  setStateAndRegion(newLocation);
+                }}
+                pinColor="#eccdaa"
+                identifier="userLocation"
+              />
+            )}
+            {restoLocation && (
+              <Marker
+                draggable
+                title="Resto location"
+                coordinate={restoLocation}
+                onDragEnd={(event) => {
+                  const { latitude, longitude } = event.nativeEvent.coordinate;
+                  const newLocation = {
+                    lat: latitude,
+                    lng: longitude,
+                  };
+                  setStateAndRegion(newLocation);
+                }}
+                pinColor="#0072B5"
+                identifier="restoLocation"
+              />
+            )}
+            {userLocation && restoLocation && (
+              <MapViewDirections
+                lineDashPattern={[0]}
+                apikey={GOOGLE_API_KEY}
+                strokeWidth={1.5}
+                strokeColor="gray"
+                origin={userLocation}
+                destination={restoLocation}
+              />
+            )}
           </MapView>
         </View>
       </View>

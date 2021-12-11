@@ -61,115 +61,106 @@ export default function WebViewScreen({ route, navigation }) {
       email: currentUser.email,
       idReserva: "reserva.idReserva",
     };
-    emailjs
-      .send(
-        "service_w5zryen",
-        "template_zwe6qen",
-        templateParams,
-        "user_IEK9t1hQIR3ugtExEH6BG"
-      )
-      .then(
-        function (response) {
-          console.log(
-            `SUCCESS! Email enviado a ${currentUser.email}`,
-            response.status,
-            response.text
-          );
-        },
-        function (error) {
-          console.log("FAILED...", error);
-        }
-      );
-
-    setTimeout(() => {
-      // console.log('URL SUCCESS', currentUrl);
-      navigation.navigate("RestoBook");
-      alert(
-        "Te enviamos un mail con la confirmacion y datos de tu Reserva, muchas gracias !"
-      );
-    }, 5100);
-  };
-  const reservaToDB = async () => {
-    console.log("currentUser: ", currentUser);
-    console.log("reserva dentro de reserva ToDB : ", reserva);
-    const reservation = {
-      idReserva: reserva.idReserva,
-      statusReserva: reserva.statusReserva,
-      emailUser: currentUser.email,
-      idUser: currentUser.id,
-      nameResto: empresaDetail.title,
-      idResto: empresaDetail.idResto,
+    const sendEmail = () => {
+      console.log("Entro a sendEmail");
+      console.log("reserva dentro de sendEmail: ", reserva);
+      const templateParams = {
+        subject: `Tu reserva en ${empresaDetail.title} fue confirmada`,
+        name: currentUser.name,
+        restoName: empresaDetail.title,
+        email: currentUser.email,
+        idReserva: reserva.idReserva,
+      };
+      setTimeout(() => {
+        // console.log('URL SUCCESS', currentUrl);
+        navigation.navigate("RestoBook");
+        alert(
+          "Te enviamos un mail con la confirmacion y datos de tu Reserva, muchas gracias !"
+        );
+      }, 5100);
     };
-    try {
-      let userRef = doc(firebase.db, "Users", currentUser.id);
-      await updateDoc(userRef, {
-        reservations: arrayUnion(reservation),
-      });
-      console.log(
-        `Reserva en Resto: ${empresaDetail.title}, con id: ${reservation.idReserva} para el usuario ${currentUser.name}`
-      );
-    } catch (err) {
-      console.log(err);
-    }
-    try {
-      let restoRef = doc(firebase.db, "Restos", empresaDetail.idResto);
-      await updateDoc(restoRef, {
-        reservations: arrayUnion(reservation),
-      });
-      console.log(
-        `Reserva actualizada en User: ${currentUser.name}, con id: ${reservation.idReserva}`
-      );
-    } catch (err) {
-      console.log(err);
-    }
-  };
+    const reservaToDB = async () => {
+      console.log("currentUser: ", currentUser);
+      console.log("reserva dentro de reserva ToDB : ", reserva);
+      const reservation = {
+        idReserva: reserva.idReserva,
+        statusReserva: reserva.statusReserva,
+        emailUser: currentUser.email,
+        idUser: currentUser.id,
+        nameResto: empresaDetail.title,
+        idResto: empresaDetail.idResto,
+      };
+      try {
+        let userRef = doc(firebase.db, "Users", currentUser.id);
+        await updateDoc(userRef, {
+          reservations: arrayUnion(reservation),
+        });
+        console.log(
+          `Reserva en Resto: ${empresaDetail.title}, con id: ${reservation.idReserva} para el usuario ${currentUser.name}`
+        );
+      } catch (err) {
+        console.log(err);
+      }
+      try {
+        let restoRef = doc(firebase.db, "Restos", empresaDetail.idResto);
+        await updateDoc(restoRef, {
+          reservations: arrayUnion(reservation),
+        });
+        console.log(
+          `Reserva actualizada en User: ${currentUser.name}, con id: ${reservation.idReserva}`
+        );
+      } catch (err) {
+        console.log(err);
+      }
+    };
 
-  const handleBackPress = () => {
-    webViewRef.current.goBack();
-  };
-  const handleForwardPress = () => {
-    webViewRef.current.goForward();
-  };
-  useEffect(() => {
-    if (didMountRef.current) {
-      sendEmail();
-      reservaToDB();
-    }
-  }, [currentUser]);
+    const handleBackPress = () => {
+      webViewRef.current.goBack();
+    };
+    const handleForwardPress = () => {
+      webViewRef.current.goForward();
+    };
+    useEffect(() => {
+      if (didMountRef.current) {
+        sendEmail();
+        reservaToDB();
+      }
+    }, [currentUser]);
 
-  useEffect(() => {
-    if (didMountRef.current) {
-      console.log("entro con didMountRef en true");
-      getInfo();
-    } else {
-      didMountRef.current = true;
-    }
-  }, [currentUrl]);
+    useEffect(() => {
+      if (didMountRef.current) {
+        console.log("entro con didMountRef en true");
+        getInfo();
+      } else {
+        didMountRef.current = true;
+      }
+    }, [currentUrl]);
 
-  return (
-    <View style={styles.container}>
-      <WebView
-        ref={webViewRef}
-        source={{ uri: url }}
-        navigation={navigation}
-        onNavigationStateChange={(state) => {
-          const url = state.url;
-          setCurrentUrl(url);
-          const back = state.canGoBack;
-          const forward = state.canGoForward;
-          setCanGoBack(back);
-          setCanGoForward(forward);
-        }}
-      ></WebView>
-      <WebViewNavigation
-        onBackPress={() => handleBackPress()}
-        onForwardPress={() => handleForwardPress()}
-      />
-    </View>
-  );
+    return (
+      <View style={styles.container}>
+        <WebView
+          ref={webViewRef}
+          source={{ uri: url }}
+          navigation={navigation}
+          onNavigationStateChange={(state) => {
+            const url = state.url;
+            setCurrentUrl(url);
+            const back = state.canGoBack;
+            const forward = state.canGoForward;
+            setCanGoBack(back);
+            setCanGoForward(forward);
+          }}
+        ></WebView>
+        <WebViewNavigation
+          onBackPress={() => handleBackPress()}
+          onForwardPress={() => handleForwardPress()}
+        />
+      </View>
+    );
+  };
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+    },
+  });
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});

@@ -61,19 +61,7 @@ const CardFavourite = ({ resto, navigation }) => {
   };
 
   return (
-    <View
-      style={{
-        alignSelf: "center",
-        backgroundColor: "#f6efd3",
-        marginHorizontal: 10,
-        marginVertical: 10,
-        paddingHorizontal: 5,
-        paddingVertical: 5,
-        borderRadius: 25,
-        width: "95%",
-        height: "80%",
-      }}
-    >
+    <View style={globalStyles.cardsFavouriteContainer}>
       <TouchableOpacity onPress={() => handleOnPress()}>
         <View style={globalStyles.containerImgCard}>
           <Image
@@ -107,8 +95,8 @@ const CardFavourite = ({ resto, navigation }) => {
                 reverse
                 name="map-marker-alt"
                 type="font-awesome-5"
-                color="grey"
-                reverseColor="#ffd964"
+                color="#eecdaa"
+                reverseColor="#161616"
                 size={11}
               />{" "}
               {resto.address}
@@ -120,8 +108,8 @@ const CardFavourite = ({ resto, navigation }) => {
                 reverse
                 name="phone-alt"
                 type="font-awesome-5"
-                color="grey"
-                reverseColor="#ffd964"
+                color="#eecdaa"
+                reverseColor="#161616"
                 size={11}
               />{" "}
               {resto.phone}

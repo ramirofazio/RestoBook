@@ -54,22 +54,22 @@ const AwaitEmail = ({ navigation }) => {
       </Text>
       <View style={{ alignItems: "center" }}>
         <TouchableOpacity
-          style={globalStyles.touchLog}
+          style={globalStyles.btnLogin}
           onPress={() => {
             firebase.fireAuth.currentUser.sendEmailVerification();
             alert("Mail enviado, chequea en Spam!");
           }}
         >
-          <Text style={globalStyles.fontLog}>Reenviar</Text>
+          <Text style={globalStyles.texts}>Reenviar</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={globalStyles.touchFlag}
+          style={globalStyles.btnLogin}
           onPress={() => {
             signOutAndClearRedux();
             navigation.navigate("GlobalLogin");
           }}
         >
-          <Text style={globalStyles.fontLog}>Volver a Login</Text>
+          <Text style={globalStyles.texts}>Volver a Login</Text>
         </TouchableOpacity>
       </View>
     </View>

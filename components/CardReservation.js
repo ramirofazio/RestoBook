@@ -30,7 +30,15 @@ const styles = StyleSheet.create({
         borderWidth: 2, 
         borderColor: 'black', 
         borderStyle: 'dotted',
-        backgroundColor: '#e6c2bf'
+        backgroundColor: '#fdfdfd',
+        shadowColor: "#161616",
+        shadowOffset: {
+          width: 0,
+          height: 2,
+        },
+        shadowOpacity: 60,
+        shadowRadius: 4.84,
+        elevation: 5
     },
     containerText: { 
         borderRadius: 10, 

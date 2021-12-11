@@ -7,6 +7,7 @@ import {
   SET_COMMERCE,
   USER_FAVOURITES,
   GET_COMMERCE_INFO,
+  SET_USER_LOCATION
 } from "./Actions/Constants.js";
 
 let initialState = {
@@ -14,9 +15,10 @@ let initialState = {
   menus: [],
   commerce: false,
   currentId: null,
-  currentUser: null,
+  currentUser: {},
   empresaDetail: [],
   commerceInfo: null,
+  userCoordinates: {},
   favourites: [],
   categoriesResto: [
     "Pizzas/Empanadas",
@@ -74,7 +76,6 @@ const RootReducer = (state = initialState, action) => {
         ...state,
         commerce: true,
       };
-
     case USER_FAVOURITES:
       return {
         ...state,
@@ -86,6 +87,12 @@ const RootReducer = (state = initialState, action) => {
         commerceInfo: action.payload,
       };
     default:
+    case SET_USER_LOCATION:
+      return {
+        ...state,
+        userCoordinates: action.payload
+      }
+      default:
       return state;
   }
 };

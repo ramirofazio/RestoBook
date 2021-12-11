@@ -124,17 +124,17 @@ export default function NavHome({ title, navigation }) {
         style={{
           display: "flex",
           flexDirection: "row",
-          justifyContent: "space-between",
+          justifyContent: "space-around",
           width: "100%",
-          paddingHorizontal: 15,
-          marginHorizontal: -13,
+          paddingHorizontal: 5,
+          marginHorizontal: -10,
         }}
       >
         <View style={globalStyles.containerTitle}>
-          <Image
+          {/* <Image
             source={require("../assets/icon.png")}
             style={globalStyles.img}
-          />
+          /> */}
           <Text style={globalStyles.title}>{title}</Text>
         </View>
         <View style={globalStyles.btnContainer}>
@@ -147,12 +147,14 @@ export default function NavHome({ title, navigation }) {
                 : navigation.navigate("GlobalLogin")
             }
           >
-            <Text>{loggedId ? "Log out" : "Log in"}</Text>
+            <Text style={globalStyles.btnText}>
+              {loggedId ? "Log out" : "Log in"}
+            </Text>
           </TouchableOpacity>
 
           {loggedId && (
             <Btn
-              nombre={<UserOutlined name="user" color="#392c28" size={15} />}
+              nombre={<UserOutlined name="user" color="#ECCDAA" size={15} />}
               ruta="ProfileUser"
               navigation={navigation}
             />
@@ -160,7 +162,7 @@ export default function NavHome({ title, navigation }) {
 
           {commerce === 1 && loggedId && (
             <Btn
-              nombre={<RestOutlined name="rest" color="#392c28" size={15} />}
+              nombre={<RestOutlined name="rest" color="#ECCDAA" size={15} />}
               ruta="ProfileResto"
               navigation={navigation}
             />

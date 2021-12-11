@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 //
 //----------REACT-NATIVE UTILS-----------
-import { View, TextInput, TouchableOpacity, Text, Image } from "react-native";
+import { View, TextInput, TouchableOpacity, Text, Image, Pressable } from "react-native";
 import { BottomSheet, ListItem } from "react-native-elements";
 //
 //----------FIREBASE UTILS-----------
@@ -45,8 +45,6 @@ const AddMenuResto = ({ navigation }) => {
   const idResto = empresaDetail.idResto;
   const [isVisible, setIsVisible] = useState(false);
   const [category, setCategory] = useState();
-
-
   const categories = useSelector((state) => state.categoriesMenu);
 
 
@@ -69,15 +67,16 @@ const AddMenuResto = ({ navigation }) => {
 
   return (
     <View style={globalStyles.Home}>
-
       <View style={globalStyles.inputComponent}>
-        <TextInput
-          style={globalStyles.texts}
-          editable={false}
-          placeholder="Seleccionar Categoria"
-          value={category}
-          onPressIn={() => setIsVisible(true)}
-        />
+        <Pressable onPress={ () => setIsVisible(true) }>
+          <TextInput
+            style={globalStyles.texts}
+            editable={false}
+            placeholder="Seleccionar Categoria"
+            value={category}
+            onPressIn={() => setIsVisible(true)}
+          />
+        </Pressable>
         <BottomSheet
           isVisible={isVisible}
           containerStyle={{ backgroundColor: '#333a' }}
@@ -192,12 +191,12 @@ const AddMenuResto = ({ navigation }) => {
               <Text style={globalStyles.errorText}>{props.errors.price}</Text>
             ) : null}
             <TouchableOpacity
-              style={globalStyles.touchLog}
+              style={globalStyles.btnTodasComidas}
               onPress={() => {
                 handleOnPressPickImage(props.handleChange("img"));
               }}
             >
-              <Text style={{ textAlign: "center" }}>
+              <Text style={globalStyles.texts}>
                 {props.values.img && props.values.img.length > 0
                   ? "Cambiar Imagen"
                   : "Seleccionar Imagen"}
@@ -209,12 +208,12 @@ const AddMenuResto = ({ navigation }) => {
                 style={{ width: 200, height: 200, borderRadius: 15 }}
               />
             ) : null}
-            <View>
+            <View style={globalStyles.btnTodasComidas}>
               <TouchableOpacity
-                style={globalStyles.touchLog}
+                
                 onPress={() => props.handleSubmit()}
               >
-                <Text style={globalStyles.fontLog}>Agregar!</Text>
+                <Text style={globalStyles.texts}>Agregar!</Text>
               </TouchableOpacity>
             </View>
           </View>
