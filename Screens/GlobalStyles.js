@@ -23,6 +23,7 @@ const globalStyles = StyleSheet.create({
   btnTextFiltro: {
     fontSize: 14,
     color: "#161616",
+    fontWeight: "bold"
   },
   btnContainer: {
     flexDirection: "row",
@@ -64,6 +65,7 @@ const globalStyles = StyleSheet.create({
     borderWidth: 2,
     borderColor: '#eccdaa',
 
+    
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -187,7 +189,6 @@ const globalStyles = StyleSheet.create({
   //------------------------------CARDS MENU y DETAIL RESTO-----------------------------------------------------------------
   headerResto: {
     backgroundColor: "#eccdaa",
-    marginBottom: 10,
     borderColor: 'rgba(22, 22, 22, .2)',
     borderBottomWidth: 1,
     justifyContent: 'center',
@@ -254,7 +255,7 @@ const globalStyles = StyleSheet.create({
   btnTodasComidas: {
     marginVertical: 7,
     width: "95%",
-    height: "7%",
+    height: 30,
     alignSelf: "center",
     justifyContent: "center",
     borderWidth: 2,
@@ -311,10 +312,10 @@ const globalStyles = StyleSheet.create({
   },
   //----------------------------ACA TERMINA CATEGORIAS LOCALES --------------------------------------------
 
-  // ---------------------------- PROFILE USER Y RESTO ----------------------------------------------------
+  // ---------------------------- PROFILE USER Y RESTO  Y CARD FAVOURITE ----------------------------------------------------
   Perfilcontainer: {
     flex: 1,
-    backgroundColor: "#d0d0d0",
+    backgroundColor: "#f2f2f2",
   },
   imgContainer: {
     flex: 2,
@@ -347,9 +348,9 @@ const globalStyles = StyleSheet.create({
   },
   FavouriteContainer: {
     overflow: "scroll",
-    backgroundColor: "#ecceab",
-    maxHeight: "30%",
-    height: "20%",
+    backgroundColor: "#d0d0d0",
+    maxHeight: "25%",
+    height: "100%",
   },
   btnProfileResto: {
     color: 'transparent',
@@ -364,7 +365,27 @@ const globalStyles = StyleSheet.create({
     alignSelf: "center",
     justifyContent: "center"
   },
-
+  cardsFavouriteContainer: {
+    alignSelf: "center",
+    backgroundColor: "#f2f2f2",
+    marginHorizontal: 10,
+    marginVertical: 5,
+    paddingHorizontal: 5,
+    paddingVertical: 5,
+    borderRadius: 25,
+    borderWidth: 1,
+    borderColor: "rgba(22, 22, 22, .2)",
+    width: "95%",
+    height: '70%',
+    shadowColor: "#161616",
+    shadowOffset: {
+      width: 1,
+      height: 2,
+    },
+    shadowOpacity: 3,
+    shadowRadius: 5,
+    elevation: 10,
+  },
   // ------------------------------------------------------------------------------------------------------
   //------------------------------MODAL PROFILES-----------------------------------------------------------
   centeredView: {

@@ -471,7 +471,7 @@ const RegisterResto = ({ navigation }) => {
                 };
                 setStateAndRegion(newLocation);
               }}
-              pinColor="#0072B5"
+              pinColor="#eccdaa"
               identifier="userLocation"
            />
           )}
@@ -494,6 +494,7 @@ const RegisterResto = ({ navigation }) => {
           )}
           { userLocation && restoLocation && (
             <MapViewDirections
+              lineDashPattern={[0]}
               apikey={GOOGLE_API_KEY}
               strokeWidth={1.5}
               strokeColor="gray"

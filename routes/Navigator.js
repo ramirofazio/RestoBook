@@ -152,12 +152,12 @@ export default Navigator = () => {
           component={AddReviewsRestorant}
           options={{
             headerTitle: "AddReviewsRestorant",
-            title: "AddReviewsRestorant",
+            title: "Agregar Review",
             headerTitleAlign: "center",
             headerStyle: {
-              backgroundColor: "#f6efd2",
+              backgroundColor: "#161616",
             },
-            headerTintColor: "#392c28",
+            headerTintColor: '#ECCDAA',
             headerTitleStyle: {
               fontSize: 25,
             },
@@ -208,7 +208,7 @@ export default Navigator = () => {
               <Btn
                 nombre={
                   usuarioGlobal !== ""
-                    ? `Crea tu resto, ${usuarioGlobal}!`
+                    ? `Crea tu resto!`
                     : `Crea tu resto!`
                 }
                 ruta="RegisterResto"
