@@ -6,6 +6,7 @@ import {
   CURRENT_ID,
   SET_COMMERCE,
   USER_FAVOURITES,
+  SET_USER_LOCATION
 } from "./Actions/Constants.js";
 
 let initialState = {
@@ -13,8 +14,9 @@ let initialState = {
   menus: [],
   commerce: false,
   currentId: null,
-  currentUser: null,
+  currentUser: {},
   empresaDetail: [],
+  userCoordinates: {},
   favourites: [],
   categoriesResto: [
     "Pizzas/Empanadas",
@@ -73,13 +75,17 @@ const RootReducer = (state = initialState, action) => {
         ...state,
         commerce: true,
       };
-
     case USER_FAVOURITES:
       return {
         ...state,
         favourites: action.payload,
       };
-    default:
+    case SET_USER_LOCATION:
+      return {
+        ...state,
+        userCoordinates: action.payload
+      }
+      default:
       return state;
   }
 };
