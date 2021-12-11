@@ -13,15 +13,14 @@ import { BottomSheet, ListItem } from "react-native-elements";
 
 import {
   View,
-  Image,
   ScrollView,
   Text,
   StyleSheet,
-  Button,
   TouchableOpacity,
   TextInput,
   Modal,
   ActivityIndicator,
+  Picker, 
 } from "react-native";
 //import { MaterialIcons } from "@expo/vector-icons";
 
@@ -165,8 +164,18 @@ export default function Home({ navigation }) {
       setAvailableCommerces(result)
     }
   }
-
-
+  const [selectedValue, setSelectedValue] = useState("Ordenado");
+ 
+  const updateUser = (optionPicked) => {
+    if(optionPicked === "A-Z") {
+      const result = availableCommerces.sort((a, b) => (a.title > b.title) ? 1 : -1)
+      setSelectedValue(result)
+    } else   {
+      const result = availableCommerces.sort((a, b) => (a.title < b.title) ? 1 : -1)
+      setSelectedValue(result)
+    }
+  }
+  
   return (
     <View style={globalStyles.Home}>
       {/* <BottomSheet isVisible={false}>
@@ -232,6 +241,7 @@ export default function Home({ navigation }) {
           <Text style={styles.text}>Welcome to Resto Book</Text>
         )}
       </View>
+    {/*   ---------------------------------------Search ------------------------------------------------- */}
       <View style={styles.container} >
       <View style={styles.textInput}>
       <Animatable.View animation="zoomIn" duration={1200}>
@@ -250,16 +260,19 @@ export default function Home({ navigation }) {
         <Feather name="search" style={styles.iconStyle} />
       </View>
       </View>
-      
+     {/*  /----------------------------------------ORDENAMIENTO----------------------------------------/ */}
       <View style={globalStyles.btnHome}>
-
-        <TouchableOpacity
-          style={globalStyles.btnFiltrosHome}
-          onPress={() => alert("Me ordeno x Title")}
-        >
-          <Text style={globalStyles.btnTextFiltro}>Ordenamiento</Text>
-        </TouchableOpacity>
-
+      <View style={globalStyles.btnFiltrosHome}>
+      <Picker
+        selectedValue={selectedValue}
+        style={{ height: 17, width: 130 }}
+        onValueChange={updateUser} 
+      >
+        <Picker.Item label="Ordenado" value="Ordenado" />
+        <Picker.Item label="A-Z" value="A-Z" />
+        <Picker.Item label="z-a" value="z-a" />
+      </Picker>
+    </View>
         {/*----------------------------------------FILTRADO------------------------------------------- */}
         <View>
           <TextInput
