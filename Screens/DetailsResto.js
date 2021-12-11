@@ -97,6 +97,7 @@ const DetailsResto = ({ navigation }) => {
       edgePadding: { top: 50, right: 50, bottom: 50, left: 50 }
     })
   }, [])
+
   const getMenu = () => {
     const q = query(collection(firebase.db, "Restos"));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
@@ -115,6 +116,7 @@ const DetailsResto = ({ navigation }) => {
   useEffect(() => {
     getMenu()
   }, []);
+  
   const handleCategory = async (category) => {
     const docRef = doc(firebase.db, "Restos", empresaDetail.idResto);
     const docSnap = await getDoc(docRef);

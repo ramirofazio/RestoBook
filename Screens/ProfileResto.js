@@ -64,7 +64,6 @@ const auth = getAuth();
 //
 
 const ProfileResto = ({ navigation }) => {
-  const loggedId = useSelector((state) => state.currentId);
   const sectoresResto = useSelector((state) => state.sectoresResto);
 
   const [availableCommerces, setAvailableCommerces] = useState([]);
@@ -75,6 +74,9 @@ const ProfileResto = ({ navigation }) => {
   const [newUserInfo, setNewUserInfo] = useState({});
   const [sectorState, setSectorState] = useState([])
   // const [cantLugares, setCantLugares] = useState(0)
+  const [timeReservaInicio, setTimeReservaInicio] = useState(0)
+  const [timeReservaFin, setTimeReservaFin] = useState(0)
+
 
 
   useEffect(() => {
@@ -83,15 +85,12 @@ const ProfileResto = ({ navigation }) => {
       let arr = [];
       querySnapshot.forEach((doc) => {
         let obj = doc.data();
-        // console.log(obj)
-        setImage(obj.profileImage);
-        setCurrentUser(obj);
-        setNewUserInfo(obj);
-        obj.idResto = doc.id;
-
-        if (obj.id === loggedId) {
-          //console.log("coinciden!");
-          arr.push(obj);
+        if (obj.idUser === auth.currentUser.uid) {
+          //console.log(obj)
+          arr.push(obj)
+          setImage(obj.profileImage);
+          setCurrentUser(obj);
+          setNewUserInfo(obj);
         }
       });
       setAvailableCommerces(arr);
@@ -136,7 +135,7 @@ const ProfileResto = ({ navigation }) => {
         let data = await r.json();
         let str = data.secure_url.split("restohenry/")[1];
         setImage(str);
-        firebase.db.collection("Users").doc(loggedId).update({
+        firebase.db.collection("Users").doc(auth.currentUser.uid).update({
           profileImage: str,
         });
         setUploading(false);
@@ -170,6 +169,23 @@ const ProfileResto = ({ navigation }) => {
       console.log(sectorState)
     }
   }
+
+  // const handleGuardarModalAdmEmpresa = async () => {
+  //   console.log("Aprete")
+  //   const timesReserva = timeReservaInicio + "-" + timeReservaFin;
+  //   try {
+  //     let restoRef = doc(firebase.db, "Restos", idResto);
+  //     setSpinner(true);
+  //     await updateDoc(restoRef, {
+  //       menu: arrayUnion(newValues),
+  //     });
+  //     setSpinner(false);
+  //     navigation.navigate("DetailsResto");
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+
+  // }
 
   return (
     <View style={globalStyles.Perfilcontainer}>
@@ -396,16 +412,55 @@ const ProfileResto = ({ navigation }) => {
                 <Text style={globalStyles.modalText}>Administración de reserva</Text>
 
 
-                <View>
-                  <TouchableOpacity
-                    style={globalStyles.touchLog}
-                    onPress={() => showTimepicker()}
-                  >
-                    <Text>Horario para reservar</Text>
-                  </TouchableOpacity>
+                <Text style={globalStyles.texts}>Horario para reservar(24hs):</Text>
+                <View style={{ display: "flex", flexDirection: "row" }}>
+                  <TextInput
+                    style={{
+                      alignSelf: "center",
+                      marginVertical: 10,
+                      borderRadius: 10,
+                      backgroundColor: 'rgba(22, 22, 22, .2)',
+                      maxWidth: '100%',
+                      width: '30%',
+                      marginHorizontal: 5,
+                      paddingVertical: 5,
+                    }}
+                    placeholder="Hora Inicio"
+                    placeholderTextColor="#666"
+                    textAlign="center"
+                    keyboardType="numeric"
+                    value={timeReservaInicio}
+                    onChangeText={(value) => setTimeReservaInicio(value)}
+                  />
+                  <Text style={{
+                    alignSelf: "center",
+                    fontSize: 14.5,
+                    fontWeight: "bold",
+                    paddingVertical: 1,
+                  }}> A </Text>
+                  <TextInput
+                    style={{
+                      alignSelf: "center",
+                      marginVertical: 10,
+                      borderRadius: 10,
+                      backgroundColor: 'rgba(22, 22, 22, .2)',
+                      maxWidth: '100%',
+                      width: '30%',
+                      marginHorizontal: 5,
+                      paddingVertical: 5,
+
+                    }}
+                    placeholder="Hora Fin"
+                    placeholderTextColor="#666"
+                    textAlign="center"
+                    keyboardType="numeric"
+                    value={timeReservaFin}
+                    onChangeText={(value) => setTimeReservaFin(value)}
+                  />
+
                 </View>
-                <TextInput
-                />
+
+
                 <Text
                   style={globalStyles.texts}>
                   Cantidad de lugares disponibles:</Text>
@@ -465,6 +520,7 @@ const ProfileResto = ({ navigation }) => {
 
                 <TouchableOpacity
                   style={globalStyles.touchLog}
+                  onPress={() => handleGuardarModalAdmEmpresa()}
                 >
                   <Text>Guardar</Text>
                 </TouchableOpacity>
