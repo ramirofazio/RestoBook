@@ -39,6 +39,13 @@ let initialState = {
     "Postre",
     "Plato Principal",
   ],
+  sectoresResto: [
+    "Terraza",
+    "Salón Principal",
+    "Patio",
+    "Vereda",
+  ],
+
 };
 
 const RootReducer = (state = initialState, action) => {
