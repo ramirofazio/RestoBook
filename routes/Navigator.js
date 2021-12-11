@@ -16,10 +16,11 @@ import WebViewScreen from "../Screens/WebViewScreen";
 import AwaitEmail from "../Screens/AwaitEmail.js";
 import NavHome from "../Screens/NavHome.js";
 import NavDetail from "../Screens/NavDetail";
+import SelectCommerce from "../Screens/SelectCommerce";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import ProfileResto from "../Screens/ProfileResto";
 import ListReviews from "../Screens/ListReviews";
-import AddReviewsRestorant from "../Screens/AddReviewsRestorant"
+import AddReviewsRestorant from "../Screens/AddReviewsRestorant";
 //
 //
 //------------Styles y otros ---------
@@ -28,24 +29,20 @@ import { Text } from "react-native";
 import Btn from "../Screens/Helpers/Btns";
 
 const Stack = createNativeStackNavigator();
-const auth = getAuth()
+const auth = getAuth();
 
 export default Navigator = () => {
   const [usuarioGlobal, setUsuarioGlobal] = useState("");
 
-
   onAuthStateChanged(auth, (usuarioFirebase) => {
     if (usuarioFirebase?.emailVerified) {
       if (usuarioFirebase.displayName) {
-        //console.log("entre a if")
         setUsuarioGlobal(usuarioFirebase.displayName);
       } else {
-        //console.log("entre a else")
         const trimmedName = usuarioFirebase.email.split("@")[0];
         setUsuarioGlobal(trimmedName);
       }
     } else {
-      //console.log("entre a else else")
       setUsuarioGlobal("");
     }
   });
@@ -65,9 +62,7 @@ export default Navigator = () => {
             },
           })}
         />
-        <Stack.Screen
-          name="RegisterUser"
-          component={AddUserScreen} />
+        <Stack.Screen name="RegisterUser" component={AddUserScreen} />
         <Stack.Screen
           name="RegisterResto"
           component={RegisterResto}
@@ -78,7 +73,7 @@ export default Navigator = () => {
             headerStyle: {
               backgroundColor: "#161616",
             },
-            headerTintColor: '#ECCDAA',
+            headerTintColor: "#ECCDAA",
             headerTitleStyle: {
               fontSize: 25,
             },
@@ -88,13 +83,13 @@ export default Navigator = () => {
           name="AddMenuResto"
           component={AddMenuResto}
           options={{
-            title: 'Agregar Menu',
+            title: "Agregar Menu",
             headerTitle: "Agregar Menu",
             headerTitleAlign: "center",
             headerStyle: {
               backgroundColor: "#161616",
             },
-            headerTintColor: '#ECCDAA',
+            headerTintColor: "#ECCDAA",
             headerTitleStyle: {
               fontSize: 25,
             },
@@ -109,7 +104,7 @@ export default Navigator = () => {
             headerStyle: {
               backgroundColor: "#161616",
             },
-            headerTintColor: '#ECCDAA'
+            headerTintColor: "#ECCDAA",
           })}
         />
 
@@ -146,8 +141,8 @@ export default Navigator = () => {
               fontSize: 25,
             },
           }}
-          />
-           <Stack.Screen
+        />
+        <Stack.Screen
           name="AddReviewsRestorant"
           component={AddReviewsRestorant}
           options={{
@@ -157,12 +152,12 @@ export default Navigator = () => {
             headerStyle: {
               backgroundColor: "#161616",
             },
-            headerTintColor: '#ECCDAA',
+            headerTintColor: "#ECCDAA",
             headerTitleStyle: {
               fontSize: 25,
             },
           }}
-          />
+        />
         <Stack.Screen
           name="GlobalLogin"
           component={GlobalLogin}
@@ -173,7 +168,7 @@ export default Navigator = () => {
             headerStyle: {
               backgroundColor: "#161616",
             },
-            headerTintColor: '#ECCDAA',
+            headerTintColor: "#ECCDAA",
             headerTitleStyle: {
               fontSize: 25,
             },
@@ -190,7 +185,7 @@ export default Navigator = () => {
             headerStyle: {
               backgroundColor: "#161616",
             },
-            headerTintColor: '#ECCDAA',
+            headerTintColor: "#ECCDAA",
             headerTitleStyle: {
               fontSize: 25,
             },
@@ -199,17 +194,14 @@ export default Navigator = () => {
         <Stack.Screen
           name="ProfileUser"
           component={ProfileUser}
-
           options={({ navigation }) => ({
             headerTitle: "Perfil",
-            title: 'Perfil',
+            title: "Perfil",
             headerTitleAlign: "left",
             headerRight: () => (
               <Btn
                 nombre={
-                  usuarioGlobal !== ""
-                    ? `Crea tu resto!`
-                    : `Crea tu resto!`
+                  usuarioGlobal !== "" ? `Crea tu resto!` : `Crea tu resto!`
                 }
                 ruta="RegisterResto"
                 navigation={navigation}
@@ -218,28 +210,42 @@ export default Navigator = () => {
             headerStyle: {
               backgroundColor: "#161616",
             },
-            headerTintColor: '#ECCDAA',
+            headerTintColor: "#ECCDAA",
             headerTitleStyle: {
               fontSize: 25,
             },
-
-
           })}
-
         />
         <Stack.Screen
           name="ProfileResto"
           component={ProfileResto}
           options={{
-
             headerTitle: " Mi Empresa",
-            title: 'Profile',
+            title: "Profile",
+
+            headerTitleAlign: "center",
+            headerStyle: {
+              backgroundColor: "#f6efd2",
+            },
+            headerTintColor: "#392c28",
+            headerTitleStyle: {
+              fontSize: 25,
+            },
+          }}
+        />
+
+        <Stack.Screen
+          name="SelectCommerce"
+          component={SelectCommerce}
+          options={{
+            headerTitle: "Selecciona tu local",
+            title: "Tu local",
 
             headerTitleAlign: "center",
             headerStyle: {
               backgroundColor: "#161616",
             },
-            headerTintColor: '#ECCDAA',
+            headerTintColor: "#ECCDAA",
             headerTitleStyle: {
               fontSize: 25,
             },
