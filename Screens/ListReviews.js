@@ -5,7 +5,6 @@ import { onAuthStateChanged, getAuth } from "firebase/auth";
 import { Button } from 'react-native-elements';
 import CardReviews from "../components/CardReviews";
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import empresaDetail from '../Redux/Actions/empresaDetail';
 const auth=getAuth();
 
 export default function ListReviews({navigation, reviews}){
@@ -54,20 +53,22 @@ export default function ListReviews({navigation, reviews}){
         </View>
                 )
 }
+
 const styles = StyleSheet.create({
     container:{
-        backgroundColor:'black',
-        borderRadius:10
     },
     btnAddReview:{
     },
     btnTitleAddReview:{
     },
     mustLoginText:{
-        margin:20,
-        backgroundColor:'white',
     },
     loginText:{
 
-    }
+    },
+    showMenu: {
+        height: 250,
+        padding: 5,
+        borderWidth: 0,
+      },
 }) 

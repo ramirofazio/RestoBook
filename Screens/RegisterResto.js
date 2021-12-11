@@ -64,7 +64,7 @@ const registerRestoSchema = yup.object({
   cuit: yup.number().required(),
 });
 
-const RegisterResto = ({ navigation }) => {
+const RegisterResto = ({ navigation, reseña }) => {
   const initialRegion = {
     latitude: -34.61315,
     longitude: -58.37723,
@@ -72,6 +72,7 @@ const RegisterResto = ({ navigation }) => {
     longitudeDelta: 0.0421,
   };
   const dispatch = useDispatch();
+  const empresaDetail = useSelector((state) => state.empresaDetail)
   const [isVisible, setIsVisible] = useState(false);
   const [region, setRegion] = useState(initialRegion);
   const [state, setState] = useState({
@@ -122,6 +123,8 @@ const RegisterResto = ({ navigation }) => {
       lng: lng,
     });
   };
+
+
 
   return (
     <View style={globalStyles.Home}>
@@ -224,13 +227,16 @@ const RegisterResto = ({ navigation }) => {
                   category: state.category.toLowerCase(),
                   // img: values.img,
                   menu: [],
+                  quantityVoting:0,
+                  ratingTotal:0,
+                  ratingResult:0,
                   reservations: [],
                   location: {
                     latitude: state.lat,
                     longitude: state.lng,
                     address: state.address.toLowerCase()
                   },
-                  reviews:[]
+                  reviews:[],
                 })
                 .then(
                   firebase.db.collection("Users").doc(id).update({
