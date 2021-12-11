@@ -12,15 +12,14 @@ import UserFavourites from "../Redux/Actions/userFavourites.js";
 import { BottomSheet, ListItem } from "react-native-elements";
 import {
   View,
-  Image,
   ScrollView,
   Text,
   StyleSheet,
-  Button,
   TouchableOpacity,
   TextInput,
   Modal,
   ActivityIndicator,
+  Picker, 
   Pressable,
 } from "react-native";
 
@@ -195,7 +194,21 @@ export default function Home({ navigation }) {
     } else {
       setAvailableCommerces(result);
     }
-  };
+  }
+  const [selectedValue, setSelectedValue] = useState("");
+  const [selectedValu, setSelectedValu] = useState("");
+  
+  const updateUser = (itemValue) => {
+    if(itemValue === "A-Z") {
+      const result = availableCommerces.sort((a, b) => (a.title > b.title) ? 1 : -1)
+      setSelectedValue(result)
+    }else if(itemValue === "Z-A") {
+     const resulta = availableCommerces.sort((a, b) => (a.title < b.title) ? 1 : -1)
+     setSelectedValu(resulta)
+    }else if(itemValue === "Or") {
+    alert ("Seleccione un ordenamiento ")
+    }
+  }
 
   return (
     <View style={globalStyles.Home}>
@@ -262,33 +275,39 @@ export default function Home({ navigation }) {
           <Text style={styles.text}>Welcome to Resto Book</Text>
         )}
       </View>
-      <View style={styles.container}>
-        <View style={styles.textInput}>
-          <Animatable.View animation="zoomIn" duration={1200}>
-            <TextInput
-              style={styles.texto}
-              onChangeText={(event) => {
-                setSearchTerm(event);
-              }}
-              placeholder="Search..."
-              placeholderTextColor="black"
-              underlineColorAndroid="transparent"
-            />
-          </Animatable.View>
-        </View>
-        <View style={styles.touchableOpacity}>
-          <Feather name="search" style={styles.iconStyle} />
-        </View>
+    {/*   ---------------------------------------Search ------------------------------------------------- */}
+      <View style={styles.container} >
+      <View style={styles.textInput}>
+      <Animatable.View animation="zoomIn" duration={1200}>
+        <TextInput
+        style={styles.texto}
+          onChangeText={(event) => {
+            setSearchTerm(event);
+          }}
+          placeholder="Search..."
+          placeholderTextColor="black"
+          underlineColorAndroid="transparent"
+        />
+       </Animatable.View>
       </View>
-
+      <View style={styles.touchableOpacity}>
+        <Feather name="search" style={styles.iconStyle} />
+      </View>
+      </View>
+     {/*  /----------------------------------------ORDENAMIENTO----------------------------------------/ */}
       <View style={globalStyles.btnHome}>
-        <TouchableOpacity
-          style={globalStyles.btnFiltrosHome}
-          onPress={() => alert("Me ordeno x Title")}
-        >
-          <Text style={globalStyles.btnTextFiltro}>Ordenamiento</Text>
-        </TouchableOpacity>
-
+      <View style={globalStyles.btnFiltrosHome}>
+      <Picker
+        selectedValue={selectedValu}
+        selectedValue={selectedValue}
+        style={{ height: 17, width: 130 }}
+        onValueChange={updateUser}
+      >
+        <Picker.Item label="Ordenado" value="Or" />
+        <Picker.Item label="A-Z" value="A-Z" />
+        <Picker.Item label="Z-A" value="Z-A" />
+      </Picker>
+    </View>
         {/*----------------------------------------FILTRADO------------------------------------------- */}
         <View>
           <Pressable onPress={() => isVisibleFiltros(true)}>
