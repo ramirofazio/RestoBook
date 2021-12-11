@@ -38,7 +38,7 @@ import { doc, onSnapshot, collection, query, getDoc } from "firebase/firestore";
 /* import SearchBar from "./SearchBar.js"; */
 import CardHome from "../components/CardHome.js";
 import Btn from "./Helpers/Btns.js";
-//
+/* import Search from "./Search.js"; */
 //
 //-------STYLES-------
 import globalStyles from "./GlobalStyles.js";
@@ -51,7 +51,9 @@ import setUserLocation from "../Redux/Actions/setUserLocation.js";
 
 //
 //---------------------------------------------------------------------------------------//
-//
+import * as Animatable from "react-native-animatable";
+import { Feather } from "@expo/vector-icons";
+
 export default function Home({ navigation }) {
   //------LOGIN JOSE------------
   const [visible, isVisible] = useState(false);
@@ -249,9 +251,11 @@ export default function Home({ navigation }) {
           <Text style={styles.text}>Welcome to Resto Book</Text>
         )}
       </View>
-      <View>
+      <View style={styles.container} >
+      <View style={styles.textInput}>
+      <Animatable.View animation="zoomIn" duration={1200}>
         <TextInput
-          style={styles.search}
+        style={styles.texto}
           onChangeText={(event) => {
             setSearchTerm(event);
           }}
@@ -259,8 +263,13 @@ export default function Home({ navigation }) {
           placeholderTextColor="black"
           underlineColorAndroid="transparent"
         />
+       </Animatable.View>
       </View>
-
+      <View style={styles.touchableOpacity}>
+        <Feather name="search" style={styles.iconStyle} />
+      </View>
+      </View>
+      
       <View style={globalStyles.btnHome}>
 
         <TouchableOpacity
@@ -373,17 +382,6 @@ export default function Home({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  search: {
-    height: 30,
-    borderWidth: 1,
-    borderColor: '#000',
-    marginBottom: 10,
-    marginHorizontal: 16,
-    borderRadius: 40,
-    paddingHorizontal: 10,
-
-
-  },
   textContainer: {
     alignSelf: "center",
     justifyContent: "center",
@@ -457,4 +455,58 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  container: {
+    marginVertical:10,
+    backgroundColor: "#F0EEEE",
+    height: 35,
+    flexDirection: "row",
+    width: '90%',
+    borderRadius: 40,
+    alignSelf: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 4.84,
+    elevation: 7
+  },
+  textInput: {
+    fontFamily: "Gotham-Book",
+    // color: "#ECCDAA",
+    fontSize: 40,
+    flex: 1,
+    paddingLeft: 3,
+    width:'70%',
+  },
+  texto:{
+    paddingHorizontal:15,
+    marginVertical:5,
+    textAlign: 'left',
+    justifyContent: "center"
+  },
+  iconStyle: {
+    fontSize: 20,
+    width:20,
+    height:20,
+    color: '#ECCDAA'
+  },
+  touchableOpacity: {
+    justifyContent:'center',
+    alignItems:'center',
+    width:'15%',
+    height: '100%',
+    borderRadius: 40, 
+    backgroundColor: '#161616',
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 4.84,
+    elevation: 5
+  },
+
 });

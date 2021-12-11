@@ -112,7 +112,6 @@ export default function NavHome({ title, navigation }) {
               navigation={navigation}
             />
           )}
-
           {commerce && loggedId && (
             <Btn
               nombre={<RestOutlined name="rest" color="#ECCDAA" size={15} />}
@@ -121,27 +120,8 @@ export default function NavHome({ title, navigation }) {
             />
           )}
         </View>
-      </View>
-        <TouchableOpacity
-            style={styles.btnt}
-           onPress={() => alert ("hola")}
-           >
-            <Text>Filter</Text>
-          </TouchableOpacity>
-          
+      </View>   
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  btnt: {
-   marginLeft: "250%",
-    backgroundColor: '#ffd964',
-    paddingVertical: 8,
-    paddingHorizontal: 9,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: '#b39138',
-  },
-
-});
