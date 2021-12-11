@@ -36,7 +36,7 @@ const CardMenu = ({ resto, navigation }) => {
   const [userFavourites, setUserFavourites] = useState();
   const CurrentId = useSelector((state) => state.currentId);
   const [hearthColor, setHearthColor] = useState("grey");
-
+  const [resultRating, setResultRating] = useState(0);
   const dispatch = useDispatch();
   const categories = useSelector((state) => state.categoriesResto);
   useEffect(() => {}, []);
@@ -55,9 +55,23 @@ const CardMenu = ({ resto, navigation }) => {
     }
   };
 
+  const getRating = () => {
+    let totalRating = 0;
+    if (resto.reviews.length) {
+      for (let i = 0; i < resto.reviews.length; i++) {
+        totalRating += resto.reviews[i].rating;
+      }
+      let resultRatingg = totalRating / resto.reviews.length;
+      setResultRating(resultRatingg);
+    } else {
+      setResultRating(totalRating);
+    }
+  };
+
   useEffect(() => {
     if (isFocused) {
       getFavs();
+      getRating();
     }
   }, [isFocused]);
 
@@ -145,13 +159,19 @@ const CardMenu = ({ resto, navigation }) => {
             <AirbnbRating
               showRating={false}
               size={20}
-              // reviews={["Bad", "OK", "Good", "Very Good","Amazing"]}
-              // reviewSize={17}
-              // starContainerStyle={{marginTop:-15}}
-              isDisabled={true} // este es para que los users no puedan cambiar
+              isDisabled={true}
               selectedColor="#f1c40f"
               unSelectedColor="lightgrey"
+              defaultRating={resultRating}
             />
+            {/* <Rating
+              // count={10}
+              imageSize={20}
+              readonly
+              startingValue={resultRating}
+              // startingValue={0}
+            /> */}
+
             {/* <Rating
           showRating
             type= 'custom'

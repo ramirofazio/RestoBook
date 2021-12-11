@@ -114,7 +114,7 @@ const DetailsResto = ({ navigation }) => {
   //   const q = query(collection(firebase.db, "Restos"));
   //   const unsubscribe = onSnapshot(q, (querySnapshot) => {
   //     let menu = [];
-  //     console.log("SNAP DETAILSRESTO 115");
+  // console.log("SNAP DETAILSRESTO 115");
   //     querySnapshot.forEach((doc) => {
   //       if (doc.id === empresaDetail.idResto) {
   //         let obj = doc.data();
@@ -134,6 +134,7 @@ const DetailsResto = ({ navigation }) => {
     const unsubscribe = onSnapshot(q, (doc) => {
       let obj = doc.data();
       let categories = obj.menu.map((element) => element.category);
+
       setMenuCategory(categories);
       setMenuArr(obj.menu);
       setReviews(obj.reviews);
