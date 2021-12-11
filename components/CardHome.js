@@ -86,7 +86,7 @@ const CardMenu = ({ resto, navigation }) => {
 
   useEffect(() => {
     if (CurrentId) {
-      let idFavourites = userFavourites?.map((element) => element.id);
+      let idFavourites = userFavourites?.map((element) => element.idResto);
       if (idFavourites?.includes(resto.idResto)) {
         setHearthColor("red");
       } else {
@@ -95,7 +95,7 @@ const CardMenu = ({ resto, navigation }) => {
     } else {
       setHearthColor("grey");
     }
-  }, [userFavourites]);
+  }, [userFavourites, CurrentId]);
 
   const handleOnPress = () => {
     dispatch(empresaDetail(resto));

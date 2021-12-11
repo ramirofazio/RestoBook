@@ -110,7 +110,8 @@ const CardFavourite = ({
                 reverseColor="#161616"
                 size={11}
               />{" "}
-              {resto.address}
+              {resto.location.address.split(",")[0]},
+              {resto.location.address.split(",")[1]}
             </Text>
           </View>
           <View>
