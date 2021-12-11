@@ -89,9 +89,9 @@ const DetailsResto = ({ navigation }) => {
       url: url.data
     })
   }
-  
+  console.log(Object.entries(userLocation))
   useEffect(() => {
-    if (!userLocation || !location) return 
+    if ( Object.entries(userLocation).length === 0 || !location ) return 
     //Zoom & fit to markers
     mapRef.current.fitToSuppliedMarkers(['userLocation', 'restoLocation'], {
       edgePadding: { top: 50, right: 50, bottom: 50, left: 50 }
@@ -251,13 +251,15 @@ const DetailsResto = ({ navigation }) => {
               pinColor='#0072B5'
               identifier="restoLocation"
             />
-            <Marker
-              title="Your location"
-              coordinate={userLocation}
-              pinColor="#0072B5"
-              identifier="userLocation"
-           />
-           { userLocation && location && (
+            { Object.entries(userLocation).length > 0 && (
+              <Marker
+                title="Your location"
+                coordinate={userLocation}
+                pinColor="#0072B5"
+                identifier="userLocation"
+              />
+            )}
+           { Object.entries(userLocation).length > 0 && location && (
             <MapViewDirections
               apikey={GOOGLE_API_KEY}
               strokeWidth={1.5}
