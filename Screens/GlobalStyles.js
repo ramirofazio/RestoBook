@@ -1,13 +1,11 @@
 import React from "react";
 import { StyleSheet } from "react-native";
 
-
-
 const globalStyles = StyleSheet.create({
-  //------------------------------------------HOME---------------------------------------------  
+  //------------------------------------------HOME---------------------------------------------
   Home: {
     flex: 1,
-    backgroundColor: '#fdfdfd',
+    backgroundColor: "#fdfdfd",
   },
   btnHome: {
     marginVertical: 5,
@@ -17,32 +15,32 @@ const globalStyles = StyleSheet.create({
   btnText: {
     fontSize: 14,
     color: "#eccdaa",
-    fontWeight: 'bold',
-    textAlign: "center"
+    fontWeight: "bold",
+    textAlign: "center",
   },
   btnTextFiltro: {
     fontSize: 14,
     color: "#161616",
+    fontWeight: "bold",
   },
   btnContainer: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-around",
-    width: '40%',
+    width: "40%",
     // backgroundColor: 'red'
-
   },
   Container: {
     alignItems: "center",
   },
   btn: {
-    backgroundColor: '#161616',
+    backgroundColor: "#161616",
     paddingVertical: 8,
     paddingHorizontal: 9,
     borderRadius: 15,
     alignItems: "center",
     borderWidth: 2,
-    borderColor: '#eccdaa',
+    borderColor: "#eccdaa",
 
     shadowColor: "#fdfdfd",
     shadowOffset: {
@@ -51,18 +49,18 @@ const globalStyles = StyleSheet.create({
     },
     shadowOpacity: 60,
     shadowRadius: 4.84,
-    elevation: 10
+    elevation: 10,
   },
   btnFiltrosHome: {
-    backgroundColor: '#fdfdfd',
+    backgroundColor: "#fdfdfd",
     paddingVertical: 5,
     paddingHorizontal: 9,
     marginVertical: 10,
     borderRadius: 15,
     alignItems: "center",
-    justifyContent: 'center',
+    justifyContent: "center",
     borderWidth: 2,
-    borderColor: '#eccdaa',
+    borderColor: "#eccdaa",
 
     shadowColor: "#000",
     shadowOffset: {
@@ -77,7 +75,7 @@ const globalStyles = StyleSheet.create({
   img: {
     height: 50,
     width: 640,
-    resizeMode: 'contain' // esta linea es para que se adapte al tam;o de la imagen
+    resizeMode: "contain", // esta linea es para que se adapte al tam;o de la imagen
   },
 
   // --------------------------------------------CARD HOME --------------------------------------------
@@ -122,75 +120,69 @@ const globalStyles = StyleSheet.create({
   },
   containerImgCard: {
     width: "31.6%",
-    maxHeight: '5%',
+    maxHeight: "5%",
     padding: 5,
     alignSelf: "flex-start",
     alignItems: "center",
   },
   cardsHomeimg: {
-    marginTop: 5,
+    marginTop: 20,
+    resizeMode: "contain",
     // backgroundColor: "red",
-    width: 110,
-    height: 120,
+    width: 80,
+    height: 80,
     borderRadius: 25,
-    justifyContent: "center"
   },
   cardsMenuimg: {
     width: 80,
     height: 80,
     borderRadius: 25,
-
   },
   cardsDescriptionContainer: {
     // backgroundColor: 'green',
-    maxHeight: '120%',
-    height: '90%',
-    width: '35%',
+    maxHeight: "120%",
+    height: "90%",
+    width: "35%",
     alignSelf: "center",
-    justifyContent: "space-around"
+    justifyContent: "space-around",
   },
   cardsDescriptionText: {
     // backgroundColor: 'lightblue',
-    textAlign: 'center',
-    width: '100%',
+    textAlign: "center",
+    width: "100%",
     fontSize: 13,
     fontWeight: "bold",
-
   },
   cardsHomeTitle: {
     // backgroundColor: "#5555",
     fontSize: 25,
     fontWeight: "bold",
     textAlign: "center",
-    width: '100%',
-    color: '#161616',
-
+    width: "100%",
+    color: "#161616",
   },
   btnContainerCard: {
     // backgroundColor: 'violet',
-    maxHeight: '120%',
+    maxHeight: "120%",
     height: 120,
-    width: '31.6%',
+    width: "31.6%",
     alignSelf: "flex-end",
     alignItems: "center",
     marginTop: -120,
     justifyContent: "space-around",
-
   },
   wspImage: {
     width: 40,
     height: 40,
     borderRadius: 25,
-
   },
   /// --------------------------------------------ACA TERMINAN  LOS ESTILOS DE LAS CARDS HOM -------
   //------------------------------CARDS MENU y DETAIL RESTO-----------------------------------------------------------------
   headerResto: {
     backgroundColor: "#eccdaa",
-    marginBottom: 10,
-    borderColor: 'rgba(22, 22, 22, .2)',
+    borderColor: "rgba(22, 22, 22, .2)",
     borderBottomWidth: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
     shadowColor: "#161616",
     shadowOffset: {
       width: 0,
@@ -210,37 +202,35 @@ const globalStyles = StyleSheet.create({
     paddingVertical: 5,
     borderRadius: 25,
     width: "100%",
-    height: 150
+    height: 150,
   },
   cardsMenuDescriptionContainer: {
-    maxHeight: '120%',
-    height: '100%',
-    width: '75%',
-    alignSelf: 'flex-start',
-    justifyContent: 'space-around',
-    paddingHorizontal: 10
+    maxHeight: "120%",
+    height: "100%",
+    width: "75%",
+    alignSelf: "flex-start",
+    justifyContent: "space-around",
+    paddingHorizontal: 10,
   },
   cardsMenuTitle: {
     fontSize: 25,
     fontWeight: "bold",
     textAlign: "left",
-    width: '100%',
-
+    width: "100%",
   },
   cardsMenuDescriptionText: {
-    textAlign: 'left',
+    textAlign: "left",
     fontSize: 15,
-    color: 'grey',
-    marginTop: -15
-
+    color: "grey",
+    marginTop: -15,
   },
   containerImgCardMenu: {
     width: "25%",
-    maxHeight: '5%',
+    maxHeight: "5%",
     alignSelf: "flex-end",
     alignItems: "flex-end",
-    marginTop: '-37%',
-    marginRight: '3.5%'
+    marginTop: "-37%",
+    marginRight: "3.5%",
   },
   cardsMenuimg: {
     // marginTop: 5,
@@ -248,13 +238,13 @@ const globalStyles = StyleSheet.create({
     width: 110,
     height: 120,
     borderRadius: 25,
-    justifyContent: "center"
+    justifyContent: "center",
   },
 
   btnTodasComidas: {
     marginVertical: 7,
     width: "95%",
-    height: "7%",
+    height: 30,
     alignSelf: "center",
     justifyContent: "center",
     borderWidth: 2,
@@ -275,7 +265,7 @@ const globalStyles = StyleSheet.create({
     backgroundColor: "#4E4E4E",
     borderRadius: 15,
     borderWidth: 1,
-    borderColor: 'rgba(22, 22, 22, .2)',
+    borderColor: "rgba(22, 22, 22, .2)",
     paddingVertical: 2,
     paddingHorizontal: 5,
     shadowColor: "#161616",
@@ -305,16 +295,16 @@ const globalStyles = StyleSheet.create({
     fontSize: 13,
     padding: 1,
     textAlign: "center",
-    color: '#ECCEAB',
+    color: "#ECCEAB",
 
     fontWeight: "bold",
   },
   //----------------------------ACA TERMINA CATEGORIAS LOCALES --------------------------------------------
 
-  // ---------------------------- PROFILE USER Y RESTO ----------------------------------------------------
+  // ---------------------------- PROFILE USER Y RESTO  Y CARD FAVOURITE ----------------------------------------------------
   Perfilcontainer: {
     flex: 1,
-    backgroundColor: "#d0d0d0",
+    backgroundColor: "#f2f2f2",
   },
   imgContainer: {
     flex: 2,
@@ -347,12 +337,12 @@ const globalStyles = StyleSheet.create({
   },
   FavouriteContainer: {
     overflow: "scroll",
-    backgroundColor: "#ecceab",
-    maxHeight: "30%",
-    height: "20%",
+    backgroundColor: "#d0d0d0",
+    maxHeight: "25%",
+    height: "100%",
   },
   btnProfileResto: {
-    color: 'transparent',
+    color: "transparent",
     borderWidth: 3,
     borderColor: "black",
     borderRadius: 15,
@@ -360,11 +350,31 @@ const globalStyles = StyleSheet.create({
     paddingHorizontal: 3,
     marginVertical: 4,
     height: "9%",
-    width: '90%',
+    width: "90%",
     alignSelf: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
-
+  cardsFavouriteContainer: {
+    alignSelf: "center",
+    backgroundColor: "#f2f2f2",
+    marginHorizontal: 10,
+    marginVertical: 5,
+    paddingHorizontal: 5,
+    paddingVertical: 5,
+    borderRadius: 25,
+    borderWidth: 1,
+    borderColor: "rgba(22, 22, 22, .2)",
+    width: "95%",
+    height: "70%",
+    shadowColor: "#161616",
+    shadowOffset: {
+      width: 1,
+      height: 2,
+    },
+    shadowOpacity: 3,
+    shadowRadius: 5,
+    elevation: 10,
+  },
   // ------------------------------------------------------------------------------------------------------
   //------------------------------MODAL PROFILES-----------------------------------------------------------
   centeredView: {
@@ -382,7 +392,7 @@ const globalStyles = StyleSheet.create({
     width: "90%",
     height: "90%",
     alignItems: "center",
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
     shadowColor: "#000",
     shadowOffset: {
       width: 30,
@@ -403,8 +413,6 @@ const globalStyles = StyleSheet.create({
     textAlign: "center",
     fontSize: 30,
     fontWeight: "bold",
-
-
   },
   //------------------------------------------------------------------------------------------------------
   //-------------------------------MODAL LOGIN Y DETAIL RESTO---------------------------------------------
@@ -412,7 +420,7 @@ const globalStyles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: '10%',
+    marginTop: "10%",
     //backgroundColor: "blur",
   },
   modalView: {
@@ -431,7 +439,7 @@ const globalStyles = StyleSheet.create({
       height: 12,
     },
     shadowOpacity: 0.58,
-    shadowRadius: 16.00,
+    shadowRadius: 16.0,
 
     elevation: 100,
   },
@@ -441,18 +449,15 @@ const globalStyles = StyleSheet.create({
     fontWeight: "bold",
     paddingVertical: 10,
     paddingHorizontal: 5,
-    color: '#ECCDAA',
-
+    color: "#ECCDAA",
   },
   componentTitle: {
     alignSelf: "center",
     marginTop: 10,
     fontSize: 30,
-
   },
   containerTitle: {
     flexDirection: "row",
-
   },
   navHome: {
     flexDirection: "row",
@@ -462,7 +467,7 @@ const globalStyles = StyleSheet.create({
   touchLog: {
     marginTop: 10,
     maxWidth: "100%",
-    width: '50%',
+    width: "50%",
     alignItems: "center",
     borderRadius: 10,
     backgroundColor: "#bd967e",
@@ -471,7 +476,7 @@ const globalStyles = StyleSheet.create({
   touchFlag: {
     marginTop: 10,
     maxWidth: "100%",
-    width: '50%',
+    width: "50%",
     alignItems: "center",
     borderRadius: 10,
     backgroundColor: "#ffdfcb",
@@ -483,16 +488,14 @@ const globalStyles = StyleSheet.create({
     color: "#392c28",
     fontWeight: "bold",
     textAlign: "center",
-
-
   },
   btnContainerLogin: {
     flex: 6,
     alignItems: "center",
-    maxWidth: '80%',
-    width: '100%',
-    maxHeight: '70%',
-    height: '100%'
+    maxWidth: "80%",
+    width: "100%",
+    maxHeight: "70%",
+    height: "100%",
   },
   btnLogin: {
     marginVertical: 7,
@@ -518,8 +521,6 @@ const globalStyles = StyleSheet.create({
     textAlign: "center",
     fontSize: 20,
     width: "100%",
-
-
   },
   texts: {
     color: "#000",
@@ -541,7 +542,6 @@ const globalStyles = StyleSheet.create({
     textAlign: "center",
     width: "100%",
     fontSize: 12,
-
   },
   textContainer: {
     flex: 1,
@@ -558,15 +558,15 @@ const globalStyles = StyleSheet.create({
     alignSelf: "center",
     marginVertical: 10,
     borderRadius: 10,
-    backgroundColor: 'rgba(22, 22, 22, .2)',
-    maxWidth: '100%',
-    width: '60%',
+    backgroundColor: "rgba(22, 22, 22, .2)",
+    maxWidth: "100%",
+    width: "60%",
   },
   modalInputContainer: {
     flex: 2,
     alignItems: "center",
-    maxWidth: '100%',
-    width: '80%',
+    maxWidth: "100%",
+    width: "80%",
   },
 });
 
