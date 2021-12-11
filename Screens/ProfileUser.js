@@ -87,19 +87,19 @@ const ProfileUser = ({ navigation }) => {
   const [image, setImage] = useState("");
   const [myFavourites, setMyFavourites] = useState();
 
-  useEffect(() => {
-    const getFavs = async () => {
-      const docRef = doc(firebase.db, "Users", loggedId);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists) {
-        let obj = docSnap.data().favourites;
-        setMyFavourites(obj);
-      }
-      console.log("DOC PROFILE 98");
-    };
+  // useEffect(() => {
+  //   const getFavs = async () => {
+  //     const docRef = doc(firebase.db, "Users", loggedId);
+  //     const docSnap = await getDoc(docRef);
+  //     if (docSnap.exists) {
+  //       let obj = docSnap.data().favourites;
+  //       setMyFavourites(obj);
+  //     }
+  //     console.log("DOC PROFILE 98");
+  //   };
 
-    getFavs();
-  }, []);
+  //   getFavs();
+  // }, []);
 
   useEffect(() => {
     const getInfo = async () => {
@@ -110,6 +110,7 @@ const ProfileUser = ({ navigation }) => {
         setImage(obj.profileImage);
         setCurrentUser(obj);
         setNewUserInfo(obj);
+        setMyFavourites(obj.favourites);
       } else {
         alert("NO HAY INFO");
       }
@@ -350,7 +351,7 @@ const ProfileUser = ({ navigation }) => {
                 return (
                   <View
                     style={{ width: windowWidth, height: 250 }}
-                    key={resto.id}
+                    key={resto.idResto}
                   >
                     <CardFavourite
                       key={resto.Id}

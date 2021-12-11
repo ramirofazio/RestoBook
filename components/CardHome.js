@@ -62,10 +62,10 @@ const CardMenu = ({ resto, navigation }) => {
   }, [isFocused]);
 
   let infoFavourite = {
-    id: resto.idResto,
+    idResto: resto.idResto,
     title: resto.title,
     phone: resto.phone,
-    address: resto.location.address,
+    location: resto.location,
     img: resto.restoImage,
   };
   const celphone = +541168020511;
