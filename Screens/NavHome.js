@@ -112,7 +112,6 @@ export default function NavHome({ title, navigation }) {
               navigation={navigation}
             />
           )}
-
           {commerce && loggedId && (
             <Btn
               nombre={<RestOutlined name="rest" color="#ECCDAA" size={15} />}
@@ -121,7 +120,7 @@ export default function NavHome({ title, navigation }) {
             />
           )}
         </View>
-      </View>      
+      </View>   
     </View>
   );
 }
