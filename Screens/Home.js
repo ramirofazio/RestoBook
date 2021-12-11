@@ -183,18 +183,21 @@ export default function Home({ navigation }) {
       setAvailableCommerces(result)
     }
   }
-  const [selectedValue, setSelectedValue] = useState("Ordenado");
- 
-  const updateUser = (optionPicked) => {
-    if(optionPicked === "A-Z") {
+  const [selectedValue, setSelectedValue] = useState("");
+  const [selectedValu, setSelectedValu] = useState("");
+  
+  const updateUser = (itemValue) => {
+    if(itemValue === "A-Z") {
       const result = availableCommerces.sort((a, b) => (a.title > b.title) ? 1 : -1)
       setSelectedValue(result)
-    } else   {
-      const result = availableCommerces.sort((a, b) => (a.title < b.title) ? 1 : -1)
-      setSelectedValue(result)
+    }else if(itemValue === "Z-A") {
+     const resulta = availableCommerces.sort((a, b) => (a.title < b.title) ? 1 : -1)
+     setSelectedValu(resulta)
+    }else if(itemValue === "Or") {
+    alert ("Seleccione un ordenamiento ")
     }
   }
-  
+
   return (
     <View style={globalStyles.Home}>
       {/* <BottomSheet isVisible={false}>
@@ -283,13 +286,14 @@ export default function Home({ navigation }) {
       <View style={globalStyles.btnHome}>
       <View style={globalStyles.btnFiltrosHome}>
       <Picker
+        selectedValue={selectedValu}
         selectedValue={selectedValue}
         style={{ height: 17, width: 130 }}
-        onValueChange={updateUser} 
+        onValueChange={updateUser}
       >
-        <Picker.Item label="Ordenado" value="Ordenado" />
+        <Picker.Item label="Ordenado" value="Or" />
         <Picker.Item label="A-Z" value="A-Z" />
-        <Picker.Item label="z-a" value="z-a" />
+        <Picker.Item label="Z-A" value="Z-A" />
       </Picker>
     </View>
         {/*----------------------------------------FILTRADO------------------------------------------- */}
