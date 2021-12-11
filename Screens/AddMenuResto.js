@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 //
 //----------REACT-NATIVE UTILS-----------
-import { View, TextInput, TouchableOpacity, Text, Image } from "react-native";
+import { View, TextInput, TouchableOpacity, Text, Image, Pressable } from "react-native";
 import { BottomSheet, ListItem } from "react-native-elements";
 //
 //----------FIREBASE UTILS-----------
@@ -45,8 +45,6 @@ const AddMenuResto = ({ navigation }) => {
   const idResto = empresaDetail.idResto;
   const [isVisible, setIsVisible] = useState(false);
   const [category, setCategory] = useState();
-
-
   const categories = useSelector((state) => state.categoriesMenu);
 
 
@@ -69,15 +67,16 @@ const AddMenuResto = ({ navigation }) => {
 
   return (
     <View style={globalStyles.Home}>
-
       <View style={globalStyles.inputComponent}>
-        <TextInput
-          style={globalStyles.texts}
-          editable={false}
-          placeholder="Seleccionar Categoria"
-          value={category}
-          onPressIn={() => setIsVisible(true)}
-        />
+        <Pressable onPress={ () => setIsVisible(true) }>
+          <TextInput
+            style={globalStyles.texts}
+            editable={false}
+            placeholder="Seleccionar Categoria"
+            value={category}
+            onPressIn={() => setIsVisible(true)}
+          />
+        </Pressable>
         <BottomSheet
           isVisible={isVisible}
           containerStyle={{ backgroundColor: '#333a' }}

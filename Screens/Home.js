@@ -10,7 +10,6 @@ import UserFavourites from "../Redux/Actions/userFavourites.js";
 //
 //----------REACT-NATIVE UTILS-----------
 import { BottomSheet, ListItem } from "react-native-elements";
-
 import {
   View,
   Image,
@@ -22,11 +21,13 @@ import {
   TextInput,
   Modal,
   ActivityIndicator,
+  Pressable,
 } from "react-native";
 //import { MaterialIcons } from "@expo/vector-icons";
-
 //
 //
+//---------------------EXPO----------------------
+import * as Location from 'expo-location';
 //----------FIREBASE UTILS-----------
 import firebase from "../database/firebase";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
@@ -34,7 +35,7 @@ import { doc, onSnapshot, collection, query, getDoc } from "firebase/firestore";
 //
 //
 //---------SCREENS---------------
-import SearchBar from "./SearchBar.js";
+/* import SearchBar from "./SearchBar.js"; */
 import CardHome from "../components/CardHome.js";
 import Btn from "./Helpers/Btns.js";
 //
@@ -46,6 +47,7 @@ import globalStyles from "./GlobalStyles.js";
 //-------INITIALIZATIONS-------
 const auth = getAuth();
 import { DEFAULT_PROFILE_IMAGE } from "@env";
+import setUserLocation from "../Redux/Actions/setUserLocation.js";
 
 //
 //---------------------------------------------------------------------------------------//
@@ -62,13 +64,12 @@ export default function Home({ navigation }) {
   const [usuarioGlobal, setUsuarioGlobal] = useState("");
   const [availableCommerces, setAvailableCommerces] = useState([]);
   const [flagCards, setFlagCards] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
   //--------------FILTRADO MODAL-------------------------
   const [allRestos, setAllRestos] = useState()
   const [category, setCategory] = useState();
   const [visibleFiltros, isVisibleFiltros] = useState(false);
-
-
   //console.log(availableCommerces)
   const loggedUser = useSelector((state) => state.currentUser);
   const loggedId = useSelector((state) => state.currentId);
@@ -94,7 +95,7 @@ export default function Home({ navigation }) {
       if (loggedId !== usuarioFirebase.uid) {
         dispatch(CurrentId(usuarioFirebase.uid));
         const unsub = onSnapshot(
-          doc(firebase.db, "Restos", usuarioFirebase.uid),
+          doc(firebase.db, "Users", usuarioFirebase.uid),
           (doc) => {
             if (doc.exists()) {
               dispatch(CurrentUser(doc.data()));
@@ -107,6 +108,24 @@ export default function Home({ navigation }) {
       dispatch(CurrentUser(null));
     }
   });
+
+  const getUserLocation = async () => {
+    const {status} = await Location.requestForegroundPermissionsAsync()
+    if (status !== 'granted') {
+      console.log('Permission to access location was denied');
+      return;
+    }
+    console.log('Permission granted, reading user coordinates...')
+    let {coords} = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced});
+    console.log(coords)
+    const location = {
+      latitude: coords.latitude,
+      longitude: coords.longitude,
+      latitudeDelta: 0.004757,
+      longitudeDelta: 0.006866,
+    } 
+    dispatch(setUserLocation(location))
+  }
 
   const getInfo = async () => {
     try {
@@ -129,6 +148,7 @@ export default function Home({ navigation }) {
   useEffect(() => {
     if (loggedId && auth.currentUser.uid) {
       getInfo();
+      getUserLocation()
     }
     setFlagCards(true);
   }, [loggedId]);
@@ -230,7 +250,15 @@ export default function Home({ navigation }) {
         )}
       </View>
       <View>
-        <SearchBar />
+        <TextInput
+          style={styles.search}
+          onChangeText={(event) => {
+            setSearchTerm(event);
+          }}
+          placeholder="Search..."
+          placeholderTextColor="black"
+          underlineColorAndroid="transparent"
+        />
       </View>
 
       <View style={globalStyles.btnHome}>
@@ -244,15 +272,17 @@ export default function Home({ navigation }) {
 
         {/*----------------------------------------FILTRADO------------------------------------------- */}
         <View>
-          <TextInput
-            style={globalStyles.btnFiltrosHome}
-            editable={false}
-            placeholder="Buscar por Categoria"
-            textAlign="center"
-            placeholderTextColor="#161616"
-            value={category}
-            onPressIn={() => isVisibleFiltros(true)}
-          />
+          <Pressable onPress={ () => isVisibleFiltros(true)}>
+            <TextInput
+              style={globalStyles.btnFiltrosHome}
+              editable={false}
+              placeholder="Buscar por Categoria"
+              textAlign="center"
+              placeholderTextColor="#161616"
+              value={category}
+              onPressIn={() => isVisibleFiltros(true)}
+            />
+          </Pressable>
           <BottomSheet
             isVisible={visibleFiltros}
             containerStyle={{ backgroundColor: '#333a' }}
@@ -313,12 +343,16 @@ export default function Home({ navigation }) {
           </BottomSheet>
         </View>
       </View>
-
-
       <ScrollView>
         {availableCommerces.length && flagCards ? (
           <View>
-            {availableCommerces.map((resto) => {
+            {availableCommerces.filter((resto) => {
+              if (searchTerm === "") {
+                return resto;
+              } else {
+                return resto.title.toLowerCase().includes(searchTerm.toLowerCase())
+              }
+            }).map((resto) => {
               return (
                 <CardHome
                   key={resto.idResto}
@@ -339,6 +373,17 @@ export default function Home({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+  search: {
+    height: 30,
+    borderWidth: 1,
+    borderColor: '#000',
+    marginBottom: 10,
+    marginHorizontal: 16,
+    borderRadius: 40,
+    paddingHorizontal: 10,
+
+
+  },
   textContainer: {
     alignSelf: "center",
     justifyContent: "center",

@@ -1,7 +1,6 @@
 //----------REACT UTILS-----------
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from 'axios';
-import Constants from 'expo-constants'
 //
 //
 //----------REDUX UTILS-----------
@@ -11,7 +10,11 @@ import { useSelector } from "react-redux";
 //----------REACT-NATIVE UTILS-----------
 import { View, Text, StyleSheet, Image, Linking, TouchableOpacity, Modal, TextInput } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
+//---------------------GEOLOCATION-------------------
+import { GOOGLE_API_KEY } from "@env";
 import MapView, { Marker } from "react-native-maps";
+import MapViewDirections from 'react-native-maps-directions';
+//----------------------------------------------------
 //import DateTimePicker from '@react-native-community/datetimepicker';
 //
 //
@@ -25,6 +28,8 @@ import { MaterialIcons } from "@expo/vector-icons";
 //
 //---------SCREENS & COMPONENTS---------------
 import CardMenu from "../components/CardMenu";
+import ListReviews from "./ListReviews"
+import AddReviewsRestorant from "./AddReviewsRestorant";
 //
 //
 //-------STYLES-------
@@ -45,6 +50,8 @@ const auth = getAuth();
 //---------------------------------------------------------------------------------------//
 //
 const DetailsResto = ({ navigation }) => {
+  //--------------------------REVIEWS-------------------------------
+  const [reviews, setReviews] = useState()
 
   //--------------------------MERCADO PAGO--------------------------
   const [precioCabeza, setPrecioCabeza] = useState()
@@ -53,15 +60,17 @@ const DetailsResto = ({ navigation }) => {
 
   //--------------------------FILTROS CATEGORY--------------------------
   const [menuCategory, setMenuCategory] = useState()
-
   const empresaDetail = useSelector((state) => state.empresaDetail);
-  const { manifest } = Constants;
+  //--------------------GEOLOCATION-------------------------------
   const { location } = empresaDetail
+  const userLocation = useSelector(state => state.userCoordinates)
+  const mapRef = useRef(null)
+  //--------------------------------------------------------------
   const number = "+541168020511"
   //WhatsApp
   const handleWhatsAppPress = async () => {
     await Linking.openURL(`whatsapp://send?text=Hola RestoBook&phone=${number}`)
-  }
+}
   const [menuArr, setMenuArr] = useState([]);
   const onPressReservar = async (cantLugares, precioCabeza) => {
     const url = await axios(
@@ -80,7 +89,14 @@ const DetailsResto = ({ navigation }) => {
       url: url.data
     })
   }
-
+  console.log(Object.entries(userLocation))
+  useEffect(() => {
+    if ( Object.entries(userLocation).length === 0 || !location ) return 
+    //Zoom & fit to markers
+    mapRef.current.fitToSuppliedMarkers(['userLocation', 'restoLocation'], {
+      edgePadding: { top: 50, right: 50, bottom: 50, left: 50 }
+    })
+  }, [])
   const getMenu = () => {
     const q = query(collection(firebase.db, "Restos"));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
@@ -96,11 +112,9 @@ const DetailsResto = ({ navigation }) => {
     });
     setMenuCategory('')
   }
-
   useEffect(() => {
     getMenu()
   }, []);
-
   const handleCategory = async (category) => {
     const docRef = doc(firebase.db, "Restos", empresaDetail.idResto);
     const docSnap = await getDoc(docRef);
@@ -119,13 +133,19 @@ const DetailsResto = ({ navigation }) => {
     }
   }
 
-
+  useEffect(() => {
+    const q = doc(firebase.db, "Restos", empresaDetail.idResto);
+    const unsubscribe = onSnapshot(q, (doc) => {
+      setReviews(doc.data().reviews)
+    });
+  }, []);
+  
   return (
-    <View style={globalStyles.Home}>
-      <View style={globalStyles.headerResto}>
-        <Text style={{ textAlign: "center", fontSize: 30, paddingVertical: 3, color: "#161616", letterSpacing: 1 }}>{empresaDetail.title}</Text>
+    <ScrollView style={globalStyles.Home}>
+      <View style={{ backgroundColor: "#333a" }}>
+        <Text style={{ textAlign: "center", fontSize: 30, marginVertical: 10, color: "#fff" }}>{empresaDetail.title}</Text>
       </View>
-
+    
       <View>
         <View style={globalStyles.btnTodasComidas}>
           <TouchableOpacity onPress={() => getMenu()} >
@@ -180,7 +200,7 @@ const DetailsResto = ({ navigation }) => {
 
 
         </View>
-        {menuArr.length > 0 ? (
+        {menuArr.length > 0 ? 
           <ScrollView style={styles.showMenu}>
             {menuCategory ? menuCategory.map((menu, index) => {
               return (
@@ -197,7 +217,7 @@ const DetailsResto = ({ navigation }) => {
                 );
               })}
           </ScrollView>
-        ) : (
+         : (
           <Text
             style={{ alignSelf: "center", fontSize: 30, marginVertical: 30 }}
           >
@@ -213,6 +233,7 @@ const DetailsResto = ({ navigation }) => {
         </View>
         <View style={styles.googleMapsContainer}>
           <MapView
+            ref={mapRef}
             style={styles.googleMaps}
             initialRegion={{
               latitude: location.latitude,
@@ -222,14 +243,34 @@ const DetailsResto = ({ navigation }) => {
             }}
           >
             <Marker
+              title="Resto Location"
               coordinate={{
                 latitude: location.latitude,
                 longitude: location.longitude,
               }}
-              pinColor='#eccdaa'
-            >
-
-            </Marker>
+              pinColor='#0072B5'
+              identifier="restoLocation"
+            />
+            { Object.entries(userLocation).length > 0 && (
+              <Marker
+                title="Your location"
+                coordinate={userLocation}
+                pinColor="#0072B5"
+                identifier="userLocation"
+              />
+            )}
+           { Object.entries(userLocation).length > 0 && location && (
+            <MapViewDirections
+              apikey={GOOGLE_API_KEY}
+              strokeWidth={1.5}
+              strokeColor="gray"
+              origin={userLocation}
+              destination={{
+                latitude: location.latitude,
+                longitude: location.longitude
+              }}
+            />
+          )}
           </MapView>
         </View>
       </View>
@@ -250,7 +291,7 @@ const DetailsResto = ({ navigation }) => {
               <Text 
               style={globalStyles.texts}
                 onPress={() => setModalVisible(false)}
-              > X </Text>
+                > X </Text>
             </TouchableOpacity>
             <Text style={globalStyles.texts}>Selecciona la cantidad de lugares</Text>
             <TextInput placeholder='Cantidad de lugares' style={globalStyles.inputComponent} keyboardType='numeric' onChangeText={(value) => setCantLugares(parseInt(value))}>
@@ -268,11 +309,19 @@ const DetailsResto = ({ navigation }) => {
           </View>
         </View>
       </Modal>
-    </View>
+      <View style={styles.listReviews}>
+                  <ListReviews navigation={navigation} reviews={reviews}/>
+                </View>
+      <View>
+      </View>
+    </ScrollView>
 
   );
 };
 const styles = StyleSheet.create({
+  listReviews:{
+    
+  },
   container: {
     flex: 1,
     backgroundColor: "pink",
@@ -312,22 +361,22 @@ const styles = StyleSheet.create({
     height: 250,
     borderRadius: 100,
   },
-  wppIcon: {
-    height: 30,
-    marginLeft: 10,
+  wppIcon:{
+    height:30,
+    marginLeft:10,
     borderRadius: 10,
     width: 40,
     backgroundColor: '#ffd964',
     alignItems: "center",
     borderWidth: 1,
     borderColor: '#b39138',
-
+    
   },
-  img: {
+  img:{
     margin: 5,
-    height: 20,
-    width: 20,
-    alignItems: 'center'
+    height:20,
+    width:20,
+    alignItems:'center'
   },
   textContainer2: {
     alignSelf: "center",
