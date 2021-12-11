@@ -29,6 +29,7 @@ import { useIsFocused } from "@react-navigation/native";
 //
 
 const auth = getAuth();
+import { CLOUDINARY_CONSTANT } from "@env";
 
 const CardMenu = ({ resto, navigation }) => {
   // const userFavourites = useSelector((state) => state.favourites);
@@ -65,7 +66,7 @@ const CardMenu = ({ resto, navigation }) => {
     title: resto.title,
     phone: resto.phone,
     address: resto.location.address,
-    img: resto.img,
+    img: resto.restoImage,
   };
   const celphone = +541168020511;
 
@@ -130,7 +131,7 @@ const CardMenu = ({ resto, navigation }) => {
           <Image
             style={globalStyles.cardsHomeimg}
             source={{
-              uri: "https://res.cloudinary.com/restobook/image/upload/v1639178763/restohenry/hk0ociectefbdchh233r.png",
+              uri: CLOUDINARY_CONSTANT + resto.restoImage,
             }}
           />
         </View>

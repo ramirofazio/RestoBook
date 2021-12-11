@@ -83,6 +83,7 @@ const ProfileResto = ({ navigation }) => {
         let obj = docSnap.data();
         obj.id = docSnap.id;
         setAvailableCommerces(obj);
+        setImage(obj.restoImage)
         setNewCommerceInfo(obj);
       } else {
         alert("NO HAY INFO");
@@ -150,8 +151,8 @@ const ProfileResto = ({ navigation }) => {
         let data = await r.json();
         let str = data.secure_url.split("restohenry/")[1];
         setImage(str);
-        firebase.db.collection("Users").doc(loggedId).update({
-          profileImage: str,
+        firebase.db.collection("Restos").doc(availableCommerces.id).update({
+          restoImage: str,
         });
         setUploading(false);
       })

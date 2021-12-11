@@ -52,6 +52,7 @@ const CardFavourite = ({
   const removeFromFavourite = async () => {
     if (auth?.currentUser?.uid) {
       try {
+        console.log('info en prof', infoFavourite)
         setDeleting(true);
         setHearthColor("grey");
         let modifiedFavs = myFavourites.filter(

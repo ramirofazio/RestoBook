@@ -62,6 +62,7 @@ init("user_IEK9t1hQIR3ugtExEH6BG");
 //
 //-------INITIALIZATIONS-------
 const auth = getAuth();
+import { DEFAULT_RESTO_IMAGE } from "@env";
 //
 //---------------------------------------------------------------------------------------//
 //
@@ -268,6 +269,7 @@ const RegisterResto = ({ navigation }) => {
                   cuit: values.cuit,
                   category: state.category.toLowerCase(),
                   // img: values.img,
+                  restoImage: DEFAULT_RESTO_IMAGE,
                   menu: [],
                   reservations: [],
                   location: {

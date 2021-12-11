@@ -330,6 +330,8 @@ const GlobalLogin = ({ navigation }) => {
                             favourites: [],
                           })
                           .then(sendEmailVerification(auth.currentUser))
+                          .then(setFlagLoginOrRegister(true))
+                          .then(isVisible(false))
                           .then(navigation.navigate("AwaitEmail"));
                       }
                     });
