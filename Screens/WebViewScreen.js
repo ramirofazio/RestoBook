@@ -58,9 +58,8 @@ export default function WebViewScreen({ route, navigation}){
             subject: `Tu reserva en ${empresaDetail.title} fue confirmada`,
             name: currentUser.name,
             restoName: empresaDetail.title,
-            message: 'Reserva confirmada probando',
             email: currentUser.email,
-            idReserva: 'reserva.idReserva'
+            idReserva: reserva.idReserva
         }
         emailjs.send("service_w5zryen","template_zwe6qen", templateParams, 'user_IEK9t1hQIR3ugtExEH6BG')
         .then(function(response) {
