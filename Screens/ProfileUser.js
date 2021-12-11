@@ -88,11 +88,18 @@ const ProfileUser = ({ navigation }) => {
   const [myFavourites, setMyFavourites] = useState();
 
   useEffect(() => {
-    const q = doc(firebase.db, "Users", loggedId);
-    const unsubscribe = onSnapshot(q, (doc) => {
-      setMyFavourites(doc.data().favourites);
-    });
-  }, [loggedId]);
+    const getFavs = async () => {
+      const docRef = doc(firebase.db, "Users", loggedId);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists) {
+        let obj = docSnap.data().favourites;
+        setMyFavourites(obj);
+      }
+      console.log("DOC PROFILE 98");
+    };
+
+    getFavs();
+  }, []);
 
   useEffect(() => {
     const getInfo = async () => {
@@ -341,12 +348,17 @@ const ProfileUser = ({ navigation }) => {
           {myFavourites?.length
             ? myFavourites.map((resto) => {
                 return (
-                  <View style={{ width: windowWidth, height: 250 }}>
+                  <View
+                    style={{ width: windowWidth, height: 250 }}
+                    key={resto.id}
+                  >
                     <CardFavourite
                       key={resto.Id}
                       resto={resto}
                       navigation={navigation}
                       index={resto.Id}
+                      setMyFavourites={setMyFavourites}
+                      myFavourites={myFavourites}
                     >
                       {" "}
                     </CardFavourite>
@@ -376,7 +388,7 @@ const ProfileUser = ({ navigation }) => {
         <ScrollView style={{ overflow: "scroll" }}>
           {reservas.map((persona) => {
             return (
-              <View>
+              <View key={persona.id}>
                 <CardReservation
                   key={persona.id}
                   persona={persona}

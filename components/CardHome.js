@@ -7,6 +7,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Linking,
+  ActivityIndicator,
 } from "react-native";
 //------ACTIONS---------
 import empresaDetail from "../Redux/Actions/empresaDetail.js";
@@ -24,6 +25,7 @@ import {
   getDoc,
   onSnapshot,
 } from "firebase/firestore";
+import { useIsFocused } from "@react-navigation/native";
 //
 
 const auth = getAuth();
@@ -33,18 +35,30 @@ const CardMenu = ({ resto, navigation }) => {
   const [userFavourites, setUserFavourites] = useState();
   const CurrentId = useSelector((state) => state.currentId);
   const [hearthColor, setHearthColor] = useState("grey");
-  const [pressed, setPressed] = useState(false);
+
   const dispatch = useDispatch();
   const categories = useSelector((state) => state.categoriesResto);
+  useEffect(() => {}, []);
+  const isFocused = useIsFocused();
+
+  const getFavs = async () => {
+    if (CurrentId) {
+      const docRef = doc(firebase.db, "Users", CurrentId);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists) {
+        let obj = docSnap.data().favourites;
+        setUserFavourites(obj);
+      }
+    } else {
+      setUserFavourites(null);
+    }
+  };
 
   useEffect(() => {
-    if (CurrentId) {
-      const q = doc(firebase.db, "Users", CurrentId);
-      const unsubscribe = onSnapshot(q, (doc) => {
-        setUserFavourites(doc.data().favourites);
-      });
+    if (isFocused) {
+      getFavs();
     }
-  }, [CurrentId]);
+  }, [isFocused]);
 
   let infoFavourite = {
     id: resto.idResto,
@@ -82,21 +96,23 @@ const CardMenu = ({ resto, navigation }) => {
   const addToFavourite = async () => {
     if (auth?.currentUser?.uid) {
       try {
+        setHearthColor("red");
         let docRef = doc(firebase.db, "Users", auth.currentUser.uid);
         await updateDoc(docRef, {
           favourites: arrayUnion(infoFavourite),
         });
       } catch (e) {
-        alert("no estas logueado");
+        setHearthColor("grey");
+        // alert("no estas logueado");
         console.log("error add:", e);
       }
-      setHearthColor("red");
     }
   };
 
   const removeFromFavourite = async () => {
     if (auth?.currentUser?.uid) {
       try {
+        setHearthColor("grey");
         let docRef = doc(firebase.db, "Users", auth.currentUser.uid);
         await updateDoc(docRef, {
           favourites: arrayRemove(infoFavourite),
@@ -104,7 +120,6 @@ const CardMenu = ({ resto, navigation }) => {
       } catch (e) {
         console.log("error remove:", e);
       }
-      setHearthColor("grey");
     }
   };
 

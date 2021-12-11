@@ -23,6 +23,7 @@ import {
   ActivityIndicator,
   Pressable,
 } from "react-native";
+
 //import { MaterialIcons } from "@expo/vector-icons";
 //
 //
@@ -81,6 +82,7 @@ export default function Home({ navigation }) {
     const q = query(collection(firebase.db, "Restos"));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       let arr = [];
+      console.log("SNAP HOME 84");
       querySnapshot.forEach((doc) => {
         let obj = doc.data();
         obj.idResto = doc.id;
@@ -95,20 +97,33 @@ export default function Home({ navigation }) {
     if (usuarioFirebase?.emailVerified) {
       if (loggedId !== usuarioFirebase.uid) {
         dispatch(CurrentId(usuarioFirebase.uid));
-        const unsub = onSnapshot(
-          doc(firebase.db, "Users", usuarioFirebase.uid),
-          (doc) => {
-            if (doc.exists()) {
-              dispatch(CurrentUser(doc.data()));
-              //console.log("data user en home : ", doc.data());
-            }
-          }
-        );
+
+        // const unsub = onSnapshot(
+        //   doc(firebase.db, "Users", usuarioFirebase.uid),
+        //   (doc) => {
+        //     if (doc.exists()) {
+        //       console.log("SNAP HOME 103");
+        //       dispatch(CurrentUser(doc.data()));
+        //       //console.log("data user en home : ", doc.data());
+        //     }
+        //   }
+        // );
       }
     } else {
       dispatch(CurrentUser(null));
     }
   });
+
+  // useEffect(() => {
+  //   const getUser = async () => {
+  //     const docRef = doc(collection(firebase.db, "Users", usuarioFirebase.uid));
+  //     const docSnap = await getDoc(docRef);
+  //     if (docSnap.exists()) {
+  //       let obj = docSnap.data();
+  //       dispatch(CurrentUser(obj));
+  //     }
+  //   };
+  // }, [loggedId]);
 
   const getUserLocation = async () => {
     const { status } = await Location.requestForegroundPermissionsAsync();

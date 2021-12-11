@@ -100,7 +100,7 @@ const DetailsResto = ({ navigation }) => {
       url: url.data,
     });
   };
-  console.log(Object.entries(userLocation));
+  // console.log(Object.entries(userLocation));
   useEffect(() => {
     if (Object.entries(userLocation).length === 0 || !location) return;
     //Zoom & fit to markers
@@ -112,6 +112,7 @@ const DetailsResto = ({ navigation }) => {
     const q = query(collection(firebase.db, "Restos"));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       let menu = [];
+      console.log("SNAP DETAILSRESTO 115");
       querySnapshot.forEach((doc) => {
         if (doc.id === empresaDetail.idResto) {
           let obj = doc.data();
@@ -147,6 +148,7 @@ const DetailsResto = ({ navigation }) => {
   useEffect(() => {
     const q = doc(firebase.db, "Restos", empresaDetail.idResto);
     const unsubscribe = onSnapshot(q, (doc) => {
+      console.log("SNAP DETAILSRESTO 151");
       setReviews(doc.data().reviews);
     });
   }, []);

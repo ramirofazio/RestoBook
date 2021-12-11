@@ -26,7 +26,12 @@ import {
 
 const auth = getAuth();
 
-const CardFavourite = ({ resto, navigation }) => {
+const CardFavourite = ({
+  resto,
+  navigation,
+  setMyFavourites,
+  myFavourites,
+}) => {
   const dispatch = useDispatch();
   const [deleting, setDeleting] = useState(false);
   const [hearthColor, setHearthColor] = useState("red");
@@ -49,6 +54,11 @@ const CardFavourite = ({ resto, navigation }) => {
       try {
         setDeleting(true);
         setHearthColor("grey");
+        let modifiedFavs = myFavourites.filter(
+          (element) => element.id !== infoFavourite.id
+        );
+        console.log(modifiedFavs);
+        setMyFavourites(modifiedFavs);
         let docRef = doc(firebase.db, "Users", auth.currentUser.uid);
         await updateDoc(docRef, {
           favourites: arrayRemove(infoFavourite),

@@ -72,7 +72,7 @@ const ProfileResto = ({ navigation }) => {
   const [image, setImage] = useState("");
   const [currentUser, setCurrentUser] = useState({});
   const [modalVisible, setModalVisible] = useState(false);
-  const [newUserInfo, setNewUserInfo] = useState({});
+  const [newCommerceInfo, setNewCommerceInfo] = useState({});
   const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
@@ -81,7 +81,9 @@ const ProfileResto = ({ navigation }) => {
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
         let obj = docSnap.data();
+        obj.id = docSnap.id;
         setAvailableCommerces(obj);
+        setNewCommerceInfo(obj);
       } else {
         alert("NO HAY INFO");
       }
@@ -192,7 +194,7 @@ const ProfileResto = ({ navigation }) => {
                 textTransform: "capitalize",
               }}
             >
-              {currentUser?.title}
+              {availableCommerces?.title}
             </Text>
             <Text
               style={{
@@ -203,7 +205,8 @@ const ProfileResto = ({ navigation }) => {
                 textTransform: "capitalize",
               }}
             >
-              {currentUser?.location?.address}
+              {availableCommerces?.location?.address.split(",")[0]},
+              {availableCommerces?.location?.address.split(",")[1]}
             </Text>
             <TouchableOpacity
               style={globalStyles.btnLogin}
@@ -229,10 +232,10 @@ const ProfileResto = ({ navigation }) => {
                     <Text style={globalStyles.texts}>X</Text>
                   </TouchableOpacity>
                   <Text style={globalStyles.modalText}>Editar información</Text>
-                  <Text style={globalStyles.texts}>Nombre del Resto:</Text>
+                  {/* <Text style={globalStyles.texts}>Nombre del Resto:</Text>
                   <TextInput
                     style={globalStyles.inputComponent}
-                    placeholder={currentUser?.title}
+                    placeholder={availableCommerces?.title}
                     placeholderTextColor="#666"
                     textAlign="center"
                     onChangeText={(value) =>
@@ -241,34 +244,47 @@ const ProfileResto = ({ navigation }) => {
                         title: value,
                       })
                     }
-                  />
-                  <Text style={globalStyles.texts}>Direccion:</Text>
+                  /> */}
+                  <Text style={globalStyles.texts}>Telefono:</Text>
                   <TextInput
                     style={globalStyles.inputComponent}
-                    placeholder={currentUser?.location?.address}
+                    placeholder={availableCommerces?.phone}
                     placeholderTextColor="#666"
                     textAlign="center"
                     onChangeText={(value) =>
-                      setNewUserInfo({
-                        ...newUserInfo,
-                        address: value,
+                      setNewCommerceInfo({
+                        ...newCommerceInfo,
+                        phone: value,
                       })
                     }
                   />
-                  <Text style={globalStyles.texts}>Description:</Text>
+                  <Text style={globalStyles.texts}>Telefono 2:</Text>
                   <TextInput
                     style={globalStyles.inputComponent}
-                    placeholder={currentUser?.description}
+                    placeholder={availableCommerces?.phone2}
                     placeholderTextColor="#666"
                     textAlign="center"
                     onChangeText={(value) =>
-                      setNewUserInfo({
-                        ...newUserInfo,
-                        description: value,
+                      setNewCommerceInfo({
+                        ...newCommerceInfo,
+                        phone2: value,
                       })
                     }
                   />
-                  <TouchableOpacity
+                  <Text style={globalStyles.texts}>Email:</Text>
+                  <TextInput
+                    style={globalStyles.inputComponent}
+                    placeholder={availableCommerces?.email}
+                    placeholderTextColor="#666"
+                    textAlign="center"
+                    onChangeText={(value) =>
+                      setNewCommerceInfo({
+                        ...newCommerceInfo,
+                        email: value,
+                      })
+                    }
+                  />
+                  {/* <TouchableOpacity
                     style={globalStyles.btnLogin}
                     onPress={() => {
                       sendPasswordResetEmail(auth, currentUser?.email)
@@ -279,17 +295,17 @@ const ProfileResto = ({ navigation }) => {
                     }}
                   >
                     <Text style={globalStyles.texts}>Cambiar contraseña</Text>
-                  </TouchableOpacity>
+                  </TouchableOpacity> */}
                   <TouchableOpacity
                     style={globalStyles.btnLogin}
                     onPress={() => {
                       firebase.db
-                        .collection("Users")
-                        .doc(currentUser.idResto)
+                        .collection("Restos")
+                        .doc(availableCommerces.id)
                         .update({
-                          title: newUserInfo.title,
-                          address: newUserInfo.location.address,
-                          description: newUserInfo.description,
+                          phone: newCommerceInfo.phone,
+                          phone2: newCommerceInfo.phone2,
+                          email: newCommerceInfo.email,
                         })
                         .then(alert("cambios guardados!"))
                         .then(setModalVisible(false))

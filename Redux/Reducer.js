@@ -7,7 +7,7 @@ import {
   SET_COMMERCE,
   USER_FAVOURITES,
   GET_COMMERCE_INFO,
-  SET_USER_LOCATION
+  SET_USER_LOCATION,
 } from "./Actions/Constants.js";
 
 let initialState = {
@@ -86,13 +86,12 @@ const RootReducer = (state = initialState, action) => {
         ...state,
         commerceInfo: action.payload,
       };
-    default:
     case SET_USER_LOCATION:
       return {
         ...state,
-        userCoordinates: action.payload
-      }
-      default:
+        userCoordinates: action.payload,
+      };
+    default:
       return state;
   }
 };
