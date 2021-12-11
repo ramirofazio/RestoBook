@@ -1,13 +1,13 @@
-
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { AirbnbRating, Rating, Card, Text, Icon } from 'react-native-elements';
+import { AirbnbRating, Rating, Card, Text, Icon } from "react-native-elements";
 import {
   View,
   Image,
   StyleSheet,
   TouchableOpacity,
   Linking,
+  ActivityIndicator,
 } from "react-native";
 //------ACTIONS---------
 import empresaDetail from "../Redux/Actions/empresaDetail.js";
@@ -17,31 +17,63 @@ import globalStyles from "../Screens/GlobalStyles.js";
 //----------FIREBASE UTILS-----------
 import firebase from "../database/firebase";
 import { getAuth } from "firebase/auth";
-import { doc, updateDoc, arrayUnion, arrayRemove, getDoc, } from "firebase/firestore";
+import {
+  doc,
+  updateDoc,
+  arrayUnion,
+  arrayRemove,
+  getDoc,
+  onSnapshot,
+} from "firebase/firestore";
+import { useIsFocused } from "@react-navigation/native";
 //
 
 const auth = getAuth();
+import { CLOUDINARY_CONSTANT } from "@env";
 
 const CardMenu = ({ resto, navigation }) => {
-  const userFavourites = useSelector((state) => state.favourites);
+  // const userFavourites = useSelector((state) => state.favourites);
+  const [userFavourites, setUserFavourites] = useState();
   const CurrentId = useSelector((state) => state.currentId);
   const [hearthColor, setHearthColor] = useState("grey");
-  const [pressed, setPressed] = useState(false)
+
   const dispatch = useDispatch();
   const categories = useSelector((state) => state.categoriesResto);
+  useEffect(() => {}, []);
+  const isFocused = useIsFocused();
+
+  const getFavs = async () => {
+    if (CurrentId) {
+      const docRef = doc(firebase.db, "Users", CurrentId);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists) {
+        let obj = docSnap.data().favourites;
+        setUserFavourites(obj);
+      }
+    } else {
+      setUserFavourites(null);
+    }
+  };
+
+  useEffect(() => {
+    if (isFocused) {
+      getFavs();
+    }
+  }, [isFocused]);
 
   let infoFavourite = {
     id: resto.idResto,
     title: resto.title,
     phone: resto.phone,
     address: resto.location.address,
-    img: resto.img,
+    img: resto.restoImage,
   };
   const celphone = +541168020511;
 
   useEffect(() => {
     if (CurrentId) {
-      if (userFavourites.includes(resto.idResto)) {
+      let idFavourites = userFavourites?.map((element) => element.id);
+      if (idFavourites?.includes(resto.idResto)) {
         setHearthColor("red");
       } else {
         setHearthColor("grey");
@@ -64,23 +96,24 @@ const CardMenu = ({ resto, navigation }) => {
 
   const addToFavourite = async () => {
     if (auth?.currentUser?.uid) {
-      console.log("ACA");
       try {
+        setHearthColor("red");
         let docRef = doc(firebase.db, "Users", auth.currentUser.uid);
         await updateDoc(docRef, {
           favourites: arrayUnion(infoFavourite),
         });
       } catch (e) {
-        alert("no estas logueado");
+        setHearthColor("grey");
+        // alert("no estas logueado");
         console.log("error add:", e);
       }
-      setHearthColor("red");
     }
   };
 
   const removeFromFavourite = async () => {
     if (auth?.currentUser?.uid) {
       try {
+        setHearthColor("grey");
         let docRef = doc(firebase.db, "Users", auth.currentUser.uid);
         await updateDoc(docRef, {
           favourites: arrayRemove(infoFavourite),
@@ -88,7 +121,6 @@ const CardMenu = ({ resto, navigation }) => {
       } catch (e) {
         console.log("error remove:", e);
       }
-      setHearthColor("grey");
     }
   };
 
@@ -98,13 +130,9 @@ const CardMenu = ({ resto, navigation }) => {
         <View style={globalStyles.containerImgCard}>
           <Image
             style={globalStyles.cardsHomeimg}
-            source={
-              resto.Img === ""
-                ? {
-                  uri: "https://images.vexels.com/media/users/3/204941/isolated/preview/d8bc6d74b3da7ee41fc99b6000c1e6a4-trazo-de-puntuacion-de-signo-de-interrogacion.png",
-                }
-                : { uri: resto.Img }
-            }
+            source={{
+              uri: CLOUDINARY_CONSTANT + resto.restoImage,
+            }}
           />
         </View>
 
@@ -113,7 +141,7 @@ const CardMenu = ({ resto, navigation }) => {
             <Text style={globalStyles.cardsHomeTitle}>{resto.title}</Text>
           </View>
 
-          <View >
+          <View>
             <AirbnbRating
               showRating={false}
               size={20}
@@ -121,8 +149,8 @@ const CardMenu = ({ resto, navigation }) => {
               // reviewSize={17}
               // starContainerStyle={{marginTop:-15}}
               isDisabled={true} // este es para que los users no puedan cambiar
-              selectedColor='#f1c40f'
-              unSelectedColor='lightgrey'
+              selectedColor="#f1c40f"
+              unSelectedColor="lightgrey"
             />
             {/* <Rating
           showRating
@@ -160,7 +188,7 @@ const CardMenu = ({ resto, navigation }) => {
                 // SI UN USARUIO NO LOGUEADO QUIERE GUARDAR ALGO EN FAVS QUE SE LOGUEE PRIMERO
                 hearthColor === "grey"
                   ? addToFavourite()
-                  : removeFromFavourite()
+                  : removeFromFavourite();
               }}
             >
               <Icon

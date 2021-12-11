@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import CurrentId from "../Redux/Actions/CurrentId.js";
 import CurrentUser from "../Redux/Actions/CurrentUser.js";
 import UserFavourites from "../Redux/Actions/userFavourites.js";
+import getCommerceInfo from "../Redux/Actions/getCommerceInfo.js";
 //
 //
 //----------REACT-NATIVE UTILS-----------
@@ -18,7 +19,13 @@ import RestOutlined from "react-native-vector-icons/AntDesign";
 //----------FIREBASE UTILS-----------
 import firebase from "../database/firebase";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
-import { onSnapshot, collection, query } from "firebase/firestore";
+import {
+  onSnapshot,
+  collection,
+  query,
+  where,
+  getDocs,
+} from "firebase/firestore";
 //
 //
 //---------SCREENS & COMPONENTS---------------
@@ -39,23 +46,60 @@ export default function NavHome({ title, navigation }) {
 
   const hasCommerce = useSelector((state) => state.commerce);
   //Esto lo tenemos que manejar con una propiedad de cada user, dsps lo corregimos
-  const [commerce, isCommerce] = useState(false);
+  const [commerce, isCommerce] = useState(0);
+  const [commerceId, setcommerceId] = useState([]);
   const loggedId = useSelector((state) => state.currentId);
 
   useEffect(() => {
-    const q = query(collection(firebase.db, "Users"));
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+    const getInfo = async () => {
+      const q = query(
+        collection(firebase.db, "Restos"),
+        where("idUser", "==", loggedId)
+      );
+
+      const querySnapshot = await getDocs(q);
+      let arr = [];
       querySnapshot.forEach((doc) => {
         let obj = doc.data();
-        // obj.idResto = doc.id;
-        if (doc.id === loggedId) {
-          if (obj.commerce === true) {
-            isCommerce(true);
-          }
-        }
+        let infoCard = {
+          id: doc.id,
+        };
+        arr.push(infoCard);
       });
-    });
+      if (arr.length === 1) {
+        isCommerce(1);
+      }
+      if (arr.length > 1) {
+        isCommerce(2);
+      }
+      setcommerceId(arr);
+    };
+    getInfo();
   }, [loggedId, hasCommerce]);
+
+  useEffect(() => {
+    if (commerce === 1) {
+      dispatch(getCommerceInfo(commerceId[0]?.id));
+    }
+  }, [commerceId]);
+
+  // useEffect(() => {
+  //   const q = query(
+  //     collection(firebase.db, "Users"),
+  //     where("id", "==", loggedId)
+  //   );
+  //   const unsubscribe = onSnapshot(q, (querySnapshot) => {
+  //     querySnapshot.forEach((doc) => {
+  //       let obj = doc.data();
+  //       if (obj.commerce === true && obj.multiCommerce === false) {
+  //         isCommerce(1);
+  //       }
+  //       if (obj.commerce === true && obj.multiCommerce === true) {
+  //         isCommerce(2);
+  //       }
+  //     });
+  //   });
+  // }, [loggedId, hasCommerce]);
 
   //__________________________________________________________________________________
   onAuthStateChanged(auth, (usuarioFirebase) => {
@@ -70,6 +114,7 @@ export default function NavHome({ title, navigation }) {
     dispatch(CurrentUser(null));
     dispatch(CurrentId(null));
     dispatch(UserFavourites([]));
+    dispatch(getCommerceInfo(null));
     console.log();
   };
 
@@ -102,7 +147,9 @@ export default function NavHome({ title, navigation }) {
                 : navigation.navigate("GlobalLogin")
             }
           >
-            <Text style={globalStyles.btnText}>{loggedId ? "Log out" : "Log in"}</Text>
+            <Text style={globalStyles.btnText}>
+              {loggedId ? "Log out" : "Log in"}
+            </Text>
           </TouchableOpacity>
 
           {loggedId && (
@@ -113,10 +160,17 @@ export default function NavHome({ title, navigation }) {
             />
           )}
 
-          {commerce && loggedId && (
+          {commerce === 1 && loggedId && (
             <Btn
               nombre={<RestOutlined name="rest" color="#ECCDAA" size={15} />}
               ruta="ProfileResto"
+              navigation={navigation}
+            />
+          )}
+          {commerce > 1 && loggedId && (
+            <Btn
+              nombre={<RestOutlined name="rest" color="#392c28" size={15} />}
+              ruta="SelectCommerce"
               navigation={navigation}
             />
           )}

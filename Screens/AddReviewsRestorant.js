@@ -1,11 +1,12 @@
 import React,{useState} from 'react';
 import { useSelector } from "react-redux";
 import {Input, Button, AirbnbRating} from 'react-native-elements'
-import { StyleSheet, View, Modal, TextInput, ActivityIndicator, } from "react-native";
+import { StyleSheet, View, Modal, Text, ActivityIndicator, TouchableOpacity } from "react-native";
 import {isEmpty} from 'lodash'
 //----------FIREBASE UTILS-----------
 import firebase from "../database/firebase";
 import { doc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
+import globalStyles from './GlobalStyles';
 
 
 export default function AddReviewsRestorant({navigation}) {
@@ -77,20 +78,24 @@ export default function AddReviewsRestorant({navigation}) {
             </View>
             <View style={styles.comentarios}>
             <Input
-            placeholder="comentario..."
+            placeholder="  Tu opinion..."
+            fontSize={15}
             containerStyle={styles.containerInput}
-            style={styles.input}
+            style={globalStyles.inputComponent}
             onChange={(e) => setReview(e.nativeEvent.text)}
             errorMessage={errorReview}
             />
+            <TouchableOpacity style={globalStyles.btnFiltrosHome} onPress={addReview}>
+                <Text style={globalStyles.texts}>Publicar comentario</Text>
+            </TouchableOpacity>
             </View>
-            <Button
+            {/* <Button
                 title="Enviar Comentario"
                 containerStyle={styles.containerButon}
-                style={styles.buton}
+                style={globalStyles.btnFiltrosHome}
                 onPress={addReview}
             >
-            </Button>
+            </Button> */}
             </Modal>
             </View>
     )
