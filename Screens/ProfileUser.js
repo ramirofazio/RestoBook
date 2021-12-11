@@ -79,10 +79,6 @@ const reservas = [
 ];
 
 const ProfileUser = ({ navigation }) => {
-  const empresas = useSelector((state) => state.empresas);
-
-  const loggedUser = useSelector((state) => state.currentUser);
-
   const loggedId = useSelector((state) => state.currentId);
   const [modalVisible, setModalVisible] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
@@ -98,22 +94,15 @@ const ProfileUser = ({ navigation }) => {
     });
   }, [loggedId]);
 
-  // useEffect(() => {
-  //   console.log("state favs", myFavourites);
-  // }, [myFavourites]);
-
   useEffect(() => {
     const getInfo = async () => {
       const docRef = doc(firebase.db, "Users", auth.currentUser.uid);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
         let obj = docSnap.data();
-
         setImage(obj.profileImage);
         setCurrentUser(obj);
         setNewUserInfo(obj);
-        // setMyFavourites(obj.favourites);
-        // console.log(obj.favourites)
       } else {
         alert("NO HAY INFO");
       }

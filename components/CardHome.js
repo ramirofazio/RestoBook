@@ -114,13 +114,9 @@ const CardMenu = ({ resto, navigation }) => {
         <View style={globalStyles.containerImgCard}>
           <Image
             style={globalStyles.cardsHomeimg}
-            source={
-              resto.Img === ""
-                ? {
-                    uri: "https://images.vexels.com/media/users/3/204941/isolated/preview/d8bc6d74b3da7ee41fc99b6000c1e6a4-trazo-de-puntuacion-de-signo-de-interrogacion.png",
-                  }
-                : { uri: resto.Img }
-            }
+            source={{
+              uri: "https://res.cloudinary.com/restobook/image/upload/v1639178763/restohenry/hk0ociectefbdchh233r.png",
+            }}
           />
         </View>
 
