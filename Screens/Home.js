@@ -22,11 +22,12 @@ import {
   Picker, 
   Pressable,
 } from "react-native";
+
 //import { MaterialIcons } from "@expo/vector-icons";
 //
 //
 //---------------------EXPO----------------------
-import * as Location from 'expo-location';
+import * as Location from "expo-location";
 //----------FIREBASE UTILS-----------
 import firebase from "../database/firebase";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
@@ -68,10 +69,9 @@ export default function Home({ navigation }) {
   const [searchTerm, setSearchTerm] = useState("");
 
   //--------------FILTRADO MODAL-------------------------
-  const [allRestos, setAllRestos] = useState()
+  const [allRestos, setAllRestos] = useState();
   const [category, setCategory] = useState();
   const [visibleFiltros, isVisibleFiltros] = useState(false);
-  //console.log(availableCommerces)
   const loggedUser = useSelector((state) => state.currentUser);
   const loggedId = useSelector((state) => state.currentId);
   const categories = useSelector((state) => state.categoriesResto);
@@ -81,6 +81,7 @@ export default function Home({ navigation }) {
     const q = query(collection(firebase.db, "Restos"));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       let arr = [];
+      console.log("SNAP HOME 84");
       querySnapshot.forEach((doc) => {
         let obj = doc.data();
         obj.idResto = doc.id;
@@ -95,38 +96,53 @@ export default function Home({ navigation }) {
     if (usuarioFirebase?.emailVerified) {
       if (loggedId !== usuarioFirebase.uid) {
         dispatch(CurrentId(usuarioFirebase.uid));
-        const unsub = onSnapshot(
-          doc(firebase.db, "Users", usuarioFirebase.uid),
-          (doc) => {
-            if (doc.exists()) {
-              dispatch(CurrentUser(doc.data()));
-              //console.log("data user en home : ", doc.data());
-            }
-          }
-        );
+
+        // const unsub = onSnapshot(
+        //   doc(firebase.db, "Users", usuarioFirebase.uid),
+        //   (doc) => {
+        //     if (doc.exists()) {
+        //       console.log("SNAP HOME 103");
+        //       dispatch(CurrentUser(doc.data()));
+        //       //console.log("data user en home : ", doc.data());
+        //     }
+        //   }
+        // );
       }
     } else {
       dispatch(CurrentUser(null));
     }
   });
 
+  // useEffect(() => {
+  //   const getUser = async () => {
+  //     const docRef = doc(collection(firebase.db, "Users", usuarioFirebase.uid));
+  //     const docSnap = await getDoc(docRef);
+  //     if (docSnap.exists()) {
+  //       let obj = docSnap.data();
+  //       dispatch(CurrentUser(obj));
+  //     }
+  //   };
+  // }, [loggedId]);
+
   const getUserLocation = async () => {
-    const {status} = await Location.requestForegroundPermissionsAsync()
-    if (status !== 'granted') {
-      console.log('Permission to access location was denied');
+    const { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== "granted") {
+      console.log("Permission to access location was denied");
       return;
     }
-    console.log('Permission granted, reading user coordinates...')
-    let {coords} = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced});
-    console.log(coords)
+    console.log("Permission granted, reading user coordinates...");
+    let { coords } = await Location.getCurrentPositionAsync({
+      accuracy: Location.Accuracy.Balanced,
+    });
+    console.log(coords);
     const location = {
       latitude: coords.latitude,
       longitude: coords.longitude,
       latitudeDelta: 0.004757,
       longitudeDelta: 0.006866,
-    } 
-    dispatch(setUserLocation(location))
-  }
+    };
+    dispatch(setUserLocation(location));
+  };
 
   const getInfo = async () => {
     try {
@@ -135,11 +151,9 @@ export default function Home({ navigation }) {
       if (!docSnap.exists()) {
         setGoogleUser({ ...googleUser, email: auth.currentUser.email });
         isVisible(true);
-        // alert("Bienvenido! Por favor, completa estos datos antes de continuar");
       } else {
         let obj = docSnap.data();
-        let idsFavourites = obj.favourites.map((element) => element.id);
-        dispatch(UserFavourites(idsFavourites));
+
         setFlagCards(true);
       }
     } catch (e) {
@@ -149,7 +163,7 @@ export default function Home({ navigation }) {
   useEffect(() => {
     if (loggedId && auth.currentUser.uid) {
       getInfo();
-      getUserLocation()
+      getUserLocation();
     }
     setFlagCards(true);
   }, [loggedId]);
@@ -157,30 +171,28 @@ export default function Home({ navigation }) {
   onAuthStateChanged(auth, (usuarioFirebase) => {
     if (usuarioFirebase?.emailVerified) {
       if (usuarioFirebase.displayName) {
-        //console.log("entre a if")
         setUsuarioGlobal(usuarioFirebase.displayName);
       } else {
-        //console.log("entre a else")
         const trimmedName = usuarioFirebase.email.split("@")[0];
         setUsuarioGlobal(trimmedName);
       }
     } else {
-      //console.log("entre a else else")
       setUsuarioGlobal("");
     }
   });
 
-
   const handleCategory = async (category) => {
-    setCategory(category)
-    if (!category) setAvailableCommerces(allRestos)
-    const result = availableCommerces.filter((resto) => resto.category === category.toLowerCase())
+    setCategory(category);
+    if (!category) setAvailableCommerces(allRestos);
+    const result = availableCommerces.filter(
+      (resto) => resto.category === category.toLowerCase()
+    );
     if (result.length === 0) {
-      alert("No hay Empresas con esta Categoria")
-      setCategory("")
-      setAvailableCommerces(allRestos)
+      alert("No hay Empresas con esta Categoria");
+      setCategory("");
+      setAvailableCommerces(allRestos);
     } else {
-      setAvailableCommerces(result)
+      setAvailableCommerces(result);
     }
   }
   const [selectedValue, setSelectedValue] = useState("");
@@ -205,7 +217,7 @@ export default function Home({ navigation }) {
     <Text>Hola!</Text>
         </View>
       </BottomSheet> */}
-      <Modal Modal visible={visible} style={styles.googleUserModal} >
+      <Modal Modal visible={visible} style={styles.googleUserModal}>
         <View style={styles.googleUserForm}>
           <TextInput
             style={styles.googleTextinput}
@@ -255,7 +267,7 @@ export default function Home({ navigation }) {
             <Text>Enviar</Text>
           </TouchableOpacity>
         </View>
-      </Modal >
+      </Modal>
       <View style={styles.textContainer}>
         {usuarioGlobal !== "" ? (
           <Text style={styles.text}>{` Welcome ${usuarioGlobal}`}</Text>
@@ -298,7 +310,7 @@ export default function Home({ navigation }) {
     </View>
         {/*----------------------------------------FILTRADO------------------------------------------- */}
         <View>
-          <Pressable onPress={ () => isVisibleFiltros(true)}>
+          <Pressable onPress={() => isVisibleFiltros(true)}>
             <TextInput
               style={globalStyles.btnFiltrosHome}
               editable={false}
@@ -311,21 +323,25 @@ export default function Home({ navigation }) {
           </Pressable>
           <BottomSheet
             isVisible={visibleFiltros}
-            containerStyle={{ backgroundColor: '#333a' }}
+            containerStyle={{ backgroundColor: "#333a" }}
           >
             <ListItem
-              containerStyle={{ backgroundColor: 'rgba(0.5,0.25,0,0.7)' }}
-              style={{ borderBottomWidth: 1, borderColor: '#333a', backgroundColor: "#fff0" }}
+              containerStyle={{ backgroundColor: "rgba(0.5,0.25,0,0.7)" }}
+              style={{
+                borderBottomWidth: 1,
+                borderColor: "#333a",
+                backgroundColor: "#fff0",
+              }}
               onPress={() => {
-                handleCategory(null)
-                isVisibleFiltros(false)
+                handleCategory(null);
+                isVisibleFiltros(false);
               }}
             >
               <ListItem.Content
                 style={{ backgroundColor: "#0000", alignItems: "center" }}
               >
                 <ListItem.Title
-                  style={{ height: 35, color: '#fff', padding: 8 }}
+                  style={{ height: 35, color: "#fff", padding: 8 }}
                 >
                   Todos
                 </ListItem.Title>
@@ -334,18 +350,22 @@ export default function Home({ navigation }) {
             {categories.map((categoria, index) => (
               <ListItem
                 key={index}
-                containerStyle={{ backgroundColor: 'rgba(0.5,0.25,0,0.7)' }}
-                style={{ borderBottomWidth: 1, borderColor: '#333a', backgroundColor: "#fff0" }}
+                containerStyle={{ backgroundColor: "rgba(0.5,0.25,0,0.7)" }}
+                style={{
+                  borderBottomWidth: 1,
+                  borderColor: "#333a",
+                  backgroundColor: "#fff0",
+                }}
                 onPress={() => {
-                  handleCategory(categoria)
-                  isVisibleFiltros(false)
+                  handleCategory(categoria);
+                  isVisibleFiltros(false);
                 }}
               >
                 <ListItem.Content
                   style={{ backgroundColor: "#0000", alignItems: "center" }}
                 >
                   <ListItem.Title
-                    style={{ height: 35, color: '#fff', padding: 8 }}
+                    style={{ height: 35, color: "#fff", padding: 8 }}
                   >
                     {categoria}
                   </ListItem.Title>
@@ -354,13 +374,18 @@ export default function Home({ navigation }) {
             ))}
             <ListItem
               key={999}
-              containerStyle={{ backgroundColor: '#d14545' }}
-              style={{ borderBottomWidth: 1, borderColor: '#333a' }}
+              containerStyle={{ backgroundColor: "#d14545" }}
+              style={{ borderBottomWidth: 1, borderColor: "#333a" }}
               onPress={() => isVisibleFiltros(false)}
             >
               <ListItem.Content style={{ alignItems: "center" }}>
                 <ListItem.Title
-                  style={{ height: 35, color: '#FFF', padding: 8, fontSize: 20 }}
+                  style={{
+                    height: 35,
+                    color: "#FFF",
+                    padding: 8,
+                    fontSize: 20,
+                  }}
                 >
                   Cancelar
                 </ListItem.Title>
@@ -369,24 +394,29 @@ export default function Home({ navigation }) {
           </BottomSheet>
         </View>
       </View>
+
       <ScrollView>
         {availableCommerces.length && flagCards ? (
           <View>
-            {availableCommerces.filter((resto) => {
-              if (searchTerm === "") {
-                return resto;
-              } else {
-                return resto.title.toLowerCase().includes(searchTerm.toLowerCase())
-              }
-            }).map((resto) => {
-              return (
-                <CardHome
-                  key={resto.idResto}
-                  resto={resto}
-                  navigation={navigation}
-                ></CardHome>
-              );
-            })}
+            {availableCommerces
+              .filter((resto) => {
+                if (searchTerm === "") {
+                  return resto;
+                } else {
+                  return resto.title
+                    .toLowerCase()
+                    .includes(searchTerm.toLowerCase());
+                }
+              })
+              .map((resto) => {
+                return (
+                  <CardHome
+                    key={resto.idResto}
+                    resto={resto}
+                    navigation={navigation}
+                  ></CardHome>
+                );
+              })}
           </View>
         ) : (
           <View style={styles.loading}>
@@ -404,7 +434,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: "90%",
     borderColor: "#000000",
-    backgroundColor: '#161616',
+    backgroundColor: "#161616",
     borderRadius: 10,
     borderWidth: 4,
     marginTop: 10,
@@ -473,11 +503,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   container: {
-    marginVertical:10,
+    marginVertical: 10,
     backgroundColor: "#F0EEEE",
     height: 35,
     flexDirection: "row",
-    width: '90%',
+    width: "90%",
     borderRadius: 40,
     alignSelf: "center",
     shadowColor: "#000",
@@ -487,7 +517,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.2,
     shadowRadius: 4.84,
-    elevation: 7
+    elevation: 7,
   },
   textInput: {
     fontFamily: "Gotham-Book",
@@ -495,27 +525,27 @@ const styles = StyleSheet.create({
     fontSize: 40,
     flex: 1,
     paddingLeft: 3,
-    width:'70%',
+    width: "70%",
   },
-  texto:{
-    paddingHorizontal:15,
-    marginVertical:5,
-    textAlign: 'left',
-    justifyContent: "center"
+  texto: {
+    paddingHorizontal: 15,
+    marginVertical: 5,
+    textAlign: "left",
+    justifyContent: "center",
   },
   iconStyle: {
     fontSize: 20,
-    width:20,
-    height:20,
-    color: '#ECCDAA'
+    width: 20,
+    height: 20,
+    color: "#ECCDAA",
   },
   touchableOpacity: {
-    justifyContent:'center',
-    alignItems:'center',
-    width:'15%',
-    height: '100%',
-    borderRadius: 40, 
-    backgroundColor: '#161616',
+    justifyContent: "center",
+    alignItems: "center",
+    width: "15%",
+    height: "100%",
+    borderRadius: 40,
+    backgroundColor: "#161616",
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -523,7 +553,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.2,
     shadowRadius: 4.84,
-    elevation: 5
+    elevation: 5,
   },
-
 });
