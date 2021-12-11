@@ -94,6 +94,10 @@ const ProfileResto = ({ navigation }) => {
   const [newCommerceInfo, setNewCommerceInfo] = useState({});
   const [uploading, setUploading] = useState(false);
 
+  //cantidad de favoritos
+  const [favoritesQty, setFavoritesQty] = useState(null);
+  //promedio del rating
+  const [resultRating, setResultRating] = useState(null);
   useEffect(() => {
     const getInfo = async () => {
       const docRef = doc(firebase.db, "Restos", commerceInfo);
@@ -101,8 +105,18 @@ const ProfileResto = ({ navigation }) => {
       if (docSnap.exists()) {
         let obj = docSnap.data();
         obj.id = docSnap.id;
+        let totalRating = 0;
+        if (obj.reviews.length) {
+          for (let i = 0; i < obj.reviews.length; i++) {
+            totalRating += obj.reviews[i].rating;
+          }
+          let resultado = totalRating / obj.reviews.length;
+          setResultRating(resultado);
+        } else {
+          setResultRating(totalRating);
+        }
         setAvailableCommerces(obj);
-        setImage(obj.restoImage)
+        setImage(obj.restoImage);
         setNewCommerceInfo(obj);
       } else {
         alert("NO HAY INFO");
@@ -111,26 +125,61 @@ const ProfileResto = ({ navigation }) => {
     getInfo();
   }, [commerceInfo]);
 
+  const getRating = () => {
+    let totalRating = 0;
+    if (obj.reviews.length) {
+      for (let i = 0; i < obj.reviews.length; i++) {
+        totalRating += obj.reviews[i].rating;
+      }
+      let resultado = totalRating / obj.reviews.length;
+      setResultRating(resultado);
+    } else {
+      setResultRating(totalRating);
+    }
+  };
+
+  const getFavQty = async () => {
+    try {
+      const docRef = query(
+        collection(firebase.db, "Users"),
+        where("favourites", "!=", "[]")
+      );
+      const docSnap = await getDocs(docRef);
+      if (!docSnap.empty) {
+        let totalFavs = 0;
+        docSnap.forEach((doc) => {
+          let obj = doc.data();
+          if (obj.favourites.length) {
+            let favourites = obj.favourites.filter(
+              (element) => element.idResto === availableCommerces.id
+            );
+            totalFavs += favourites.length;
+          }
+        });
+        setFavoritesQty(totalFavs);
+      }
+    } catch (e) {
+      console.log("e", e);
+    }
+  };
+
+  useEffect(() => {
+    getFavQty();
+  }, []);
+
+  useEffect(() => {
+    console.log("fav", favoritesQty);
+  }, [favoritesQty]);
+
+  useEffect(() => {
+    console.log("rating", resultRating);
+  }, [resultRating]);
+
   useEffect(() => {
     return () => {
       setAvailableCommerces({});
     };
   }, []);
-  // useEffect(() => {
-  //   const q = query(
-  //     collection(firebase.db, "Restos"),
-  //     where("idUser", "==", loggedId)
-  //   );
-  //   const unsubscribe = onSnapshot(q, (querySnapshot) => {
-  //     querySnapshot.forEach((doc) => {
-  //       let obj = doc.data();
-
-  //       setImage(obj.restoImage);
-  //       setAvailableCommerces(obj);
-  //     });
-  //   });
-  // }, []);
-  // console.log("available en resto", availableCommerces);
 
   let openImagePickerAsync = async () => {
     setUploading(true);

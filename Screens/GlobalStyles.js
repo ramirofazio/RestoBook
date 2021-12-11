@@ -296,7 +296,7 @@ const globalStyles = StyleSheet.create({
     padding: 1,
     textAlign: "center",
     color: "#ECCEAB",
-
+    textTransform: "capitalize",
     fontWeight: "bold",
   },
   //----------------------------ACA TERMINA CATEGORIAS LOCALES --------------------------------------------

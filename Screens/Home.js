@@ -56,7 +56,7 @@ import { Feather } from "@expo/vector-icons";
 
 export default function Home({ navigation }) {
   //------LOGIN JOSE------------
-  const [visible, isVisible] = useState(false);
+  const [visibleModalGoogle, setVisibleModalGoogle] = useState(false);
   const [googleUser, setGoogleUser] = useState({
     name: "",
     lastName: "",
@@ -75,6 +75,7 @@ export default function Home({ navigation }) {
   const loggedUser = useSelector((state) => state.currentUser);
   const loggedId = useSelector((state) => state.currentId);
   const categories = useSelector((state) => state.categoriesResto);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -146,14 +147,18 @@ export default function Home({ navigation }) {
 
   const getInfo = async () => {
     try {
+      console.log("getInfo!!!");
       const docRef = doc(firebase.db, "Users", auth.currentUser.uid);
       const docSnap = await getDoc(docRef);
+      console.log("dsnap", docSnap.exists());
       if (!docSnap.exists()) {
+        console.log("if de getinfo!");
         setGoogleUser({ ...googleUser, email: auth.currentUser.email });
-        isVisible(true);
+        setVisibleModalGoogle(true);
       } else {
+        console.log("else de getinfo!");
         let obj = docSnap.data();
-
+        dispatch(CurrentUser(obj));
         setFlagCards(true);
       }
     } catch (e) {
@@ -217,7 +222,8 @@ export default function Home({ navigation }) {
     <Text>Hola!</Text>
         </View>
       </BottomSheet> */}
-      <Modal Modal visible={visible} style={styles.googleUserModal}>
+
+      <Modal visible={visibleModalGoogle} style={styles.googleUserModal}>
         <View style={styles.googleUserForm}>
           <TextInput
             style={styles.googleTextinput}
@@ -260,7 +266,7 @@ export default function Home({ navigation }) {
                 reservations: [],
                 payments: [],
               });
-              isVisible(false);
+              setVisibleModalGoogle(false);
               alert("Gracias!");
             }}
           >
