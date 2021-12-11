@@ -36,6 +36,7 @@ import {
   query,
   getDoc,
   getDocs,
+  updateDoc,
   where,
 } from "firebase/firestore";
 //--------------------------------
@@ -60,6 +61,9 @@ import Checkbox from 'expo-checkbox';
 import { Icon } from "react-native-elements";
 //
 //
+//-----------SPINNER + - ----------------------
+import InputSpinner from "react-native-input-spinner";
+//
 
 //-------INITIALIZATIONS-------
 const auth = getAuth();
@@ -75,14 +79,20 @@ const ProfileResto = ({ navigation }) => {
   const [image, setImage] = useState("");
   const [currentUser, setCurrentUser] = useState({});
 
+  const sectoresResto = useSelector((state) => state.sectoresResto);
+
   const [modalAdminReservasVisible, setModalVisibleAdminReservas] = useState(false);
   const [modalEditVisible, setModalEditVisible] = useState(false)
 
-  const [newCommerceInfo, setNewCommerceInfo] = useState({});
-  const [uploading, setUploading] = useState(false);
+  const [places, setPlaces] = useState(1)
   const [sectorState, setSectorState] = useState([])
   const [timeReservaInicio, setTimeReservaInicio] = useState(0)
   const [timeReservaFin, setTimeReservaFin] = useState(0)
+  const [precioXLugar, setPrecioXLugar] = useState(0)
+  const [flagValidate, setFlagValidate] = useState(false)
+
+  const [newCommerceInfo, setNewCommerceInfo] = useState({});
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     const getInfo = async () => {
@@ -195,22 +205,42 @@ const ProfileResto = ({ navigation }) => {
     }
   }
 
-  // const handleGuardarModalAdmEmpresa = async () => {
-  //   console.log("Aprete")
-  //   const timesReserva = timeReservaInicio + "-" + timeReservaFin;
-  //   try {
-  //     let restoRef = doc(firebase.db, "Restos", idResto);
-  //     setSpinner(true);
-  //     await updateDoc(restoRef, {
-  //       menu: arrayUnion(newValues),
-  //     });
-  //     setSpinner(false);
-  //     navigation.navigate("DetailsResto");
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
+  const handleSectorPlaces = (num, sector) => {
+    setSectorPlaces(num)
 
-  // }
+  }
+
+  const clearStates = () => {
+    setTimeReservaInicio()
+    setTimeReservaFin()
+    setSectorState()
+    setPlaces()
+  }
+
+
+  const timesReserva = timeReservaInicio + "-" + timeReservaFin;
+  const handleGuardar = async () => {
+    //if (flagValidate) {
+    const obj = {
+      timeRange: timesReserva,
+      places: places,
+      sectors: sectorState,
+      precioPorLugar: precioXLugar,
+    }
+    try {
+      let restoRef = doc(firebase.db, "Restos", commerceInfo);
+      await updateDoc(restoRef, {
+        reservationsParams: obj,
+      });
+      setModalVisibleAdminReservas(false)
+      clearStates()
+    } catch (err) {
+      console.log(err);
+    }
+    // } else {
+    //   alert('Complete bien los campos')
+    // }
+  }
 
   return (
     <View style={globalStyles.Perfilcontainer}>
@@ -462,7 +492,7 @@ const ProfileResto = ({ navigation }) => {
                 <Text style={globalStyles.modalText}>Administración de reserva</Text>
 
 
-                <Text style={globalStyles.texts}>Horario para reservar(24hs):</Text>
+                <Text style={globalStyles.texts}>Horario para reservar(24:00hs):</Text>
                 <View style={{ display: "flex", flexDirection: "row" }}>
                   <TextInput
                     style={{
@@ -478,7 +508,7 @@ const ProfileResto = ({ navigation }) => {
                     placeholder="Hora Inicio"
                     placeholderTextColor="#666"
                     textAlign="center"
-                    keyboardType="numeric"
+                    keyboardType="numbers-and-punctuation"
                     value={timeReservaInicio}
                     onChangeText={(value) => setTimeReservaInicio(value)}
                   />
@@ -503,18 +533,46 @@ const ProfileResto = ({ navigation }) => {
                     placeholder="Hora Fin"
                     placeholderTextColor="#666"
                     textAlign="center"
-                    keyboardType="numeric"
+                    keyboardType="numbers-and-punctuation"
                     value={timeReservaFin}
                     onChangeText={(value) => setTimeReservaFin(value)}
                   />
-
                 </View>
 
+                <Text style={globalStyles.texts}> Precio por Lugar:</Text>
+                <TextInput
+                  style={{
+                    alignSelf: "center",
+                    marginVertical: 10,
+                    borderRadius: 10,
+                    backgroundColor: 'rgba(22, 22, 22, .2)',
+                    maxWidth: '100%',
+                    width: '65%',
+                    marginHorizontal: 5,
+                    paddingVertical: 5,
 
-                <Text
-                  style={globalStyles.texts}>
-                  Cantidad de lugares disponibles:</Text>
-                <TouchableOpacity
+                  }}
+                  value={precioXLugar}
+                  placeholder="Precio"
+                  placeholderTextColor="#666"
+                  textAlign="center"
+                  keyboardType="numeric"
+                  onChangeText={(value) => setPrecioXLugar(value)}
+                />
+
+
+                <Text style={globalStyles.texts}> Cantidad de lugares disponibles:</Text>
+                <InputSpinner
+                  style={{
+                    maxWidth: '100%',
+                    width: "65%",
+                    marginVertical: 10,
+                  }}
+                  value={places}
+                  max={50}
+                  min={1}
+                  onChange={(num) => setPlaces(num)}
+                  skin="clean"
                 />
 
                 <Text
@@ -528,6 +586,7 @@ const ProfileResto = ({ navigation }) => {
                         borderRadius: 10,
                         marginHorizontal: 5,
                         backgroundColor: "#bd967e",
+                        marginVertical: 10,
                       }}
                       onPress={() => handleSectores(sector)}
                     >
@@ -539,44 +598,32 @@ const ProfileResto = ({ navigation }) => {
                 <Text
                   style={globalStyles.texts}
                 >Resumen:</Text>
-                <View style={{ borderWidth: 2, borderColor: "red" }}>
-                  {sectorState !== [] ? sectorState.map((sector) => {
-                    let counter = 0
-                    return (
-                      <View style={{
-                        borderWidth: 2,
-                        borderColor: "green",
-                        display: "flex",
-                        flexDirection: "row",
-                        justifyContent: "space-around"
-                      }}>
-                        <Text style={{ marginRight: 45 }}>▪️{sector}</Text>
+                {sectorState?.length ?
+                  <View style={{
+                    borderWidth: 2,
+                    borderColor: "#bd967e",
+                    borderRadius: 10,
+                    maxWidth: "100%",
+                    width: "60%",
+                    height: "35%",
+                    alignItems: "center",
+                    justifyContent: "center"
+                  }}>
+                    <Text style={{ marginVertical: 5, fontSize: 13, fontWeight: "bold" }}>Hora de Reserva: {timesReserva}</Text>
+                    <Text style={{ marginVertical: 5, fontSize: 13, fontWeight: "bold" }}>Lugares Disponibles: {places}</Text>
+                    <Text style={{ marginVertical: 5, fontSize: 13, fontWeight: "bold" }}>Precio Por Lugar: ${precioXLugar}</Text>
+                    <Text style={{ marginTop: 25, fontSize: 13, fontWeight: "bold" }}>Sectores Seleccionados: </Text>
+                    <View style={{ display: "flex", flexDirection: "row" }}>
+                      {sectorState.map((sector) => (
+                        <Text style={{ marginVertical: 5, fontSize: 13, fontWeight: "bold" }}>{sector} - </Text>
+                      ))}
+                    </View>
 
-                        <TouchableOpacity
-                          onPress={() => counter + 1}
-                        >
-                          <Text>+</Text>
-                        </TouchableOpacity>
-
-                        <Text>{counter}</Text>
-
-                        <TouchableOpacity
-                          onPress={() => counter - 1}
-                        >
-                          <Text>-</Text>
-                        </TouchableOpacity>
-
-                      </View>
-                    )
-                  }) : null}
-
-                </View>
-
-
+                  </View> : null}
 
                 <TouchableOpacity
                   style={globalStyles.touchLog}
-                  onPress={() => handleGuardarModalAdmEmpresa()}
+                  onPress={() => handleGuardar()}
                 >
                   <Text>Guardar</Text>
                 </TouchableOpacity>
