@@ -21,6 +21,7 @@ import {
   TextInput,
   Modal,
   ActivityIndicator,
+  Pressable,
 } from "react-native";
 //import { MaterialIcons } from "@expo/vector-icons";
 //
@@ -271,15 +272,17 @@ export default function Home({ navigation }) {
 
         {/*----------------------------------------FILTRADO------------------------------------------- */}
         <View>
-          <TextInput
-            style={globalStyles.btnFiltrosHome}
-            editable={false}
-            placeholder="Buscar por Categoria"
-            textAlign="center"
-            placeholderTextColor="#161616"
-            value={category}
-            onPressIn={() => isVisibleFiltros(true)}
-          />
+          <Pressable onPress={ () => isVisibleFiltros(true)}>
+            <TextInput
+              style={globalStyles.btnFiltrosHome}
+              editable={false}
+              placeholder="Buscar por Categoria"
+              textAlign="center"
+              placeholderTextColor="#161616"
+              value={category}
+              onPressIn={() => isVisibleFiltros(true)}
+            />
+          </Pressable>
           <BottomSheet
             isVisible={visibleFiltros}
             containerStyle={{ backgroundColor: '#333a' }}
