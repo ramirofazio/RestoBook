@@ -141,10 +141,11 @@ const DetailsResto = ({ navigation }) => {
   }, []);
   
   return (
-    <ScrollView style={globalStyles.Home}>
+    <View style={globalStyles.Home}>
       <View style={globalStyles.headerResto}>
         <Text style={{ textAlign: "center", fontSize: 30, paddingVertical: 3, color: "#161616", letterSpacing: 1 }}>{empresaDetail.title}</Text>
       </View>
+    <ScrollView style={globalStyles.Home}>
     
       <View>
         <View style={globalStyles.btnTodasComidas}>
@@ -254,7 +255,7 @@ const DetailsResto = ({ navigation }) => {
             <Marker
               title="Your location"
               coordinate={userLocation}
-              pinColor="#0072B5"
+              pinColor="#eccdaa"
               identifier="userLocation"
            />
            { userLocation && location && (
@@ -314,7 +315,7 @@ const DetailsResto = ({ navigation }) => {
       <View>
       </View>
     </ScrollView>
-
+    </View>
   );
 };
 const styles = StyleSheet.create({

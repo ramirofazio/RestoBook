@@ -20,27 +20,7 @@ const CardFavourite = ({ resto, navigation }) => {
 
 
     return (
-        <View style={{
-            alignSelf: "center",
-            backgroundColor: "#f2f2f2",
-            marginHorizontal: 10,
-            marginVertical: 10,
-            paddingHorizontal: 5,
-            paddingVertical: 5,
-            borderRadius: 25,
-            borderWidth: 1,
-            borderColor: "rgba(22, 22, 22, .2)",
-            width: "95%",
-            height: '80%',
-            shadowColor: "#161616",
-            shadowOffset: {
-              width: 1,
-              height: 2,
-            },
-            shadowOpacity: 3,
-            shadowRadius: 5,
-            elevation: 10,
-        }}>
+        <View style={globalStyles.cardsFavouriteContainer}>
       <TouchableOpacity
         onPress={() => handleOnPress()}
       >

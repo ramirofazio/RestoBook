@@ -47,7 +47,7 @@ export default function ListReviews({navigation, reviews}){
                     onPress={()=> navigation.navigate("GlobalLogin")}
                     >
                         Para escribir una opinion es necesario estar logeado.{" "}
-                    <Text style={styles.loginText}>
+                    <Text style={globalStyles.texts}>
                         Pulsa aqui para iniciar sesion 
                     </Text>
                     </Text>
@@ -57,25 +57,16 @@ export default function ListReviews({navigation, reviews}){
                              {
                                  reviews.map(review => <CardReviews reseña={review} key={review.createAt}></CardReviews>)
                              }
-                        </ScrollView>) : <Text> Este negocio aun no tiene comentarios</Text>}
+                        </ScrollView>) : <Text style={globalStyles.texts}> Este negocio aun no tiene comentarios</Text>}
         </View>
 
                 )
 }
 const styles = StyleSheet.create({
-    container:{
-        backgroundColor:'black',
-        borderRadius:10
-    },
-    btnAddReview:{
-    },
-    btnTitleAddReview:{
-    },
+    
     mustLoginText:{
         margin:20,
         backgroundColor:'white',
     },
-    loginText:{
 
-    }
 }) 
