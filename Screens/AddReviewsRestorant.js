@@ -16,10 +16,10 @@ export default function AddReviewsRestorant({navigation}) {
     const [review, setReview] = useState("")
     const [errorReview, setErrorReview] = useState(null)
 
-    const ratingTotal = empresaDetail.ratingTotal + empresaDetail.rating
-    const quantityVoting = empresaDetail.quantityVoting + 1
-    const ratingResult = empresaDetail.ratingTotal / empresaDetail.quantityVoting
-    let ratingResto = doc(firebase.db,)
+    // const ratingTotal = empresaDetail.ratingTotal + empresaDetail.rating
+    // const quantityVoting = empresaDetail.quantityVoting + 1
+    // const ratingResult = empresaDetail.ratingTotal / empresaDetail.quantityVoting
+    // let ratingResto = doc(firebase.db,)
 
     addReview = async () => {
         if(!validForm()){
@@ -43,16 +43,16 @@ export default function AddReviewsRestorant({navigation}) {
             console.log(err);
            } 
         }
-        console.log(empresaDetail.reviews.rating)
-        const ratingTotal = empresaDetail.ratingTotal + empresaDetail.reviews.rating
-        const quantityVoting = empresaDetail.quantityVoting + 1
-        const ratingResult = empresaDetail.ratingTotal / empresaDetail.quantityVoting
-        let ratingResto = doc(firebase.db, "Resto", empresaDetail.idResto);
-        await updateDoc(ratingResto),{
-            ratingTotal,
-            quantityVoting,
-            ratingResult : ratingResult
-        }
+        // console.log(empresaDetail.reviews.rating)
+        // const ratingTotal = empresaDetail.ratingTotal + empresaDetail.reviews.rating
+        // const quantityVoting = empresaDetail.quantityVoting + 1
+        // const ratingResult = empresaDetail.ratingTotal / empresaDetail.quantityVoting
+        // let ratingResto = doc(firebase.db, "Resto", empresaDetail.idResto);
+        // await updateDoc(ratingResto),{
+        //     ratingTotal,
+        //     quantityVoting,
+        //     ratingResult : ratingResult
+        // }
         
     const validForm = () => {
         setErrorReview(null)

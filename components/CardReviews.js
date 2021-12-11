@@ -10,22 +10,22 @@ export default function CardReviews ({reseña}) {
   const createReview= new Date(createAt.seconds * 1000)
   console.log(fotoUser)
   console.log(rating)
+  
   return (
     <View style={styles.cardsMenuContainer}>
       <View style={styles.viewInfo}>
           <Image
             rounded
             style={styles.img}
-           source= {fotoUser ?  fotoUser : {uri:"https://images.vexels.com/media/users/3/204941/isolated/preview/d8bc6d74b3da7ee41fc99b6000c1e6a4-trazo-de-puntuacion-de-signo-de-interrogacion.png"}
-          }
+            sourse={fotoUser}
          />
-                <Rating
+                 <AirbnbRating
                     count={5}
-                    imageSize={15}
-                    readonly
-                    startingValue={rating}
+                    size={10}
+                    defaultRating={reseña.rating}
+                    showRating={false}
                 >
-                </Rating>
+                </AirbnbRating>
           <Text style={styles.cardsMenuTitle}>{review}</Text>
           <View>
             

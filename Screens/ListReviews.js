@@ -5,7 +5,6 @@ import { onAuthStateChanged, getAuth } from "firebase/auth";
 import { Icon } from 'react-native-elements';
 import globalStyles from './GlobalStyles';
 import CardReviews from "../components/CardReviews";
-import { TouchableOpacity } from 'react-native-gesture-handler';
 const auth=getAuth();
 
 export default function ListReviews({navigation, reviews}){
@@ -76,5 +75,5 @@ const styles = StyleSheet.create({
         height: 250,
         padding: 5,
         borderWidth: 0,
-      }
+      },
 }) 
