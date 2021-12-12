@@ -9,7 +9,7 @@ import UserFavourites from "../Redux/Actions/userFavourites.js";
 //
 //
 //----------REACT-NATIVE UTILS-----------
-import { BottomSheet, ListItem } from "react-native-elements";
+import { BottomSheet, ListItem, Icon} from "react-native-elements";
 import {
   View,
   ScrollView,
@@ -324,7 +324,14 @@ export default function Home({ navigation }) {
     </View>
           {/*----------------------------------------BOTON MAPA------------------------------------------- */}
     <TouchableOpacity style={globalStyles.btnFiltrosHome}>
-      <Text style={globalStyles.texts}>Mapa</Text>
+      <Text style={globalStyles.texts}><Icon
+                reverse
+                name="map-marker-alt"
+                type="font-awesome-5"
+                color="#FDFDFD"
+                reverseColor="#161616"
+                size={12}
+              /></Text>
     </TouchableOpacity>
         {/*----------------------------------------FILTRADO------------------------------------------- */}
         <View>

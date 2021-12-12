@@ -62,6 +62,22 @@ export default Navigator = () => {
             },
           })}
         />
+          <Stack.Screen
+            name="AwaitEmail"
+            component={AwaitEmail}
+            options={{
+              headerTitle: "Verify Email",
+              title: "Confirmacion Email",
+              headerTitleAlign: "center",
+              headerStyle: {
+                backgroundColor: "#161616",
+              },  
+              headerTintColor: "#ECCDAA",
+              headerTitleStyle: {
+                fontSize: 25,
+              },
+            }}
+          />
         <Stack.Screen name="RegisterUser" component={AddUserScreen} />
         <Stack.Screen
           name="RegisterResto"
@@ -175,22 +191,6 @@ export default Navigator = () => {
           }}
         />
 
-        <Stack.Screen
-          name="AwaitEmail"
-          component={AwaitEmail}
-          options={{
-            headerTitle: "Verify Email",
-            title: "Verify Email",
-            headerTitleAlign: "center",
-            headerStyle: {
-              backgroundColor: "#161616",
-            },
-            headerTintColor: "#ECCDAA",
-            headerTitleStyle: {
-              fontSize: 25,
-            },
-          }}
-        />
         <Stack.Screen
           name="ProfileUser"
           component={ProfileUser}
