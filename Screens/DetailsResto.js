@@ -126,6 +126,7 @@ const DetailsResto = ({ navigation }) => {
   useEffect(() => {
     getMenu();
   }, []);
+  
   const handleCategory = async (category) => {
     const docRef = doc(firebase.db, "Restos", empresaDetail.idResto);
     const docSnap = await getDoc(docRef);

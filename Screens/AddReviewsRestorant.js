@@ -16,12 +16,7 @@ export default function AddReviewsRestorant({navigation}) {
     const [review, setReview] = useState("")
     const [errorReview, setErrorReview] = useState(null)
 
-    // const ratingTotal = empresaDetail.ratingTotal + empresaDetail.rating
-    // const quantityVoting = empresaDetail.quantityVoting + 1
-    // const ratingResult = empresaDetail.ratingTotal / empresaDetail.quantityVoting
-    // let ratingResto = doc(firebase.db,)
-
-    addReview = async () => {
+    const addReview = async () => {
         if(!validForm()){
             return
         }
@@ -43,16 +38,6 @@ export default function AddReviewsRestorant({navigation}) {
             console.log(err);
            } 
         }
-        // console.log(empresaDetail.reviews.rating)
-        // const ratingTotal = empresaDetail.ratingTotal + empresaDetail.reviews.rating
-        // const quantityVoting = empresaDetail.quantityVoting + 1
-        // const ratingResult = empresaDetail.ratingTotal / empresaDetail.quantityVoting
-        // let ratingResto = doc(firebase.db, "Resto", empresaDetail.idResto);
-        // await updateDoc(ratingResto),{
-        //     ratingTotal,
-        //     quantityVoting,
-        //     ratingResult : ratingResult
-        // }
         
     const validForm = () => {
         setErrorReview(null)
@@ -65,8 +50,11 @@ export default function AddReviewsRestorant({navigation}) {
     }
     return (
         <View style={styles.container}>
-            <Modal animationType="slide" transparent={true}>
-                <View style={styles.viewRating}>
+              <Modal
+              animationType="slide"
+              transparent={true}
+            >
+                <View style={styles.viewRating}>  
                 <AirbnbRating
                     count={5}
                     reviews={["Malo", "Regular", "Normal", "Bueno", "Excelente"]}
