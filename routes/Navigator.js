@@ -221,13 +221,13 @@ export default Navigator = () => {
           component={ProfileResto}
           options={{
             headerTitle: " Mi Empresa",
-            title: "Profile",
+            title: "Mi Empresa",
 
             headerTitleAlign: "center",
             headerStyle: {
-              backgroundColor: "#f6efd2",
+              backgroundColor: "#161616",
             },
-            headerTintColor: "#392c28",
+            headerTintColor: "#ECCDAA",
             headerTitleStyle: {
               fontSize: 25,
             },

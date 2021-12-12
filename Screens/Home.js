@@ -217,55 +217,69 @@ export default function Home({ navigation }) {
     <Text>Hola!</Text>
         </View>
       </BottomSheet> */}
-      <Modal Modal visible={visible} style={styles.googleUserModal}>
-        <View style={styles.googleUserForm}>
-          <TextInput
-            style={styles.googleTextinput}
-            placeholder="Nombre"
-            onChangeText={(value) => {
-              setGoogleUser({
-                ...googleUser,
-                name: value,
-              });
-            }}
-          />
-          <TextInput
-            placeholder="Apellido"
-            onChangeText={(value) => {
-              setGoogleUser({
-                ...googleUser,
-                lastName: value,
-              });
-            }}
-          />
-          <TextInput
-            placeholder="Celular"
-            onChangeText={(value) => {
-              setGoogleUser({
-                ...googleUser,
-                cel: value,
-              });
-            }}
-          />
-          <TouchableOpacity
-            onPress={() => {
-              firebase.db.collection("Users").doc(auth.currentUser.uid).set({
-                id: auth.currentUser.uid,
-                name: googleUser.name,
-                lastName: googleUser.lastName,
-                cel: googleUser.cel,
-                email: googleUser.email,
-                commerce: false,
-                profileImage: DEFAULT_PROFILE_IMAGE,
-                reservations: [],
-                payments: [],
-              });
-              isVisible(false);
-              alert("Gracias!");
-            }}
-          >
-            <Text>Enviar</Text>
-          </TouchableOpacity>
+      <Modal 
+        visible={visible}
+        animationType="slide"
+        transparent={true}
+      >
+        <View style={globalStyles.centeredView}>
+          <View style={globalStyles.modalView}>
+            <TextInput
+              style={globalStyles.inputComponent}
+              placeholder="Nombre"
+              placeholderTextColor="#666"
+              textAlign="center"
+              onChangeText={(value) => {
+                setGoogleUser({
+                  ...googleUser,
+                  name: value,
+                });
+              }}
+            />
+            <TextInput
+              style={globalStyles.inputComponent}
+              placeholder="Apellido"
+              placeholderTextColor="#666"
+              textAlign="center"
+              onChangeText={(value) => {
+                setGoogleUser({
+                  ...googleUser,
+                  lastName: value,
+                });
+              }}
+            />
+            <TextInput
+              style={globalStyles.inputComponent}
+              placeholder="Celular"
+              placeholderTextColor="#666"
+              textAlign="center"
+              onChangeText={(value) => {
+                setGoogleUser({
+                  ...googleUser,
+                  cel: value,
+                });
+              }}
+            />
+            <TouchableOpacity
+              style={globalStyles.btnTodasComidas}
+              onPress={() => {
+                firebase.db.collection("Users").doc(auth.currentUser.uid).set({
+                  id: auth.currentUser.uid,
+                  name: googleUser.name,
+                  lastName: googleUser.lastName,
+                  cel: googleUser.cel,
+                  email: googleUser.email,
+                  commerce: false,
+                  profileImage: DEFAULT_PROFILE_IMAGE,
+                  reservations: [],
+                  payments: [],
+                });
+                isVisible(false);
+              }}
+            >
+              <Text style={globalStyles.texts}>Enviar</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </Modal>
       <View style={styles.textContainer}>

@@ -478,11 +478,11 @@ const ProfileResto = ({ navigation }) => {
             <View style={globalStyles.centeredView}>
               <View style={globalStyles.modalView}>
                 <TouchableOpacity
-                  style={globalStyles.touchLog}
+                  style={globalStyles.btnTodasComidas}
                   onPress={() => setModalVisibleAdminReservas(!modalAdminReservasVisible)}
                 >
                   <Text
-                    style={globalStyles.textStyle}
+                    style={globalStyles.texts}
                   >
                     X
                   </Text>
@@ -495,16 +495,18 @@ const ProfileResto = ({ navigation }) => {
                 <Text style={globalStyles.texts}>Horario para reservar(24:00hs):</Text>
                 <View style={{ display: "flex", flexDirection: "row" }}>
                   <TextInput
-                    style={{
+                    style={
+                      {
                       alignSelf: "center",
                       marginVertical: 10,
-                      borderRadius: 10,
+                      borderRadius: 15,
                       backgroundColor: 'rgba(22, 22, 22, .2)',
                       maxWidth: '100%',
                       width: '30%',
                       marginHorizontal: 5,
                       paddingVertical: 5,
-                    }}
+                    }
+                  }
                     placeholder="Hora Inicio"
                     placeholderTextColor="#666"
                     textAlign="center"
@@ -522,7 +524,7 @@ const ProfileResto = ({ navigation }) => {
                     style={{
                       alignSelf: "center",
                       marginVertical: 10,
-                      borderRadius: 10,
+                      borderRadius: 15,
                       backgroundColor: 'rgba(22, 22, 22, .2)',
                       maxWidth: '100%',
                       width: '30%',
@@ -544,13 +546,12 @@ const ProfileResto = ({ navigation }) => {
                   style={{
                     alignSelf: "center",
                     marginVertical: 10,
-                    borderRadius: 10,
+                    borderRadius: 15,
                     backgroundColor: 'rgba(22, 22, 22, .2)',
                     maxWidth: '100%',
                     width: '65%',
                     marginHorizontal: 5,
                     paddingVertical: 5,
-
                   }}
                   value={precioXLugar}
                   placeholder="Precio"
@@ -571,8 +572,13 @@ const ProfileResto = ({ navigation }) => {
                   value={places}
                   max={50}
                   min={1}
+                  buttonFontSize={25}
                   onChange={(num) => setPlaces(num)}
                   skin="clean"
+                  colorPress='#eccdaa'
+                  background="#f2f2f2"
+                  colorAsBackground={true}
+                  fontSize={20}
                 />
 
                 <Text
@@ -583,14 +589,25 @@ const ProfileResto = ({ navigation }) => {
                     <TouchableOpacity
                       style={{
                         alignItems: "center",
-                        borderRadius: 10,
+                        borderRadius: 15,
                         marginHorizontal: 5,
-                        backgroundColor: "#bd967e",
-                        marginVertical: 10,
+                        backgroundColor: "#f2f2f2",
+                        borderColor: "#eccdaa",
+                        borderWidth: 2,
+                        marginVertical: 5,
+                        shadowColor: "#000",
+                        shadowOffset: {
+                          width: 0,
+                          height: 2,
+                        },
+                        shadowOpacity: 0.2,
+                        shadowRadius: 4.84,
+
+                        elevation: 5,
                       }}
                       onPress={() => handleSectores(sector)}
                     >
-                      <Text style={{ padding: 7 }}>{sector}</Text>
+                      <Text style={{ padding: 7, fontWeight: "bold", color: "#4e4e4e" }}>{sector}</Text>
                     </TouchableOpacity>
                   ))}
                 </View>
@@ -601,31 +618,31 @@ const ProfileResto = ({ navigation }) => {
                 {sectorState?.length ?
                   <View style={{
                     borderWidth: 2,
-                    borderColor: "#bd967e",
-                    borderRadius: 10,
+                    borderColor: "#eccdaa",
+                    borderRadius: 35,
                     maxWidth: "100%",
-                    width: "60%",
-                    height: "35%",
+                    width: "90%",
+                    // height: "35%",
                     alignItems: "center",
                     justifyContent: "center"
                   }}>
                     <Text style={{ marginVertical: 5, fontSize: 13, fontWeight: "bold" }}>Hora de Reserva: {timesReserva}</Text>
                     <Text style={{ marginVertical: 5, fontSize: 13, fontWeight: "bold" }}>Lugares Disponibles: {places}</Text>
                     <Text style={{ marginVertical: 5, fontSize: 13, fontWeight: "bold" }}>Precio Por Lugar: ${precioXLugar}</Text>
-                    <Text style={{ marginTop: 25, fontSize: 13, fontWeight: "bold" }}>Sectores Seleccionados: </Text>
+                    <Text style={{ marginTop: 15, fontSize: 15, fontWeight: "bold" }}>Sectores Seleccionados: </Text>
                     <View style={{ display: "flex", flexDirection: "row" }}>
                       {sectorState.map((sector) => (
-                        <Text style={{ marginVertical: 5, fontSize: 13, fontWeight: "bold" }}>{sector} - </Text>
+                        <Text style={{ marginVertical: 8, fontSize: 13, fontWeight: "bold" }}>{sector} - </Text>
                       ))}
                     </View>
 
                   </View> : null}
 
                 <TouchableOpacity
-                  style={globalStyles.touchLog}
+                  style={globalStyles.btnTodasComidas}
                   onPress={() => handleGuardar()}
                 >
-                  <Text>Guardar</Text>
+                  <Text style={globalStyles.texts}>Guardar</Text>
                 </TouchableOpacity>
 
               </View>

@@ -328,7 +328,7 @@ const DetailsResto = ({ navigation }) => {
                 onChangeText={(value) => setCantLugares(parseInt(value))}
               ></TextInput>
               <Text style={globalStyles.texts}>
-                Precio por cabeza otorgado por Empresa seria:
+                Precio por persona otorgado por Empresa:
               </Text>
               <TextInput
                 placeholder="Cantidad de lugares"
@@ -344,7 +344,7 @@ const DetailsResto = ({ navigation }) => {
                 onPress={() => onPressReservar(cantLugares, precioCabeza)}
               >
                 <Text style={globalStyles.texts}>
-                  Reservar mi lugar por ${cantLugares * precioCabeza}
+                  Completar reserva por ${cantLugares * precioCabeza}
                 </Text>
               </TouchableOpacity>
             </View>
