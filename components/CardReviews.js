@@ -66,6 +66,8 @@ export default function CardReviews({ reseña }) {
   );
 }
 
+
+
 const styles = StyleSheet.create({
   cardsImg:{
     width: '15.6%',

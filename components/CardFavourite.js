@@ -36,10 +36,10 @@ const CardFavourite = ({
   const [deleting, setDeleting] = useState(false);
   const [hearthColor, setHearthColor] = useState("red");
   let infoFavourite = {
-    id: resto.id,
+    idResto: resto.idResto,
     title: resto.title,
     phone: resto.phone,
-    address: resto.address,
+    location: resto.location,
     img: resto.img,
   };
 
@@ -52,11 +52,11 @@ const CardFavourite = ({
   const removeFromFavourite = async () => {
     if (auth?.currentUser?.uid) {
       try {
-        console.log('info en prof', infoFavourite)
+        console.log("info en prof", infoFavourite);
         setDeleting(true);
         setHearthColor("grey");
         let modifiedFavs = myFavourites.filter(
-          (element) => element.id !== infoFavourite.id
+          (element) => element.idResto !== infoFavourite.idResto
         );
         console.log(modifiedFavs);
         setMyFavourites(modifiedFavs);
@@ -110,7 +110,8 @@ const CardFavourite = ({
                 reverseColor="#161616"
                 size={11}
               />{" "}
-              {resto.address}
+              {resto.location.address.split(",")[0]},
+              {resto.location.address.split(",")[1]}
             </Text>
           </View>
           <View>

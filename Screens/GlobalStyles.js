@@ -55,7 +55,7 @@ const globalStyles = StyleSheet.create({
     backgroundColor: "#fdfdfd",
     paddingVertical: 5,
     paddingHorizontal: 9,
-    marginVertical: 10,
+    marginVertical: 15,
     borderRadius: 15,
     alignItems: "center",
     justifyContent: "center",
@@ -296,7 +296,7 @@ const globalStyles = StyleSheet.create({
     padding: 1,
     textAlign: "center",
     color: "#ECCEAB",
-
+    textTransform: "capitalize",
     fontWeight: "bold",
   },
   //----------------------------ACA TERMINA CATEGORIAS LOCALES --------------------------------------------

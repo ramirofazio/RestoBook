@@ -70,6 +70,8 @@ const DetailsResto = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
 
   //--------------------------FILTROS CATEGORY--------------------------
+  const [menuArr, setMenuArr] = useState([]);
+  const [menuFiltered, setMenuFiltered] = useState([]);
   const [menuCategory, setMenuCategory] = useState();
   const empresaDetail = useSelector((state) => state.empresaDetail);
   //--------------------GEOLOCATION-------------------------------
@@ -84,7 +86,7 @@ const DetailsResto = ({ navigation }) => {
       `whatsapp://send?text=Hola RestoBook&phone=${number}`
     );
   };
-  const [menuArr, setMenuArr] = useState([]);
+
   const onPressReservar = async (cantLugares, precioCabeza) => {
     const url = await axios({
       method: "POST",
@@ -108,51 +110,56 @@ const DetailsResto = ({ navigation }) => {
       edgePadding: { top: 50, right: 50, bottom: 50, left: 50 },
     });
   }, []);
-  const getMenu = () => {
-    const q = query(collection(firebase.db, "Restos"));
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      let menu = [];
-      console.log("SNAP DETAILSRESTO 115");
-      querySnapshot.forEach((doc) => {
-        if (doc.id === empresaDetail.idResto) {
-          let obj = doc.data();
-          menu = obj.menu;
-          setMenuArr(menu);
-        }
-      });
-    });
-    setMenuCategory("");
-  };
-  useEffect(() => {
-    getMenu();
-  }, []);
-  
-  const handleCategory = async (category) => {
-    const docRef = doc(firebase.db, "Restos", empresaDetail.idResto);
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
-      const menuResto = docSnap.data().menu;
+  // const getMenu = () => {
+  //   const q = query(collection(firebase.db, "Restos"));
+  //   const unsubscribe = onSnapshot(q, (querySnapshot) => {
+  //     let menu = [];
+  // console.log("SNAP DETAILSRESTO 115");
+  //     querySnapshot.forEach((doc) => {
+  //       if (doc.id === empresaDetail.idResto) {
+  //         let obj = doc.data();
+  //         menu = obj.menu;
+  //         setMenuArr(menu);
+  //       }
+  //     });
+  //   });
+  //   setMenuCategory("");
+  // };
+  // useEffect(() => {
+  //   getMenu();
+  // }, []);
 
-      const result = menuResto.filter(
-        (menu) => menu.category === category.toLowerCase()
-      );
-
-      if (result.length === 0) {
-        alert("No hay comidas con esta categoria");
-        getMenu();
-      } else {
-        setMenuCategory(result);
-      }
-    }
-  };
-
-  useEffect(() => {
+  const getInfo = () => {
     const q = doc(firebase.db, "Restos", empresaDetail.idResto);
     const unsubscribe = onSnapshot(q, (doc) => {
-      console.log("SNAP DETAILSRESTO 151");
-      setReviews(doc.data().reviews);
+      let obj = doc.data();
+      let categories = obj.menu.map((element) => element.category);
+
+      setMenuCategory(categories);
+      setMenuArr(obj.menu);
+      setReviews(obj.reviews);
     });
+  };
+  useEffect(() => {
+    getInfo();
   }, []);
+
+  // useEffect(() => {
+  //   const q = doc(firebase.db, "Restos", empresaDetail.idResto);
+  //   const unsubscribe = onSnapshot(q, (doc) => {
+  //     console.log("SNAP DETAILSRESTO 151");
+  //     setReviews(doc.data().reviews);
+  //   });
+  // }, []);
+
+  const handleCategory = async (category) => {
+    if (!category) {
+      setMenuFiltered(menuArr);
+    } else {
+      let filtered = menuArr.filter((element) => element.category === category);
+      setMenuFiltered(filtered);
+    }
+  };
 
   return (
     <View style={globalStyles.Home}>
@@ -185,39 +192,31 @@ const DetailsResto = ({ navigation }) => {
               </Text>
             </TouchableOpacity>
           </View>
+
           <View style={styles.categoriesContainer}>
-            <View style={globalStyles.categoriesViewDetail}>
-              <TouchableOpacity onPress={() => handleCategory(ENTRADAS)}>
-                <Text style={globalStyles.categoriesText}>Entradas</Text>
-              </TouchableOpacity>
-            </View>
+            {/* mapear arr y devolver uno asi */}
 
-            <View style={globalStyles.categoriesViewDetail}>
-              <TouchableOpacity onPress={() => handleCategory(PLATO_PRINCIPAL)}>
-                <Text style={globalStyles.categoriesText}>Plato Principal</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={globalStyles.categoriesViewDetail}>
-              <TouchableOpacity onPress={() => handleCategory(GUARNICION)}>
-                <Text style={globalStyles.categoriesText}>Guarnicion</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={globalStyles.categoriesViewDetail}>
-              <TouchableOpacity onPress={() => handleCategory(BEBIDA)}>
-                <Text style={globalStyles.categoriesText}>Bebidas</Text>
-              </TouchableOpacity>
-            </View>
-
-            <View style={globalStyles.categoriesViewDetail}>
-              <TouchableOpacity onPress={() => handleCategory(POSTRES)}>
-                <Text style={globalStyles.categoriesText}>Postres</Text>
-              </TouchableOpacity>
-            </View>
+            {menuCategory?.map((categoria) => {
+              return (
+                <View style={globalStyles.categoriesViewDetail} key={categoria}>
+                  <TouchableOpacity onPress={() => handleCategory(categoria)}>
+                    <Text style={globalStyles.categoriesText}>{categoria}</Text>
+                  </TouchableOpacity>
+                </View>
+              );
+            })}
+            {menuArr.length ? (
+              <View style={globalStyles.categoriesViewDetail} key={"empty"}>
+                <TouchableOpacity onPress={() => handleCategory()}>
+                  <Text style={globalStyles.categoriesText}>Limpiar</Text>
+                </TouchableOpacity>
+              </View>
+            ) : null}
           </View>
           {menuArr.length > 0 ? (
             <ScrollView style={styles.showMenu}>
-              {menuCategory
-                ? menuCategory.map((menu, index) => {
+              {menuFiltered.length
+                ? menuFiltered.map((menu, index) => {
                     return (
                       <CardMenu key={index} menu={menu}>
                         {" "}
@@ -328,7 +327,7 @@ const DetailsResto = ({ navigation }) => {
                 onChangeText={(value) => setCantLugares(parseInt(value))}
               ></TextInput>
               <Text style={globalStyles.texts}>
-                Precio por cabeza otorgado por Empresa seria:
+                Precio por persona otorgado por Empresa:
               </Text>
               <TextInput
                 placeholder="Cantidad de lugares"
@@ -344,7 +343,7 @@ const DetailsResto = ({ navigation }) => {
                 onPress={() => onPressReservar(cantLugares, precioCabeza)}
               >
                 <Text style={globalStyles.texts}>
-                  Reservar mi lugar por ${cantLugares * precioCabeza}
+                  Completar reserva por ${cantLugares * precioCabeza}
                 </Text>
               </TouchableOpacity>
             </View>
