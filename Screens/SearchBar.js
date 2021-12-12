@@ -37,7 +37,7 @@ export default function Search({ }) {
 const styles = StyleSheet.create({
 
   container: {
-    marginVertical:10,
+    marginTop:20,
     backgroundColor: "#F0EEEE",
     height: 35,
     flexDirection: "row",
