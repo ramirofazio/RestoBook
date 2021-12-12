@@ -128,16 +128,17 @@ const ProfileResto = ({ navigation }) => {
 
   const getRating = () => {
     let totalRating = 0;
-    if (obj.reviews.length) {
-      for (let i = 0; i < obj.reviews.length; i++) {
-        totalRating += obj.reviews[i].rating;
+    if (availableCommerces?.reviews?.length) {
+      for (let i = 0; i < availableCommerces?.reviews?.length; i++) {
+        totalRating += availableCommerces?.reviews[i]?.rating;
       }
-      let resultado = totalRating / obj.reviews.length;
+      let resultado = totalRating / availableCommerces?.reviews?.length;
       setResultRating(resultado);
     } else {
       setResultRating(totalRating);
     }
   };
+
 
   const getFavQty = async () => {
     try {
