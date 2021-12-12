@@ -322,6 +322,10 @@ export default function Home({ navigation }) {
         <Picker.Item label="Z-A" value="Z-A" />
       </Picker>
     </View>
+          {/*----------------------------------------BOTON MAPA------------------------------------------- */}
+    <TouchableOpacity style={globalStyles.btnFiltrosHome}>
+      <Text style={globalStyles.texts}>Mapa</Text>
+    </TouchableOpacity>
         {/*----------------------------------------FILTRADO------------------------------------------- */}
         <View>
           <Pressable onPress={() => isVisibleFiltros(true)}>
@@ -340,7 +344,7 @@ export default function Home({ navigation }) {
             containerStyle={{ backgroundColor: "#333a" }}
           >
             <ListItem
-              containerStyle={{ backgroundColor: "rgba(0.5,0.25,0,0.7)" }}
+              containerStyle={{ backgroundColor: "rgba(242, 242, 242,0.8)" }}
               style={{
                 borderBottomWidth: 1,
                 borderColor: "#333a",
@@ -355,7 +359,12 @@ export default function Home({ navigation }) {
                 style={{ backgroundColor: "#0000", alignItems: "center" }}
               >
                 <ListItem.Title
-                  style={{ height: 35, color: "#fff", padding: 8 }}
+                  style={{
+                    height: 35,
+                    color: "#161616",
+                    paddingVertical: 5,
+                    fontWeight: "bold",
+                  }}
                 >
                   Todos
                 </ListItem.Title>
@@ -364,7 +373,7 @@ export default function Home({ navigation }) {
             {categories.map((categoria, index) => (
               <ListItem
                 key={index}
-                containerStyle={{ backgroundColor: "rgba(0.5,0.25,0,0.7)" }}
+                containerStyle={{backgroundColor: "rgba(242, 242, 242,0.8)" }}
                 style={{
                   borderBottomWidth: 1,
                   borderColor: "#333a",
@@ -379,7 +388,10 @@ export default function Home({ navigation }) {
                   style={{ backgroundColor: "#0000", alignItems: "center" }}
                 >
                   <ListItem.Title
-                    style={{ height: 35, color: "#fff", padding: 8 }}
+                    style={{height: 35,
+                      color: "#161616",
+                      paddingVertical: 5,
+                      fontWeight: "bold", }}
                   >
                     {categoria}
                   </ListItem.Title>
@@ -388,17 +400,14 @@ export default function Home({ navigation }) {
             ))}
             <ListItem
               key={999}
-              containerStyle={{ backgroundColor: "#d14545" }}
-              style={{ borderBottomWidth: 1, borderColor: "#333a" }}
+              containerStyle={{ backgroundColor: "#eccdaa" }}
+              style={{ borderBottomWidth: 1, borderColor: "#ffff" }}
               onPress={() => isVisibleFiltros(false)}
             >
               <ListItem.Content style={{ alignItems: "center" }}>
                 <ListItem.Title
                   style={{
-                    height: 35,
-                    color: "#FFF",
-                    padding: 8,
-                    fontSize: 20,
+                     height: 35, color: "#161616", fontSize: 20 
                   }}
                 >
                   Cancelar
@@ -517,7 +526,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   container: {
-    marginVertical: 10,
+    marginTop: 15,
     backgroundColor: "#F0EEEE",
     height: 35,
     flexDirection: "row",
