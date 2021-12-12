@@ -449,51 +449,8 @@ const ProfileResto = ({ navigation }) => {
             textTransform: "capitalize",
           }}
         >
-          {currentUser?.description}
+          {availableCommerces?.description}
         </Text>
-
-        <Text style={{ fontSize: 25, color: "#161616", textAlign: "center" }}>
-          <Icon name="home" type="font-awesome-5" color="#161616" size={25} />{" "}
-          Mis Comercios
-        </Text>
-        <Divider
-          orientation="horizontal"
-          width={2}
-          inset={true}
-          insetType={"middle"}
-          color={"rgba(00, 00, 00, .5)"}
-          style={{ marginVertical: 10 }}
-        />
-        <ScrollView
-          horizontal={true}
-          pagingEnabled
-          showsHorizontalScrollIndicator={false}
-          style={globalStyles.FavouriteContainer}
-          onScroll={Animated.event([
-            {
-              nativeEvent: {
-                contentOffset: {
-                  x: scrollX,
-                },
-              },
-            },
-          ])}
-          scrollEventThrottle={1}
-        >
-          {availableCommerces.length ? (
-            <View>
-              {availableCommerces.map((element) => {
-                return (
-                  <View>
-                    <Text>{element.title}</Text>
-                    <Text>{element.Description}</Text>
-                  </View>
-                );
-              })}
-            </View>
-          ) : null}
-        </ScrollView>
-
         {/* MODAL DE ADMINISTRAR RESERVAS */}
 
         <TouchableOpacity
@@ -522,12 +479,12 @@ const ProfileResto = ({ navigation }) => {
             <View style={globalStyles.centeredView}>
               <View style={globalStyles.modalView}>
                 <TouchableOpacity
-                  style={globalStyles.touchLog}
+                  style={globalStyles.btnTodasComidas}
                   onPress={() =>
                     setModalVisibleAdminReservas(!modalAdminReservasVisible)
                   }
                 >
-                  <Text style={globalStyles.textStyle}>X</Text>
+                  <Text style={globalStyles.texts}>X</Text>
                 </TouchableOpacity>
 
                 <Text style={globalStyles.modalText}>
@@ -542,7 +499,7 @@ const ProfileResto = ({ navigation }) => {
                     style={{
                       alignSelf: "center",
                       marginVertical: 10,
-                      borderRadius: 10,
+                      borderRadius: 15,
                       backgroundColor: "rgba(22, 22, 22, .2)",
                       maxWidth: "100%",
                       width: "30%",
@@ -571,7 +528,7 @@ const ProfileResto = ({ navigation }) => {
                     style={{
                       alignSelf: "center",
                       marginVertical: 10,
-                      borderRadius: 10,
+                      borderRadius: 15,
                       backgroundColor: "rgba(22, 22, 22, .2)",
                       maxWidth: "100%",
                       width: "30%",
@@ -592,7 +549,7 @@ const ProfileResto = ({ navigation }) => {
                   style={{
                     alignSelf: "center",
                     marginVertical: 10,
-                    borderRadius: 10,
+                    borderRadius: 15,
                     backgroundColor: "rgba(22, 22, 22, .2)",
                     maxWidth: "100%",
                     width: "65%",
@@ -620,8 +577,13 @@ const ProfileResto = ({ navigation }) => {
                   value={places}
                   max={50}
                   min={1}
+                  buttonFontSize={25}
                   onChange={(num) => setPlaces(num)}
                   skin="clean"
+                  colorPress="#eccdaa"
+                  background="#f2f2f2"
+                  colorAsBackground={true}
+                  fontSize={20}
                 />
 
                 <Text style={globalStyles.texts}>Sectores disponibles: </Text>
@@ -630,14 +592,33 @@ const ProfileResto = ({ navigation }) => {
                     <TouchableOpacity
                       style={{
                         alignItems: "center",
-                        borderRadius: 10,
+                        borderRadius: 15,
                         marginHorizontal: 5,
-                        backgroundColor: "#bd967e",
-                        marginVertical: 10,
+                        backgroundColor: "#f2f2f2",
+                        borderColor: "#eccdaa",
+                        borderWidth: 2,
+                        marginVertical: 5,
+                        shadowColor: "#000",
+                        shadowOffset: {
+                          width: 0,
+                          height: 2,
+                        },
+                        shadowOpacity: 0.2,
+                        shadowRadius: 4.84,
+
+                        elevation: 5,
                       }}
                       onPress={() => handleSectores(sector)}
                     >
-                      <Text style={{ padding: 7 }}>{sector}</Text>
+                      <Text
+                        style={{
+                          padding: 7,
+                          fontWeight: "bold",
+                          color: "#4e4e4e",
+                        }}
+                      >
+                        {sector}
+                      </Text>
                     </TouchableOpacity>
                   ))}
                 </View>
@@ -647,11 +628,11 @@ const ProfileResto = ({ navigation }) => {
                   <View
                     style={{
                       borderWidth: 2,
-                      borderColor: "#bd967e",
-                      borderRadius: 10,
+                      borderColor: "#eccdaa",
+                      borderRadius: 35,
                       maxWidth: "100%",
-                      width: "60%",
-                      height: "35%",
+                      width: "90%",
+                      // height: "35%",
                       alignItems: "center",
                       justifyContent: "center",
                     }}
@@ -685,8 +666,8 @@ const ProfileResto = ({ navigation }) => {
                     </Text>
                     <Text
                       style={{
-                        marginTop: 25,
-                        fontSize: 13,
+                        marginTop: 15,
+                        fontSize: 15,
                         fontWeight: "bold",
                       }}
                     >
@@ -696,7 +677,7 @@ const ProfileResto = ({ navigation }) => {
                       {sectorState.map((sector) => (
                         <Text
                           style={{
-                            marginVertical: 5,
+                            marginVertical: 8,
                             fontSize: 13,
                             fontWeight: "bold",
                           }}
@@ -709,10 +690,10 @@ const ProfileResto = ({ navigation }) => {
                 ) : null}
 
                 <TouchableOpacity
-                  style={globalStyles.touchLog}
+                  style={globalStyles.btnTodasComidas}
                   onPress={() => handleGuardar()}
                 >
-                  <Text>Guardar</Text>
+                  <Text style={globalStyles.texts}>Guardar</Text>
                 </TouchableOpacity>
               </View>
             </View>

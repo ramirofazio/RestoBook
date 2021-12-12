@@ -9,7 +9,7 @@ import UserFavourites from "../Redux/Actions/userFavourites.js";
 //
 //
 //----------REACT-NATIVE UTILS-----------
-import { BottomSheet, ListItem } from "react-native-elements";
+import { BottomSheet, ListItem, Icon} from "react-native-elements";
 import {
   View,
   ScrollView,
@@ -222,56 +222,69 @@ export default function Home({ navigation }) {
     <Text>Hola!</Text>
         </View>
       </BottomSheet> */}
-
-      <Modal visible={visibleModalGoogle} style={styles.googleUserModal}>
-        <View style={styles.googleUserForm}>
-          <TextInput
-            style={styles.googleTextinput}
-            placeholder="Nombre"
-            onChangeText={(value) => {
-              setGoogleUser({
-                ...googleUser,
-                name: value,
-              });
-            }}
-          />
-          <TextInput
-            placeholder="Apellido"
-            onChangeText={(value) => {
-              setGoogleUser({
-                ...googleUser,
-                lastName: value,
-              });
-            }}
-          />
-          <TextInput
-            placeholder="Celular"
-            onChangeText={(value) => {
-              setGoogleUser({
-                ...googleUser,
-                cel: value,
-              });
-            }}
-          />
-          <TouchableOpacity
-            onPress={() => {
-              firebase.db.collection("Users").doc(auth.currentUser.uid).set({
-                id: auth.currentUser.uid,
-                name: googleUser.name,
-                lastName: googleUser.lastName,
-                cel: googleUser.cel,
-                email: googleUser.email,
-                commerce: false,
-                profileImage: DEFAULT_PROFILE_IMAGE,
-                reservations: [],
-                payments: [],
-              });
-              setVisibleModalGoogle(false);
-              alert("Gracias!");
-            }}
-          >
-            <Text>Enviar</Text>
-          </TouchableOpacity>
+      <Modal 
+      visible={visibleModalGoogle}
+        animationType="slide"
+        transparent={true}
+      >
+        <View style={globalStyles.centeredView}>
+          <View style={globalStyles.modalView}>
+            <TextInput
+              style={globalStyles.inputComponent}
+              placeholder="Nombre"
+              placeholderTextColor="#666"
+              textAlign="center"
+              onChangeText={(value) => {
+                setGoogleUser({
+                  ...googleUser,
+                  name: value,
+                });
+              }}
+            />
+            <TextInput
+              style={globalStyles.inputComponent}
+              placeholder="Apellido"
+              placeholderTextColor="#666"
+              textAlign="center"
+              onChangeText={(value) => {
+                setGoogleUser({
+                  ...googleUser,
+                  lastName: value,
+                });
+              }}
+            />
+            <TextInput
+              style={globalStyles.inputComponent}
+              placeholder="Celular"
+              placeholderTextColor="#666"
+              textAlign="center"
+              onChangeText={(value) => {
+                setGoogleUser({
+                  ...googleUser,
+                  cel: value,
+                });
+              }}
+            />
+            <TouchableOpacity
+              style={globalStyles.btnTodasComidas}
+              onPress={() => {
+                firebase.db.collection("Users").doc(auth.currentUser.uid).set({
+                  id: auth.currentUser.uid,
+                  name: googleUser.name,
+                  lastName: googleUser.lastName,
+                  cel: googleUser.cel,
+                  email: googleUser.email,
+                  commerce: false,
+                  profileImage: DEFAULT_PROFILE_IMAGE,
+                  reservations: [],
+                  payments: [],
+                });
+                isVisible(false);
+              }}
+            >
+              <Text style={globalStyles.texts}>Enviar</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </Modal>
       <View style={styles.textContainer}>
@@ -314,6 +327,17 @@ export default function Home({ navigation }) {
         <Picker.Item label="Z-A" value="Z-A" />
       </Picker>
     </View>
+          {/*----------------------------------------BOTON MAPA------------------------------------------- */}
+    <TouchableOpacity style={globalStyles.btnFiltrosHome}>
+      <Text style={globalStyles.texts}><Icon
+                reverse
+                name="map-marker-alt"
+                type="font-awesome-5"
+                color="#FDFDFD"
+                reverseColor="#161616"
+                size={12}
+              /></Text>
+    </TouchableOpacity>
         {/*----------------------------------------FILTRADO------------------------------------------- */}
         <View>
           <Pressable onPress={() => isVisibleFiltros(true)}>
@@ -332,7 +356,7 @@ export default function Home({ navigation }) {
             containerStyle={{ backgroundColor: "#333a" }}
           >
             <ListItem
-              containerStyle={{ backgroundColor: "rgba(0.5,0.25,0,0.7)" }}
+              containerStyle={{ backgroundColor: "rgba(242, 242, 242,0.8)" }}
               style={{
                 borderBottomWidth: 1,
                 borderColor: "#333a",
@@ -347,7 +371,12 @@ export default function Home({ navigation }) {
                 style={{ backgroundColor: "#0000", alignItems: "center" }}
               >
                 <ListItem.Title
-                  style={{ height: 35, color: "#fff", padding: 8 }}
+                  style={{
+                    height: 35,
+                    color: "#161616",
+                    paddingVertical: 5,
+                    fontWeight: "bold",
+                  }}
                 >
                   Todos
                 </ListItem.Title>
@@ -356,7 +385,7 @@ export default function Home({ navigation }) {
             {categories.map((categoria, index) => (
               <ListItem
                 key={index}
-                containerStyle={{ backgroundColor: "rgba(0.5,0.25,0,0.7)" }}
+                containerStyle={{backgroundColor: "rgba(242, 242, 242,0.8)" }}
                 style={{
                   borderBottomWidth: 1,
                   borderColor: "#333a",
@@ -371,7 +400,10 @@ export default function Home({ navigation }) {
                   style={{ backgroundColor: "#0000", alignItems: "center" }}
                 >
                   <ListItem.Title
-                    style={{ height: 35, color: "#fff", padding: 8 }}
+                    style={{height: 35,
+                      color: "#161616",
+                      paddingVertical: 5,
+                      fontWeight: "bold", }}
                   >
                     {categoria}
                   </ListItem.Title>
@@ -380,17 +412,14 @@ export default function Home({ navigation }) {
             ))}
             <ListItem
               key={999}
-              containerStyle={{ backgroundColor: "#d14545" }}
-              style={{ borderBottomWidth: 1, borderColor: "#333a" }}
+              containerStyle={{ backgroundColor: "#eccdaa" }}
+              style={{ borderBottomWidth: 1, borderColor: "#ffff" }}
               onPress={() => isVisibleFiltros(false)}
             >
               <ListItem.Content style={{ alignItems: "center" }}>
                 <ListItem.Title
                   style={{
-                    height: 35,
-                    color: "#FFF",
-                    padding: 8,
-                    fontSize: 20,
+                     height: 35, color: "#161616", fontSize: 20 
                   }}
                 >
                   Cancelar
@@ -509,7 +538,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   container: {
-    marginVertical: 10,
+    marginTop: 15,
     backgroundColor: "#F0EEEE",
     height: 35,
     flexDirection: "row",
