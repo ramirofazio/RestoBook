@@ -409,7 +409,7 @@ const globalStyles = StyleSheet.create({
     textAlign: "center",
   },
   modalText: {
-    marginBottom: 15,
+    marginVertical: 15,
     textAlign: "center",
     fontSize: 30,
     fontWeight: "bold",

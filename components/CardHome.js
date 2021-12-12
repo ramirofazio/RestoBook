@@ -39,8 +39,10 @@ const CardMenu = ({ resto, navigation }) => {
   const [resultRating, setResultRating] = useState(0);
   const dispatch = useDispatch();
   const categories = useSelector((state) => state.categoriesResto);
-  useEffect(() => {}, []);
+  useEffect(() => { }, []);
   const isFocused = useIsFocused();
+
+
 
   const getFavs = async () => {
     if (CurrentId) {
@@ -82,7 +84,8 @@ const CardMenu = ({ resto, navigation }) => {
     location: resto.location,
     img: resto.restoImage,
   };
-  const celphone = +541168020511;
+  const celphone = "+54 9" + resto.phone;
+  const trimmedName = auth?.currentUser?.email?.split("@")[0];
 
   useEffect(() => {
     if (CurrentId) {
@@ -104,7 +107,7 @@ const CardMenu = ({ resto, navigation }) => {
 
   const handleWhatsapp = async () => {
     await Linking.openURL(
-      `whatsapp://send?text=Hola ${resto.title}, mi nombre es Lucas y quiero generar una reserva&phone=${celphone}`
+      `whatsapp://send?text=Hola ${resto.title}, mi nombre es ${trimmedName} y quiero generar una reserva&phone=${celphone}`
     );
   };
 

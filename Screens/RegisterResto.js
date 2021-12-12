@@ -69,8 +69,8 @@ import { DEFAULT_RESTO_IMAGE } from "@env";
 
 const registerRestoSchema = yup.object({
   email: yup.string().required(),
-  title: yup.string().required().min(3).max(15),
-  description: yup.string().required().min(10).max(60),
+  title: yup.string().required().min(3).max(25),
+  description: yup.string().required().min(10).max(100),
   phone: yup.number().required(),
   phone2: yup.number(),
   cuit: yup.number().required(),
@@ -278,15 +278,16 @@ const RegisterResto = ({ navigation }) => {
                     address: state.address.toLowerCase(),
                   },
                   reviews: [],
+                  reservationsParams: {},
                 })
                 .then(
                   currentUser.commerce
                     ? firebase.db.collection("Users").doc(id).update({
-                        multiCommerce: true,
-                      })
+                      multiCommerce: true,
+                    })
                     : firebase.db.collection("Users").doc(id).update({
-                        commerce: true,
-                      })
+                      commerce: true,
+                    })
                 )
 
                 .then(dispatch(SetCommerce()))
