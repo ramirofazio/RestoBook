@@ -48,7 +48,7 @@ export default function ListReviews({navigation, reviews}){
             { reviews?.length >0 ? (
                 <ScrollView style={styles.showMenu}>
                              {
-                                 reviews.map(review => <CardReviews reseña={review}></CardReviews>)
+                                 reviews.map(review => <CardReviews key={review.createAt} reseña={review}></CardReviews>)
                              }
                         </ScrollView>) : <Text> Este negocio aun no tiene comentarios</Text>}
         </View>

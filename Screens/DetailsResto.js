@@ -63,6 +63,7 @@ const DetailsResto = ({ navigation }) => {
   const empresaDetail = useSelector((state) => state.empresaDetail);
   //--------------------GEOLOCATION-------------------------------
   const { location } = empresaDetail
+  const [distance, setDistance] = useState({})
   const userLocation = useSelector(state => state.userCoordinates)
   const mapRef = useRef(null)
   //--------------------------------------------------------------
@@ -89,7 +90,6 @@ const DetailsResto = ({ navigation }) => {
       url: url.data
     })
   }
-  console.log(Object.entries(userLocation))
   useEffect(() => {
     if ( Object.entries(userLocation).length === 0 || !location ) return 
     //Zoom & fit to markers
@@ -243,13 +243,14 @@ const DetailsResto = ({ navigation }) => {
             }}
           >
             <Marker
-              title="Resto Location"
+              title={`${empresaDetail.title}, ${empresaDetail.location.address}`}
               coordinate={{
                 latitude: location.latitude,
                 longitude: location.longitude,
               }}
               pinColor='#0072B5'
               identifier="restoLocation"
+              description={`Distancia: ${distance.distance} Km - ETA: ${distance.ETA} Min`}
             />
             { Object.entries(userLocation).length > 0 && (
               <Marker
@@ -269,7 +270,13 @@ const DetailsResto = ({ navigation }) => {
                 latitude: location.latitude,
                 longitude: location.longitude
               }}
-            />
+              onReady={ resultado => {
+                const { distance, duration } = resultado;
+                const travelTime = Math.round(duration)
+                const travelDistance = distance
+                setDistance({distance: travelDistance, ETA: travelTime})
+              }}
+              />
           )}
           </MapView>
         </View>

@@ -23,6 +23,7 @@ import {
   ActivityIndicator,
   Pressable,
 } from "react-native";
+import axios from 'axios';
 //import { MaterialIcons } from "@expo/vector-icons";
 //
 //
@@ -31,7 +32,7 @@ import * as Location from 'expo-location';
 //----------FIREBASE UTILS-----------
 import firebase from "../database/firebase";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { doc, onSnapshot, collection, query, getDoc } from "firebase/firestore";
+import { doc, onSnapshot, collection, query, getDoc, arrayUnion } from "firebase/firestore";
 //
 //
 //---------SCREENS---------------
@@ -47,6 +48,7 @@ import globalStyles from "./GlobalStyles.js";
 //-------INITIALIZATIONS-------
 const auth = getAuth();
 import { DEFAULT_PROFILE_IMAGE } from "@env";
+import { GOOGLE_API_KEY } from "@env";
 import setUserLocation from "../Redux/Actions/setUserLocation.js";
 
 //
@@ -124,6 +126,7 @@ export default function Home({ navigation }) {
       latitudeDelta: 0.004757,
       longitudeDelta: 0.006866,
     } 
+
     dispatch(setUserLocation(location))
   }
 
@@ -145,6 +148,40 @@ export default function Home({ navigation }) {
       console.log("error get", e);
     }
   };
+
+  const restos = [
+    {
+      title: 'Plaza Moreno',
+      location: {
+        latitude: -34.921408333333,
+        longitude: -57.954486111111
+      }
+    },
+    {
+      title: 'Plaza Rocha',
+      location: {
+        latitude: -34.9214545,
+        longitude: -57.9414313
+      }
+    },
+    {
+      title: 'UTN Berisso',
+      location: {
+        latitude: -34.9036193,
+        longitude: -57.9245214
+      }
+    }
+  ]
+
+  const calculateDistances = async (userLocation, restoLocation) => {
+    const arrayDistances = await axios(`https://maps.googleapis.com/maps/api/distancematrix/json?origins=${userLocation}&destinations=${restoLocation}&key=${GOOGLE_API_KEY}`)
+    console.log(arrayDistances)
+  }
+
+  const orderByDistance = (allRestos) => {
+    
+  }
+
   useEffect(() => {
     if (loggedId && auth.currentUser.uid) {
       getInfo();
@@ -182,7 +219,6 @@ export default function Home({ navigation }) {
       setAvailableCommerces(result)
     }
   }
-
 
   return (
     <View style={globalStyles.Home}>
