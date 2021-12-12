@@ -23,6 +23,7 @@ import { getAuth, signOut } from "firebase/auth";
 //
 //-------STYLES-------
 import globalStyles from "./GlobalStyles.js";
+import { Divider } from "react-native-elements";
 
 //
 //
@@ -44,33 +45,40 @@ const AwaitEmail = ({ navigation }) => {
     <View
       style={{
         flex: 1,
-        backgroundColor: "#ffdfcb",
+        backgroundColor: "#F2f2f2",
         alignContent: "center",
         justifyContent: "center",
       }}
     >
       <Text style={globalStyles.text}>
-        {" "}
-        Please check your inbox, if it's empty click below
+        Te enviamos un email de confirmación de cuenta, si no lo encuentras en tu bandeja de entrada puede estar en Spam.
+        Si aún no lo recibes, por favor clickeá en "Reenviar"
       </Text>
+      <Divider  orientation="horizontal"
+          width={2}
+          inset={true}
+          insetType={"center"}
+          style={{marginTop: 15}}
+          color={"rgba(22, 22, 22, .2)"}
+          />
       <View style={{ alignItems: "center" }}>
         <TouchableOpacity
-          style={globalStyles.btnLogin}
+          style={globalStyles.btnFiltrosHome}
           onPress={() => {
             firebase.fireAuth.currentUser.sendEmailVerification();
-            alert("Email sent. Check spam section!!");
+            alert("Mail enviado, chequea en Spam!");
           }}
         >
-          <Text style={globalStyles.texts}>Resend</Text>
+          <Text style={globalStyles.texts}>Reenviar</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={globalStyles.btnLogin}
+          style={globalStyles.btnFiltrosHome}
           onPress={() => {
             signOutAndClearRedux();
-            navigation.navigate("RestoBook");
+            navigation.navigate("GlobalLogin");
           }}
         >
-          <Text style={globalStyles.texts}>Go back to Login</Text>
+          <Text style={globalStyles.texts}>Volver a Login</Text>
         </TouchableOpacity>
       </View>
     </View>

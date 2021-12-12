@@ -20,7 +20,7 @@ import {
   Alert,
   Modal,
   Image,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
 } from "react-native";
 
 import { BottomSheet } from "react-native-elements";
@@ -103,8 +103,10 @@ const GlobalRegisterSchema = yup.object({
 
 const GlobalLogin = ({ navigation }) => {
   const [visible, isVisible] = useState(false);
+  const [forgottvisible, isforgottVisible] = useState(false);
   const [forgottedMail, setForgottedMail] = useState("");
-
+  const [flagLoginOrRegister, setFlagLoginOrRegister] = useState(true);
+  const [flagSecureText, setFlagSecureText] = useState(true);
   const Glogin = async () => {
     try {
       const result = await Google.logInAsync({
@@ -131,16 +133,19 @@ const GlobalLogin = ({ navigation }) => {
     }
   };
 
-  const [flagLoginOrRegister, setFlagLoginOrRegister] = useState(true);
-  const [flagSecureText, setFlagSecureText] = useState(true);
-
   if (flagLoginOrRegister) {
     return (
       //------------LOGIN---------------
 
       <View style={globalStyles.Home}>
         <Text
-          style={{ textAlign: "center", fontSize: 30, paddingVertical: 5, color: "#161616", letterSpacing: 1 }}
+          style={{
+            textAlign: "center",
+            fontSize: 30,
+            paddingVertical: 5,
+            color: "#161616",
+            letterSpacing: 1,
+          }}
         >
           Login
         </Text>
@@ -223,13 +228,16 @@ const GlobalLogin = ({ navigation }) => {
                   style={styles.googleButton}
                   onPress={() => Glogin()}
                 >
-                  <Image style={globalStyles.img} source={require("../assets/googleIcon2.png")}></Image>
+                  <Image
+                    style={globalStyles.img}
+                    source={require("../assets/googleIcon2.png")}
+                  ></Image>
                 </TouchableOpacity>
 
                 <TouchableOpacity
                   style={globalStyles.btnLogin}
                   onPress={() => {
-                    isVisible(true);
+                    isforgottVisible(true);
                   }}
                 >
                   <Text style={globalStyles.fontLog}>Olvidé mi contraseña</Text>
@@ -244,10 +252,9 @@ const GlobalLogin = ({ navigation }) => {
                   </Text>
                 </TouchableOpacity>
 
-
                 <BottomSheet isVisible={visible} style={styles.forgottenPass}>
                   <View>
-                    <TouchableOpacity onPress={() => isVisible(false)}>
+                    <TouchableOpacity onPress={() => isforgottVisible(false)}>
                       <Text>X</Text>
                     </TouchableOpacity>
                     <TextInput
@@ -259,7 +266,7 @@ const GlobalLogin = ({ navigation }) => {
                       onPress={() => {
                         sendPasswordResetEmail(auth, forgottedMail)
                           .then(alert("Revisa tu casilla!"))
-                          .then(isVisible(false));
+                          .then(isforgottVisible(false));
                       }}
                     >
                       <Text>Enviar</Text>
@@ -283,9 +290,7 @@ const GlobalLogin = ({ navigation }) => {
                 style={globalStyles.btnTodasComidas}
                 onPress={() => setFlagLoginOrRegister(!flagLoginOrRegister)}
               >
-                <Text
-                  style={globalStyles.texts}
-                > X </Text>
+                <Text style={globalStyles.texts}> X </Text>
               </TouchableOpacity>
               <Formik
                 initialValues={{
@@ -325,6 +330,8 @@ const GlobalLogin = ({ navigation }) => {
                             favourites: [],
                           })
                           .then(sendEmailVerification(auth.currentUser))
+                          .then(setFlagLoginOrRegister(true))
+                          .then(isVisible(false))
                           .then(navigation.navigate("AwaitEmail"));
                       }
                     });
@@ -338,9 +345,10 @@ const GlobalLogin = ({ navigation }) => {
                     behavior={Platform.OS === "ios" ? "padding" : "height"}
                     style={globalStyles.modalInputContainer}
                   >
-
                     <View style={globalStyles.modalInputContainer}>
-                      <Text style={styles.modalText}>Registrarse en RestoBook</Text>
+                      <Text style={styles.modalText}>
+                        Registrarse en RestoBook
+                      </Text>
                       <View style={globalStyles.inputComponent}>
                         <TextInput
                           style={globalStyles.texts}
@@ -424,7 +432,7 @@ const GlobalLogin = ({ navigation }) => {
                         />
                       </View>
                       {props.touched.passwordConfirm &&
-                        props.errors.passwordConfirm ? (
+                      props.errors.passwordConfirm ? (
                         <Text style={globalStyles.errorText}>
                           {props.errors.passwordConfirm}
                         </Text>
@@ -437,13 +445,17 @@ const GlobalLogin = ({ navigation }) => {
                             : setFlagSecureText(true)
                         }
                       >
-                        <Icon name={flagSecureText ? "eye-off" : "eye"} size={20} />
+                        <Icon
+                          name={flagSecureText ? "eye-off" : "eye"}
+                          size={20}
+                        />
                       </TouchableOpacity>
                       <View style={globalStyles.btnContainerLogin}>
                         <TouchableOpacity
                           style={globalStyles.btnLogin}
                           onPress={() => {
-                            props.handleSubmit() && setFlagLoginOrRegister(true);
+                            props.handleSubmit() &&
+                              setFlagLoginOrRegister(true);
                           }}
                         >
                           <Text style={globalStyles.fontLog}>Registrarse</Text>

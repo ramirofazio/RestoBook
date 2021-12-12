@@ -84,18 +84,21 @@ const AddMenuResto = ({ navigation }) => {
           {categories.map((categoria, index) => (
             <ListItem
               key={index}
-              containerStyle={{ backgroundColor: 'rgba(0.5,0.25,0,0.7)' }}
-              style={{ borderBottomWidth: 1, borderColor: '#333a', backgroundColor: "#fff0" }}
+              containerStyle={{ backgroundColor: "rgba(242, 242, 242,0.8)" }}
+              style={{ borderBottomWidth: 1,borderColor: "#333a",backgroundColor: "#fff0", }}
               onPress={() => {
                 setCategory(categoria)
                 setIsVisible(false)
               }}
             >
               <ListItem.Content
-                style={{ backgroundColor: "#0000", alignItems: "center" }}
+                style={{backgroundColor: "#0000", alignItems: "center" }}
               >
                 <ListItem.Title
-                  style={{ height: 35, color: '#fff', padding: 8 }}
+                  style={{ height: 35,
+                    color: "#161616",
+                    paddingVertical: 5,
+                    fontWeight: "bold", }}
                 >
                   {categoria}
                 </ListItem.Title>
@@ -104,13 +107,13 @@ const AddMenuResto = ({ navigation }) => {
           ))}
           <ListItem
             key={999}
-            containerStyle={{ backgroundColor: '#d14545' }}
-            style={{ borderBottomWidth: 1, borderColor: '#333a' }}
+            containerStyle={{ backgroundColor: '#eccdaa' }}
+            style={{ borderBottomWidth: 1, borderColor: '#ffff' }}
             onPress={() => setIsVisible(false)}
           >
             <ListItem.Content style={{ alignItems: "center" }}>
               <ListItem.Title
-                style={{ height: 35, color: '#FFF', padding: 8, fontSize: 20 }}
+                style={{ height: 35, color: "#161616", fontSize: 20 }}
               >
                 Cancelar
               </ListItem.Title>

@@ -15,28 +15,37 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
-  Pressable
+  Pressable,
 } from "react-native";
 //
 //----------FORMIK y YUP------------------
-import { Formik } from 'formik';
-import * as yup from 'yup';
+import { Formik } from "formik";
+import * as yup from "yup";
 //
 //
 //----------GOOGLE MAPS---------------
 import MapView, { Marker } from "react-native-maps";
 import { GOOGLE_API_KEY } from "@env";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
-import MapViewDirections from 'react-native-maps-directions';
+import MapViewDirections from "react-native-maps-directions";
 //
 //
 //----------FIREBASE UTILS-----------
 import firebase from "../database/firebase";
 import { onAuthStateChanged, getAuth } from "firebase/auth";
+import {
+  doc,
+  onSnapshot,
+  collection,
+  query,
+  getDoc,
+  getDocs,
+  where,
+} from "firebase/firestore";
 //
 //
 //---------------------EXPO----------------------
-import * as Location from 'expo-location';
+import * as Location from "expo-location";
 //---------SCREENS & COMPONENTS---------------
 //
 //
@@ -46,13 +55,14 @@ import { BottomSheet, ListItem } from "react-native-elements";
 //
 //------IMAGINE PICKER---------
 import SetCommerce from "../Redux/Actions/setCommerce";
-import{ init } from 'emailjs-com';
+import { init } from "emailjs-com";
 init("user_IEK9t1hQIR3ugtExEH6BG");
 
 //
 //
 //-------INITIALIZATIONS-------
 const auth = getAuth();
+import { DEFAULT_RESTO_IMAGE } from "@env";
 //
 //---------------------------------------------------------------------------------------//
 //
@@ -67,6 +77,22 @@ const registerRestoSchema = yup.object({
 });
 
 const RegisterResto = ({ navigation }) => {
+  const currentId = useSelector((state) => state.currentId);
+  const [currentUser, setcurrentUser] = useState({});
+  useEffect(() => {
+    const getInfo = async () => {
+      const docRef = doc(firebase.db, "Users", currentId);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        let obj = docSnap.data();
+        setcurrentUser(obj);
+      } else {
+        alert("NO HAY INFO");
+      }
+    };
+    getInfo();
+  }, []);
+
   const initialRegion = {
     latitude: -34.61315,
     longitude: -58.37723,
@@ -77,8 +103,10 @@ const RegisterResto = ({ navigation }) => {
   const [isVisible, setIsVisible] = useState(false);
 
   //-------------GEOLOCATION-------------
-  const userCoordinates = useSelector(state => state.userCoordinates)
-  const [userLocation, setUserLocation] = useState(userCoordinates || initialRegion)
+  const userCoordinates = useSelector((state) => state.userCoordinates);
+  const [userLocation, setUserLocation] = useState(
+    userCoordinates || initialRegion
+  );
   const [restoLocation, setRestoLocation] = useState();
   const [state, setState] = useState({
     lat: -34.61315,
@@ -99,32 +127,32 @@ const RegisterResto = ({ navigation }) => {
 
   useEffect(() => {
     const getUserLocation = async () => {
-      const {status} = await Location.requestForegroundPermissionsAsync()
-      if (status !== 'granted') {
-        console.log('Permission to access location was denied');
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        console.log("Permission to access location was denied");
         return;
       }
-      console.log('Location permissions granted')
-      let {coords} = await Location.getCurrentPositionAsync();
+      console.log("Location permissions granted");
+      let { coords } = await Location.getCurrentPositionAsync();
       const userRegion = {
         latitude: coords.latitude,
         longitude: coords.longitude,
         latitudeDelta: 0.004757,
         longitudeDelta: 0.006866,
-      }
-      setUserLocation(userRegion)
-    }
-    getUserLocation()
-  }, [])
-  
+      };
+      setUserLocation(userRegion);
+    };
+    getUserLocation();
+  }, []);
+
   useEffect(() => {
-    if (!userLocation || !restoLocation) return 
+    if (!userLocation || !restoLocation) return;
     //Zoom & fit to markers
-    mapRef.current.fitToSuppliedMarkers(['userLocation', 'restoLocation'], {
-      edgePadding: { top: 50, right: 50, bottom: 50, left: 50 }
-    })
-  }, [userLocation, restoLocation])
-   
+    mapRef.current.fitToSuppliedMarkers(["userLocation", "restoLocation"], {
+      edgePadding: { top: 50, right: 50, bottom: 50, left: 50 },
+    });
+  }, [userLocation, restoLocation]);
+
   const setStateAndRegion = (newLocation, formatedAddress) => {
     const { lat, lng } = newLocation;
     setRestoLocation({
@@ -143,14 +171,15 @@ const RegisterResto = ({ navigation }) => {
 
   return (
     <View style={globalStyles.Home}>
-      <View style={{
-        // backgroundColor: '#e8b595',
-        width: '80%',
-        alignSelf: 'center',
-        marginTop: 10,
-        // borderRadius: 15,
-        maxWidth: '100%',
-      }}
+      <View
+        style={{
+          // backgroundColor: '#e8b595',
+          width: "80%",
+          alignSelf: "center",
+          marginTop: 10,
+          // borderRadius: 15,
+          maxWidth: "100%",
+        }}
       >
         <GooglePlacesAutocomplete
           placeholder="Completa tu direccion"
@@ -173,8 +202,8 @@ const RegisterResto = ({ navigation }) => {
             container: {
               flex: 0,
               borderRadius: 10,
-              width: '75%',
-              backgroundColor: '#e8e8e8',
+              width: "75%",
+              backgroundColor: "#e8e8e8",
               padding: 0,
               alignSelf: "center",
             },
@@ -182,18 +211,17 @@ const RegisterResto = ({ navigation }) => {
               marginTop: 4,
               fontSize: 14.5,
 
-              fontWeight: 'bold',
-              width: '80%',
-              backgroundColor: 'rgba(22, 22, 22, .2)',
+              fontWeight: "bold",
+              width: "80%",
+              backgroundColor: "rgba(22, 22, 22, .2)",
               borderRadius: 10,
-              textAlign: 'center',
-              overflow: 'hidden'
-
+              textAlign: "center",
+              overflow: "hidden",
             },
             textInputContainer: {
               alignItems: "center",
               height: 30,
-              overflow: 'hidden',
+              overflow: "hidden",
               borderRadius: 10,
             },
             listView: {
@@ -241,20 +269,26 @@ const RegisterResto = ({ navigation }) => {
                   cuit: values.cuit,
                   category: state.category.toLowerCase(),
                   // img: values.img,
+                  restoImage: DEFAULT_RESTO_IMAGE,
                   menu: [],
                   reservations: [],
                   location: {
                     latitude: state.lat,
                     longitude: state.lng,
-                    address: state.address.toLowerCase()
+                    address: state.address.toLowerCase(),
                   },
-                  reviews:[]
+                  reviews: [],
                 })
                 .then(
-                  firebase.db.collection("Users").doc(id).update({
-                    commerce: true,
-                  })
+                  currentUser.commerce
+                    ? firebase.db.collection("Users").doc(id).update({
+                        multiCommerce: true,
+                      })
+                    : firebase.db.collection("Users").doc(id).update({
+                        commerce: true,
+                      })
                 )
+
                 .then(dispatch(SetCommerce()))
                 .then(navigation.navigate("RestoBook"));
             } catch (error) {
@@ -400,30 +434,34 @@ const RegisterResto = ({ navigation }) => {
       </Formik>
 
       <View style={globalStyles.inputComponent}>
-
         <BottomSheet
           isVisible={isVisible}
-
-          containerStyle={{ backgroundColor: '#333a' }}
-
+          containerStyle={{ backgroundColor: "#333a" }}
         >
           {categories.map((categoria, index) => (
             <ListItem
               key={index}
-
-              containerStyle={{ backgroundColor: 'rgba(251, 245, 245,0.8)' }}
-              style={{ borderBottomWidth: 1, borderColor: '#161616', backgroundColor: "#fff0" }}
+              containerStyle={{ backgroundColor: "rgba(251, 245, 245,0.8)" }}
+              style={{
+                borderBottomWidth: 1,
+                borderColor: "#161616",
+                backgroundColor: "#fff0",
+              }}
               onPress={() => {
-                setState({ ...state, category: categoria })
-                setIsVisible(false)
+                setState({ ...state, category: categoria });
+                setIsVisible(false);
               }}
             >
               <ListItem.Content
                 style={{ backgroundColor: "#0000", alignItems: "center" }}
               >
                 <ListItem.Title
-                  style={{ height: 35, color: '#161616', paddingVertical: 5, fontWeight: "bold" }}
-
+                  style={{
+                    height: 35,
+                    color: "#161616",
+                    paddingVertical: 5,
+                    fontWeight: "bold",
+                  }}
                 >
                   {categoria}
                 </ListItem.Title>
@@ -432,18 +470,14 @@ const RegisterResto = ({ navigation }) => {
           ))}
           <ListItem
             key={999}
-
-            containerStyle={{ backgroundColor: '#eccdaa' }}
-            style={{ borderBottomWidth: 1, borderColor: '#ffff' }}
+            containerStyle={{ backgroundColor: "#eccdaa" }}
+            style={{ borderBottomWidth: 1, borderColor: "#ffff" }}
             onPress={() => setIsVisible(false)}
           >
-            <ListItem.Content
-              style={{ alignItems: "center" }}
-            >
+            <ListItem.Content style={{ alignItems: "center" }}>
               <ListItem.Title
-                style={{ height: 35, color: '#161616', fontSize: 20 }}
+                style={{ height: 35, color: "#161616", fontSize: 20 }}
               >
-
                 Cancelar
               </ListItem.Title>
             </ListItem.Content>
@@ -453,55 +487,52 @@ const RegisterResto = ({ navigation }) => {
 
       <View style={{ flex: 3 }}>
         <View style={styles.googleMapsContainer}>
-          <MapView 
-            ref={mapRef}
-            style={styles.googleMaps} 
-            region={userLocation}
-          >
-          { userLocation && (
-            <Marker
-              draggable
-              title="Your location"
-              coordinate={userLocation}
-              onDragEnd={(event) => {
-                const { latitude, longitude } = event.nativeEvent.coordinate;
-                const newLocation = {
-                  lat: latitude,
-                  lng: longitude,
-                };
-                setStateAndRegion(newLocation);
-              }}
-              pinColor="#0072B5"
-              identifier="userLocation"
-           />
-          )}
-          { restoLocation && (
-            <Marker
-              draggable
-              title="Resto location"
-              coordinate={restoLocation}
-              onDragEnd={(event) => {
-                const { latitude, longitude } = event.nativeEvent.coordinate;
-                const newLocation = {
-                  lat: latitude,
-                  lng: longitude,
-                };
-                setStateAndRegion(newLocation);
-              }}
-              pinColor="#0072B5"
-              identifier="restoLocation"
-           />
-          )}
-          { userLocation && restoLocation && (
-            <MapViewDirections
-              apikey={GOOGLE_API_KEY}
-              strokeWidth={1.5}
-              strokeColor="gray"
-              origin={userLocation}
-              destination={restoLocation}
-            />
-          )}
-         </MapView>
+          <MapView ref={mapRef} style={styles.googleMaps} region={userLocation}>
+            {userLocation && (
+              <Marker
+                draggable
+                title="Your location"
+                coordinate={userLocation}
+                onDragEnd={(event) => {
+                  const { latitude, longitude } = event.nativeEvent.coordinate;
+                  const newLocation = {
+                    lat: latitude,
+                    lng: longitude,
+                  };
+                  setStateAndRegion(newLocation);
+                }}
+                pinColor="#eccdaa"
+                identifier="userLocation"
+              />
+            )}
+            {restoLocation && (
+              <Marker
+                draggable
+                title="Resto location"
+                coordinate={restoLocation}
+                onDragEnd={(event) => {
+                  const { latitude, longitude } = event.nativeEvent.coordinate;
+                  const newLocation = {
+                    lat: latitude,
+                    lng: longitude,
+                  };
+                  setStateAndRegion(newLocation);
+                }}
+                pinColor="#0072B5"
+                identifier="restoLocation"
+              />
+            )}
+            {userLocation && restoLocation && (
+              <MapViewDirections
+                lineDashPattern={[0]}
+                apikey={GOOGLE_API_KEY}
+                strokeWidth={1.5}
+                strokeColor="gray"
+                origin={userLocation}
+                destination={restoLocation}
+              />
+            )}
+          </MapView>
         </View>
       </View>
     </View>

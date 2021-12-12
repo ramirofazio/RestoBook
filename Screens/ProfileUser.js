@@ -15,7 +15,7 @@ import {
   ActivityIndicator,
   ScrollView,
 } from "react-native";
-import { Divider } from 'react-native-elements';
+import { Divider } from "react-native-elements";
 import * as ImagePicker from "expo-image-picker";
 //------FIREBASE----------------
 import firebase from "../database/firebase";
@@ -77,24 +77,29 @@ const reservas = [
     },
   },
 ];
-// let CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/restobook/image/upload";
-let imgPerrito =
-  "https://res.cloudinary.com/restobook/image/upload/samples/bike.jpg";
 
 const ProfileUser = ({ navigation }) => {
-
-  const empresas = useSelector((state) => state.empresas);
-
-
-  const loggedUser = useSelector((state) => state.currentUser);
-
   const loggedId = useSelector((state) => state.currentId);
   const [modalVisible, setModalVisible] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
   const [newUserInfo, setNewUserInfo] = useState({});
   const [uploading, setUploading] = useState(false);
   const [image, setImage] = useState("");
-  const [myFavourites, setMyFavourites] = useState([])
+  const [myFavourites, setMyFavourites] = useState();
+
+  // useEffect(() => {
+  //   const getFavs = async () => {
+  //     const docRef = doc(firebase.db, "Users", loggedId);
+  //     const docSnap = await getDoc(docRef);
+  //     if (docSnap.exists) {
+  //       let obj = docSnap.data().favourites;
+  //       setMyFavourites(obj);
+  //     }
+  //     console.log("DOC PROFILE 98");
+  //   };
+
+  //   getFavs();
+  // }, []);
 
   useEffect(() => {
     const getInfo = async () => {
@@ -102,12 +107,10 @@ const ProfileUser = ({ navigation }) => {
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
         let obj = docSnap.data();
-        console.log("obj", obj);
         setImage(obj.profileImage);
         setCurrentUser(obj);
         setNewUserInfo(obj);
-        setMyFavourites(obj.favourites)
-        // console.log(obj.favourites)
+        setMyFavourites(obj.favourites);
       } else {
         alert("NO HAY INFO");
       }
@@ -160,97 +163,16 @@ const ProfileUser = ({ navigation }) => {
       })
       .catch((err) => console.log(err));
   };
-  ///////////////////FUNCION STORAGE FIREBASE LAIAL COMENTADA PARA REVISION///////////
-  // const uploadImage = async () => {
-  //     const blob = await new Promise((resolve, reject) => {
-  //         const xhr = new XMLHttpRequest();
-  //         xhr.onload = function() {
-  //           resolve(xhr.response);
-  //         };
-  //         xhr.onerror = function() {
-  //           reject(new TypeError('Network request failed'));
-  //         };
-  //         xhr.responseType = 'blob';
-  //         xhr.open('GET', image, true);
-  //         xhr.send(null);
-  //       });
 
-  //     const ref = firebase.storage.ref().child(new Date().toISOString())
-  //     const snapshot = ref.put(blob)
-
-  //     snapshot.on(
-  //         firebase.storage.TaskEvent.STATE_CHANGED,
-  //         () => {
-  //         setUploading(true)
-  //     },
-  //     (error)=> {
-  //         setUploading(false)
-  //         console.log(error)
-  //         blob.close()
-  //         return
-  //     },
-  //     () => {
-  //         snapshot.snapshot.ref.getDownloadURL().then((url)=> {
-  //             setUploading(false)
-  //             console.log('download url: ', url)
-  //             blob.close();
-  //             return url
-  //         })
-  //     }
-  //     )
-  // }
-  // return (
-  //     <View style={styles.container} >
-  //         <ScrollView style={styles.container} contentContainerStyle={{flex: 1}}>
-  //             <View style={styles.imgContainer}>
-  //                 {
-  //                     !image ?
-  //                     <Image
-  //                         source={'https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-unknown-social-media-user-photo-default-avatar-profile-icon-vector-unknown-social-media-user-184816085.jpg'}
-  //                         style={styles.img}
-  //                     />
-  //                     :
-  //                     <Image
-  //                         source={image.localUri}
-  //                         style={styles.img}
-  //                     />
-  //                 }
-  //                 {/* {
-  //                     image ? (<TouchableOpacity onPress={openImagePicker}>
-  //                         <Image
-  //                             source={{ uri: image !== null ? image.localUri : 'https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-unknown-social-media-user-photo-default-avatar-profile-icon-vector-unknown-social-media-user-184816085.jpg' }}
-  //                             style={styles.img}
-  //                         />
-  //                     </TouchableOpacity>)
-  //                         : (<TouchableOpacity onPress={openImagePicker}>
-  //                             <Image
-  //                                 source={{ uri: image !== null ? image.localUri : 'https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-unknown-social-media-user-photo-default-avatar-profile-icon-vector-unknown-social-media-user-184816085.jpg' }}
-  //                                 style={styles.img}
-  //                             />
-  //                         </TouchableOpacity>
-  //                         )
-
-  //                     } */}
-  //                     {/* { // si la imagen no se esta cargando a firebase que este el boton
-  //                         !uploading ? <TouchableOpacity
-  //                         style={globalStyles.btn}
-  //                         onPress={uploadImage}
-  //                         >
-  //                             <Text>SUBIR IMAGEN</Text>
-  //                         </TouchableOpacity>
-  //                         :
-  //                         // y cuando se este cargando que active el spiner
-  //                         (
-  //                         <ActivityIndicator size='large' color='#5555'/>
-  //                         )
-  //                     } */}
-  ///////////////////////////////////////////////////////////////////////////
   const scrollX = useRef(new Animated.Value(0)).current;
   const { width: windowWidth } = useWindowDimensions();
 
   return (
     <View style={globalStyles.Perfilcontainer}>
-      <ScrollView style={globalStyles.Perfilcontainer} contentContainerStyle={{ flex: 1 }}>
+      <ScrollView
+        style={globalStyles.Perfilcontainer}
+        contentContainerStyle={{ flex: 1 }}
+      >
         <View style={globalStyles.imgContainer}>
           {image && !uploading ? (
             <TouchableOpacity onPress={openImagePickerAsync}>
@@ -262,7 +184,11 @@ const ProfileUser = ({ navigation }) => {
               />
             </TouchableOpacity>
           ) : (
-            <ActivityIndicator size="large" color="#5555" style={globalStyles.imgProfile} />
+            <ActivityIndicator
+              size="large"
+              color="#5555"
+              style={globalStyles.imgProfile}
+            />
           )}
           <View style={globalStyles.nombreContainer}>
             <Text
@@ -306,13 +232,11 @@ const ProfileUser = ({ navigation }) => {
                     style={globalStyles.btnTodasComidas}
                     onPress={() => setModalVisible(!modalVisible)}
                   >
-                    <Text
-                      style={globalStyles.texts}
-                    >
-                      X
-                    </Text>
+                    <Text style={globalStyles.texts}>X</Text>
                   </TouchableOpacity>
-                  <Text style={globalStyles.modalText}>Edita tu informacion</Text>
+                  <Text style={globalStyles.modalText}>
+                    Edita tu informacion
+                  </Text>
                   <Text style={globalStyles.texts}>Nombre:</Text>
                   <TextInput
                     style={globalStyles.inputComponent}
@@ -387,11 +311,25 @@ const ProfileUser = ({ navigation }) => {
             </Modal>
           </View>
         </View>
-        <Text style={{ fontSize: 25, color: "#161616", textAlign: "center", marginTop: 5 }}>
+        <Text
+          style={{
+            fontSize: 25,
+            color: "#161616",
+            textAlign: "center",
+            marginTop: 5,
+          }}
+        >
           {" "}
           <StarFilled name="star" color="#161616" size={25} /> Mis Favoritos
         </Text>
-        <Divider orientation="horizontal" width={2} inset={true} insetType={"middle"} color={'rgba(00, 00, 00, .5)'} style={{ marginVertical: 10 }} />
+        <Divider
+          orientation="horizontal"
+          width={2}
+          inset={true}
+          insetType={"middle"}
+          color={"rgba(00, 00, 00, .5)"}
+          style={{ marginVertical: 10 }}
+        />
         <ScrollView
           horizontal={true}
           pagingEnabled
@@ -408,31 +346,50 @@ const ProfileUser = ({ navigation }) => {
           ])}
           scrollEventThrottle={1}
         >
-          {myFavourites?.length ? myFavourites.map((resto) => {
-            return (
-              <View style={{ width: windowWidth, height: 250 }}>
-                <CardFavourite
-                  key={resto.Id}
-                  resto={resto}
-                  navigation={navigation}
-                  index={resto.Id}
-                >
-                  {" "}
-                </CardFavourite>
-              </View>
-            );
-          })
-            : null
-          }
+          {myFavourites?.length
+            ? myFavourites.map((resto) => {
+                return (
+                  <View
+                    style={{ width: windowWidth, height: 250 }}
+                    key={resto.idResto}
+                  >
+                    <CardFavourite
+                      key={resto.Id}
+                      resto={resto}
+                      navigation={navigation}
+                      index={resto.Id}
+                      setMyFavourites={setMyFavourites}
+                      myFavourites={myFavourites}
+                    >
+                      {" "}
+                    </CardFavourite>
+                  </View>
+                );
+              })
+            : null}
         </ScrollView>
-        <Text style={{ fontSize: 25, color: "#161616", textAlign: "center", marginTop: 5 }}>
+        <Text
+          style={{
+            fontSize: 25,
+            color: "#161616",
+            textAlign: "center",
+            marginTop: 5,
+          }}
+        >
           <TagOutlined name="tag" color="#161616" size={25} /> Mis Reservas
         </Text>
-        <Divider orientation="horizontal" width={2} inset={true} insetType={"middle"} color={'rgba(00, 00, 00, .5)'} style={{ marginVertical: 5 }} />
+        <Divider
+          orientation="horizontal"
+          width={2}
+          inset={true}
+          insetType={"middle"}
+          color={"rgba(00, 00, 00, .5)"}
+          style={{ marginVertical: 5 }}
+        />
         <ScrollView style={{ overflow: "scroll" }}>
           {reservas.map((persona) => {
             return (
-              <View>
+              <View key={persona.id}>
                 <CardReservation
                   key={persona.id}
                   persona={persona}
@@ -448,3 +405,89 @@ const ProfileUser = ({ navigation }) => {
 };
 
 export default ProfileUser;
+
+///////////////////FUNCION STORAGE FIREBASE LAIAL COMENTADA PARA REVISION///////////
+// const uploadImage = async () => {
+//     const blob = await new Promise((resolve, reject) => {
+//         const xhr = new XMLHttpRequest();
+//         xhr.onload = function() {
+//           resolve(xhr.response);
+//         };
+//         xhr.onerror = function() {
+//           reject(new TypeError('Network request failed'));
+//         };
+//         xhr.responseType = 'blob';
+//         xhr.open('GET', image, true);
+//         xhr.send(null);
+//       });
+
+//     const ref = firebase.storage.ref().child(new Date().toISOString())
+//     const snapshot = ref.put(blob)
+
+//     snapshot.on(
+//         firebase.storage.TaskEvent.STATE_CHANGED,
+//         () => {
+//         setUploading(true)
+//     },
+//     (error)=> {
+//         setUploading(false)
+//         console.log(error)
+//         blob.close()
+//         return
+//     },
+//     () => {
+//         snapshot.snapshot.ref.getDownloadURL().then((url)=> {
+//             setUploading(false)
+//             console.log('download url: ', url)
+//             blob.close();
+//             return url
+//         })
+//     }
+//     )
+// }
+// return (
+//     <View style={styles.container} >
+//         <ScrollView style={styles.container} contentContainerStyle={{flex: 1}}>
+//             <View style={styles.imgContainer}>
+//                 {
+//                     !image ?
+//                     <Image
+//                         source={'https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-unknown-social-media-user-photo-default-avatar-profile-icon-vector-unknown-social-media-user-184816085.jpg'}
+//                         style={styles.img}
+//                     />
+//                     :
+//                     <Image
+//                         source={image.localUri}
+//                         style={styles.img}
+//                     />
+//                 }
+//                 {/* {
+//                     image ? (<TouchableOpacity onPress={openImagePicker}>
+//                         <Image
+//                             source={{ uri: image !== null ? image.localUri : 'https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-unknown-social-media-user-photo-default-avatar-profile-icon-vector-unknown-social-media-user-184816085.jpg' }}
+//                             style={styles.img}
+//                         />
+//                     </TouchableOpacity>)
+//                         : (<TouchableOpacity onPress={openImagePicker}>
+//                             <Image
+//                                 source={{ uri: image !== null ? image.localUri : 'https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-unknown-social-media-user-photo-default-avatar-profile-icon-vector-unknown-social-media-user-184816085.jpg' }}
+//                                 style={styles.img}
+//                             />
+//                         </TouchableOpacity>
+//                         )
+
+//                     } */}
+//                     {/* { // si la imagen no se esta cargando a firebase que este el boton
+//                         !uploading ? <TouchableOpacity
+//                         style={globalStyles.btn}
+//                         onPress={uploadImage}
+//                         >
+//                             <Text>SUBIR IMAGEN</Text>
+//                         </TouchableOpacity>
+//                         :
+//                         // y cuando se este cargando que active el spiner
+//                         (
+//                         <ActivityIndicator size='large' color='#5555'/>
+//                         )
+//                     } */}
+///////////////////////////////////////////////////////////////////////////

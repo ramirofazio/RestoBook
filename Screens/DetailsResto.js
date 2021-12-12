@@ -1,19 +1,27 @@
 //----------REACT UTILS-----------
 import React, { useState, useEffect, useRef } from "react";
-import axios from 'axios';
-//
+import axios from "axios";
 //
 //----------REDUX UTILS-----------
 import { useSelector } from "react-redux";
 //
 //
 //----------REACT-NATIVE UTILS-----------
-import { View, Text, StyleSheet, Image, Linking, TouchableOpacity, Modal, TextInput } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  Linking,
+  TouchableOpacity,
+  Modal,
+  TextInput,
+} from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 //---------------------GEOLOCATION-------------------
 import { GOOGLE_API_KEY } from "@env";
 import MapView, { Marker } from "react-native-maps";
-import MapViewDirections from 'react-native-maps-directions';
+import MapViewDirections from "react-native-maps-directions";
 //----------------------------------------------------
 //import DateTimePicker from '@react-native-community/datetimepicker';
 //
@@ -28,7 +36,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 //
 //---------SCREENS & COMPONENTS---------------
 import CardMenu from "../components/CardMenu";
-import ListReviews from "./ListReviews"
+import ListReviews from "./ListReviews";
 import AddReviewsRestorant from "./AddReviewsRestorant";
 //
 //
@@ -37,11 +45,11 @@ import globalStyles from "./GlobalStyles";
 //
 //
 //----------CONSTANTES--------------
-const ENTRADAS = "ENTRADAS"
-const PLATO_PRINCIPAL = "PLATO PRINCIPAL"
-const GUARNICION = 'GUARNICION'
-const BEBIDA = "BEBIDA"
-const POSTRES = "POSTRES"
+const ENTRADAS = "ENTRADAS";
+const PLATO_PRINCIPAL = "PLATO PRINCIPAL";
+const GUARNICION = "GUARNICION";
+const BEBIDA = "BEBIDA";
+const POSTRES = "POSTRES";
 //
 //
 //-------INITIALIZATIONS-------
@@ -51,15 +59,17 @@ const auth = getAuth();
 //
 const DetailsResto = ({ navigation }) => {
   //--------------------------REVIEWS-------------------------------
-  const [reviews, setReviews] = useState()
+  const [reviews, setReviews] = useState();
 
   //--------------------------MERCADO PAGO--------------------------
-  const [precioCabeza, setPrecioCabeza] = useState()
-  const [cantLugares, setCantLugares] = useState()
-  const [modalVisible, setModalVisible] = useState(false)
+  const [precioCabeza, setPrecioCabeza] = useState();
+  const [cantLugares, setCantLugares] = useState();
+  const [modalVisible, setModalVisible] = useState(false);
 
   //--------------------------FILTROS CATEGORY--------------------------
-  const [menuCategory, setMenuCategory] = useState()
+  const [menuArr, setMenuArr] = useState([]);
+  const [menuFiltered, setMenuFiltered] = useState([]);
+  const [menuCategory, setMenuCategory] = useState();
   const empresaDetail = useSelector((state) => state.empresaDetail);
   //--------------------GEOLOCATION-------------------------------
   const { location } = empresaDetail
@@ -67,194 +77,199 @@ const DetailsResto = ({ navigation }) => {
   const userLocation = useSelector(state => state.userCoordinates)
   const mapRef = useRef(null)
   //--------------------------------------------------------------
-  const number = "+541168020511"
+  const number = "+541168020511";
   //WhatsApp
   const handleWhatsAppPress = async () => {
-    await Linking.openURL(`whatsapp://send?text=Hola RestoBook&phone=${number}`)
-}
-  const [menuArr, setMenuArr] = useState([]);
+    await Linking.openURL(
+      `whatsapp://send?text=Hola RestoBook&phone=${number}`
+    );
+  };
   const onPressReservar = async (cantLugares, precioCabeza) => {
-    const url = await axios(
-      {
-        method: 'POST',
-        url: 'http://192.168.0.10:19006/checkout',
-        data: {
-          restoName: empresaDetail.title,
-          quantity: cantLugares,
-          unit_price: precioCabeza
-        }
-      }
-    )
-    setModalVisible(false)
+    const url = await axios({
+      method: "POST",
+      url: "http://192.168.0.10:19006/checkout",
+      data: {
+        restoName: empresaDetail.title,
+        quantity: cantLugares,
+        unit_price: precioCabeza,
+      },
+    });
+    setModalVisible(false);
     navigation.navigate("WebViewScreen", {
       url: url.data
     })
   }
   useEffect(() => {
-    if ( Object.entries(userLocation).length === 0 || !location ) return 
+    if (Object.entries(userLocation).length === 0 || !location) return;
     //Zoom & fit to markers
-    mapRef.current.fitToSuppliedMarkers(['userLocation', 'restoLocation'], {
-      edgePadding: { top: 50, right: 50, bottom: 50, left: 50 }
-    })
-  }, [])
-  const getMenu = () => {
-    const q = query(collection(firebase.db, "Restos"));
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      let menu = [];
-      querySnapshot.forEach((doc) => {
-        if (doc.id === empresaDetail.idResto) {
-          //console.log("yes!");
-          let obj = doc.data();
-          menu = obj.menu;
-          setMenuArr(menu);
-        }
-      });
+    mapRef.current.fitToSuppliedMarkers(["userLocation", "restoLocation"], {
+      edgePadding: { top: 50, right: 50, bottom: 50, left: 50 },
     });
-    setMenuCategory('')
-  }
-  useEffect(() => {
-    getMenu()
   }, []);
-  const handleCategory = async (category) => {
-    const docRef = doc(firebase.db, "Restos", empresaDetail.idResto);
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
-      const menuResto = docSnap.data().menu;
-      //console.log(menuResto)
-      const result = menuResto.filter((menu) => menu.category === category.toLowerCase())
+  // const getMenu = () => {
+  //   const q = query(collection(firebase.db, "Restos"));
+  //   const unsubscribe = onSnapshot(q, (querySnapshot) => {
+  //     let menu = [];
+  // console.log("SNAP DETAILSRESTO 115");
+  //     querySnapshot.forEach((doc) => {
+  //       if (doc.id === empresaDetail.idResto) {
+  //         let obj = doc.data();
+  //         menu = obj.menu;
+  //         setMenuArr(menu);
+  //       }
+  //     });
+  //   });
+  //   setMenuCategory("");
+  // };
+  // useEffect(() => {
+  //   getMenu();
+  // }, []);
 
-      //console.log(result)
-      if (result.length === 0) {
-        alert("No hay comidas con esta categoria")
-        getMenu()
-      } else {
-        setMenuCategory(result)
-      }
-    }
-  }
-
-  useEffect(() => {
+  const getInfo = () => {
     const q = doc(firebase.db, "Restos", empresaDetail.idResto);
     const unsubscribe = onSnapshot(q, (doc) => {
-      setReviews(doc.data().reviews)
+      let obj = doc.data();
+      let categories = obj.menu.map((element) => element.category);
+
+      setMenuCategory(categories);
+      setMenuArr(obj.menu);
+      setReviews(obj.reviews);
     });
+  };
+  useEffect(() => {
+    getInfo();
   }, []);
-  
+
+  // useEffect(() => {
+  //   const q = doc(firebase.db, "Restos", empresaDetail.idResto);
+  //   const unsubscribe = onSnapshot(q, (doc) => {
+  //     console.log("SNAP DETAILSRESTO 151");
+  //     setReviews(doc.data().reviews);
+  //   });
+  // }, []);
+
+  const handleCategory = async (category) => {
+    if (!category) {
+      setMenuFiltered(menuArr);
+    } else {
+      let filtered = menuArr.filter((element) => element.category === category);
+      setMenuFiltered(filtered);
+    }
+  };
+
   return (
-    <ScrollView style={globalStyles.Home}>
-      <View style={{ backgroundColor: "#333a" }}>
-        <Text style={{ textAlign: "center", fontSize: 30, marginVertical: 10, color: "#fff" }}>{empresaDetail.title}</Text>
+    <View style={globalStyles.Home}>
+      <View style={globalStyles.headerResto}>
+        <Text
+          style={{
+            textAlign: "center",
+            fontSize: 30,
+            paddingVertical: 3,
+            color: "#161616",
+            letterSpacing: 1,
+          }}
+        >
+          {empresaDetail.title}
+        </Text>
       </View>
-    
-      <View>
-        <View style={globalStyles.btnTodasComidas}>
-          <TouchableOpacity onPress={() => getMenu()} >
-            <Text style={{
-              fontWeight: "bold",
-              fontSize: 15,
-              padding: 1,
-              alignSelf: "center",
-            }}>Todas Las Comidas</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.categoriesContainer}>
-          <View style={globalStyles.categoriesViewDetail}>
-            <TouchableOpacity
-              onPress={() => handleCategory(ENTRADAS)}
-            >
-              <Text style={globalStyles.categoriesText}>Entradas</Text>
+      <ScrollView style={globalStyles.Home}>
+          <View style={globalStyles.btnTodasComidas}>
+            <TouchableOpacity onPress={() => getMenu()}>
+              <Text
+                style={{
+                  fontWeight: "bold",
+                  fontSize: 15,
+                  padding: 1,
+                  alignSelf: "center",
+                }}
+              >
+                Todas Las Comidas
+              </Text>
             </TouchableOpacity>
           </View>
 
-          <View style={globalStyles.categoriesViewDetail}>
-            <TouchableOpacity
-              onPress={() => handleCategory(PLATO_PRINCIPAL)}
-            >
-              <Text style={globalStyles.categoriesText}>Plato Principal</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={globalStyles.categoriesViewDetail}>
-            <TouchableOpacity
-              onPress={() => handleCategory(GUARNICION)}
-            >
-              <Text style={globalStyles.categoriesText}>Guarnicion</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={globalStyles.categoriesViewDetail}>
-            <TouchableOpacity
-              onPress={() => handleCategory(BEBIDA)}
-            >
-              <Text style={globalStyles.categoriesText}>Bebidas</Text>
-            </TouchableOpacity>
-          </View>
+          <View style={styles.categoriesContainer}>
+            {/* mapear arr y devolver uno asi */}
 
-
-          <View style={globalStyles.categoriesViewDetail}>
-            <TouchableOpacity
-              onPress={() => handleCategory(POSTRES)}
-            >
-              <Text style={globalStyles.categoriesText}>Postres</Text>
-            </TouchableOpacity>
-          </View>
-
-
-
-        </View>
-        {menuArr.length > 0 ? 
-          <ScrollView style={styles.showMenu}>
-            {menuCategory ? menuCategory.map((menu, index) => {
+            {menuCategory?.map((categoria) => {
               return (
-                <CardMenu key={index} menu={menu}>
-                  {" "}
-                </CardMenu>
+                <View style={globalStyles.categoriesViewDetail} key={categoria}>
+                  <TouchableOpacity onPress={() => handleCategory(categoria)}>
+                    <Text style={globalStyles.categoriesText}>{categoria}</Text>
+                  </TouchableOpacity>
+                </View>
               );
-            }) :
-              menuArr.map((menu, index) => {
-                return (
-                  <CardMenu key={index} menu={menu}>
-                    {" "}
-                  </CardMenu>
-                );
-              })}
-          </ScrollView>
-         : (
-          <Text
-            style={{ alignSelf: "center", fontSize: 30, marginVertical: 30 }}
-          >
-            {" "}
-            Add a food to see it!
-          </Text>
-        )}
-        <View onTouchStart={() => setModalVisible(!modalVisible)}>
-          <TouchableOpacity style={globalStyles.btnFiltrosHome} >
-            <Text style={globalStyles.btnTextFiltro}><MaterialIcons name="payment" size={20} color="#161616" ></MaterialIcons> Quiero Reservar !
+            })}
+            {menuArr.length ? (
+              <View style={globalStyles.categoriesViewDetail} key={"empty"}>
+                <TouchableOpacity onPress={() => handleCategory()}>
+                  <Text style={globalStyles.categoriesText}>Limpiar</Text>
+                </TouchableOpacity>
+              </View>
+            ) : null}
+          </View>
+          {menuArr.length > 0 ? (
+            <ScrollView style={styles.showMenu}>
+              {menuFiltered.length
+                ? menuFiltered.map((menu, index) => {
+                    return (
+                      <CardMenu key={index} menu={menu}>
+                        {" "}
+                      </CardMenu>
+                    );
+                  })
+                : menuArr.map((menu, index) => {
+                    return (
+                      <CardMenu key={index} menu={menu}>
+                        {" "}
+                      </CardMenu>
+                    );
+                  })}
+            </ScrollView>
+          ) : (
+            <Text
+              style={{ alignSelf: "center", fontSize: 30, marginVertical: 30 }}
+            >
+              {" "}
+              Add a food to see it!
             </Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.googleMapsContainer}>
-          <MapView
-            ref={mapRef}
-            style={styles.googleMaps}
-            initialRegion={{
-              latitude: location.latitude,
-              longitude: location.longitude,
-              latitudeDelta: 0.004757,
-              longitudeDelta: 0.006866,
-            }}
-          >
-            <Marker
-              title={`${empresaDetail.title}, ${empresaDetail.location.address}`}
-              coordinate={{
+          )}
+          <View onTouchStart={() => setModalVisible(!modalVisible)}>
+            <TouchableOpacity style={globalStyles.btnFiltrosHome}>
+              <Text style={globalStyles.btnTextFiltro}>
+                <MaterialIcons
+                  name="payment"
+                  size={20}
+                  color="#161616"
+                ></MaterialIcons>{" "}
+                Quiero Reservar !
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.googleMapsContainer}>
+            <MapView
+              ref={mapRef}
+              style={styles.googleMaps}
+              initialRegion={{
                 latitude: location.latitude,
                 longitude: location.longitude,
+                latitudeDelta: 0.004757,
+                longitudeDelta: 0.006866,
               }}
-              pinColor='#0072B5'
-              identifier="restoLocation"
-              description={`Distancia: ${distance.distance} Km - ETA: ${distance.ETA} Min`}
-            />
+            >
+              <Marker
+               title={empresaDetail.title}
+               pinColor='#0072B5'
+               coordinate={location}
+               description={`Distancia: ${distance.distance} Km - ETA: ${distance.ETA} Min`}
+               identifier="restoLocation"
+               
+               >
+              </Marker>
+
             { Object.entries(userLocation).length > 0 && (
               <Marker
-                title="Your location"
+                title="Your Location"
                 coordinate={userLocation}
                 pinColor="#0072B5"
                 identifier="userLocation"
@@ -264,7 +279,7 @@ const DetailsResto = ({ navigation }) => {
             <MapViewDirections
               apikey={GOOGLE_API_KEY}
               strokeWidth={1.5}
-              strokeColor="gray"
+              strokeColor="brown"
               origin={userLocation}
               destination={{
                 latitude: location.latitude,
@@ -273,62 +288,79 @@ const DetailsResto = ({ navigation }) => {
               onReady={ resultado => {
                 const { distance, duration } = resultado;
                 const travelTime = Math.round(duration)
-                const travelDistance = distance
+                // const distanceSpliteado = distance.split('.')
+                // console.log(distanceSpliteado)
+                const travelDistance = distance.toString().slice(0, 4)
                 setDistance({distance: travelDistance, ETA: travelTime})
               }}
               />
           )}
           </MapView>
         </View>
-      </View>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(!modalVisible);
-        }}
-      >
-        <View style={globalStyles.centeredView}>
-          <View style={globalStyles.modalView}>
-            <TouchableOpacity
-              style={globalStyles.btnTodasComidas}
-              onPress={() => setModalVisible(!modalVisible)}
-            >
-              <Text 
-              style={globalStyles.texts}
-                onPress={() => setModalVisible(false)}
-                > X </Text>
-            </TouchableOpacity>
-            <Text style={globalStyles.texts}>Selecciona la cantidad de lugares</Text>
-            <TextInput placeholder='Cantidad de lugares' style={globalStyles.inputComponent} keyboardType='numeric' onChangeText={(value) => setCantLugares(parseInt(value))}>
-            </TextInput>
-            <Text style={globalStyles.texts}>Precio por cabeza otorgado por Empresa seria:</Text>
-            <TextInput placeholder='Cantidad de lugares' style={globalStyles.inputComponent} keyboardType='numeric' onChangeText={(value) => setPrecioCabeza(parseInt(value))}>
-            </TextInput>
-            <Text style={globalStyles.modalText}>Precio por persona ${precioCabeza}</Text>
-            <TouchableOpacity
-              style={globalStyles.btnLogin}
-              onPress={() => onPressReservar(cantLugares, precioCabeza)}
-            >
-              <Text style={globalStyles.texts}>Reservar mi lugar por ${cantLugares * precioCabeza}</Text>
-            </TouchableOpacity>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            setModalVisible(!modalVisible);
+          }}
+        >
+          <View style={globalStyles.centeredView}>
+            <View style={globalStyles.modalView}>
+              <TouchableOpacity
+                style={globalStyles.btnTodasComidas}
+                onPress={() => setModalVisible(!modalVisible)}
+              >
+                <Text
+                  style={globalStyles.texts}
+                  onPress={() => setModalVisible(false)}
+                >
+                  {" "}
+                  X{" "}
+                </Text>
+              </TouchableOpacity>
+              <Text style={globalStyles.texts}>
+                Selecciona la cantidad de lugares
+              </Text>
+              <TextInput
+                placeholder="Cantidad de lugares"
+                style={globalStyles.inputComponent}
+                keyboardType="numeric"
+                onChangeText={(value) => setCantLugares(parseInt(value))}
+              ></TextInput>
+              <Text style={globalStyles.texts}>
+                Precio por persona otorgado por Empresa:
+              </Text>
+              <TextInput
+                placeholder="Cantidad de lugares"
+                style={globalStyles.inputComponent}
+                keyboardType="numeric"
+                onChangeText={(value) => setPrecioCabeza(parseInt(value))}
+              ></TextInput>
+              <Text style={globalStyles.modalText}>
+                Precio por persona ${precioCabeza}
+              </Text>
+              <TouchableOpacity
+                style={globalStyles.btnLogin}
+                onPress={() => onPressReservar(cantLugares, precioCabeza)}
+              >
+                <Text style={globalStyles.texts}>
+                  Completar reserva por ${cantLugares * precioCabeza}
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
+        </Modal>
+        <View style={styles.listReviews}>
+          <ListReviews navigation={navigation} reviews={reviews} />
         </View>
-      </Modal>
-      <View style={styles.listReviews}>
-                  <ListReviews navigation={navigation} reviews={reviews}/>
-                </View>
-      <View>
-      </View>
-    </ScrollView>
-
+        <View></View>
+      </ScrollView>
+    </View>
   );
 };
 const styles = StyleSheet.create({
-  listReviews:{
-    
-  },
+  listReviews: {},
   container: {
     flex: 1,
     backgroundColor: "pink",
@@ -368,22 +400,21 @@ const styles = StyleSheet.create({
     height: 250,
     borderRadius: 100,
   },
-  wppIcon:{
-    height:30,
-    marginLeft:10,
+  wppIcon: {
+    height: 30,
+    marginLeft: 10,
     borderRadius: 10,
     width: 40,
-    backgroundColor: '#ffd964',
+    backgroundColor: "#ffd964",
     alignItems: "center",
     borderWidth: 1,
-    borderColor: '#b39138',
-    
+    borderColor: "#b39138",
   },
-  img:{
+  img: {
     margin: 5,
-    height:20,
-    width:20,
-    alignItems:'center'
+    height: 20,
+    width: 20,
+    alignItems: "center",
   },
   textContainer2: {
     alignSelf: "center",
@@ -392,13 +423,13 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 3,
     marginTop: 10,
-    backgroundColor: '#ffd964'
+    backgroundColor: "#ffd964",
   },
   centeredView: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: '10%',
+    marginTop: "10%",
     //backgroundColor: "blur",
   },
   modalView: {
@@ -417,8 +448,8 @@ const styles = StyleSheet.create({
       height: 12,
     },
     shadowOpacity: 0.58,
-    shadowRadius: 16.00,
-    
+    shadowRadius: 16.0,
+
     elevation: 100,
   },
 });
