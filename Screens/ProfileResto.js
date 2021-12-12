@@ -128,16 +128,20 @@ const ProfileResto = ({ navigation }) => {
 
   const getRating = () => {
     let totalRating = 0;
-    if (obj.reviews.length) {
-      for (let i = 0; i < obj.reviews.length; i++) {
-        totalRating += obj.reviews[i].rating;
+    if (availableCommerces?.reviews?.length) {
+      for (let i = 0; i < availableCommerces?.reviews?.length; i++) {
+        totalRating += availableCommerces?.reviews[i]?.rating;
       }
-      let resultado = totalRating / obj.reviews.length;
+      let resultado = totalRating / availableCommerces?.reviews?.length;
       setResultRating(resultado);
     } else {
       setResultRating(totalRating);
     }
   };
+
+  useEffect(() => {
+    console.log("commerce", availableCommerces?.reviews?.length);
+  }, [availableCommerces]);
 
   const getFavQty = async () => {
     try {
@@ -152,7 +156,7 @@ const ProfileResto = ({ navigation }) => {
           let obj = doc.data();
           if (obj.favourites.length) {
             let favourites = obj.favourites.filter(
-              (element) => element.idResto === availableCommerces.id
+              (element) => element.idResto === availableCommerces?.id
             );
             totalFavs += favourites.length;
           }
@@ -167,7 +171,7 @@ const ProfileResto = ({ navigation }) => {
   useEffect(() => {
     getFavQty();
     getRating();
-  }, []);
+  }, [commerceInfo]);
 
   useEffect(() => {
     return () => {
