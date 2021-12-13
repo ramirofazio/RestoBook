@@ -77,7 +77,6 @@ const globalStyles = StyleSheet.create({
     width: 640,
     resizeMode: "contain", // esta linea es para que se adapte al tam;o de la imagen
   },
-
   // --------------------------------------------CARD HOME --------------------------------------------
   cardsContainer: {
     flex: 1,
@@ -160,6 +159,7 @@ const globalStyles = StyleSheet.create({
     textAlign: "center",
     width: "100%",
     color: "#161616",
+    textTransform: "capitalize"
   },
   btnContainerCard: {
     // backgroundColor: 'violet',
@@ -179,6 +179,7 @@ const globalStyles = StyleSheet.create({
   /// --------------------------------------------ACA TERMINAN  LOS ESTILOS DE LAS CARDS HOM -------
   //------------------------------CARDS MENU y DETAIL RESTO-----------------------------------------------------------------
   headerResto: {
+    flexDirection: "row",
     backgroundColor: "#eccdaa",
     borderColor: "rgba(22, 22, 22, .2)",
     borderBottomWidth: 1,
@@ -409,7 +410,7 @@ const globalStyles = StyleSheet.create({
     textAlign: "center",
   },
   modalText: {
-    marginBottom: 15,
+    marginVertical: 15,
     textAlign: "center",
     fontSize: 30,
     fontWeight: "bold",

@@ -158,12 +158,14 @@ export default Navigator = () => {
             },
           }}
         />
-        <Stack.Screen
+
+              <Stack.Screen
           name="AddReviewsRestorant"
           component={AddReviewsRestorant}
           options={{
-            headerTitle: "AddReviewsRestorant",
-            title: "Agregar Review",
+            headerTitle: " Agregar una opinión",
+            title: "Agregar una opinión",
+
             headerTitleAlign: "center",
             headerStyle: {
               backgroundColor: "#161616",
@@ -221,7 +223,7 @@ export default Navigator = () => {
           component={ProfileResto}
           options={{
             headerTitle: " Mi Empresa",
-            title: "Mi Empresa",
+            title: "Perfil Resto",
 
             headerTitleAlign: "center",
             headerStyle: {
@@ -239,7 +241,7 @@ export default Navigator = () => {
           component={SelectCommerce}
           options={{
             headerTitle: "Selecciona tu local",
-            title: "Tu local",
+            title: "Mis Sucursales",
 
             headerTitleAlign: "center",
             headerStyle: {
