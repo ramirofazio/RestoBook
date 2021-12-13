@@ -62,20 +62,17 @@ export default function AddReviewsRestorant({ navigation }) {
             count={5}
             reviews= {["Malo", "Regular", "Normal", "Bueno", "Excelente"]}
             defaultRating={0}
-            size={10}
+            size={15}
             onFinishRating={(value) => setRating(value)}
           ></AirbnbRating>
         </View>
-        <View style={styles.comentarios}>
           <TextInput
             placeholder="  Tu opinion..."
             fontSize={15}
             containerStyle={styles.containerInput}
             style={globalStyles.inputComponent}
             onChange={(e) => setReview(e.nativeEvent.text)}
-            errorMessage={errorReview}
           />
-        </View>
         {/* <Button
                 title="Enviar Comentario"
                 containerStyle={styles.containerButon}
@@ -87,6 +84,7 @@ export default function AddReviewsRestorant({ navigation }) {
              <TouchableOpacity 
                       style={globalStyles.btnFiltrosHome}
                       onPress={addReview}
+                      errorMessage={errorReview}
                       >
                           <Text style={globalStyles.texts}>Escribe una opinion</Text>
                       </TouchableOpacity>
@@ -107,19 +105,9 @@ const styles = StyleSheet.create({
     marginTop: 100,
     marginBottom: 2,
   },
-  comentarios: {
-    flex: 1,
-    alignItems: "center",
-    margin: 10,
-  },
   containerInput: {
-    marginBottom: 10,
   },
   input: {
-    height: 150,
-    width: "100%",
-    padding: 0,
-    margin: 0,
   },
   buton: {
  padding: 30,
