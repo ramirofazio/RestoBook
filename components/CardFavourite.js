@@ -43,14 +43,17 @@ const CardFavourite = ({
     phone: resto.phone,
     location: resto.location,
     img: resto.img,
+    reservationsParams: resto.reservationsParams,
+    description: resto.description,
   };
 
   const handleOnPress = () => {
+    console.log("resto", resto);
+
     dispatch(empresaDetail(resto));
 
     navigation.navigate("DetailsResto");
   };
-
 
   const removeFromFavourite = async () => {
     if (auth?.currentUser?.uid) {
@@ -61,7 +64,7 @@ const CardFavourite = ({
         let modifiedFavs = myFavourites.filter(
           (element) => element.idResto !== infoFavourite.idResto
         );
-       // console.log(modifiedFavs);
+        // console.log(modifiedFavs);
         setMyFavourites(modifiedFavs);
         let docRef = doc(firebase.db, "Users", auth.currentUser.uid);
         await updateDoc(docRef, {
@@ -73,7 +76,6 @@ const CardFavourite = ({
       setDeleting(false);
     }
   };
-
 
   return (
     <View style={globalStyles.cardsFavouriteContainer}>
@@ -91,7 +93,7 @@ const CardFavourite = ({
               <ActivityIndicator
                 size="large"
                 color="#5555"
-              // style={globalStyles.imgProfile}
+                // style={globalStyles.imgProfile}
               />
             ) : (
               <Text style={globalStyles.cardsHomeTitle}>{resto.title}</Text>

@@ -103,24 +103,6 @@ const DetailsResto = ({ navigation }) => {
       edgePadding: { top: 50, right: 50, bottom: 50, left: 50 },
     });
   }, []);
-  // const getMenu = () => {
-  //   const q = query(collection(firebase.db, "Restos"));
-  //   const unsubscribe = onSnapshot(q, (querySnapshot) => {
-  //     let menu = [];
-  // console.log("SNAP DETAILSRESTO 115");
-  //     querySnapshot.forEach((doc) => {
-  //       if (doc.id === empresaDetail.idResto) {
-  //         let obj = doc.data();
-  //         menu = obj.menu;
-  //         setMenuArr(menu);
-  //       }
-  //     });
-  //   });
-  //   setMenuCategory("");
-  // };
-  // useEffect(() => {
-  //   getMenu();
-  // }, []);
 
   const getInfo = () => {
     const q = doc(firebase.db, "Restos", empresaDetail.idResto);
@@ -134,7 +116,7 @@ const DetailsResto = ({ navigation }) => {
     });
   };
 
-  const { timeRange } = empresaDetail.reservationsParams;
+  const { timeRange } = empresaDetail?.reservationsParams;
   let horaInicio = timeRange.split("-")[0];
   let horaFin = timeRange.split("-")[1];
   const handleHorarioReserva = () => {
@@ -160,6 +142,18 @@ const DetailsResto = ({ navigation }) => {
       let filtered = menuArr.filter((element) => element.category === category);
       setMenuFiltered(filtered);
       setMenuHeader(category);
+    }
+  };
+
+  const foodInfo = (target) => {
+    let filtered;
+    if (target === "vegan") {
+      filtered = menuArr.filter((element) => element.vegan === true);
+      setMenuFiltered(filtered);
+    }
+    if (target === "glutenFree") {
+      filtered = menuArr.filter((element) => element.glutenFree === true);
+      setMenuFiltered(filtered);
     }
   };
 
@@ -354,19 +348,43 @@ const DetailsResto = ({ navigation }) => {
           <View style={globalStyles.centeredMenuView}>
             <View style={globalStyles.modalMenuView}>
               <TouchableOpacity
-                style={globalStyles.btnTodasComidas}
+                style={globalStyles.btnCloseMenu}
                 onPress={() => setmodalMenuVisible(!modalMenuVisible)}
               >
-                <Text
-                  style={globalStyles.texts}
+                <MaterialIcons
                   onPress={() => setmodalMenuVisible(false)}
-                >
-                  {" "}
-                  X{" "}
-                </Text>
+                  name="arrow-back-ios"
+                  size={20}
+                  color="#161616"
+                ></MaterialIcons>
               </TouchableOpacity>
               <Text style={globalStyles.modalMenuText}>{menuHeader}</Text>
-
+              <View style={styles.categoriesFilterContainer}>
+                {menuArr.length ? (
+                  <View style={globalStyles.categoriesViewDetail} key={"empty"}>
+                    <TouchableOpacity onPress={() => foodInfo("vegan")}>
+                      <Text style={globalStyles.categoriesText}>Vegan</Text>
+                    </TouchableOpacity>
+                  </View>
+                ) : null}
+                {menuArr.length ? (
+                  <View style={globalStyles.categoriesViewDetail} key={"vegan"}>
+                    <TouchableOpacity onPress={() => handleCategory()}>
+                      <Text style={globalStyles.categoriesText}>Limpiar</Text>
+                    </TouchableOpacity>
+                  </View>
+                ) : null}
+                {menuArr.length ? (
+                  <View
+                    style={globalStyles.categoriesViewDetail}
+                    key={"glutenFree"}
+                  >
+                    <TouchableOpacity onPress={() => foodInfo("glutenFree")}>
+                      <Text style={globalStyles.categoriesText}>Sin TACC</Text>
+                    </TouchableOpacity>
+                  </View>
+                ) : null}
+              </View>
               <View style={styles.categoriesContainer}>
                 {menuCategory?.map((categoria) => {
                   return (
@@ -384,13 +402,6 @@ const DetailsResto = ({ navigation }) => {
                     </View>
                   );
                 })}
-                {menuArr.length ? (
-                  <View style={globalStyles.categoriesViewDetail} key={"empty"}>
-                    <TouchableOpacity onPress={() => handleCategory()}>
-                      <Text style={globalStyles.categoriesText}>Limpiar</Text>
-                    </TouchableOpacity>
-                  </View>
-                ) : null}
               </View>
 
               {menuArr.length > 0 ? (
@@ -493,6 +504,15 @@ const styles = StyleSheet.create({
 
   categoriesContainer: {
     width: "100%",
+    height: 33,
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-around",
+    borderRadius: 20,
+    margin: 5,
+  },
+  categoriesFilterContainer: {
+    width: "50%",
     height: 33,
     alignItems: "center",
     flexDirection: "row",

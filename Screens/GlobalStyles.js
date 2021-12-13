@@ -418,7 +418,7 @@ const globalStyles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 20,
     paddingHorizontal: 5,
-    paddingVertical: 35,
+    paddingVertical: 5,
     width: "100%",
     height: "95%",
     alignItems: "center",
@@ -439,6 +439,28 @@ const globalStyles = StyleSheet.create({
     fontSize: 30,
     fontWeight: "bold",
     textTransform: "capitalize",
+  },
+
+  btnCloseMenu: {
+    marginVertical: 7,
+    width: "25%",
+    height: 30,
+    alignSelf: "flex-start",
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 2,
+    borderColor: "#eccdaa",
+    backgroundColor: "#f2f2f2",
+    borderRadius: 25,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 4.84,
+
+    elevation: 5,
   },
 
   textStyle: {
@@ -568,6 +590,16 @@ const globalStyles = StyleSheet.create({
     // marginBottom: -10,
     paddingVertical: 1,
   },
+
+  textsSwitch: {
+    color: "#858383",
+    textAlign: "center",
+    width: "50%",
+    fontSize: 15,
+    fontWeight: "bold",
+    // marginBottom: -10,
+    paddingVertical: 1,
+  },
   textDownButton: {
     textAlign: "center",
 
@@ -599,6 +631,18 @@ const globalStyles = StyleSheet.create({
     maxWidth: "100%",
     width: "60%",
   },
+  switchComponent: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    alignSelf: "center",
+    marginVertical: 10,
+    borderRadius: 10,
+    backgroundColor: "rgba(22, 22, 22, .2)",
+    maxWidth: "100%",
+    width: "60%",
+  },
+
   modalInputContainer: {
     flex: 2,
     alignItems: "center",
