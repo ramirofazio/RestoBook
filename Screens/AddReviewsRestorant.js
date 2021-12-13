@@ -52,12 +52,12 @@ export default function AddReviewsRestorant({ navigation, route }) {
   };
   const validForm = () => {
     setErrorReview(null);
-    let isValue = true;
+    let isValid = true;
     if (isEmpty(review)) {
       setErrorReview("Completá tu comentario", 3000);
-      isValue = false;
+      isValid = false;
     }
-    return isValue;
+    return isValid;
   };
   return (
     <View style={styles.container}>
@@ -77,11 +77,10 @@ export default function AddReviewsRestorant({ navigation, route }) {
             count={5}
             reviews={["Malo", "Regular", "Normal", "Bueno", "Excelente"]}
             defaultRating={0}
-            size={20}
+            size={15}
             onFinishRating={(value) => setRating(value)}
           ></AirbnbRating>
         </View>
-        <View style={styles.comentarios}>
           <TextInput
             placeholder="  Tu opinion..."
             placeholderTextColor="#666"
@@ -90,9 +89,7 @@ export default function AddReviewsRestorant({ navigation, route }) {
             containerStyle={styles.containerInput}
             style={globalStyles.inputComponent}
             onChange={(e) => setReview(e.nativeEvent.text)}
-            errorMessage={errorReview}
           />
-        </View>
         {/* <Button
                 title="Enviar Comentario"
                 containerStyle={styles.containerButon}
@@ -100,15 +97,16 @@ export default function AddReviewsRestorant({ navigation, route }) {
                 onPress={addReview}
                 >
             </Button> */}
-        <View style={styles.buton}>
-          <TouchableOpacity
-            style={globalStyles.btnFiltrosHome}
-            onPress={addReview}
-          >
-            <Text style={globalStyles.texts}>Escribe una opinion</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+            <View style={styles.buton}>
+             <TouchableOpacity 
+                      style={globalStyles.btnFiltrosHome}
+                      onPress={addReview}
+                      errorMessage={errorReview}
+                      >
+                          <Text style={globalStyles.texts}>Escribe una opinion</Text>
+                      </TouchableOpacity>
+            </View>
+            </View>
     </View>
   );
 }
@@ -124,13 +122,9 @@ const styles = StyleSheet.create({
     marginTop: 100,
     marginBottom: 2,
   },
-  comentarios: {
+  containerInput: {
   },
   input: {
-    height: 150,
-    width: "100%",
-    padding: 0,
-    margin: 0,
   },
   buton: {
     padding: 30,

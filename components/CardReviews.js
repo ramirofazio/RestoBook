@@ -35,6 +35,7 @@ export default function CardReviews({ reseña }) {
     getImage();
   }, []);
 
+
   return (
     <View style={styles.cardsMenuContainer}>
       <View style={styles.cardsImg}>
@@ -66,6 +67,7 @@ export default function CardReviews({ reseña }) {
 
   );
 }
+
 
 
 
