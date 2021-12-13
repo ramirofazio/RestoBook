@@ -139,10 +139,6 @@ const ProfileResto = ({ navigation }) => {
     }
   };
 
-  useEffect(() => {
-    console.log("commerce", availableCommerces?.reviews?.length);
-  }, [availableCommerces]);
-
   const getFavQty = async () => {
     try {
       const docRef = query(

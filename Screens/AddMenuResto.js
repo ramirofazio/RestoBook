@@ -27,7 +27,7 @@ import { doc, updateDoc, arrayUnion } from "firebase/firestore";
 import globalStyles from "./GlobalStyles";
 //
 //-------INITIALIZATIONS-------
-import { DEFAULT_FOOD_IMAGE } from "@env";
+import { DEFAULT_FOOD_IMAGE, CLOUDINARY_URL, CLOUDINARY_CONSTANT } from "@env";
 //
 //-------FORMIK------------
 import { Formik } from "formik";
@@ -230,7 +230,7 @@ const AddMenuResto = ({ navigation }) => {
               <TextInput
                 multiline
                 style={globalStyles.texts}
-                placeholder="Decripcion"
+                placeholder="Descripción"
                 onChangeText={props.handleChange("description")}
                 value={props.values.description}
                 onBlur={props.handleBlur("description")}
@@ -270,12 +270,11 @@ const AddMenuResto = ({ navigation }) => {
               </TouchableOpacity>
             )}
 
-            {props.values.img && props.values.img.length > 0 ? (
-              <Image
-                source={{ uri: props.values.img }}
-                style={{ width: 200, height: 200, borderRadius: 15 }}
-              />
-            ) : null}
+            <Image
+              source={{ uri: CLOUDINARY_CONSTANT + selectedImage }}
+              style={{ width: 200, height: 200, borderRadius: 15 }}
+            />
+
             <View style={globalStyles.btnTodasComidas}>
               <TouchableOpacity onPress={() => props.handleSubmit()}>
                 <Text style={globalStyles.texts}>Agregar!</Text>
