@@ -5,7 +5,15 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 //
 //----------REACT-NATIVE UTILS-----------
-import { View, TextInput, TouchableOpacity, Text, Image, Pressable } from "react-native";
+import {
+  View,
+  TextInput,
+  TouchableOpacity,
+  Text,
+  Image,
+  Pressable,
+  ActivityIndicator,
+} from "react-native";
 import { BottomSheet, ListItem } from "react-native-elements";
 //
 //----------FIREBASE UTILS-----------
@@ -19,7 +27,7 @@ import { doc, updateDoc, arrayUnion } from "firebase/firestore";
 import globalStyles from "./GlobalStyles";
 //
 //-------INITIALIZATIONS-------
-
+import { DEFAULT_FOOD_IMAGE, CLOUDINARY_URL, CLOUDINARY_CONSTANT } from "@env";
 //
 //-------FORMIK------------
 import { Formik } from "formik";
@@ -46,29 +54,73 @@ const AddMenuResto = ({ navigation }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [category, setCategory] = useState();
   const categories = useSelector((state) => state.categoriesMenu);
+  const [selectedImage, setSelectedImage] = useState(DEFAULT_FOOD_IMAGE);
+  const [uploading, setUploading] = useState(false);
+  // const handleOnPressPickImage = async (handleChange) => {
+  //   const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+  //   if (status === "granted") {
+  //     let result = await ImagePicker.launchImageLibraryAsync({
+  //       mediaTypes: ImagePicker.MediaTypeOptions.All,
+  //       allowsEditing: true,
+  //       aspect: [4, 3],
+  //       quality: 1,
+  //     });
+  //     if (!result.cancelled) {
+  //       handleChange(result.uri);
+  //     }
+  //   } else {
+  //     alert("Sorry, we need camera roll permissions to make this work!");
+  //   }
+  // };
 
-
-  const handleOnPressPickImage = async (handleChange) => {
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (status === "granted") {
-      let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.All,
-        allowsEditing: true,
-        aspect: [4, 3],
-        quality: 1,
-      });
-      if (!result.cancelled) {
-        handleChange(result.uri);
-      }
-    } else {
-      alert("Sorry, we need camera roll permissions to make this work!");
+  let openImagePickerAsync = async () => {
+    setUploading(true);
+    let permissionResult =
+      await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (permissionResult.granted === false) {
+      alert("Se necesita el permiso para acceder a la galería!");
+      return;
     }
+
+    let pickerResult = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      aspect: [4, 3],
+      base64: true,
+    });
+
+    if (pickerResult.cancelled === true) {
+      setUploading(false);
+      return;
+    }
+
+    let base64Img = `data:image/jpg;base64,${pickerResult.base64}`;
+
+    let data = {
+      file: base64Img,
+      upload_preset: "restohenry",
+    };
+
+    fetch(CLOUDINARY_URL, {
+      body: JSON.stringify(data),
+      headers: {
+        "content-type": "application/json",
+      },
+      method: "POST",
+    })
+      .then(async (r) => {
+        let data = await r.json();
+        let str = data.secure_url.split("restohenry/")[1];
+        setSelectedImage(str);
+
+        setUploading(false);
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
     <View style={globalStyles.Home}>
       <View style={globalStyles.inputComponent}>
-        <Pressable onPress={ () => setIsVisible(true) }>
+        <Pressable onPress={() => setIsVisible(true)}>
           <TextInput
             style={globalStyles.texts}
             editable={false}
@@ -79,23 +131,32 @@ const AddMenuResto = ({ navigation }) => {
         </Pressable>
         <BottomSheet
           isVisible={isVisible}
-          containerStyle={{ backgroundColor: '#333a' }}
+          containerStyle={{ backgroundColor: "#333a" }}
         >
           {categories.map((categoria, index) => (
             <ListItem
               key={index}
-              containerStyle={{ backgroundColor: 'rgba(0.5,0.25,0,0.7)' }}
-              style={{ borderBottomWidth: 1, borderColor: '#333a', backgroundColor: "#fff0" }}
+              containerStyle={{ backgroundColor: "rgba(242, 242, 242,0.8)" }}
+              style={{
+                borderBottomWidth: 1,
+                borderColor: "#333a",
+                backgroundColor: "#fff0",
+              }}
               onPress={() => {
-                setCategory(categoria)
-                setIsVisible(false)
+                setCategory(categoria);
+                setIsVisible(false);
               }}
             >
               <ListItem.Content
                 style={{ backgroundColor: "#0000", alignItems: "center" }}
               >
                 <ListItem.Title
-                  style={{ height: 35, color: '#fff', padding: 8 }}
+                  style={{
+                    height: 35,
+                    color: "#161616",
+                    paddingVertical: 5,
+                    fontWeight: "bold",
+                  }}
                 >
                   {categoria}
                 </ListItem.Title>
@@ -104,13 +165,13 @@ const AddMenuResto = ({ navigation }) => {
           ))}
           <ListItem
             key={999}
-            containerStyle={{ backgroundColor: '#d14545' }}
-            style={{ borderBottomWidth: 1, borderColor: '#333a' }}
+            containerStyle={{ backgroundColor: "#eccdaa" }}
+            style={{ borderBottomWidth: 1, borderColor: "#ffff" }}
             onPress={() => setIsVisible(false)}
           >
             <ListItem.Content style={{ alignItems: "center" }}>
               <ListItem.Title
-                style={{ height: 35, color: '#FFF', padding: 8, fontSize: 20 }}
+                style={{ height: 35, color: "#161616", fontSize: 20 }}
               >
                 Cancelar
               </ListItem.Title>
@@ -125,7 +186,7 @@ const AddMenuResto = ({ navigation }) => {
           description: "",
           price: "",
           category: "",
-          img: "",
+          img: selectedImage,
         }}
         validationSchema={MenuRestoSchema}
         onSubmit={async (values) => {
@@ -134,8 +195,8 @@ const AddMenuResto = ({ navigation }) => {
             description: values.description.toLowerCase(),
             price: values.price,
             category: category.toLowerCase(),
-            img: values.img
-          }
+            img: selectedImage,
+          };
           try {
             let restoRef = doc(firebase.db, "Restos", idResto);
             setSpinner(true);
@@ -161,20 +222,24 @@ const AddMenuResto = ({ navigation }) => {
               />
             </View>
             {props.touched.foodName && props.errors.foodName ? (
-              <Text style={globalStyles.errorText}>{props.errors.foodName}</Text>
+              <Text style={globalStyles.errorText}>
+                {props.errors.foodName}
+              </Text>
             ) : null}
             <View style={globalStyles.inputComponent}>
               <TextInput
                 multiline
                 style={globalStyles.texts}
-                placeholder="Decripcion"
+                placeholder="Descripción"
                 onChangeText={props.handleChange("description")}
                 value={props.values.description}
                 onBlur={props.handleBlur("description")}
               />
             </View>
             {props.touched.description && props.errors.description ? (
-              <Text style={globalStyles.errorText}>{props.errors.description}</Text>
+              <Text style={globalStyles.errorText}>
+                {props.errors.description}
+              </Text>
             ) : null}
             <View style={globalStyles.inputComponent}>
               <TextInput
@@ -190,36 +255,35 @@ const AddMenuResto = ({ navigation }) => {
             {props.touched.price && props.errors.price ? (
               <Text style={globalStyles.errorText}>{props.errors.price}</Text>
             ) : null}
-            <TouchableOpacity
-              style={globalStyles.btnTodasComidas}
-              onPress={() => {
-                handleOnPressPickImage(props.handleChange("img"));
-              }}
-            >
-              <Text style={globalStyles.texts}>
-                {props.values.img && props.values.img.length > 0
-                  ? "Cambiar Imagen"
-                  : "Seleccionar Imagen"}
-              </Text>
-            </TouchableOpacity>
-            {props.values.img && props.values.img.length > 0 ? (
-              <Image
-                source={{ uri: props.values.img }}
-                style={{ width: 200, height: 200, borderRadius: 15 }}
-              />
-            ) : null}
-            <View style={globalStyles.btnTodasComidas}>
+            {uploading ? (
+              <ActivityIndicator size="large" color="#5555" />
+            ) : (
               <TouchableOpacity
-                
-                onPress={() => props.handleSubmit()}
+                style={globalStyles.btnTodasComidas}
+                onPress={openImagePickerAsync}
               >
+                <Text style={globalStyles.texts}>
+                  {props.values.img && props.values.img.length > 0
+                    ? "Cambiar Imagen"
+                    : "Seleccionar Imagen"}
+                </Text>
+              </TouchableOpacity>
+            )}
+
+            <Image
+              source={{ uri: CLOUDINARY_CONSTANT + selectedImage }}
+              style={{ width: 200, height: 200, borderRadius: 15 }}
+            />
+
+            <View style={globalStyles.btnTodasComidas}>
+              <TouchableOpacity onPress={() => props.handleSubmit()}>
                 <Text style={globalStyles.texts}>Agregar!</Text>
               </TouchableOpacity>
             </View>
           </View>
         )}
       </Formik>
-    </View >
+    </View>
   );
 };
 

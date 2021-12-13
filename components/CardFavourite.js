@@ -36,10 +36,10 @@ const CardFavourite = ({
   const [deleting, setDeleting] = useState(false);
   const [hearthColor, setHearthColor] = useState("red");
   let infoFavourite = {
-    id: resto.id,
+    idResto: resto.idResto,
     title: resto.title,
     phone: resto.phone,
-    address: resto.address,
+    location: resto.location,
     img: resto.img,
   };
 
@@ -52,11 +52,11 @@ const CardFavourite = ({
   const removeFromFavourite = async () => {
     if (auth?.currentUser?.uid) {
       try {
-        console.log('info en prof', infoFavourite)
+        console.log("info en prof", infoFavourite);
         setDeleting(true);
         setHearthColor("grey");
         let modifiedFavs = myFavourites.filter(
-          (element) => element.id !== infoFavourite.id
+          (element) => element.idResto !== infoFavourite.idResto
         );
         console.log(modifiedFavs);
         setMyFavourites(modifiedFavs);
@@ -77,13 +77,7 @@ const CardFavourite = ({
         <View style={globalStyles.containerImgCard}>
           <Image
             style={globalStyles.cardsHomeimg}
-            source={
-              resto.Img === ""
-                ? {
-                    uri: "https://images.vexels.com/media/users/3/204941/isolated/preview/d8bc6d74b3da7ee41fc99b6000c1e6a4-trazo-de-puntuacion-de-signo-de-interrogacion.png",
-                  }
-                : { uri: resto.Img }
-            }
+            source={{ uri: resto.img }}
           />
         </View>
 
@@ -110,7 +104,8 @@ const CardFavourite = ({
                 reverseColor="#161616"
                 size={11}
               />{" "}
-              {resto.address}
+              {resto.location.address.split(",")[0]},
+              {resto.location.address.split(",")[1]}
             </Text>
           </View>
           <View>

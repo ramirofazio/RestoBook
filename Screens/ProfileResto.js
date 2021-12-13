@@ -55,7 +55,7 @@ import CardFavourite from "../components/CardFavourite";
 //
 //
 //---------CHECKBOX----------------------
-import Checkbox from 'expo-checkbox';
+import Checkbox from "expo-checkbox";
 //
 //-------ICONS-------
 import { Icon } from "react-native-elements";
@@ -81,19 +81,24 @@ const ProfileResto = ({ navigation }) => {
 
   const sectoresResto = useSelector((state) => state.sectoresResto);
 
-  const [modalAdminReservasVisible, setModalVisibleAdminReservas] = useState(false);
-  const [modalEditVisible, setModalEditVisible] = useState(false)
+  const [modalAdminReservasVisible, setModalVisibleAdminReservas] =
+    useState(false);
+  const [modalEditVisible, setModalEditVisible] = useState(false);
 
-  const [places, setPlaces] = useState(1)
-  const [sectorState, setSectorState] = useState([])
-  const [timeReservaInicio, setTimeReservaInicio] = useState(0)
-  const [timeReservaFin, setTimeReservaFin] = useState(0)
-  const [precioXLugar, setPrecioXLugar] = useState(0)
-  const [flagValidate, setFlagValidate] = useState(false)
+  const [places, setPlaces] = useState(1);
+  const [sectorState, setSectorState] = useState([]);
+  const [timeReservaInicio, setTimeReservaInicio] = useState(0);
+  const [timeReservaFin, setTimeReservaFin] = useState(0);
+  const [precioXLugar, setPrecioXLugar] = useState(0);
+  const [flagValidate, setFlagValidate] = useState(false);
 
   const [newCommerceInfo, setNewCommerceInfo] = useState({});
   const [uploading, setUploading] = useState(false);
 
+  //cantidad de favoritos
+  const [favoritesQty, setFavoritesQty] = useState(null);
+  //promedio del rating
+  const [resultRating, setResultRating] = useState(null);
   useEffect(() => {
     const getInfo = async () => {
       const docRef = doc(firebase.db, "Restos", commerceInfo);
@@ -101,8 +106,18 @@ const ProfileResto = ({ navigation }) => {
       if (docSnap.exists()) {
         let obj = docSnap.data();
         obj.id = docSnap.id;
+        let totalRating = 0;
+        if (obj.reviews.length) {
+          for (let i = 0; i < obj.reviews.length; i++) {
+            totalRating += obj.reviews[i].rating;
+          }
+          let resultado = totalRating / obj.reviews.length;
+          setResultRating(resultado);
+        } else {
+          setResultRating(totalRating);
+        }
         setAvailableCommerces(obj);
-        setImage(obj.restoImage)
+        setImage(obj.restoImage);
         setNewCommerceInfo(obj);
       } else {
         alert("NO HAY INFO");
@@ -111,26 +126,54 @@ const ProfileResto = ({ navigation }) => {
     getInfo();
   }, [commerceInfo]);
 
+  const getRating = () => {
+    let totalRating = 0;
+    if (availableCommerces?.reviews?.length) {
+      for (let i = 0; i < availableCommerces?.reviews?.length; i++) {
+        totalRating += availableCommerces?.reviews[i]?.rating;
+      }
+      let resultado = totalRating / availableCommerces?.reviews?.length;
+      setResultRating(resultado);
+    } else {
+      setResultRating(totalRating);
+    }
+  };
+
+  const getFavQty = async () => {
+    try {
+      const docRef = query(
+        collection(firebase.db, "Users"),
+        where("favourites", "!=", "[]")
+      );
+      const docSnap = await getDocs(docRef);
+      if (!docSnap.empty) {
+        let totalFavs = 0;
+        docSnap.forEach((doc) => {
+          let obj = doc.data();
+          if (obj.favourites.length) {
+            let favourites = obj.favourites.filter(
+              (element) => element.idResto === availableCommerces?.id
+            );
+            totalFavs += favourites.length;
+          }
+        });
+        setFavoritesQty(totalFavs);
+      }
+    } catch (e) {
+      console.log("e", e);
+    }
+  };
+
+  useEffect(() => {
+    getFavQty();
+    getRating();
+  }, [commerceInfo]);
+
   useEffect(() => {
     return () => {
       setAvailableCommerces({});
     };
   }, []);
-  // useEffect(() => {
-  //   const q = query(
-  //     collection(firebase.db, "Restos"),
-  //     where("idUser", "==", loggedId)
-  //   );
-  //   const unsubscribe = onSnapshot(q, (querySnapshot) => {
-  //     querySnapshot.forEach((doc) => {
-  //       let obj = doc.data();
-
-  //       setImage(obj.restoImage);
-  //       setAvailableCommerces(obj);
-  //     });
-  //   });
-  // }, []);
-  // console.log("available en resto", availableCommerces);
 
   let openImagePickerAsync = async () => {
     setUploading(true);
@@ -181,15 +224,13 @@ const ProfileResto = ({ navigation }) => {
   const scrollX = useRef(new Animated.Value(0)).current;
   const { width: windowWidth } = useWindowDimensions();
 
-
   const showTimepicker = () => {
-    setMode('time');
-    setShow(true)
+    setMode("time");
+    setShow(true);
   };
 
-
   const onChangeTimePicker = (event, selectedDate) => {
-    console.log(event.nativeEvent)
+    console.log(event.nativeEvent);
     // const currentDate = selectedDate || date;
     // setShow(Platform.OS === 'ios');
     // setDate(currentDate);
@@ -197,26 +238,24 @@ const ProfileResto = ({ navigation }) => {
 
   const handleSectores = (sector) => {
     if (!sectorState.includes(sector)) {
-      setSectorState([...sectorState, sector])
+      setSectorState([...sectorState, sector]);
     } else {
-      const eliminado = sectorState.filter((sectorS) => sectorS !== sector)
-      setSectorState(eliminado)
-      console.log(sectorState)
+      const eliminado = sectorState.filter((sectorS) => sectorS !== sector);
+      setSectorState(eliminado);
+      console.log(sectorState);
     }
-  }
+  };
 
   const handleSectorPlaces = (num, sector) => {
-    setSectorPlaces(num)
-
-  }
+    setSectorPlaces(num);
+  };
 
   const clearStates = () => {
-    setTimeReservaInicio()
-    setTimeReservaFin()
-    setSectorState()
-    setPlaces()
-  }
-
+    setTimeReservaInicio();
+    setTimeReservaFin();
+    setSectorState();
+    setPlaces();
+  };
 
   const timesReserva = timeReservaInicio + "-" + timeReservaFin;
   const handleGuardar = async () => {
@@ -226,21 +265,21 @@ const ProfileResto = ({ navigation }) => {
       places: places,
       sectors: sectorState,
       precioPorLugar: precioXLugar,
-    }
+    };
     try {
       let restoRef = doc(firebase.db, "Restos", commerceInfo);
       await updateDoc(restoRef, {
         reservationsParams: obj,
       });
-      setModalVisibleAdminReservas(false)
-      clearStates()
+      setModalVisibleAdminReservas(false);
+      clearStates();
     } catch (err) {
       console.log(err);
     }
     // } else {
     //   alert('Complete bien los campos')
     // }
-  }
+  };
 
   return (
     <View style={globalStyles.Perfilcontainer}>
@@ -410,57 +449,20 @@ const ProfileResto = ({ navigation }) => {
             textTransform: "capitalize",
           }}
         >
-          {currentUser?.description}
+          {availableCommerces?.description}
         </Text>
-
-        <Text style={{ fontSize: 25, color: "#161616", textAlign: "center" }}>
-          <Icon name="home" type="font-awesome-5" color="#161616" size={25} />{" "}
-          Mis Comercios
-        </Text>
-        <Divider
-          orientation="horizontal"
-          width={2}
-          inset={true}
-          insetType={"middle"}
-          color={"rgba(00, 00, 00, .5)"}
-          style={{ marginVertical: 10 }}
-        />
-        <ScrollView
-          horizontal={true}
-          pagingEnabled
-          showsHorizontalScrollIndicator={false}
-          style={globalStyles.FavouriteContainer}
-          onScroll={Animated.event([
-            {
-              nativeEvent: {
-                contentOffset: {
-                  x: scrollX,
-                },
-              },
-            },
-          ])}
-          scrollEventThrottle={1}
-        >
-          {availableCommerces.length ? (
-            <View>
-              {availableCommerces.map((element) => {
-                return (
-                  <View>
-                    <Text>{element.title}</Text>
-                    <Text>{element.Description}</Text>
-                  </View>
-                );
-              })}
-            </View>
-          ) : null}
-        </ScrollView>
-
-
-
         {/* MODAL DE ADMINISTRAR RESERVAS */}
 
-        <TouchableOpacity onPress={() => setModalVisibleAdminReservas(true)} style={globalStyles.btnProfileResto}>
-          <Icon name='clipboard-list' type='font-awesome-5' color='#392c28' size={24} />
+        <TouchableOpacity
+          onPress={() => setModalVisibleAdminReservas(true)}
+          style={globalStyles.btnProfileResto}
+        >
+          <Icon
+            name="clipboard-list"
+            type="font-awesome-5"
+            color="#392c28"
+            size={24}
+          />
           <Text style={{ fontSize: 25, color: "#392c28", textAlign: "center" }}>
             Administrar Reservas
           </Text>
@@ -474,34 +476,33 @@ const ProfileResto = ({ navigation }) => {
               setModalVisibleAdminReservas(!modalVisibleAdminReservas);
             }}
           >
-
             <View style={globalStyles.centeredView}>
               <View style={globalStyles.modalView}>
                 <TouchableOpacity
-                  style={globalStyles.touchLog}
-                  onPress={() => setModalVisibleAdminReservas(!modalAdminReservasVisible)}
+                  style={globalStyles.btnTodasComidas}
+                  onPress={() =>
+                    setModalVisibleAdminReservas(!modalAdminReservasVisible)
+                  }
                 >
-                  <Text
-                    style={globalStyles.textStyle}
-                  >
-                    X
-                  </Text>
+                  <Text style={globalStyles.texts}>X</Text>
                 </TouchableOpacity>
 
+                <Text style={globalStyles.modalText}>
+                  Administración de reserva
+                </Text>
 
-                <Text style={globalStyles.modalText}>Administración de reserva</Text>
-
-
-                <Text style={globalStyles.texts}>Horario para reservar(24:00hs):</Text>
+                <Text style={globalStyles.texts}>
+                  Horario para reservar(24:00hs):
+                </Text>
                 <View style={{ display: "flex", flexDirection: "row" }}>
                   <TextInput
                     style={{
                       alignSelf: "center",
                       marginVertical: 10,
-                      borderRadius: 10,
-                      backgroundColor: 'rgba(22, 22, 22, .2)',
-                      maxWidth: '100%',
-                      width: '30%',
+                      borderRadius: 15,
+                      backgroundColor: "rgba(22, 22, 22, .2)",
+                      maxWidth: "100%",
+                      width: "30%",
                       marginHorizontal: 5,
                       paddingVertical: 5,
                     }}
@@ -512,23 +513,27 @@ const ProfileResto = ({ navigation }) => {
                     value={timeReservaInicio}
                     onChangeText={(value) => setTimeReservaInicio(value)}
                   />
-                  <Text style={{
-                    alignSelf: "center",
-                    fontSize: 14.5,
-                    fontWeight: "bold",
-                    paddingVertical: 1,
-                  }}> A </Text>
+                  <Text
+                    style={{
+                      alignSelf: "center",
+                      fontSize: 14.5,
+                      fontWeight: "bold",
+                      paddingVertical: 1,
+                    }}
+                  >
+                    {" "}
+                    A{" "}
+                  </Text>
                   <TextInput
                     style={{
                       alignSelf: "center",
                       marginVertical: 10,
-                      borderRadius: 10,
-                      backgroundColor: 'rgba(22, 22, 22, .2)',
-                      maxWidth: '100%',
-                      width: '30%',
+                      borderRadius: 15,
+                      backgroundColor: "rgba(22, 22, 22, .2)",
+                      maxWidth: "100%",
+                      width: "30%",
                       marginHorizontal: 5,
                       paddingVertical: 5,
-
                     }}
                     placeholder="Hora Fin"
                     placeholderTextColor="#666"
@@ -544,13 +549,12 @@ const ProfileResto = ({ navigation }) => {
                   style={{
                     alignSelf: "center",
                     marginVertical: 10,
-                    borderRadius: 10,
-                    backgroundColor: 'rgba(22, 22, 22, .2)',
-                    maxWidth: '100%',
-                    width: '65%',
+                    borderRadius: 15,
+                    backgroundColor: "rgba(22, 22, 22, .2)",
+                    maxWidth: "100%",
+                    width: "65%",
                     marginHorizontal: 5,
                     paddingVertical: 5,
-
                   }}
                   value={precioXLugar}
                   placeholder="Precio"
@@ -560,80 +564,141 @@ const ProfileResto = ({ navigation }) => {
                   onChangeText={(value) => setPrecioXLugar(value)}
                 />
 
-
-                <Text style={globalStyles.texts}> Cantidad de lugares disponibles:</Text>
+                <Text style={globalStyles.texts}>
+                  {" "}
+                  Cantidad de lugares disponibles:
+                </Text>
                 <InputSpinner
                   style={{
-                    maxWidth: '100%',
+                    maxWidth: "100%",
                     width: "65%",
                     marginVertical: 10,
                   }}
                   value={places}
                   max={50}
                   min={1}
+                  buttonFontSize={25}
                   onChange={(num) => setPlaces(num)}
                   skin="clean"
+                  colorPress="#eccdaa"
+                  background="#f2f2f2"
+                  colorAsBackground={true}
+                  fontSize={20}
                 />
 
-                <Text
-                  style={globalStyles.texts}
-                >Sectores disponibles: </Text>
+                <Text style={globalStyles.texts}>Sectores disponibles: </Text>
                 <View style={{ display: "flex", flexDirection: "row" }}>
                   {sectoresResto.map((sector) => (
                     <TouchableOpacity
                       style={{
                         alignItems: "center",
-                        borderRadius: 10,
+                        borderRadius: 15,
                         marginHorizontal: 5,
-                        backgroundColor: "#bd967e",
-                        marginVertical: 10,
+                        backgroundColor: "#f2f2f2",
+                        borderColor: "#eccdaa",
+                        borderWidth: 2,
+                        marginVertical: 5,
+                        shadowColor: "#000",
+                        shadowOffset: {
+                          width: 0,
+                          height: 2,
+                        },
+                        shadowOpacity: 0.2,
+                        shadowRadius: 4.84,
+
+                        elevation: 5,
                       }}
                       onPress={() => handleSectores(sector)}
                     >
-                      <Text style={{ padding: 7 }}>{sector}</Text>
+                      <Text
+                        style={{
+                          padding: 7,
+                          fontWeight: "bold",
+                          color: "#4e4e4e",
+                        }}
+                      >
+                        {sector}
+                      </Text>
                     </TouchableOpacity>
                   ))}
                 </View>
 
-                <Text
-                  style={globalStyles.texts}
-                >Resumen:</Text>
-                {sectorState?.length ?
-                  <View style={{
-                    borderWidth: 2,
-                    borderColor: "#bd967e",
-                    borderRadius: 10,
-                    maxWidth: "100%",
-                    width: "60%",
-                    height: "35%",
-                    alignItems: "center",
-                    justifyContent: "center"
-                  }}>
-                    <Text style={{ marginVertical: 5, fontSize: 13, fontWeight: "bold" }}>Hora de Reserva: {timesReserva}</Text>
-                    <Text style={{ marginVertical: 5, fontSize: 13, fontWeight: "bold" }}>Lugares Disponibles: {places}</Text>
-                    <Text style={{ marginVertical: 5, fontSize: 13, fontWeight: "bold" }}>Precio Por Lugar: ${precioXLugar}</Text>
-                    <Text style={{ marginTop: 25, fontSize: 13, fontWeight: "bold" }}>Sectores Seleccionados: </Text>
+                <Text style={globalStyles.texts}>Resumen:</Text>
+                {sectorState?.length ? (
+                  <View
+                    style={{
+                      borderWidth: 2,
+                      borderColor: "#eccdaa",
+                      borderRadius: 35,
+                      maxWidth: "100%",
+                      width: "90%",
+                      // height: "35%",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Text
+                      style={{
+                        marginVertical: 5,
+                        fontSize: 13,
+                        fontWeight: "bold",
+                      }}
+                    >
+                      Hora de Reserva: {timesReserva}
+                    </Text>
+                    <Text
+                      style={{
+                        marginVertical: 5,
+                        fontSize: 13,
+                        fontWeight: "bold",
+                      }}
+                    >
+                      Lugares Disponibles: {places}
+                    </Text>
+                    <Text
+                      style={{
+                        marginVertical: 5,
+                        fontSize: 13,
+                        fontWeight: "bold",
+                      }}
+                    >
+                      Precio Por Lugar: ${precioXLugar}
+                    </Text>
+                    <Text
+                      style={{
+                        marginTop: 15,
+                        fontSize: 15,
+                        fontWeight: "bold",
+                      }}
+                    >
+                      Sectores Seleccionados:{" "}
+                    </Text>
                     <View style={{ display: "flex", flexDirection: "row" }}>
                       {sectorState.map((sector) => (
-                        <Text style={{ marginVertical: 5, fontSize: 13, fontWeight: "bold" }}>{sector} - </Text>
+                        <Text
+                          style={{
+                            marginVertical: 8,
+                            fontSize: 13,
+                            fontWeight: "bold",
+                          }}
+                        >
+                          {sector} -{" "}
+                        </Text>
                       ))}
                     </View>
-
-                  </View> : null}
+                  </View>
+                ) : null}
 
                 <TouchableOpacity
-                  style={globalStyles.touchLog}
+                  style={globalStyles.btnTodasComidas}
                   onPress={() => handleGuardar()}
                 >
-                  <Text>Guardar</Text>
+                  <Text style={globalStyles.texts}>Guardar</Text>
                 </TouchableOpacity>
-
               </View>
             </View>
           </Modal>
-
-
-        </TouchableOpacity >
+        </TouchableOpacity>
 
         <TouchableOpacity
           onPress={() => alert("abro modal")}
@@ -645,8 +710,8 @@ const ProfileResto = ({ navigation }) => {
             {/* clock */}
           </Text>
         </TouchableOpacity>
-      </ScrollView >
-    </View >
+      </ScrollView>
+    </View>
   );
 };
 

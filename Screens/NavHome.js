@@ -51,6 +51,7 @@ export default function NavHome({ title, navigation }) {
   const loggedId = useSelector((state) => state.currentId);
 
   useEffect(() => {
+    console.log("effect 54");
     const getInfo = async () => {
       const q = query(
         collection(firebase.db, "Restos"),
@@ -148,7 +149,7 @@ export default function NavHome({ title, navigation }) {
             }
           >
             <Text style={globalStyles.btnText}>
-              {loggedId ? "Log out" : "Log in"}
+              {loggedId ? "Salir" : "Iniciar Sesion"}
             </Text>
           </TouchableOpacity>
 
@@ -169,7 +170,7 @@ export default function NavHome({ title, navigation }) {
           )}
           {commerce > 1 && loggedId && (
             <Btn
-              nombre={<RestOutlined name="rest" color="#392c28" size={15} />}
+              nombre={<RestOutlined name="rest" color="#ECCDAA" size={15} />}
               ruta="SelectCommerce"
               navigation={navigation}
             />

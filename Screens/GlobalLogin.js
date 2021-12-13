@@ -282,6 +282,10 @@ const GlobalLogin = ({ navigation }) => {
   } else {
     return (
       //-------------------REGISTER---------------------
+              <KeyboardAvoidingView
+                    behavior={Platform.OS === "ios" ? "padding" : "height"}
+                    style={globalStyles.modalInputContainer}
+              >
       <View>
         <Modal animationType="slide" transparent={true}>
           <View View style={globalStyles.centeredView}>
@@ -341,16 +345,14 @@ const GlobalLogin = ({ navigation }) => {
                 }}
               >
                 {(props) => (
-                  <KeyboardAvoidingView
-                    behavior={Platform.OS === "ios" ? "padding" : "height"}
-                    style={globalStyles.modalInputContainer}
-                  >
-                    <View style={globalStyles.modalInputContainer}>
+                      <ScrollView contentContainerStyle={{alignItems: 'center'}}>
+                  <View style={globalStyles.modalInputContainer}>
                       <Text style={styles.modalText}>
                         Registrarse en RestoBook
                       </Text>
                       <View style={globalStyles.inputComponent}>
-                        <TextInput
+
+                          <TextInput
                           style={globalStyles.texts}
                           placeholder="Nombre"
                           onChangeText={props.handleChange("name")}
@@ -449,7 +451,8 @@ const GlobalLogin = ({ navigation }) => {
                           name={flagSecureText ? "eye-off" : "eye"}
                           size={20}
                         />
-                      </TouchableOpacity>
+                     </TouchableOpacity>
+                     
                       <View style={globalStyles.btnContainerLogin}>
                         <TouchableOpacity
                           style={globalStyles.btnLogin}
@@ -470,13 +473,15 @@ const GlobalLogin = ({ navigation }) => {
                         </TouchableOpacity>
                       </View>
                     </View>
-                  </KeyboardAvoidingView>
+                        </ScrollView>
+                        
                 )}
               </Formik>
             </View>
           </View>
         </Modal>
       </View>
+                </KeyboardAvoidingView>
     );
   }
 };
