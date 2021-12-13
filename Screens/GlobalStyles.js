@@ -61,7 +61,6 @@ const globalStyles = StyleSheet.create({
     justifyContent: "center",
     borderWidth: 2,
     borderColor: "#eccdaa",
-
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -526,7 +525,7 @@ const globalStyles = StyleSheet.create({
     color: "#000",
     textAlign: "center",
     width: "100%",
-    fontSize: 14.5,
+    fontSize: 15,
     fontWeight: "bold",
     // marginBottom: -10,
     paddingVertical: 1,
