@@ -349,7 +349,8 @@ const ProfileUser = ({ navigation }) => {
         />
 
         { !myFavourites?.length ? <View style={globalStyles.FavouriteContainer}>
-          <Text style={globalStyles.texts}>Todavia no hay Favoritos agregados!</Text>
+          <Text style={{textAlign: "center", color: "grey", textAlignVertical: 'center', fontWeight: "bold"}}>Aún no tienes favoritos! Cuando los agregues aparecerán aqui
+          </Text>
         </View>
          :
         (<View style={globalStyles.FavouriteContainer} >
@@ -364,46 +365,7 @@ const ProfileUser = ({ navigation }) => {
           />
         </View>)
         }
-        {/* <ScrollView
-          horizontal={true}
-          pagingEnabled
-          showsHorizontalScrollIndicator={false}
-          style={globalStyles.FavouriteContainer}
-          onScroll={Animated.event([
-            {
-              nativeEvent: {
-                contentOffset: {
-                  x: scrollX,
-                },
-              },
-            },
-          ])}
-          scrollEventThrottle={1}
-        >
-          {myFavourites?.length
-            ? myFavourites.map((resto) => {
-                return (
-                  <View
-                    style={{ width: windowWidth, height: 250 }}
-                    key={resto.idResto}
-                  >
-                    <CardFavourite
-                      key={resto.Id}
-                      resto={resto}
-                      navigation={navigation}
-                      index={resto.Id}
-                      setMyFavourites={setMyFavourites}
-                      myFavourites={myFavourites}
-                    >
-                      {" "}
-                    </CardFavourite>
-                  </View>
-                );
-              })
-            : null}
-        </ScrollView> */}
-
-
+        
         <Text
           style={{
             fontSize: 25,

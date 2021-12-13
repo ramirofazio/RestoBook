@@ -147,7 +147,7 @@ const GlobalLogin = ({ navigation }) => {
             letterSpacing: 1,
           }}
         >
-          Login
+          Iniciar Sesión
         </Text>
         <Formik
           initialValues={{
@@ -221,7 +221,7 @@ const GlobalLogin = ({ navigation }) => {
                   style={globalStyles.btnTodasComidas}
                   onPress={() => props.handleSubmit()}
                 >
-                  <Text style={globalStyles.fontLog}>Log In</Text>
+                  <Text style={globalStyles.fontLog}>Ingresar</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
