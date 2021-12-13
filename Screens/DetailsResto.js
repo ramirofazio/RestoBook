@@ -186,7 +186,7 @@ const DetailsResto = ({ navigation }) => {
         >
           {empresaDetail.title}
         </Text>
-            <Badge status={handleHorarioReserva() ? "success" : "error"} />
+            <Badge status={handleHorarioReserva() ? "success" : "error"}   containerStyle={{ position: 'absolute', top: 20, right: 15}}/>
       </View>
 
 
