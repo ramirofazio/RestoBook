@@ -158,12 +158,14 @@ export default Navigator = () => {
             },
           }}
         />
-        <Stack.Screen
+
+              <Stack.Screen
           name="AddReviewsRestorant"
           component={AddReviewsRestorant}
           options={{
-            headerTitle: "AddReviewsRestorant",
-            title: "Agregar Review",
+            headerTitle: " Agregar una opinión",
+            title: "Agregar una opinión",
+
             headerTitleAlign: "center",
             headerStyle: {
               backgroundColor: "#161616",

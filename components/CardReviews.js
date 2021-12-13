@@ -4,6 +4,7 @@ import { View, Image, StyleSheet } from "react-native";
 import globalStyles from "../Screens/GlobalStyles";
 import { useSelector } from "react-redux";
 import firebase from "../database/firebase";
+import moment from 'moment/min/moment-with-locales'
 import { getAuth } from "firebase/auth";
 import {
   doc,
@@ -35,62 +36,86 @@ export default function CardReviews({ reseña }) {
 
   return (
     <View style={styles.cardsMenuContainer}>
-      <View style={globalStyles.cardsMenuDescriptionContainer}>
-        <View style={styles.viewRating}>
-          <AirbnbRating
-            count={5}
-            size={10}
-            defaultRating={reseña.rating}
-            showRating={false}
-          ></AirbnbRating>
+        <View style={styles.cardsImg}>
+          <Image
+         style={styles.img}
+         source={
+           userProfileImage
+             ? { uri: CLOUDINARY_CONSTANT + userProfileImage }
+             : { uri: CLOUDINARY_CONSTANT + DEFAULT_PROFILE_IMAGE }
+         } />
         </View>
-        <Card.Title style={styles.cardsMenuTitle}>{reseña.review}</Card.Title>
-        <Text style={globalStyles.cardsMenuDescriptionText}>{}</Text>
-      </View>
-      <View style={globalStyles.containerImgCardMenu}>
-        <Image
-          style={globalStyles.cardsMenuimg}
-          source={
-            userProfileImage
-              ? { uri: CLOUDINARY_CONSTANT + userProfileImage }
-              : { uri: CLOUDINARY_CONSTANT + DEFAULT_PROFILE_IMAGE }
-          }
-        />
-      </View>
-    </View>
+           <View style={styles.viewInfo}>
+                 <AirbnbRating
+                    count={5}
+                    size={10}
+                    defaultRating={reseña.rating}
+                    showRating={false}
+                >
+                </AirbnbRating>
+          <Text style={styles.cardsMenuTitle} >{reseña.review}</Text>
+          <View>
+            </View>
+            
+          </View>
+          <View style={styles.cardDate}>
+          <Text style={styles.date}>{moment(reseña.createReview).format("LLL")}</Text>
+          </View>
+        </View> 
+
   );
 }
 
+
+
 const styles = StyleSheet.create({
-  cardsMenuContainer: {
-    flex: 1,
-    alignSelf: "center",
-    backgroundColor: "white",
-    marginVertical: 5,
-    // paddingHorizontal: 5,
-    paddingVertical: 5,
-    borderRadius: 25,
-    width: "100%",
-    height: 70,
+  cardsImg:{
+    width: '15.6%',
+    flex:1,
+    padding:1,
+    justifyContent:"space-between",
+    alignSelf: "flex-start",
   },
-  viewRating: {
-    margin: 5,
+  img:{
+    width:60,
+    borderRadius:7,
+    height:60,
+  },
+  cardsMenuContainer:{
+    marginTop:20,
+    flex: 1,
+    height:80,
+    padding:7,
+    borderBottomColor: "#e3e3e3",
+    borderBottomWidth:1,
+    width:"100%",
+    justifyContent:"space-around"
+  },
+  viewInfo:{
+    marginBottom:30,
+    alignSelf: "center",
+    width: '50.6%',
+    justifyContent:"space-between",
+    alignItems:"flex-start",
+  },  
+  viewRating:{
+    backgroundColor:"#f2f2f2",
+    justifyContent:"flex-start",
   },
   cardsMenuTitle: {
-    fontSize: 15,
+    justifyContent:"flex-start",
     fontWeight: "bold",
-    textAlign: "left",
-    width: "100%",
+    fontSize:12,
   },
-  imagen: {
-    width: "70%",
-    height: "65%",
-    borderRadius: 20,
-    resizeMode: "contain",
+  cardDate:{
+    width: '100%',
+    justifyContent:"flex-end"
   },
-  textPrice: {
-    color: "black",
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-});
+  date:{
+    marginLeft:270,
+    color: 'grey',
+    fontSize:10,
+  }
+})
+
+
