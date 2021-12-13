@@ -77,7 +77,6 @@ const globalStyles = StyleSheet.create({
     width: 640,
     resizeMode: "contain", // esta linea es para que se adapte al tam;o de la imagen
   },
-
   // --------------------------------------------CARD HOME --------------------------------------------
   cardsContainer: {
     flex: 1,
@@ -409,7 +408,7 @@ const globalStyles = StyleSheet.create({
     textAlign: "center",
   },
   modalText: {
-    marginBottom: 15,
+    marginVertical: 15,
     textAlign: "center",
     fontSize: 30,
     fontWeight: "bold",

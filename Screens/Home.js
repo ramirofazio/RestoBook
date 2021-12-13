@@ -9,7 +9,7 @@ import UserFavourites from "../Redux/Actions/userFavourites.js";
 //
 //
 //----------REACT-NATIVE UTILS-----------
-import { BottomSheet, ListItem, Icon} from "react-native-elements";
+import { BottomSheet, ListItem, Icon } from "react-native-elements";
 import {
   View,
   ScrollView,
@@ -19,8 +19,9 @@ import {
   TextInput,
   Modal,
   ActivityIndicator,
-  Picker, 
+  Picker,
   Pressable,
+  KeyboardAvoidingView,
 } from "react-native";
 
 //import { MaterialIcons } from "@expo/vector-icons";
@@ -55,6 +56,7 @@ import * as Animatable from "react-native-animatable";
 import { Feather } from "@expo/vector-icons";
 
 export default function Home({ navigation }) {
+  const dispatch = useDispatch();
   //------LOGIN JOSE------------
   const [visibleModalGoogle, setVisibleModalGoogle] = useState(false);
   const [googleUser, setGoogleUser] = useState({
@@ -76,13 +78,15 @@ export default function Home({ navigation }) {
   const loggedId = useSelector((state) => state.currentId);
   const categories = useSelector((state) => state.categoriesResto);
 
-  const dispatch = useDispatch();
+  //---------------SEARCH BAR-------------------------
+  const [selectedValue, setSelectedValue] = useState("");
+  const [selectedValu, setSelectedValu] = useState("");
 
   useEffect(() => {
     const q = query(collection(firebase.db, "Restos"));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       let arr = [];
-      console.log("SNAP HOME 84");
+      console.log("SNAP HOME 89");
       querySnapshot.forEach((doc) => {
         let obj = doc.data();
         obj.idResto = doc.id;
@@ -135,7 +139,7 @@ export default function Home({ navigation }) {
     let { coords } = await Location.getCurrentPositionAsync({
       accuracy: Location.Accuracy.Balanced,
     });
-    console.log(coords);
+    //console.log(coords);
     const location = {
       latitude: coords.latitude,
       longitude: coords.longitude,
@@ -147,16 +151,16 @@ export default function Home({ navigation }) {
 
   const getInfo = async () => {
     try {
-      console.log("getInfo!!!");
+      // console.log("getInfo!!!");
       const docRef = doc(firebase.db, "Users", auth.currentUser.uid);
       const docSnap = await getDoc(docRef);
-      console.log("dsnap", docSnap.exists());
+      // console.log("dsnap", docSnap.exists());
       if (!docSnap.exists()) {
-        console.log("if de getinfo!");
+        // console.log("if de getinfo!");
         setGoogleUser({ ...googleUser, email: auth.currentUser.email });
         setVisibleModalGoogle(true);
       } else {
-        console.log("else de getinfo!");
+        //console.log("else de getinfo!");
         let obj = docSnap.data();
         dispatch(CurrentUser(obj));
         setFlagCards(true);
@@ -200,18 +204,14 @@ export default function Home({ navigation }) {
       setAvailableCommerces(result);
     }
   }
-  const [selectedValue, setSelectedValue] = useState("");
-  const [selectedValu, setSelectedValu] = useState("");
-  
+
   const updateUser = (itemValue) => {
-    if(itemValue === "A-Z") {
+    if (itemValue === "A-Z") {
       const result = availableCommerces.sort((a, b) => (a.title > b.title) ? 1 : -1)
       setSelectedValue(result)
-    }else if(itemValue === "Z-A") {
-     const resulta = availableCommerces.sort((a, b) => (a.title < b.title) ? 1 : -1)
-     setSelectedValu(resulta)
-    }else if(itemValue === "Or") {
-    alert ("Seleccione un ordenamiento ")
+    } else if (itemValue === "Z-A") {
+      const resulta = availableCommerces.sort((a, b) => (a.title < b.title) ? 1 : -1)
+      setSelectedValu(resulta)
     }
   }
 
@@ -222,8 +222,8 @@ export default function Home({ navigation }) {
     <Text>Hola!</Text>
         </View>
       </BottomSheet> */}
-      <Modal 
-      visible={visibleModalGoogle}
+      <Modal
+        visible={visibleModalGoogle}
         animationType="slide"
         transparent={true}
       >
@@ -289,55 +289,55 @@ export default function Home({ navigation }) {
       </Modal>
       <View style={styles.textContainer}>
         {usuarioGlobal !== "" ? (
-          <Text style={styles.text}>{` Welcome ${usuarioGlobal}`}</Text>
+          <Text style={styles.text}>{` Bienvenido ${usuarioGlobal}`}</Text>
         ) : (
-          <Text style={styles.text}>Welcome to Resto Book</Text>
+          <Text style={styles.text}>Bienvenido a Resto Book</Text>
         )}
       </View>
-    {/*   ---------------------------------------Search ------------------------------------------------- */}
+      {/*   ---------------------------------------Search ------------------------------------------------- */}
       <View style={styles.container} >
-      <View style={styles.textInput}>
-      <Animatable.View animation="zoomIn" duration={1200}>
-        <TextInput
-        style={styles.texto}
-          onChangeText={(event) => {
-            setSearchTerm(event);
-          }}
-          placeholder="Search..."
-          placeholderTextColor="black"
-          underlineColorAndroid="transparent"
-        />
-       </Animatable.View>
+        <View style={styles.textInput}>
+          <Animatable.View animation="zoomIn" duration={1200}>
+            <TextInput
+              style={styles.texto}
+              onChangeText={(event) => {
+                setSearchTerm(event);
+              }}
+              placeholder="Search..."
+              placeholderTextColor="black"
+              underlineColorAndroid="transparent"
+            />
+          </Animatable.View>
+        </View>
+        <View style={styles.touchableOpacity}>
+          <Feather name="search" style={styles.iconStyle} />
+        </View>
       </View>
-      <View style={styles.touchableOpacity}>
-        <Feather name="search" style={styles.iconStyle} />
-      </View>
-      </View>
-     {/*  /----------------------------------------ORDENAMIENTO----------------------------------------/ */}
+      {/*  /----------------------------------------ORDENAMIENTO----------------------------------------/ */}
       <View style={globalStyles.btnHome}>
-      <View style={globalStyles.btnFiltrosHome}>
-      <Picker
-        selectedValue={selectedValu}
-        selectedValue={selectedValue}
-        style={{ height: 17, width: 130 }}
-        onValueChange={updateUser}
-      >
-        <Picker.Item label="Ordenado" value="Or" />
-        <Picker.Item label="A-Z" value="A-Z" />
-        <Picker.Item label="Z-A" value="Z-A" />
-      </Picker>
-    </View>
-          {/*----------------------------------------BOTON MAPA------------------------------------------- */}
-    <TouchableOpacity style={globalStyles.btnFiltrosHome}>
-      <Text style={globalStyles.texts}><Icon
-                reverse
-                name="map-marker-alt"
-                type="font-awesome-5"
-                color="#FDFDFD"
-                reverseColor="#161616"
-                size={12}
-              /></Text>
-    </TouchableOpacity>
+        <View style={globalStyles.btnFiltrosHome}>
+          <Picker
+            selectedValue={selectedValu}
+            selectedValue={selectedValue}
+            style={{ height: 17, width: 130 }}
+            onValueChange={updateUser}
+          >
+            <Picker.Item label="Ordenado" value="Or" />
+            <Picker.Item label="A-Z" value="A-Z" />
+            <Picker.Item label="Z-A" value="Z-A" />
+          </Picker>
+        </View>
+        {/*----------------------------------------BOTON MAPA------------------------------------------- */}
+        <TouchableOpacity style={globalStyles.btnFiltrosHome}>
+          <Text style={globalStyles.texts}><Icon
+            reverse
+            name="map-marker-alt"
+            type="font-awesome-5"
+            color="#FDFDFD"
+            reverseColor="#161616"
+            size={12}
+          /></Text>
+        </TouchableOpacity>
         {/*----------------------------------------FILTRADO------------------------------------------- */}
         <View>
           <Pressable onPress={() => isVisibleFiltros(true)}>
@@ -385,7 +385,7 @@ export default function Home({ navigation }) {
             {categories.map((categoria, index) => (
               <ListItem
                 key={index}
-                containerStyle={{backgroundColor: "rgba(242, 242, 242,0.8)" }}
+                containerStyle={{ backgroundColor: "rgba(242, 242, 242,0.8)" }}
                 style={{
                   borderBottomWidth: 1,
                   borderColor: "#333a",
@@ -400,10 +400,12 @@ export default function Home({ navigation }) {
                   style={{ backgroundColor: "#0000", alignItems: "center" }}
                 >
                   <ListItem.Title
-                    style={{height: 35,
+                    style={{
+                      height: 35,
                       color: "#161616",
                       paddingVertical: 5,
-                      fontWeight: "bold", }}
+                      fontWeight: "bold",
+                    }}
                   >
                     {categoria}
                   </ListItem.Title>
@@ -419,7 +421,7 @@ export default function Home({ navigation }) {
               <ListItem.Content style={{ alignItems: "center" }}>
                 <ListItem.Title
                   style={{
-                     height: 35, color: "#161616", fontSize: 20 
+                    height: 35, color: "#161616", fontSize: 20
                   }}
                 >
                   Cancelar

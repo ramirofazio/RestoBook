@@ -223,7 +223,7 @@ export default Navigator = () => {
           component={ProfileResto}
           options={{
             headerTitle: " Mi Empresa",
-            title: "Mi Empresa",
+            title: "Perfil Resto",
 
             headerTitleAlign: "center",
             headerStyle: {
@@ -241,7 +241,7 @@ export default Navigator = () => {
           component={SelectCommerce}
           options={{
             headerTitle: "Selecciona tu local",
-            title: "Tu local",
+            title: "Mis Sucursales",
 
             headerTitleAlign: "center",
             headerStyle: {

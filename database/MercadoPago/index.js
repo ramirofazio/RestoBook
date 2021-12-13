@@ -38,7 +38,7 @@ app.post('/checkout', (req, res) => {
   mercadopago.preferences
     .create(preference)
     .then(function (response) {
-      console.log(response.body);
+      //console.log(response.body);
       res.send(response.body.sandbox_init_point);
     })
     .catch(function (error) {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { AirbnbRating, Rating, Card, Text, Icon } from "react-native-elements";
+import { AirbnbRating, Rating, Card, Text, Icon, Badge } from "react-native-elements";
 import {
   View,
   Image,
@@ -39,8 +39,8 @@ const CardMenu = ({ resto, navigation }) => {
   const [resultRating, setResultRating] = useState(0);
   const dispatch = useDispatch();
   const categories = useSelector((state) => state.categoriesResto);
-  useEffect(() => {}, []);
   const isFocused = useIsFocused();
+
 
   const getFavs = async () => {
     if (CurrentId) {
@@ -82,7 +82,8 @@ const CardMenu = ({ resto, navigation }) => {
     location: resto.location,
     img: resto.restoImage,
   };
-  const celphone = +541168020511;
+  const celphone = "+54 9" + resto.phone;
+  const trimmedName = auth?.currentUser?.email?.split("@")[0];
 
   useEffect(() => {
     if (CurrentId) {
@@ -104,7 +105,7 @@ const CardMenu = ({ resto, navigation }) => {
 
   const handleWhatsapp = async () => {
     await Linking.openURL(
-      `whatsapp://send?text=Hola ${resto.title}, mi nombre es Lucas y quiero generar una reserva&phone=${celphone}`
+      `whatsapp://send?text=Hola ${resto.title}, mi nombre es ${trimmedName} y quiero generar una reserva&phone=${celphone}`
     );
   };
 
@@ -138,10 +139,26 @@ const CardMenu = ({ resto, navigation }) => {
     }
   };
 
+  let horaInicio = resto.commerceTimeRange ? resto.commerceTimeRange.split("-")[0] : null;
+  let horaFin = resto.commerceTimeRange ? resto.commerceTimeRange.split("-")[1] : null;
+  const handleHorarioReserva = () => {
+    let horaActual = new Date().getHours();
+    //console.log(horaActual, horaInicio, horaFin)
+    if (horaActual >= horaInicio && horaActual < horaFin) {
+      return true
+    } else {
+      return false
+    }
+  }
+
+
+
   return (
     <View style={globalStyles.cardsContainer}>
+      <Badge status={handleHorarioReserva() ? "success" : "error"} />
       <TouchableOpacity onPress={() => handleOnPress()}>
         <View style={globalStyles.containerImgCard}>
+
           <Image
             style={globalStyles.cardsHomeimg}
             source={{
