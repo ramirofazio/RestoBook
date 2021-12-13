@@ -420,7 +420,7 @@ export default function Home({ navigation }) {
         <TouchableOpacity
           style={globalStyles.btnFiltrosHome}
           onPress={() => setMapaVisible(!mapaVisible)}>
-          <Text style={globalStyles.texts}><Icon
+          <Text><Icon
             reverse
             name="map-marker-alt"
             type="font-awesome-5"
