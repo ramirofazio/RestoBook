@@ -69,8 +69,8 @@ import { DEFAULT_RESTO_IMAGE } from "@env";
 
 const registerRestoSchema = yup.object({
   email: yup.string().required(),
-  title: yup.string().required().min(3).max(15),
-  description: yup.string().required().min(10).max(60),
+  title: yup.string().required().min(3).max(25),
+  description: yup.string().required().min(10).max(100),
   phone: yup.number().required(),
   phone2: yup.number(),
   cuit: yup.number().required(),
@@ -100,6 +100,7 @@ const RegisterResto = ({ navigation }) => {
     longitudeDelta: 0.0421,
   };
   const dispatch = useDispatch();
+  const empresaDetail = useSelector((state) => state.empresaDetail)
   const [isVisible, setIsVisible] = useState(false);
 
   //-------------GEOLOCATION-------------
@@ -168,6 +169,8 @@ const RegisterResto = ({ navigation }) => {
       lng: lng,
     });
   };
+
+
 
   return (
     <View style={globalStyles.Home}>
@@ -271,6 +274,9 @@ const RegisterResto = ({ navigation }) => {
                   // img: values.img,
                   restoImage: DEFAULT_RESTO_IMAGE,
                   menu: [],
+                  quantityVoting:0,
+                  ratingTotal:0,
+                  ratingResult:0,
                   reservations: [],
                   location: {
                     latitude: state.lat,
@@ -278,15 +284,21 @@ const RegisterResto = ({ navigation }) => {
                     address: state.address.toLowerCase(),
                   },
                   reviews: [],
+                  reservationsParams: {
+                    places: 1,
+                    precioPorLugar: 100,
+                    timeRange: '0-24'
+                  },
+                  commerceTimeRange: '0-24',
                 })
                 .then(
                   currentUser.commerce
                     ? firebase.db.collection("Users").doc(id).update({
-                        multiCommerce: true,
-                      })
+                      multiCommerce: true,
+                    })
                     : firebase.db.collection("Users").doc(id).update({
-                        commerce: true,
-                      })
+                      commerce: true,
+                    })
                 )
 
                 .then(dispatch(SetCommerce()))

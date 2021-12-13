@@ -21,6 +21,7 @@ import {
   TextInput,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
+import { Badge } from 'react-native-elements'
 //---------------------GEOLOCATION-------------------
 import { GOOGLE_API_KEY } from "@env";
 import MapView, { Marker } from "react-native-maps";
@@ -55,6 +56,9 @@ const BEBIDA = "BEBIDA";
 const POSTRES = "POSTRES";
 //
 //
+//-----------SPINNER + - ----------------------
+import InputSpinner from "react-native-input-spinner";
+//
 //-------INITIALIZATIONS-------
 const auth = getAuth();
 //
@@ -66,7 +70,7 @@ const DetailsResto = ({ navigation }) => {
 
   //--------------------------MERCADO PAGO--------------------------
   const [precioCabeza, setPrecioCabeza] = useState();
-  const [cantLugares, setCantLugares] = useState();
+  const [cantLugares, setCantLugares] = useState(1);
   const [modalVisible, setModalVisible] = useState(false);
 
   //--------------------------FILTROS CATEGORY--------------------------
@@ -78,14 +82,7 @@ const DetailsResto = ({ navigation }) => {
   const { location } = empresaDetail;
   const userLocation = useSelector((state) => state.userCoordinates);
   const mapRef = useRef(null);
-  //--------------------------------------------------------------
-  const number = "+541168020511";
-  //WhatsApp
-  const handleWhatsAppPress = async () => {
-    await Linking.openURL(
-      `whatsapp://send?text=Hola RestoBook&phone=${number}`
-    );
-  };
+
 
   const onPressReservar = async (cantLugares, precioCabeza) => {
     const url = await axios({
@@ -141,13 +138,24 @@ const DetailsResto = ({ navigation }) => {
     });
   };
 
+  const { timeRange } = empresaDetail.reservationsParams
+  let horaInicio = timeRange.split("-")[0];
+  let horaFin = timeRange.split("-")[1];
+  const handleHorarioReserva = () => {
+    let horaActual = new Date().getHours();
+
+    //console.log(horaActual, horaInicio, horaFin)
+    if (horaActual >= horaInicio && horaActual < horaFin) {
+      return true
+    } else {
+      return false
+    }
+  }
+
+
   useEffect(() => {
     getInfo();
   }, []);
-
-  useEffect(() => {
-    console.log("caat", menuCategory);
-  }, [menuCategory]);
 
   // useEffect(() => {
   //   const q = doc(firebase.db, "Restos", empresaDetail.idResto);
@@ -166,6 +174,7 @@ const DetailsResto = ({ navigation }) => {
     }
   };
 
+
   return (
     <View style={globalStyles.Home}>
       <View style={globalStyles.headerResto}>
@@ -176,10 +185,12 @@ const DetailsResto = ({ navigation }) => {
             paddingVertical: 3,
             color: "#161616",
             letterSpacing: 1,
+            textTransform: "capitalize"
           }}
         >
           {empresaDetail.title}
         </Text>
+            <Badge status={handleHorarioReserva() ? "success" : "error"} />
       </View>
       <ScrollView style={globalStyles.Home}>
         <View>
@@ -225,40 +236,58 @@ const DetailsResto = ({ navigation }) => {
             <ScrollView style={styles.showMenu}>
               {menuFiltered.length
                 ? menuFiltered.map((menu, index) => {
-                    return (
-                      <CardMenu key={index} menu={menu}>
-                        {" "}
-                      </CardMenu>
-                    );
-                  })
+                  return (
+                    <CardMenu key={index} menu={menu}>
+                      {" "}
+                    </CardMenu>
+                  );
+                })
                 : menuArr.map((menu, index) => {
-                    return (
-                      <CardMenu key={index} menu={menu}>
-                        {" "}
-                      </CardMenu>
-                    );
-                  })}
+                  return (
+                    <CardMenu key={index} menu={menu}>
+                      {" "}
+                    </CardMenu>
+                  );
+                })}
             </ScrollView>
           ) : (
             <Text
               style={{ alignSelf: "center", fontSize: 30, marginVertical: 30 }}
             >
               {" "}
-              Add a food to see it!
+              Menu No Disponible!
             </Text>
           )}
-          <View onTouchStart={() => setModalVisible(!modalVisible)}>
-            <TouchableOpacity style={globalStyles.btnFiltrosHome}>
-              <Text style={globalStyles.btnTextFiltro}>
-                <MaterialIcons
-                  name="payment"
-                  size={20}
-                  color="#161616"
-                ></MaterialIcons>{" "}
-                Quiero Reservar !
-              </Text>
-            </TouchableOpacity>
-          </View>
+
+          {handleHorarioReserva()
+            ?
+            <View onTouchStart={() => setModalVisible(!modalVisible)}>
+              <TouchableOpacity style={globalStyles.btnFiltrosHome}>
+                <Text style={globalStyles.btnTextFiltro}>
+                  <MaterialIcons
+                    name="payment"
+                    size={20}
+                    color="#161616"
+                  ></MaterialIcons>{" "}
+                  Quiero Reservar!
+                </Text>
+              </TouchableOpacity>
+            </View>
+            :
+            <View>
+              <TouchableOpacity style={globalStyles.btnFiltrosHome}>
+                <Text style={globalStyles.btnTextFiltro}>
+                  <MaterialIcons
+                    name="block"
+                    size={20}
+                    color="#161616"
+                  ></MaterialIcons>{" "}
+                  {horaInicio && horaFin ? `El horario de Reserva es de ${horaInicio} a ${horaFin}` : "No hay Horario de Reserva"}
+                </Text>
+              </TouchableOpacity>
+            </View>}
+
+
           <View style={styles.googleMapsContainer}>
             <MapView
               ref={mapRef}
@@ -325,33 +354,37 @@ const DetailsResto = ({ navigation }) => {
                   X{" "}
                 </Text>
               </TouchableOpacity>
-              <Text style={globalStyles.texts}>
+              <Text style={globalStyles.modalText}>
                 Selecciona la cantidad de lugares
               </Text>
-              <TextInput
-                placeholder="Cantidad de lugares"
-                style={globalStyles.inputComponent}
-                keyboardType="numeric"
-                onChangeText={(value) => setCantLugares(parseInt(value))}
-              ></TextInput>
-              <Text style={globalStyles.texts}>
-                Precio por persona otorgado por Empresa:
-              </Text>
-              <TextInput
-                placeholder="Cantidad de lugares"
-                style={globalStyles.inputComponent}
-                keyboardType="numeric"
-                onChangeText={(value) => setPrecioCabeza(parseInt(value))}
-              ></TextInput>
+
+              <InputSpinner
+                style={{
+                  maxWidth: '100%',
+                  width: "65%",
+                  marginVertical: 10,
+                }}
+                value={cantLugares}
+                max={50}
+                min={1}
+                buttonFontSize={25}
+                onChange={(num) => setCantLugares(num)}
+                skin="clean"
+                colorPress='#eccdaa'
+                background="#f2f2f2"
+                colorAsBackground={true}
+                fontSize={20}
+              />
+
               <Text style={globalStyles.modalText}>
-                Precio por persona ${precioCabeza}
+                Precio por Lugar ${empresaDetail.reservationsParams?.precioPorLugar}
               </Text>
               <TouchableOpacity
                 style={globalStyles.btnLogin}
-                onPress={() => onPressReservar(cantLugares, precioCabeza)}
+                onPress={() => onPressReservar(cantLugares, empresaDetail.reservationsParams?.precioPorLugar)}
               >
                 <Text style={globalStyles.texts}>
-                  Completar reserva por ${cantLugares * precioCabeza}
+                  Completar reserva por ${cantLugares * empresaDetail.reservationsParams?.precioPorLugar}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -361,8 +394,8 @@ const DetailsResto = ({ navigation }) => {
           <ListReviews navigation={navigation} reviews={reviews} />
         </View>
         <View></View>
-      </ScrollView>
-    </View>
+      </ScrollView >
+    </View >
   );
 };
 const styles = StyleSheet.create({
