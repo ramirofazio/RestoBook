@@ -291,9 +291,9 @@ export default function Home({ navigation }) {
       </Modal>
       <View style={styles.textContainer}>
         {usuarioGlobal !== "" ? (
-          <Text style={styles.text}>{` Welcome ${usuarioGlobal}`}</Text>
+          <Text style={styles.text}>{` Bienvenido ${usuarioGlobal}`}</Text>
         ) : (
-          <Text style={styles.text}>Welcome to Resto Book</Text>
+          <Text style={styles.text}>Bienvenido a Resto Book</Text>
         )}
       </View>
       {/*   ---------------------------------------Search ------------------------------------------------- */}
@@ -305,8 +305,8 @@ export default function Home({ navigation }) {
               onChangeText={(event) => {
                 setSearchTerm(event);
               }}
-              placeholder="Search..."
-              placeholderTextColor="black"
+              placeholder="Buscar local..."
+              placeholderTextColor="grey"
               underlineColorAndroid="transparent"
             />
           </Animatable.View>

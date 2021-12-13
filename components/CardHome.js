@@ -155,7 +155,7 @@ const CardMenu = ({ resto, navigation }) => {
   return (
     <View style={globalStyles.cardsContainer}>
       <Badge status={handleHorarioReserva() ? "success" : "error"} />
-      <TouchableOpacity onPress={() => handleOnPress()}>
+      <TouchableOpacity onPress={() => handleOnPress({resto})}>
         <View style={globalStyles.containerImgCard}>
 
           <Image

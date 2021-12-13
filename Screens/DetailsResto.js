@@ -18,7 +18,7 @@ import {
   TextInput,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import { Badge } from 'react-native-elements'
+import { Badge, Icon } from 'react-native-elements'
 //---------------------GEOLOCATION-------------------
 import { GOOGLE_API_KEY } from "@env";
 import MapView, { Marker } from "react-native-maps";
@@ -170,6 +170,7 @@ const DetailsResto = ({ navigation }) => {
   };
 
 
+
   return (
     <View style={globalStyles.Home}>
       <View style={globalStyles.headerResto}>
@@ -186,6 +187,33 @@ const DetailsResto = ({ navigation }) => {
           {empresaDetail.title}
         </Text>
             <Badge status={handleHorarioReserva() ? "success" : "error"} />
+      </View>
+
+
+      <View style={globalStyles.descriptionRestoContainer}>
+        <Text  style={globalStyles.textoDescription}>{empresaDetail.description}</Text>
+        <Text style={globalStyles.textoDescription}>
+                <Icon
+                  reverse
+                  name="phone-alt"
+                  type="font-awesome-5"
+                  color="#eecdaa"
+                  reverseColor="#161616"
+                  size={11}
+                />
+                {empresaDetail.phone}
+        </Text>
+        <Text style={globalStyles.textoDescription}>
+                <Icon
+                  reverse
+                  name="map-marker-alt"
+                  type="font-awesome-5"
+                  color="#eecdaa"
+                  reverseColor="#161616"
+                  size={11}
+                />
+                {empresaDetail.location.address},
+        </Text>
       </View>
       <ScrollView style={globalStyles.Home}>
           <View style={globalStyles.btnTodasComidas}>
@@ -313,6 +341,7 @@ const DetailsResto = ({ navigation }) => {
             )}
            { Object.entries(userLocation).length > 0 && location && (
             <MapViewDirections
+              lineDashPattern={[0]}
               apikey={GOOGLE_API_KEY}
               strokeWidth={1.5}
               strokeColor="brown"
