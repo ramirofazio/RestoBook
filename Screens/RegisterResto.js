@@ -68,12 +68,20 @@ import { DEFAULT_RESTO_IMAGE } from "@env";
 //
 
 const registerRestoSchema = yup.object({
-  email: yup.string().required(),
-  title: yup.string().required().min(3).max(25),
-  description: yup.string().required().min(10).max(100),
-  phone: yup.number().required(),
+  email: yup.string().required("Por favor, ingresa un email"),
+  title: yup
+    .string()
+    .required("El titulo debe tener entre 3 y 25 caracteres.")
+    .min(3)
+    .max(25),
+  description: yup
+    .string()
+    .required("La descripcion debe tener entre 10 y 100 caracteres.")
+    .min(10)
+    .max(100),
+  phone: yup.number().required("Por favor, ingresá un telefono con Whatsapp"),
   phone2: yup.number(),
-  cuit: yup.number().required(),
+  cuit: yup.number().required("Por favor, ingresá tu CUIT/CUIL"),
 });
 
 const RegisterResto = ({ navigation }) => {
@@ -391,7 +399,7 @@ const RegisterResto = ({ navigation }) => {
               <View style={globalStyles.inputComponent}>
                 <TextInput
                   style={globalStyles.texts}
-                  placeholder="Cuit"
+                  placeholder="CUIT/CUIL"
                   onChangeText={props.handleChange("cuit")}
                   value={props.values.cuit}
                   onBlur={props.handleBlur("cuit")}

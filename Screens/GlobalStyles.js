@@ -343,6 +343,7 @@ const globalStyles = StyleSheet.create({
     maxHeight: "25%",
     height: "100%",
   },
+
   btnProfileResto: {
     color: "transparent",
     borderWidth: 3,
