@@ -220,20 +220,6 @@ const ProfileResto = ({ navigation }) => {
       .catch((err) => console.log(err));
   };
 
-  const scrollX = useRef(new Animated.Value(0)).current;
-  const { width: windowWidth } = useWindowDimensions();
-
-  const showTimepicker = () => {
-    setMode("time");
-    setShow(true);
-  };
-
-  const onChangeTimePicker = (event, selectedDate) => {
-    console.log(event.nativeEvent);
-    // const currentDate = selectedDate || date;
-    // setShow(Platform.OS === 'ios');
-    // setDate(currentDate);
-  };
 
   const handleSectores = (sector) => {
     if (!sectorState.includes(sector)) {
@@ -243,10 +229,6 @@ const ProfileResto = ({ navigation }) => {
       setSectorState(eliminado);
       console.log(sectorState);
     }
-  };
-
-  const handleSectorPlaces = (num, sector) => {
-    setSectorPlaces(num);
   };
 
   const clearStates = () => {
@@ -615,8 +597,9 @@ const ProfileResto = ({ navigation }) => {
 
                 <Text style={globalStyles.texts}>Sectores disponibles: </Text>
                 <View style={{ display: "flex", flexDirection: "row" }}>
-                  {sectoresResto.map((sector) => (
+                  {sectoresResto.map((sector, index) => (
                     <TouchableOpacity
+                      key={index}
                       style={{
                         alignItems: "center",
                         borderRadius: 15,

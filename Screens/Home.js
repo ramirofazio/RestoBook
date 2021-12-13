@@ -56,6 +56,7 @@ import * as Animatable from "react-native-animatable";
 import { Feather } from "@expo/vector-icons";
 
 export default function Home({ navigation }) {
+  const dispatch = useDispatch();
   //------LOGIN JOSE------------
   const [visibleModalGoogle, setVisibleModalGoogle] = useState(false);
   const [googleUser, setGoogleUser] = useState({
@@ -77,13 +78,15 @@ export default function Home({ navigation }) {
   const loggedId = useSelector((state) => state.currentId);
   const categories = useSelector((state) => state.categoriesResto);
 
-  const dispatch = useDispatch();
+  //---------------SEARCH BAR-------------------------
+  const [selectedValue, setSelectedValue] = useState("");
+  const [selectedValu, setSelectedValu] = useState("");
 
   useEffect(() => {
     const q = query(collection(firebase.db, "Restos"));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       let arr = [];
-      console.log("SNAP HOME 84");
+      console.log("SNAP HOME 89");
       querySnapshot.forEach((doc) => {
         let obj = doc.data();
         obj.idResto = doc.id;
@@ -136,7 +139,7 @@ export default function Home({ navigation }) {
     let { coords } = await Location.getCurrentPositionAsync({
       accuracy: Location.Accuracy.Balanced,
     });
-    console.log(coords);
+    //console.log(coords);
     const location = {
       latitude: coords.latitude,
       longitude: coords.longitude,
@@ -148,16 +151,16 @@ export default function Home({ navigation }) {
 
   const getInfo = async () => {
     try {
-      console.log("getInfo!!!");
+      // console.log("getInfo!!!");
       const docRef = doc(firebase.db, "Users", auth.currentUser.uid);
       const docSnap = await getDoc(docRef);
-      console.log("dsnap", docSnap.exists());
+      // console.log("dsnap", docSnap.exists());
       if (!docSnap.exists()) {
-        console.log("if de getinfo!");
+        // console.log("if de getinfo!");
         setGoogleUser({ ...googleUser, email: auth.currentUser.email });
         setVisibleModalGoogle(true);
       } else {
-        console.log("else de getinfo!");
+        //console.log("else de getinfo!");
         let obj = docSnap.data();
         dispatch(CurrentUser(obj));
         setFlagCards(true);
@@ -201,8 +204,6 @@ export default function Home({ navigation }) {
       setAvailableCommerces(result);
     }
   }
-  const [selectedValue, setSelectedValue] = useState("");
-  const [selectedValu, setSelectedValu] = useState("");
 
   const updateUser = (itemValue) => {
     if (itemValue === "A-Z") {

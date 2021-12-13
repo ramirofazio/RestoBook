@@ -156,10 +156,6 @@ const DetailsResto = ({ navigation }) => {
     getInfo();
   }, []);
 
-  useEffect(() => {
-    console.log("caat", menuCategory);
-  }, [menuCategory]);
-
   // useEffect(() => {
   //   const q = doc(firebase.db, "Restos", empresaDetail.idResto);
   //   const unsubscribe = onSnapshot(q, (doc) => {

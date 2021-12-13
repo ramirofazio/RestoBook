@@ -55,13 +55,13 @@ const CardFavourite = ({
   const removeFromFavourite = async () => {
     if (auth?.currentUser?.uid) {
       try {
-        console.log("info en prof", infoFavourite);
+        //console.log("info en prof", infoFavourite);
         setDeleting(true);
         setHearthColor("grey");
         let modifiedFavs = myFavourites.filter(
           (element) => element.idResto !== infoFavourite.idResto
         );
-        console.log(modifiedFavs);
+       // console.log(modifiedFavs);
         setMyFavourites(modifiedFavs);
         let docRef = doc(firebase.db, "Users", auth.currentUser.uid);
         await updateDoc(docRef, {
