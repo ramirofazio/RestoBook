@@ -293,7 +293,7 @@ export default function Home({ navigation }) {
                   reservations: [],
                   payments: [],
                 });
-                isVisible(false);
+                setVisibleModalGoogle(false);
               }}
             >
               <Text style={globalStyles.texts}>Enviar</Text>
