@@ -62,7 +62,7 @@ export default function AddReviewsRestorant({ navigation }) {
             count={5}
             reviews= {["Malo", "Regular", "Normal", "Bueno", "Excelente"]}
             defaultRating={0}
-            size={20}
+            size={10}
             onFinishRating={(value) => setRating(value)}
           ></AirbnbRating>
         </View>
@@ -108,6 +108,12 @@ const styles = StyleSheet.create({
     marginBottom: 2,
   },
   comentarios: {
+    flex: 1,
+    alignItems: "center",
+    margin: 10,
+  },
+  containerInput: {
+    marginBottom: 10,
   },
   input: {
     height: 150,
