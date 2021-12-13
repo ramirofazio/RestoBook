@@ -81,6 +81,8 @@ const CardMenu = ({ resto, navigation }) => {
     phone: resto.phone,
     location: resto.location,
     img: resto.restoImage,
+    description: resto.description,
+    reservationsParams: resto.reservationsParams
   };
   const celphone = "+54 9" + resto.phone;
   const trimmedName = auth?.currentUser?.email?.split("@")[0];
