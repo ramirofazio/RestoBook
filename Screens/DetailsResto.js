@@ -1,9 +1,6 @@
 //----------REACT UTILS-----------
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import Constants from "expo-constants";
-
-//
 //
 //----------REDUX UTILS-----------
 import { useSelector } from "react-redux";
@@ -48,14 +45,6 @@ import AddReviewsRestorant from "./AddReviewsRestorant";
 import globalStyles from "./GlobalStyles";
 //
 //
-//----------CONSTANTES--------------
-const ENTRADAS = "ENTRADAS";
-const PLATO_PRINCIPAL = "PLATO PRINCIPAL";
-const GUARNICION = "GUARNICION";
-const BEBIDA = "BEBIDA";
-const POSTRES = "POSTRES";
-//
-//
 //-----------SPINNER + - ----------------------
 import InputSpinner from "react-native-input-spinner";
 //
@@ -79,11 +68,18 @@ const DetailsResto = ({ navigation }) => {
   const [menuCategory, setMenuCategory] = useState();
   const empresaDetail = useSelector((state) => state.empresaDetail);
   //--------------------GEOLOCATION-------------------------------
-  const { location } = empresaDetail;
-  const userLocation = useSelector((state) => state.userCoordinates);
-  const mapRef = useRef(null);
-
-
+  const { location } = empresaDetail
+  const [distance, setDistance] = useState({})
+  const userLocation = useSelector(state => state.userCoordinates)
+  const mapRef = useRef(null)
+  //--------------------------------------------------------------
+  const number = "+541168020511";
+  //WhatsApp
+  // const handleWhatsAppPress = async () => {
+  //   await Linking.openURL(
+  //     `whatsapp://send?text=Hola RestoBook&phone=${number}`
+  //   );
+  // };
   const onPressReservar = async (cantLugares, precioCabeza) => {
     const url = await axios({
       method: "POST",
@@ -96,10 +92,9 @@ const DetailsResto = ({ navigation }) => {
     });
     setModalVisible(false);
     navigation.navigate("WebViewScreen", {
-      url: url.data,
-    });
-  };
-  // console.log(Object.entries(userLocation));
+      url: url.data
+    })
+  }
   useEffect(() => {
     if (Object.entries(userLocation).length === 0 || !location) return;
     //Zoom & fit to markers
@@ -193,7 +188,6 @@ const DetailsResto = ({ navigation }) => {
             <Badge status={handleHorarioReserva() ? "success" : "error"} />
       </View>
       <ScrollView style={globalStyles.Home}>
-        <View>
           <View style={globalStyles.btnTodasComidas}>
             <TouchableOpacity onPress={() => getMenu()}>
               <Text
@@ -300,37 +294,44 @@ const DetailsResto = ({ navigation }) => {
               }}
             >
               <Marker
-                title="Resto Location"
-                coordinate={{
-                  latitude: location.latitude,
-                  longitude: location.longitude,
-                }}
+               title={empresaDetail.title}
+               pinColor='#0072B5'
+               coordinate={location}
+               description={`Distancia: ${distance.distance} Km - ETA: ${distance.ETA} Min`}
+               identifier="restoLocation"
+               
+               >
+              </Marker>
+
+            { Object.entries(userLocation).length > 0 && (
+              <Marker
+                title="Your Location"
+                coordinate={userLocation}
                 pinColor="#0072B5"
-                identifier="restoLocation"
+                identifier="userLocation"
               />
-              {Object.entries(userLocation).length > 0 && (
-                <Marker
-                  title="Your location"
-                  coordinate={userLocation}
-                  pinColor="#eccdaa"
-                  identifier="userLocation"
-                />
-              )}
-              {Object.entries(userLocation).length > 0 && location && (
-                <MapViewDirections
-                  lineDashPattern={[0]}
-                  apikey={GOOGLE_API_KEY}
-                  strokeWidth={1.5}
-                  strokeColor="gray"
-                  origin={userLocation}
-                  destination={{
-                    latitude: location.latitude,
-                    longitude: location.longitude,
-                  }}
-                />
-              )}
-            </MapView>
-          </View>
+            )}
+           { Object.entries(userLocation).length > 0 && location && (
+            <MapViewDirections
+              apikey={GOOGLE_API_KEY}
+              strokeWidth={1.5}
+              strokeColor="brown"
+              origin={userLocation}
+              destination={{
+                latitude: location.latitude,
+                longitude: location.longitude
+              }}
+              onReady={ resultado => {
+                const { distance, duration } = resultado;
+                const travelTime = Math.round(duration)
+                // const distanceSpliteado = distance.split('.')
+                // console.log(distanceSpliteado)
+                const travelDistance = distance.toString().slice(0, 4)
+                setDistance({distance: travelDistance, ETA: travelTime})
+              }}
+              />
+          )}
+          </MapView>
         </View>
         <Modal
           animationType="slide"
