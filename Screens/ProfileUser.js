@@ -347,7 +347,12 @@ const ProfileUser = ({ navigation }) => {
           color={"rgba(00, 00, 00, .5)"}
           style={{ marginVertical: 10 }}
         />
-        <View style={globalStyles.FavouriteContainer} >
+
+        { !myFavourites?.length ? <View style={globalStyles.FavouriteContainer}>
+          <Text style={globalStyles.texts}>Todavia no hay Favoritos agregados!</Text>
+        </View>
+         :
+        (<View style={globalStyles.FavouriteContainer} >
           <Carousel
             data={myFavourites}
             renderItem={renderItem}
@@ -357,7 +362,8 @@ const ProfileUser = ({ navigation }) => {
             useScrollView={true} 
             layout={'default'}
           />
-        </View>
+        </View>)
+        }
         {/* <ScrollView
           horizontal={true}
           pagingEnabled
