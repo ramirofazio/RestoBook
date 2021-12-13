@@ -1,13 +1,9 @@
 //----------REACT UTILS-----------
 import React, { useState, useEffect } from "react";
-//
 //----------REDUX UTILS-----------
 import { useDispatch, useSelector } from "react-redux";
 import CurrentId from "../Redux/Actions/CurrentId.js";
 import CurrentUser from "../Redux/Actions/CurrentUser.js";
-import UserFavourites from "../Redux/Actions/userFavourites.js";
-//
-//
 //----------REACT-NATIVE UTILS-----------
 import { BottomSheet, ListItem, Icon } from "react-native-elements";
 import {
@@ -21,44 +17,31 @@ import {
   ActivityIndicator,
   Picker,
   Pressable,
-  KeyboardAvoidingView,
 } from "react-native";
-
-//import { MaterialIcons } from "@expo/vector-icons";
-//
-//
 //---------------------EXPO----------------------
 import * as Location from "expo-location";
 //----------FIREBASE UTILS-----------
 import firebase from "../database/firebase";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { doc, onSnapshot, collection, query, getDoc } from "firebase/firestore";
-//
-//
 //---------SCREENS---------------
 /* import SearchBar from "./SearchBar.js"; */
 import CardHome from "../components/CardHome.js";
-import Btn from "./Helpers/Btns.js";
-/* import Search from "./Search.js"; */
-//
 //-------STYLES-------
 import globalStyles from "./GlobalStyles.js";
-//
-//
 //-------INITIALIZATIONS-------
 const auth = getAuth();
 import { DEFAULT_PROFILE_IMAGE } from "@env";
 import setUserLocation from "../Redux/Actions/setUserLocation.js";
-
-//
 //---------------------------------------------------------------------------------------//
 import * as Animatable from "react-native-animatable";
 import { Feather } from "@expo/vector-icons";
 
+
 export default function Home({ navigation }) {
   const dispatch = useDispatch();
   //------LOGIN JOSE------------
-  const [visibleModalGoogle, setVisibleModalGoogle] = useState(false);
+  const [visible, isVisible] = useState(false);
   const [googleUser, setGoogleUser] = useState({
     name: "",
     lastName: "",
@@ -81,6 +64,8 @@ export default function Home({ navigation }) {
   //---------------SEARCH BAR-------------------------
   const [selectedValue, setSelectedValue] = useState("");
   const [selectedValu, setSelectedValu] = useState("");
+  const [visibleFiltro, isVisibleFiltro] = useState(false);
+
 
   useEffect(() => {
     const q = query(collection(firebase.db, "Restos"));
@@ -158,11 +143,11 @@ export default function Home({ navigation }) {
       if (!docSnap.exists()) {
         // console.log("if de getinfo!");
         setGoogleUser({ ...googleUser, email: auth.currentUser.email });
-        setVisibleModalGoogle(true);
+        isVisible(true);
       } else {
         //console.log("else de getinfo!");
         let obj = docSnap.data();
-        dispatch(CurrentUser(obj));
+
         setFlagCards(true);
       }
     } catch (e) {
@@ -289,9 +274,9 @@ export default function Home({ navigation }) {
       </Modal>
       <View style={styles.textContainer}>
         {usuarioGlobal !== "" ? (
-          <Text style={styles.text}>{` Bienvenido ${usuarioGlobal}`}</Text>
+          <Text style={styles.text}>{` Welcome ${usuarioGlobal}`}</Text>
         ) : (
-          <Text style={styles.text}>Bienvenido a Resto Book</Text>
+          <Text style={styles.text}>Welcome to Resto Book</Text>
         )}
       </View>
       {/*   ---------------------------------------Search ------------------------------------------------- */}
@@ -313,57 +298,163 @@ export default function Home({ navigation }) {
           <Feather name="search" style={styles.iconStyle} />
         </View>
       </View>
-      {/*  /----------------------------------------ORDENAMIENTO----------------------------------------/ */}
-      <View style={globalStyles.btnHome}>
-        <View style={globalStyles.btnFiltrosHome}>
-          <Picker
-            selectedValue={selectedValu}
-            selectedValue={selectedValue}
-            style={{ height: 17, width: 130 }}
-            onValueChange={updateUser}
+  {/*  /----------------------------------------ORDENAMIENTO----------------------------------------/ */ }
+  {/*  <View style={globalStyles.btnHome}>
+      <View style={globalStyles.btnFiltrosHome}>
+      <Picker
+        selectedValue={selectedValu}
+        selectedValue={selectedValue}
+        style={{ height: 17, width: 130 }}
+        onValueChange={updateUser}
+      >
+        <Picker.Item label="Ordenado" value="Or" />
+        <Picker.Item label="A-Z" value="A-Z" />
+        <Picker.Item label="Z-A" value="Z-A" />
+      </Picker>
+    </View> */}
+  <View>
+    <Pressable onPress={() => isVisibleFiltro(true)}>
+      <TextInput
+        style={globalStyles.btnFiltrosHome}
+        editable={false}
+        placeholder="Ordenado por"
+        textAlign="center"
+        placeholderTextColor="#161616"
+        value={selectedValue}
+        value={selectedValu}
+        onPressIn={() => isVisibleFiltro(true)}
+      />
+    </Pressable>
+    <BottomSheet
+      isVisible={visibleFiltro}
+      containerStyle={{ backgroundColor: "#333a" }}
+    >
+      <ListItem
+        containerStyle={{ backgroundColor: "rgba(0.5,0.25,0,0.7)" }}
+        style={{
+          borderBottomWidth: 1,
+          borderColor: "#333a",
+          backgroundColor: "#fff0",
+        }}
+        onPress={() => {
+          updateUser("A-Z");
+          isVisibleFiltro(false);
+        }}
+      >
+        <ListItem.Content
+          style={{ backgroundColor: "#0000", alignItems: "center" }}
+        >
+          <ListItem.Title
+            style={{ height: 35, color: "#fff", padding: 8 }}
           >
-            <Picker.Item label="Ordenado" value="Or" />
-            <Picker.Item label="A-Z" value="A-Z" />
-            <Picker.Item label="Z-A" value="Z-A" />
-          </Picker>
-        </View>
-        {/*----------------------------------------BOTON MAPA------------------------------------------- */}
-        <TouchableOpacity style={globalStyles.btnFiltrosHome}>
-          <Text style={globalStyles.texts}><Icon
-            reverse
-            name="map-marker-alt"
-            type="font-awesome-5"
-            color="#FDFDFD"
-            reverseColor="#161616"
-            size={12}
-          /></Text>
-        </TouchableOpacity>
-        {/*----------------------------------------FILTRADO------------------------------------------- */}
-        <View>
-          <Pressable onPress={() => isVisibleFiltros(true)}>
-            <TextInput
-              style={globalStyles.btnFiltrosHome}
-              editable={false}
-              placeholder="Buscar por Categoria"
-              textAlign="center"
-              placeholderTextColor="#161616"
-              value={category}
-              onPressIn={() => isVisibleFiltros(true)}
-            />
-          </Pressable>
-          <BottomSheet
-            isVisible={visibleFiltros}
-            containerStyle={{ backgroundColor: "#333a" }}
+            A-Z
+          </ListItem.Title>
+        </ListItem.Content>
+      </ListItem>
+      <ListItem
+        containerStyle={{ backgroundColor: "rgba(0.5,0.25,0,0.7)" }}
+        style={{
+          borderBottomWidth: 1,
+          borderColor: "#333a",
+          backgroundColor: "#fff0",
+        }}
+        onPress={() => {
+          updateUser("Z-A");
+          isVisibleFiltro(false);
+        }}
+      >
+        <ListItem.Content
+          style={{ backgroundColor: "#0000", alignItems: "center" }}
+        >
+          <ListItem.Title
+            style={{ height: 35, color: "#fff", padding: 8 }}
           >
+            Z-A
+          </ListItem.Title>
+        </ListItem.Content>
+      </ListItem>
+
+      <ListItem
+        key={999}
+        containerStyle={{ backgroundColor: "#d14545" }}
+        style={{ borderBottomWidth: 1, borderColor: "#333a" }}
+        onPress={() => isVisibleFiltro(false)}
+      >
+        <ListItem.Content style={{ alignItems: "center" }}>
+          <ListItem.Title
+            style={{
+              height: 35,
+              color: "#FFF",
+              padding: 8,
+              fontSize: 20,
+            }}
+          >
+            Cancelar
+          </ListItem.Title>
+        </ListItem.Content>
+      </ListItem>
+    </BottomSheet>
+      {/*----------------------------------------BOTON MAPA------------------------------------------- */}
+      <TouchableOpacity style={globalStyles.btnFiltrosHome}>
+        <Text style={globalStyles.texts}><Icon
+          reverse
+          name="map-marker-alt"
+          type="font-awesome-5"
+          color="#FDFDFD"
+          reverseColor="#161616"
+          size={12}
+        /></Text>
+      </TouchableOpacity>
+      {/*----------------------------------------FILTRADO------------------------------------------- */}
+      <View>
+        <Pressable onPress={() => isVisibleFiltros(true)}>
+          <TextInput
+            style={globalStyles.btnFiltrosHome}
+            editable={false}
+            placeholder="Buscar por Categoria"
+            textAlign="center"
+            placeholderTextColor="#161616"
+            value={category}
+            onPressIn={() => isVisibleFiltros(true)}
+          />
+        </Pressable>
+        <BottomSheet
+          isVisible={visibleFiltros}
+          containerStyle={{ backgroundColor: "#333a" }}
+        >
+          <ListItem
+            containerStyle={{ backgroundColor: "rgba(0.5,0.25,0,0.7)" }}
+            style={{
+              borderBottomWidth: 1,
+              borderColor: "#333a",
+              backgroundColor: "#fff0",
+            }}
+            onPress={() => {
+              handleCategory(null);
+              isVisibleFiltros(false);
+            }}
+          >
+            <ListItem.Content
+              style={{ backgroundColor: "#0000", alignItems: "center" }}
+            >
+              <ListItem.Title
+                style={{ height: 35, color: "#fff", padding: 8 }}
+              >
+                Todos
+              </ListItem.Title>
+            </ListItem.Content>
+          </ListItem>
+          {categories.map((categoria, index) => (
             <ListItem
-              containerStyle={{ backgroundColor: "rgba(242, 242, 242,0.8)" }}
+              key={index}
+                containerStyle={{ backgroundColor: "rgba(242, 242, 242,0.8)" }}
               style={{
                 borderBottomWidth: 1,
                 borderColor: "#333a",
                 backgroundColor: "#fff0",
               }}
               onPress={() => {
-                handleCategory(null);
+                handleCategory(categoria);
                 isVisibleFiltros(false);
               }}
             >
@@ -371,97 +462,67 @@ export default function Home({ navigation }) {
                 style={{ backgroundColor: "#0000", alignItems: "center" }}
               >
                 <ListItem.Title
-                  style={{
-                    height: 35,
-                    color: "#161616",
-                    paddingVertical: 5,
-                    fontWeight: "bold",
-                  }}
-                >
-                  Todos
-                </ListItem.Title>
-              </ListItem.Content>
-            </ListItem>
-            {categories.map((categoria, index) => (
-              <ListItem
-                key={index}
-                containerStyle={{ backgroundColor: "rgba(242, 242, 242,0.8)" }}
-                style={{
-                  borderBottomWidth: 1,
-                  borderColor: "#333a",
-                  backgroundColor: "#fff0",
-                }}
-                onPress={() => {
-                  handleCategory(categoria);
-                  isVisibleFiltros(false);
-                }}
-              >
-                <ListItem.Content
-                  style={{ backgroundColor: "#0000", alignItems: "center" }}
-                >
-                  <ListItem.Title
                     style={{
                       height: 35,
                       color: "#161616",
                       paddingVertical: 5,
                       fontWeight: "bold",
                     }}
-                  >
-                    {categoria}
-                  </ListItem.Title>
-                </ListItem.Content>
-              </ListItem>
-            ))}
-            <ListItem
-              key={999}
-              containerStyle={{ backgroundColor: "#eccdaa" }}
-              style={{ borderBottomWidth: 1, borderColor: "#ffff" }}
-              onPress={() => isVisibleFiltros(false)}
-            >
-              <ListItem.Content style={{ alignItems: "center" }}>
-                <ListItem.Title
-                  style={{
-                    height: 35, color: "#161616", fontSize: 20
-                  }}
                 >
-                  Cancelar
+                  {categoria}
                 </ListItem.Title>
               </ListItem.Content>
             </ListItem>
-          </BottomSheet>
-        </View>
+          ))}
+          <ListItem
+            key={999}
+            containerStyle={{ backgroundColor: "#d14545" }}
+            style={{ borderBottomWidth: 1, borderColor: "#333a" }}
+            onPress={() => isVisibleFiltros(false)}
+          >
+            <ListItem.Content style={{ alignItems: "center" }}>
+              <ListItem.Title
+                style={{
+                    height: 35, color: "#161616", fontSize: 20
+                }}
+              >
+                Cancelar
+              </ListItem.Title>
+            </ListItem.Content>
+          </ListItem>
+        </BottomSheet>
       </View>
-
-      <ScrollView>
-        {availableCommerces.length && flagCards ? (
-          <View>
-            {availableCommerces
-              .filter((resto) => {
-                if (searchTerm === "") {
-                  return resto;
-                } else {
-                  return resto.title
-                    .toLowerCase()
-                    .includes(searchTerm.toLowerCase());
-                }
-              })
-              .map((resto) => {
-                return (
-                  <CardHome
-                    key={resto.idResto}
-                    resto={resto}
-                    navigation={navigation}
-                  ></CardHome>
-                );
-              })}
-          </View>
-        ) : (
-          <View style={styles.loading}>
-            <ActivityIndicator size="large" color="#5555" />
-          </View>
-        )}
-      </ScrollView>
     </View>
+    <ScrollView>
+      {availableCommerces.length && flagCards ? (
+        <View>
+          {availableCommerces
+            .filter((resto) => {
+              if (searchTerm === "") {
+                return resto;
+              } else {
+                return resto.title
+                  .toLowerCase()
+                  .includes(searchTerm.toLowerCase());
+              }
+            })
+            .map((resto) => {
+              return (
+                <CardHome
+                  key={resto.idResto}
+                  resto={resto}
+                  navigation={navigation}
+                ></CardHome>
+              );
+            })}
+        </View>
+      ) : (
+        <View style={styles.loading}>
+          <ActivityIndicator size="large" color="#5555" />
+        </View>
+      )}
+    </ScrollView>
+  </View>
   );
 }
 
@@ -540,7 +601,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   container: {
-    marginTop: 15,
+    marginVertical: 10,
     backgroundColor: "#F0EEEE",
     height: 35,
     flexDirection: "row",
