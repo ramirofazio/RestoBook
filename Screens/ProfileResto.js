@@ -299,7 +299,7 @@ const ProfileResto = ({ navigation }) => {
     try {
       let restoRef = doc(firebase.db, "Restos", commerceInfo);
       await updateDoc(restoRef, {
-        HorarioComercial: horarioCom,
+        commerceTimeRange: horarioCom,
       });
       alert("Cambios Guardados con Exito!")
       setModalVisibleAdminHorario(false)

@@ -278,7 +278,12 @@ const RegisterResto = ({ navigation }) => {
                     address: state.address.toLowerCase(),
                   },
                   reviews: [],
-                  reservationsParams: {},
+                  reservationsParams: {
+                    places: 1,
+                    precioPorLugar: 100,
+                    timeRange: '0-24'
+                  },
+                  commerceTimeRange: '0-24',
                 })
                 .then(
                   currentUser.commerce
