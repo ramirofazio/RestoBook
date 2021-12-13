@@ -81,7 +81,7 @@ export default function Home({ navigation }) {
     const q = query(collection(firebase.db, "Restos"));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       let arr = [];
-      console.log("SNAP HOME 89");
+      console.log("SNAP HOME 84");
       querySnapshot.forEach((doc) => {
         let obj = doc.data();
         obj.idResto = doc.id;
@@ -91,7 +91,7 @@ export default function Home({ navigation }) {
       setAllRestos(arr);
     });
   }, []);
-  
+
 
   onAuthStateChanged(auth, (usuarioFirebase) => {
     if (usuarioFirebase?.emailVerified) {
@@ -158,7 +158,7 @@ export default function Home({ navigation }) {
       } else {
         //console.log("else de getinfo!");
         let obj = docSnap.data();
-
+        dispatch(CurrentUser(obj))
         setFlagCards(true);
       }
     } catch (e) {
@@ -412,7 +412,9 @@ export default function Home({ navigation }) {
           </ListItem>
         </BottomSheet>
         {/*----------------------------------------BOTON MAPA------------------------------------------- */}
-        <TouchableOpacity style={globalStyles.btnFiltrosHome}>
+        <TouchableOpacity
+          style={globalStyles.btnFiltrosHome}
+          onPress={() => setMapaVisible(!mapaVisible)}>
           <Text style={globalStyles.texts}><Icon
             reverse
             name="map-marker-alt"
@@ -539,62 +541,62 @@ export default function Home({ navigation }) {
           </View>
         )}
       </ScrollView>
-            <Modal
-              animationType="slide"
-              transparent={true}
-              visible={mapaVisible}
-              onRequestClose={() => {
-                Alert.alert("Modal has been closed.");
-                setMapaVisible(!mapaVisible);
-              }}
-            >
-              <View style={globalStyles.centeredView}>
-                <View style={styles.modalView}>
-                  <View style={styles.googleMapsContainer}>
-                    <TouchableOpacity
-                      style={globalStyles.btnTodasComidas}
-                      onPress={() => setMapaVisible(!mapaVisible)}
-                    >
-                      <Text style={globalStyles.texts}>X</Text>
-                    </TouchableOpacity>
-                    { Object.entries(userLocation).length > 0 && (
-                      <MapView
-                        ref={mapRef}
-                        userInterfaceStyle='light'
-                        style={styles.googleMaps}
-                        initialRegion={{
-                          latitude: userLocation.latitude,
-                          longitude: userLocation.longitude,
-                          latitudeDelta: 0.1,
-                          longitudeDelta: 0.1
-                        }}
-                      >
-                        { Object.entries(userLocation).length > 0 && (
-                          <Marker
-                          title='Your location'
-                          pinColor='#0072B5'
-                          coordinate={userLocation}
-                          identifier="userLocation"
-                          />
-                        )}
-                        { allRestos.length > 0 && allRestos.map(resto => {
-                          return (
-                            <Marker
-                              key={resto.idResto}
-                              title={resto.title}
-                              description={resto.description}
-                              pinColor="red"
-                              coordinate={resto.location}
-                              identifier={resto.title}
-                            />
-                          )
-                        })}
-                      </MapView>
-                    )}
-                  </View>
-                </View>
-              </View>
-            </Modal>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={mapaVisible}
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+          setMapaVisible(!mapaVisible);
+        }}
+      >
+        <View style={globalStyles.centeredView}>
+          <View style={styles.modalView}>
+            <View style={styles.googleMapsContainer}>
+              <TouchableOpacity
+                style={globalStyles.btnTodasComidas}
+                onPress={() => setMapaVisible(!mapaVisible)}
+              >
+                <Text style={globalStyles.texts}>X</Text>
+              </TouchableOpacity>
+              {Object.entries(userLocation).length > 0 && (
+                <MapView
+                  ref={mapRef}
+                  userInterfaceStyle='light'
+                  style={styles.googleMaps}
+                  initialRegion={{
+                    latitude: userLocation.latitude,
+                    longitude: userLocation.longitude,
+                    latitudeDelta: 0.1,
+                    longitudeDelta: 0.1
+                  }}
+                >
+                  {Object.entries(userLocation).length > 0 && (
+                    <Marker
+                      title='Your location'
+                      pinColor='#0072B5'
+                      coordinate={userLocation}
+                      identifier="userLocation"
+                    />
+                  )}
+                  {allRestos.length > 0 && allRestos.map(resto => {
+                    return (
+                      <Marker
+                        key={resto.idResto}
+                        title={resto.title}
+                        description={resto.description}
+                        pinColor="red"
+                        coordinate={resto.location}
+                        identifier={resto.title}
+                      />
+                    )
+                  })}
+                </MapView>
+              )}
+            </View>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }

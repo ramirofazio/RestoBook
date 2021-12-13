@@ -22,6 +22,7 @@ export default function AddReviewsRestorant({ navigation }) {
   const [rating, setRating] = useState(null);
   const [review, setReview] = useState("");
   const [errorReview, setErrorReview] = useState(null);
+
   const addReview = async () => {
     if (!validForm()) {
       return;
@@ -36,6 +37,7 @@ export default function AddReviewsRestorant({ navigation }) {
     };
 
     try {
+      console.log("New Values =>", newValues)
       let restoRef = doc(firebase.db, "Restos", empresaDetail.idResto);
       await updateDoc(restoRef, {
         reviews: arrayUnion(newValues),
@@ -56,11 +58,11 @@ export default function AddReviewsRestorant({ navigation }) {
   };
   return (
     <View style={styles.container}>
-        <View>
+      <View>
         <View style={styles.viewRating}>
           <AirbnbRating
             count={5}
-            reviews= {["Malo", "Regular", "Normal", "Bueno", "Excelente"]}
+            reviews={["Malo", "Regular", "Normal", "Bueno", "Excelente"]}
             defaultRating={0}
             size={20}
             onFinishRating={(value) => setRating(value)}
@@ -83,15 +85,15 @@ export default function AddReviewsRestorant({ navigation }) {
                 onPress={addReview}
                 >
             </Button> */}
-            <View style={styles.buton}>
-             <TouchableOpacity 
-                      style={globalStyles.btnFiltrosHome}
-                      onPress={addReview}
-                      >
-                          <Text style={globalStyles.texts}>Escribe una opinion</Text>
-                      </TouchableOpacity>
-            </View>
-            </View>
+        <View style={styles.buton}>
+          <TouchableOpacity
+            style={globalStyles.btnFiltrosHome}
+            onPress={addReview}
+          >
+            <Text style={globalStyles.texts}>Escribe una opinion</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
     </View>
   );
 }
@@ -116,7 +118,7 @@ const styles = StyleSheet.create({
     margin: 0,
   },
   buton: {
- padding: 30,
-marginTop:20
+    padding: 30,
+    marginTop: 20
   },
 });
