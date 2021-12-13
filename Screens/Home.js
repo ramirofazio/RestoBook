@@ -12,6 +12,7 @@ import {
   ScrollView,
   Text,
   StyleSheet,
+  Image,
   TouchableOpacity,
   TextInput,
   Modal,
@@ -32,12 +33,13 @@ import CardHome from "../components/CardHome.js";
 import globalStyles from "./GlobalStyles.js";
 //
 //---------------------GEOLOCATION-------------------
-import MapView, { Marker } from "react-native-maps";
+import MapView, { Callout, Marker } from "react-native-maps";
 //----------------------------------------------------
 //
 //-------INITIALIZATIONS-------
 const auth = getAuth();
 import { DEFAULT_PROFILE_IMAGE } from "@env";
+import { CLOUDINARY_CONSTANT } from "@env";
 import setUserLocation from "../Redux/Actions/setUserLocation.js";
 //
 //---------------------------------------------------------------------------------------//
@@ -588,7 +590,11 @@ export default function Home({ navigation }) {
                         pinColor="red"
                         coordinate={resto.location}
                         identifier={resto.title}
-                      />
+                      >
+                        <Callout tooltip>
+                          <CardHome key={resto.idResto} resto={resto} navigation={navigation} ></CardHome>
+                        </Callout>  
+                      </Marker>
                     )
                   })}
                 </MapView>
