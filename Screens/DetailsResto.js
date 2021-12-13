@@ -130,8 +130,8 @@ const DetailsResto = ({ navigation }) => {
     const unsubscribe = onSnapshot(q, (doc) => {
       let obj = doc.data();
       let categories = obj.menu.map((element) => element.category);
-
-      setMenuCategory(categories);
+      let categoriesNoRepeat = [...new Set(categories)];
+      setMenuCategory(categoriesNoRepeat);
       setMenuArr(obj.menu);
       setReviews(obj.reviews);
     });
@@ -155,6 +155,10 @@ const DetailsResto = ({ navigation }) => {
   useEffect(() => {
     getInfo();
   }, []);
+
+  useEffect(() => {
+    console.log("caat", menuCategory);
+  }, [menuCategory]);
 
   // useEffect(() => {
   //   const q = doc(firebase.db, "Restos", empresaDetail.idResto);
@@ -211,7 +215,10 @@ const DetailsResto = ({ navigation }) => {
 
             {menuCategory?.map((categoria) => {
               return (
-                <View style={globalStyles.categoriesViewDetail} key={categoria}>
+                <View
+                  style={globalStyles.categoriesViewDetail}
+                  key={`${categoria}_${Math.random()}`}
+                >
                   <TouchableOpacity onPress={() => handleCategory(categoria)}>
                     <Text style={globalStyles.categoriesText}>{categoria}</Text>
                   </TouchableOpacity>

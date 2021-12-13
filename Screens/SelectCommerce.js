@@ -12,6 +12,7 @@ import getCommerceInfo from "../Redux/Actions/getCommerceInfo.js";
 //
 //----------REACT-NATIVE UTILS-----------
 import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
+import { Divider, Icon } from "react-native-elements";
 import UserOutlined from "react-native-vector-icons/AntDesign";
 import RestOutlined from "react-native-vector-icons/AntDesign";
 //
@@ -72,21 +73,63 @@ const SelectCommerce = ({ navigation }) => {
   }, []);
 
   return (
-    <View>
-      <Text>Tus locales:</Text>
+    <View style={globalStyles.textContainer}>
+      <TouchableOpacity style={globalStyles.btnLogin} onPress={() => alert('Deja crear otro resto')}>
+        <Text style={globalStyles.texts}>Agregar sucursal</Text>
+      </TouchableOpacity>
+      <Icon name='home' type="font-awesome-5" color='#161616'/>
+      <Text
+          style={{
+            fontSize: 25,
+            color: "#161616",
+            textAlign: "center",
+            marginTop: 5,
+          }}
+        >
+          {" "}
+           Elegir sucursal:
+        </Text>
+        <Divider
+          orientation="horizontal"
+          width={2}
+          inset={true}
+          insetType={"middle"}
+          color={"rgba(00, 00, 00, .5)"}
+          style={{ marginVertical: 10 }}
+        />
       {commerces.map((resto) => {
         return (
           <View key={resto.id}>
             <TouchableOpacity
               key={resto.id}
+              style={{
+                marginVertical: 7,
+                width: "80%",
+                height: 50,
+                alignSelf: "center",
+                justifyContent: "center",
+                borderWidth: 2,
+                borderColor: "#eccdaa",
+                backgroundColor: "#f2f2f2",
+                borderRadius: 25,
+                shadowColor: "#000",
+                shadowOffset: {
+                  width: 0,
+                  height: 2,
+                },
+                shadowOpacity: 0.2,
+                shadowRadius: 4.84,
+            
+                elevation: 5,
+              }}
               onPress={() => {
                 dispatch(getCommerceInfo(resto.id));
 
                 navigation.navigate("ProfileResto");
               }}
             >
-              <Text>{resto.title}</Text>
-              <Text>{resto.address}</Text>
+              <Text style={globalStyles.texts}>{resto.title}</Text>
+              <Text style={globalStyles.texts}>{resto.address}</Text>
             </TouchableOpacity>
           </View>
         );

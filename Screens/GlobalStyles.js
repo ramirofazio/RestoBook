@@ -77,7 +77,6 @@ const globalStyles = StyleSheet.create({
     width: 640,
     resizeMode: "contain", // esta linea es para que se adapte al tam;o de la imagen
   },
-
   // --------------------------------------------CARD HOME --------------------------------------------
   cardsContainer: {
     flex: 1,

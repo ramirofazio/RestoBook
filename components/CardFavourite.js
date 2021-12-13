@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Image,
@@ -23,6 +23,8 @@ import {
   arrayRemove,
   getDoc,
 } from "firebase/firestore";
+
+import { CLOUDINARY_CONSTANT } from "@env";
 
 const auth = getAuth();
 
@@ -49,6 +51,7 @@ const CardFavourite = ({
     navigation.navigate("DetailsResto");
   };
 
+
   const removeFromFavourite = async () => {
     if (auth?.currentUser?.uid) {
       try {
@@ -71,19 +74,14 @@ const CardFavourite = ({
     }
   };
 
+
   return (
     <View style={globalStyles.cardsFavouriteContainer}>
       <TouchableOpacity onPress={() => handleOnPress()}>
         <View style={globalStyles.containerImgCard}>
           <Image
             style={globalStyles.cardsHomeimg}
-            source={
-              resto.Img === ""
-                ? {
-                    uri: "https://images.vexels.com/media/users/3/204941/isolated/preview/d8bc6d74b3da7ee41fc99b6000c1e6a4-trazo-de-puntuacion-de-signo-de-interrogacion.png",
-                  }
-                : { uri: resto.Img }
-            }
+            source={{ uri: CLOUDINARY_CONSTANT + resto.img }}
           />
         </View>
 
@@ -93,7 +91,7 @@ const CardFavourite = ({
               <ActivityIndicator
                 size="large"
                 color="#5555"
-                // style={globalStyles.imgProfile}
+              // style={globalStyles.imgProfile}
               />
             ) : (
               <Text style={globalStyles.cardsHomeTitle}>{resto.title}</Text>

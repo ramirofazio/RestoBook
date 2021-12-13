@@ -21,6 +21,7 @@ import {
   ActivityIndicator,
   Picker,
   Pressable,
+  KeyboardAvoidingView,
 } from "react-native";
 
 //import { MaterialIcons } from "@expo/vector-icons";
@@ -287,9 +288,9 @@ export default function Home({ navigation }) {
       </Modal>
       <View style={styles.textContainer}>
         {usuarioGlobal !== "" ? (
-          <Text style={styles.text}>{` Welcome ${usuarioGlobal}`}</Text>
+          <Text style={styles.text}>{` Bienvenido ${usuarioGlobal}`}</Text>
         ) : (
-          <Text style={styles.text}>Welcome to Resto Book</Text>
+          <Text style={styles.text}>Bienvenido a Resto Book</Text>
         )}
       </View>
       {/*   ---------------------------------------Search ------------------------------------------------- */}

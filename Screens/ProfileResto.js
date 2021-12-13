@@ -127,11 +127,11 @@ const ProfileResto = ({ navigation }) => {
 
   const getRating = () => {
     let totalRating = 0;
-    if (obj.reviews.length) {
-      for (let i = 0; i < obj.reviews.length; i++) {
-        totalRating += obj.reviews[i].rating;
+    if (availableCommerces?.reviews?.length) {
+      for (let i = 0; i < availableCommerces?.reviews?.length; i++) {
+        totalRating += availableCommerces?.reviews[i]?.rating;
       }
-      let resultado = totalRating / obj.reviews.length;
+      let resultado = totalRating / availableCommerces?.reviews?.length;
       setResultRating(resultado);
     } else {
       setResultRating(totalRating);
@@ -151,7 +151,7 @@ const ProfileResto = ({ navigation }) => {
           let obj = doc.data();
           if (obj.favourites.length) {
             let favourites = obj.favourites.filter(
-              (element) => element.idResto === availableCommerces.id
+              (element) => element.idResto === availableCommerces?.id
             );
             totalFavs += favourites.length;
           }
@@ -165,15 +165,8 @@ const ProfileResto = ({ navigation }) => {
 
   useEffect(() => {
     getFavQty();
-  }, []);
-
-  useEffect(() => {
-    console.log("fav", favoritesQty);
-  }, [favoritesQty]);
-
-  useEffect(() => {
-    console.log("rating", resultRating);
-  }, [resultRating]);
+    getRating();
+  }, [commerceInfo]);
 
   useEffect(() => {
     return () => {
@@ -230,15 +223,13 @@ const ProfileResto = ({ navigation }) => {
   const scrollX = useRef(new Animated.Value(0)).current;
   const { width: windowWidth } = useWindowDimensions();
 
-
   const showTimepicker = () => {
-    setMode('time');
-    setShow(true)
+    setMode("time");
+    setShow(true);
   };
 
-
   const onChangeTimePicker = (event, selectedDate) => {
-    console.log(event.nativeEvent)
+    console.log(event.nativeEvent);
     // const currentDate = selectedDate || date;
     // setShow(Platform.OS === 'ios');
     // setDate(currentDate);
@@ -246,18 +237,17 @@ const ProfileResto = ({ navigation }) => {
 
   const handleSectores = (sector) => {
     if (!sectorState.includes(sector)) {
-      setSectorState([...sectorState, sector])
+      setSectorState([...sectorState, sector]);
     } else {
-      const eliminado = sectorState.filter((sectorS) => sectorS !== sector)
-      setSectorState(eliminado)
-      console.log(sectorState)
+      const eliminado = sectorState.filter((sectorS) => sectorS !== sector);
+      setSectorState(eliminado);
+      console.log(sectorState);
     }
-  }
+  };
 
   const handleSectorPlaces = (num, sector) => {
-    setSectorPlaces(num)
-
-  }
+    setSectorPlaces(num);
+  };
 
   const clearStates = () => {
     setTimeReservaInicio()
@@ -277,7 +267,7 @@ const ProfileResto = ({ navigation }) => {
       places: places,
       sectors: sectorState,
       precioPorLugar: precioXLugar,
-    }
+    };
     try {
       let restoRef = doc(firebase.db, "Restos", commerceInfo);
       await updateDoc(restoRef, {
@@ -292,7 +282,7 @@ const ProfileResto = ({ navigation }) => {
     // } else {
     //   alert('Complete bien los campos')
     // }
-  }
+  };
 
   const horarioCom = timeHorarioComInicio + "-" + timeHorarioComFin;
   const handleGuardarAdmHorarios = async () => {
@@ -481,8 +471,16 @@ const ProfileResto = ({ navigation }) => {
         </Text>
         {/* MODAL DE ADMINISTRAR RESERVAS */}
 
-        <TouchableOpacity onPress={() => setModalVisibleAdminReservas(true)} style={globalStyles.btnProfileResto}>
-          <Icon name='clipboard-list' type='font-awesome-5' color='#392c28' size={24} />
+        <TouchableOpacity
+          onPress={() => setModalVisibleAdminReservas(true)}
+          style={globalStyles.btnProfileResto}
+        >
+          <Icon
+            name="clipboard-list"
+            type="font-awesome-5"
+            color="#392c28"
+            size={24}
+          />
           <Text style={{ fontSize: 25, color: "#392c28", textAlign: "center" }}>
             Administrar Reservas
           </Text>
@@ -496,18 +494,15 @@ const ProfileResto = ({ navigation }) => {
               setModalVisibleAdminReservas(!modalVisibleAdminReservas);
             }}
           >
-
             <View style={globalStyles.centeredView}>
               <View style={globalStyles.modalView}>
                 <TouchableOpacity
                   style={globalStyles.btnTodasComidas}
-                  onPress={() => setModalVisibleAdminReservas(!modalAdminReservasVisible)}
+                  onPress={() =>
+                    setModalVisibleAdminReservas(!modalAdminReservasVisible)
+                  }
                 >
-                  <Text
-                    style={globalStyles.texts}
-                  >
-                    X
-                  </Text>
+                  <Text style={globalStyles.texts}>X</Text>
                 </TouchableOpacity>
 
                 <Text style={globalStyles.modalText}>Administración de reserva</Text>
@@ -574,10 +569,14 @@ const ProfileResto = ({ navigation }) => {
                 <Text style={globalStyles.texts}> Precio por Lugar:</Text>
                 <InputSpinner
                   style={{
-                    maxWidth: '100%',
-                    width: "65%",
+                    alignSelf: "center",
                     marginVertical: 10,
-                    alignSelf: "center"
+                    borderRadius: 15,
+                    backgroundColor: "rgba(22, 22, 22, .2)",
+                    maxWidth: "100%",
+                    width: "65%",
+                    marginHorizontal: 5,
+                    paddingVertical: 5,
                   }}
                   value={precioXLugar}
                   max={1000}
@@ -592,11 +591,13 @@ const ProfileResto = ({ navigation }) => {
                   fontSize={20}
                 />
 
-
-                <Text style={globalStyles.texts}> Cantidad de lugares disponibles:</Text>
+                <Text style={globalStyles.texts}>
+                  {" "}
+                  Cantidad de lugares disponibles:
+                </Text>
                 <InputSpinner
                   style={{
-                    maxWidth: '100%',
+                    maxWidth: "100%",
                     width: "65%",
                     marginVertical: 10,
                   }}
@@ -606,15 +607,13 @@ const ProfileResto = ({ navigation }) => {
                   buttonFontSize={25}
                   onChange={(num) => setPlaces(num)}
                   skin="clean"
-                  colorPress='#eccdaa'
+                  colorPress="#eccdaa"
                   background="#f2f2f2"
                   colorAsBackground={true}
                   fontSize={20}
                 />
 
-                <Text
-                  style={globalStyles.texts}
-                >Sectores disponibles: </Text>
+                <Text style={globalStyles.texts}>Sectores disponibles: </Text>
                 <View style={{ display: "flex", flexDirection: "row" }}>
                   {sectoresResto.map((sector) => (
                     <TouchableOpacity
@@ -638,36 +637,84 @@ const ProfileResto = ({ navigation }) => {
                       }}
                       onPress={() => handleSectores(sector)}
                     >
-                      <Text style={{ padding: 7, fontWeight: "bold", color: "#4e4e4e" }}>{sector}</Text>
+                      <Text
+                        style={{
+                          padding: 7,
+                          fontWeight: "bold",
+                          color: "#4e4e4e",
+                        }}
+                      >
+                        {sector}
+                      </Text>
                     </TouchableOpacity>
                   ))}
                 </View>
 
-                <Text
-                  style={globalStyles.texts}
-                >Resumen:</Text>
-                {sectorState?.length ?
-                  <View style={{
-                    borderWidth: 2,
-                    borderColor: "#eccdaa",
-                    borderRadius: 35,
-                    maxWidth: "100%",
-                    width: "90%",
-                    // height: "35%",
-                    alignItems: "center",
-                    justifyContent: "center"
-                  }}>
-                    <Text style={{ marginVertical: 5, fontSize: 13, fontWeight: "bold" }}>Hora de Reserva: {timesReserva}</Text>
-                    <Text style={{ marginVertical: 5, fontSize: 13, fontWeight: "bold" }}>Lugares Disponibles: {places}</Text>
-                    <Text style={{ marginVertical: 5, fontSize: 13, fontWeight: "bold" }}>Precio Por Lugar: ${precioXLugar}</Text>
-                    <Text style={{ marginTop: 15, fontSize: 15, fontWeight: "bold" }}>Sectores Seleccionados: </Text>
+                <Text style={globalStyles.texts}>Resumen:</Text>
+                {sectorState?.length ? (
+                  <View
+                    style={{
+                      borderWidth: 2,
+                      borderColor: "#eccdaa",
+                      borderRadius: 35,
+                      maxWidth: "100%",
+                      width: "90%",
+                      // height: "35%",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Text
+                      style={{
+                        marginVertical: 5,
+                        fontSize: 13,
+                        fontWeight: "bold",
+                      }}
+                    >
+                      Hora de Reserva: {timesReserva}
+                    </Text>
+                    <Text
+                      style={{
+                        marginVertical: 5,
+                        fontSize: 13,
+                        fontWeight: "bold",
+                      }}
+                    >
+                      Lugares Disponibles: {places}
+                    </Text>
+                    <Text
+                      style={{
+                        marginVertical: 5,
+                        fontSize: 13,
+                        fontWeight: "bold",
+                      }}
+                    >
+                      Precio Por Lugar: ${precioXLugar}
+                    </Text>
+                    <Text
+                      style={{
+                        marginTop: 15,
+                        fontSize: 15,
+                        fontWeight: "bold",
+                      }}
+                    >
+                      Sectores Seleccionados:{" "}
+                    </Text>
                     <View style={{ display: "flex", flexDirection: "row" }}>
                       {sectorState.map((sector) => (
-                        <Text style={{ marginVertical: 8, fontSize: 13, fontWeight: "bold" }}>{sector} - </Text>
+                        <Text
+                          style={{
+                            marginVertical: 8,
+                            fontSize: 13,
+                            fontWeight: "bold",
+                          }}
+                        >
+                          {sector} -{" "}
+                        </Text>
                       ))}
                     </View>
-
-                  </View> : null}
+                  </View>
+                ) : null}
 
                 <TouchableOpacity
                   style={globalStyles.btnTodasComidas}
@@ -675,11 +722,10 @@ const ProfileResto = ({ navigation }) => {
                 >
                   <Text style={globalStyles.texts}>Guardar</Text>
                 </TouchableOpacity>
-
               </View>
             </View>
           </Modal>
-        </TouchableOpacity >
+        </TouchableOpacity>
 
         {/* MODAL DE ADMINISTRAR HORARIO COMERCIAL */}
 
@@ -784,9 +830,8 @@ const ProfileResto = ({ navigation }) => {
             </View>
           </Modal>
         </TouchableOpacity>
-
-      </ScrollView >
-    </View >
+      </ScrollView>
+    </View>
   );
 };
 
