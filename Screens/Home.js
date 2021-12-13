@@ -329,12 +329,14 @@ export default function Home({ navigation }) {
         <Picker.Item label="Z-A" value="Z-A" />
       </Picker>
     </View> */}
-      <View>
+      <View style={{flexDirection: "row", justifyContent: 'space-around', alignItems: 'center'}}>
         <Pressable onPress={() => isVisibleFiltro(true)}>
           <TextInput
             style={globalStyles.btnFiltrosHome}
             editable={false}
-            placeholder="Ordenado por"
+            placeholder="Ordenar por"
+            fontWeight={'bold'}
+            fontSize= {15}
             textAlign="center"
             placeholderTextColor="#161616"
             value={selectedValue}
@@ -433,7 +435,9 @@ export default function Home({ navigation }) {
             <TextInput
               style={globalStyles.btnFiltrosHome}
               editable={false}
-              placeholder="Buscar por Categoria"
+              placeholder="Categorias"
+              fontSize={15}
+              fontWeight={'bold'}
               textAlign="center"
               placeholderTextColor="#161616"
               value={category}
