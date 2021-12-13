@@ -43,15 +43,6 @@ import AddReviewsRestorant from "./AddReviewsRestorant";
 //-------STYLES-------
 import globalStyles from "./GlobalStyles";
 //
-//
-//----------CONSTANTES--------------
-const ENTRADAS = "ENTRADAS";
-const PLATO_PRINCIPAL = "PLATO PRINCIPAL";
-const GUARNICION = "GUARNICION";
-const BEBIDA = "BEBIDA";
-const POSTRES = "POSTRES";
-//
-//
 //-------INITIALIZATIONS-------
 const auth = getAuth();
 //

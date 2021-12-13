@@ -1,5 +1,5 @@
 //----------REACT UTILS-----------
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 //
 //----------REDUX UTILS-----------
 import { useDispatch, useSelector } from "react-redux";
@@ -42,13 +42,14 @@ import Btn from "./Helpers/Btns.js";
 //-------STYLES-------
 import globalStyles from "./GlobalStyles.js";
 //
+//---------------------GEOLOCATION-------------------
+import MapView, { Marker } from "react-native-maps";
+//----------------------------------------------------
 //
 //-------INITIALIZATIONS-------
 const auth = getAuth();
 import { DEFAULT_PROFILE_IMAGE } from "@env";
-import { GOOGLE_API_KEY } from "@env";
 import setUserLocation from "../Redux/Actions/setUserLocation.js";
-
 //
 //---------------------------------------------------------------------------------------//
 import * as Animatable from "react-native-animatable";
@@ -67,9 +68,12 @@ export default function Home({ navigation }) {
   const [availableCommerces, setAvailableCommerces] = useState([]);
   const [flagCards, setFlagCards] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-
+  //-------------------GEOLOCATION---------------------------//
+  const [mapaVisible, setMapaVisible] = useState(false)
+  const userLocation = useSelector(state => state.userCoordinates)
+  const mapRef = useRef(null)
   //--------------FILTRADO MODAL-------------------------
-  const [allRestos, setAllRestos] = useState();
+  const [allRestos, setAllRestos] = useState([]);
   const [category, setCategory] = useState();
   const [visibleFiltros, isVisibleFiltros] = useState(false);
   const loggedUser = useSelector((state) => state.currentUser);
@@ -92,6 +96,7 @@ export default function Home({ navigation }) {
       setAllRestos(arr);
     });
   }, []);
+  
 
   onAuthStateChanged(auth, (usuarioFirebase) => {
     if (usuarioFirebase?.emailVerified) {
@@ -337,7 +342,7 @@ export default function Home({ navigation }) {
       </Picker> */}
     </View>
           {/*----------------------------------------BOTON MAPA------------------------------------------- */}
-    <TouchableOpacity style={globalStyles.btnFiltrosHome}>
+    <TouchableOpacity style={globalStyles.btnFiltrosHome} onPress={() => setMapaVisible(!mapaVisible)}>
       <Text style={globalStyles.texts}><Icon
                 reverse
                 name="map-marker-alt"
@@ -468,6 +473,62 @@ export default function Home({ navigation }) {
           </View>
         )}
       </ScrollView>
+            <Modal
+              animationType="slide"
+              transparent={true}
+              visible={mapaVisible}
+              onRequestClose={() => {
+                Alert.alert("Modal has been closed.");
+                setMapaVisible(!mapaVisible);
+              }}
+            >
+              <View style={globalStyles.centeredView}>
+                <View style={styles.modalView}>
+                  <View style={styles.googleMapsContainer}>
+                    <TouchableOpacity
+                      style={globalStyles.btnTodasComidas}
+                      onPress={() => setMapaVisible(!mapaVisible)}
+                    >
+                      <Text style={globalStyles.texts}>X</Text>
+                    </TouchableOpacity>
+                    { Object.entries(userLocation).length > 0 && (
+                      <MapView
+                        ref={mapRef}
+                        userInterfaceStyle='light'
+                        style={styles.googleMaps}
+                        initialRegion={{
+                          latitude: userLocation.latitude,
+                          longitude: userLocation.longitude,
+                          latitudeDelta: 0.1,
+                          longitudeDelta: 0.1
+                        }}
+                      >
+                        { Object.entries(userLocation).length > 0 && (
+                          <Marker
+                          title='Your location'
+                          pinColor='#0072B5'
+                          coordinate={userLocation}
+                          identifier="userLocation"
+                          />
+                        )}
+                        { allRestos.length > 0 && allRestos.map(resto => {
+                          return (
+                            <Marker
+                              key={resto.idResto}
+                              title={resto.title}
+                              description={resto.description}
+                              pinColor="red"
+                              coordinate={resto.location}
+                              identifier={resto.title}
+                            />
+                          )
+                        })}
+                      </MapView>
+                    )}
+                  </View>
+                </View>
+              </View>
+            </Modal>
     </View>
   );
 }
@@ -482,6 +543,39 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 4,
     marginTop: 10,
+  },
+  googleMapsContainer: {
+    flex: 1,
+    width: '100%',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    borderWidth: 1,
+    borderColor: 'white',
+    padding: 10,
+    borderRadius: 20
+  },
+  googleMaps: {
+    marginTop: 10,
+    flex: 1,
+    borderRadius: 18,
+  },
+  modalView: {
+    backgroundColor: "rgba(0, 0, 0, 0.2)",
+    borderRadius: 20,
+    padding: 5,
+    width: "95%",
+    height: "95%",
+    alignItems: "center",
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 12,
+    },
+    shadowOpacity: 0.58,
+    shadowRadius: 16.0,
+    display: 'flex',
+    elevation: 100,
   },
   textContainer2: {
     flex: 1,
