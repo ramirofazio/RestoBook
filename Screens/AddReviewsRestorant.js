@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { Input, Button, AirbnbRating } from "react-native-elements";
+import { Input, Button, AirbnbRating, } from "react-native-elements";
 import {
   StyleSheet,
   View,
   Modal,
+  TextInput,
   Text,
   ActivityIndicator,
   TouchableOpacity,
@@ -21,6 +22,7 @@ export default function AddReviewsRestorant({ navigation }) {
   const [rating, setRating] = useState(null);
   const [review, setReview] = useState("");
   const [errorReview, setErrorReview] = useState(null);
+
   const addReview = async () => {
     if (!validForm()) {
       return;
@@ -35,6 +37,7 @@ export default function AddReviewsRestorant({ navigation }) {
     };
 
     try {
+      console.log("New Values =>", newValues)
       let restoRef = doc(firebase.db, "Restos", empresaDetail.idResto);
       await updateDoc(restoRef, {
         reviews: arrayUnion(newValues),
@@ -55,7 +58,7 @@ export default function AddReviewsRestorant({ navigation }) {
   };
   return (
     <View style={styles.container}>
-      <Modal animationType="slide" transparent={true} visible={false}>
+      <View>
         <View style={styles.viewRating}>
           <AirbnbRating
             count={5}
@@ -66,29 +69,33 @@ export default function AddReviewsRestorant({ navigation }) {
           ></AirbnbRating>
         </View>
         <View style={styles.comentarios}>
-          <Input
+          <TextInput
             placeholder="  Tu opinion..."
+            placeholderTextColor="#666"
+            textAlign="center"
             fontSize={15}
             containerStyle={styles.containerInput}
             style={globalStyles.inputComponent}
             onChange={(e) => setReview(e.nativeEvent.text)}
             errorMessage={errorReview}
           />
-          <TouchableOpacity
-            style={globalStyles.btnFiltrosHome}
-            onPress={addReview}
-          >
-            <Text style={globalStyles.texts}>Publicar comentario</Text>
-          </TouchableOpacity>
         </View>
         {/* <Button
                 title="Enviar Comentario"
                 containerStyle={styles.containerButon}
                 style={globalStyles.btnFiltrosHome}
                 onPress={addReview}
-            >
+                >
             </Button> */}
-      </Modal>
+        <View style={styles.buton}>
+          <TouchableOpacity
+            style={globalStyles.btnFiltrosHome}
+            onPress={addReview}
+          >
+            <Text style={globalStyles.texts}>Escribe una opinion</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
     </View>
   );
 }
@@ -105,13 +112,6 @@ const styles = StyleSheet.create({
     marginBottom: 2,
   },
   comentarios: {
-    flex: 1,
-    alignItems: "center",
-    margin: 10,
-    marginTop: 10,
-  },
-  containerInput: {
-    marginBottom: 10,
   },
   input: {
     height: 150,
@@ -119,8 +119,8 @@ const styles = StyleSheet.create({
     padding: 0,
     margin: 0,
   },
-  containerButon: {},
   buton: {
-    margin: 30,
+    padding: 30,
+    marginTop: 20
   },
 });
