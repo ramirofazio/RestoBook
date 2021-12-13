@@ -74,6 +74,9 @@ const SelectCommerce = ({ navigation }) => {
 
   return (
     <View style={globalStyles.textContainer}>
+      <TouchableOpacity style={globalStyles.btnLogin} onPress={() => alert('Deja crear otro resto')}>
+        <Text style={globalStyles.texts}>Crear otra sucursal</Text>
+      </TouchableOpacity>
       <Icon name='home' type="font-awesome-5" color='#161616'/>
       <Text
           style={{
