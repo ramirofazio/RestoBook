@@ -82,7 +82,7 @@ const globalStyles = StyleSheet.create({
     alignSelf: "center",
     backgroundColor: "#f2f2f2",
     marginHorizontal: 10,
-    marginVertical: 5,
+    marginVertical: 8,
     paddingHorizontal: 5,
     paddingVertical: 5,
     borderRadius: 25,
@@ -304,7 +304,7 @@ const globalStyles = StyleSheet.create({
   // ---------------------------- PROFILE USER Y RESTO  Y CARD FAVOURITE ----------------------------------------------------
   Perfilcontainer: {
     flex: 1,
-    backgroundColor: "#f2f2f2",
+    backgroundColor: "#fdfdfd",
   },
   imgContainer: {
     flex: 2,
@@ -337,7 +337,7 @@ const globalStyles = StyleSheet.create({
   },
   FavouriteContainer: {
     overflow: "scroll",
-    backgroundColor: "#d0d0d0",
+    backgroundColor: "#fdfdfd",
     maxHeight: "25%",
     height: "100%",
   },

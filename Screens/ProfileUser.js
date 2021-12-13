@@ -43,40 +43,11 @@ import globalStyles from "./GlobalStyles";
 //-------COMPONENTS---------------
 import CardReservation from "../components/CardReservation";
 import CardFavourite from "../components/CardFavourite";
+
 //---------------------------------
 
 const auth = getAuth();
 
-const reservas = [
-  {
-    id: 1,
-    name: "Laial",
-    email: "@laialasase",
-    reserva: {
-      cantidad: 2,
-      fecha: "1/12/2021",
-      horario: "22.00hs",
-      bar: {
-        barName: "Los campeones",
-        direccion: "Wilde 200",
-      },
-    },
-  },
-  {
-    id: 2,
-    name: "Rama",
-    email: "@ramifazio",
-    reserva: {
-      cantidad: 5,
-      fecha: "02/01/2021",
-      horario: "00.00hs",
-      bar: {
-        barName: "Nebraska",
-        direccion: "Laprida 600",
-      },
-    },
-  },
-];
 
 const ProfileUser = ({ navigation }) => {
   const loggedId = useSelector((state) => state.currentId);
@@ -87,6 +58,7 @@ const ProfileUser = ({ navigation }) => {
   const [image, setImage] = useState("");
   const [myFavourites, setMyFavourites] = useState();
 
+  const reservas = currentUser?.reservations
   // useEffect(() => {
   //   const getFavs = async () => {
   //     const docRef = doc(firebase.db, "Users", loggedId);
@@ -169,148 +141,146 @@ const ProfileUser = ({ navigation }) => {
 
   return (
     <View style={globalStyles.Perfilcontainer}>
-      <ScrollView
-        style={globalStyles.Perfilcontainer}
-        contentContainerStyle={{ flex: 1 }}
-      >
-        <View style={globalStyles.imgContainer}>
-          {image && !uploading ? (
-            <TouchableOpacity onPress={openImagePickerAsync}>
-              <Image
-                source={{
-                  uri: CLOUDINARY_CONSTANT + image,
-                }}
-                style={globalStyles.imgProfile}
-              />
-            </TouchableOpacity>
-          ) : (
-            <ActivityIndicator
-              size="large"
-              color="#5555"
+      <View style={globalStyles.imgContainer}>
+        {image && !uploading ? (
+          <TouchableOpacity onPress={openImagePickerAsync}>
+            <Image
+              source={{
+                uri: CLOUDINARY_CONSTANT + image,
+              }}
               style={globalStyles.imgProfile}
             />
-          )}
-          <View style={globalStyles.nombreContainer}>
-            <Text
-              style={{
-                fontSize: 25,
-                fontWeight: "bold",
-                color: "#161616",
-                textAlignVertical: "top",
-              }}
-            >
-              {currentUser?.name}
-            </Text>
-            <Text
-              style={{
-                fontSize: 15,
-                fontWeight: "bold",
-                color: "#161616",
-                paddingVertical: 15,
-              }}
-            >
-              {currentUser?.email}
-            </Text>
-            <TouchableOpacity
-              style={globalStyles.btnLogin}
-              onPress={() => setModalVisible(true)}
-            >
-              <Text style={globalStyles.texts}>Editar</Text>
-            </TouchableOpacity>
-            <Modal
-              animationType="slide"
-              transparent={true}
-              visible={modalVisible}
-              onRequestClose={() => {
-                Alert.alert("Modal has been closed.");
-                setModalVisible(!modalVisible);
-              }}
-            >
-              <View style={globalStyles.centeredView}>
-                <View style={globalStyles.modalView}>
-                  <TouchableOpacity
-                    style={globalStyles.btnTodasComidas}
-                    onPress={() => setModalVisible(!modalVisible)}
-                  >
-                    <Text style={globalStyles.texts}>X</Text>
-                  </TouchableOpacity>
-                  <Text style={globalStyles.modalText}>
-                    Edita tu informacion
-                  </Text>
-                  <Text style={globalStyles.texts}>Nombre:</Text>
-                  <TextInput
-                    style={globalStyles.inputComponent}
-                    placeholder={currentUser?.name}
-                    placeholderTextColor="#666"
-                    textAlign="center"
-                    onChangeText={(value) =>
-                      setNewUserInfo({
-                        ...newUserInfo,
-                        name: value,
+          </TouchableOpacity>
+        ) : (
+          <ActivityIndicator
+            size="large"
+            color="#5555"
+            style={globalStyles.imgProfile}
+          />
+        )}
+        <View style={globalStyles.nombreContainer}>
+          <Text
+            style={{
+              fontSize: 25,
+              fontWeight: "bold",
+              color: "#161616",
+              textAlignVertical: "top",
+              textTransform: "capitalize"
+            }}
+          >
+            {currentUser?.name}
+          </Text>
+          <Text
+            style={{
+              fontSize: 15,
+              fontWeight: "bold",
+              color: "#161616",
+              paddingVertical: 15,
+            }}
+          >
+            {currentUser?.email}
+          </Text>
+          <TouchableOpacity
+            style={globalStyles.btnLogin}
+            onPress={() => setModalVisible(true)}
+          >
+            <Text style={globalStyles.texts}>Editar</Text>
+          </TouchableOpacity>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => {
+              Alert.alert("Modal has been closed.");
+              setModalVisible(!modalVisible);
+            }}
+          >
+            <View style={globalStyles.centeredView}>
+              <View style={globalStyles.modalView}>
+                <TouchableOpacity
+                  style={globalStyles.btnTodasComidas}
+                  onPress={() => setModalVisible(!modalVisible)}
+                >
+                  <Text style={globalStyles.texts}>X</Text>
+                </TouchableOpacity>
+                <Text style={globalStyles.modalText}>
+                  Edita tu informacion
+                </Text>
+                <Text style={globalStyles.texts}>Nombre:</Text>
+                <TextInput
+                  style={globalStyles.inputComponent}
+                  placeholder={currentUser?.name}
+                  placeholderTextColor="#666"
+                  textAlign="center"
+                  onChangeText={(value) =>
+                    setNewUserInfo({
+                      ...newUserInfo,
+                      name: value,
+                    })
+                  }
+                />
+                <Text style={globalStyles.texts}>Apellido:</Text>
+                <TextInput
+                  style={globalStyles.inputComponent}
+                  placeholder={currentUser?.lastName}
+                  placeholderTextColor="#666"
+                  textAlign="center"
+                  onChangeText={(value) =>
+                    setNewUserInfo({
+                      ...newUserInfo,
+                      lastName: value,
+                    })
+                  }
+                />
+                <Text style={globalStyles.texts}>Celular:</Text>
+                <TextInput
+                  style={globalStyles.inputComponent}
+                  placeholder={currentUser?.cel}
+                  placeholderTextColor="#666"
+                  textAlign="center"
+                  onChangeText={(value) =>
+                    setNewUserInfo({
+                      ...newUserInfo,
+                      cel: value,
+                    })
+                  }
+                />
+                <TouchableOpacity
+                  style={globalStyles.btnLogin}
+                  onPress={() => {
+                    sendPasswordResetEmail(auth, currentUser?.email)
+                      .then(alert("Revisa tu casilla y volve a ingresar!"))
+                      .then(signOut(auth))
+                      .then(setModalVisible(false))
+                      .then(navigation.navigate("RestoBook"));
+                  }}
+                >
+                  <Text style={globalStyles.texts}>Cambiar contraseña</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={globalStyles.btnLogin}
+                  onPress={() => {
+                    firebase.db
+                      .collection("Users")
+                      .doc(currentUser.id)
+                      .update({
+                        name: newUserInfo.name,
+                        lastName: newUserInfo.lastName,
+                        cel: newUserInfo.cel,
                       })
-                    }
-                  />
-                  <Text style={globalStyles.texts}>Apellido:</Text>
-                  <TextInput
-                    style={globalStyles.inputComponent}
-                    placeholder={currentUser?.lastName}
-                    placeholderTextColor="#666"
-                    textAlign="center"
-                    onChangeText={(value) =>
-                      setNewUserInfo({
-                        ...newUserInfo,
-                        lastName: value,
-                      })
-                    }
-                  />
-                  <Text style={globalStyles.texts}>Celular:</Text>
-                  <TextInput
-                    style={globalStyles.inputComponent}
-                    placeholder={currentUser?.cel}
-                    placeholderTextColor="#666"
-                    textAlign="center"
-                    onChangeText={(value) =>
-                      setNewUserInfo({
-                        ...newUserInfo,
-                        cel: value,
-                      })
-                    }
-                  />
-                  <TouchableOpacity
-                    style={globalStyles.btnLogin}
-                    onPress={() => {
-                      sendPasswordResetEmail(auth, currentUser?.email)
-                        .then(alert("Revisa tu casilla y volve a ingresar!"))
-                        .then(signOut(auth))
-                        .then(setModalVisible(false))
-                        .then(navigation.navigate("RestoBook"));
-                    }}
-                  >
-                    <Text style={globalStyles.texts}>Cambiar contraseña</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={globalStyles.btnLogin}
-                    onPress={() => {
-                      firebase.db
-                        .collection("Users")
-                        .doc(currentUser.id)
-                        .update({
-                          name: newUserInfo.name,
-                          lastName: newUserInfo.lastName,
-                          cel: newUserInfo.cel,
-                        })
-                        .then(alert("cambios guardados!"))
-                        .then(setModalVisible(false))
-                        .catch((error) => alert("error!"));
-                    }}
-                  >
-                    <Text style={globalStyles.texts}>Guardar cambios</Text>
-                  </TouchableOpacity>
-                </View>
+                      .then(alert("cambios guardados!"))
+                      .then(setModalVisible(false))
+                      .catch((error) => alert("error!"));
+                  }}
+                >
+                  <Text style={globalStyles.texts}>Guardar cambios</Text>
+                </TouchableOpacity>
               </View>
-            </Modal>
-          </View>
+            </View>
+          </Modal>
         </View>
+      </View>
+      <View style={{ backgroundColor: '#eccdaa' }}>
         <Text
           style={{
             fontSize: 25,
@@ -328,78 +298,98 @@ const ProfileUser = ({ navigation }) => {
           inset={true}
           insetType={"middle"}
           color={"rgba(00, 00, 00, .5)"}
-          style={{ marginVertical: 10 }}
-        />
-        <ScrollView
-          horizontal={true}
-          pagingEnabled
-          showsHorizontalScrollIndicator={false}
-          style={globalStyles.FavouriteContainer}
-          onScroll={Animated.event([
-            {
-              nativeEvent: {
-                contentOffset: {
-                  x: scrollX,
-                },
-              },
-            },
-          ])}
-          scrollEventThrottle={1}
-        >
-          {myFavourites?.length
-            ? myFavourites.map((resto) => {
-                return (
-                  <View
-                    style={{ width: windowWidth, height: 250 }}
-                    key={resto.idResto}
-                  >
-                    <CardFavourite
-                      key={resto.Id}
-                      resto={resto}
-                      navigation={navigation}
-                      index={resto.Id}
-                      setMyFavourites={setMyFavourites}
-                      myFavourites={myFavourites}
-                    >
-                      {" "}
-                    </CardFavourite>
-                  </View>
-                );
-              })
-            : null}
-        </ScrollView>
-        <Text
-          style={{
-            fontSize: 25,
-            color: "#161616",
-            textAlign: "center",
-            marginTop: 5,
-          }}
-        >
-          <TagOutlined name="tag" color="#161616" size={25} /> Mis Reservas
-        </Text>
-        <Divider
-          orientation="horizontal"
-          width={2}
-          inset={true}
-          insetType={"middle"}
-          color={"rgba(00, 00, 00, .5)"}
           style={{ marginVertical: 5 }}
         />
-        <ScrollView style={{ overflow: "scroll" }}>
-          {reservas.map((persona) => {
+      </View>
+      <ScrollView
+        horizontal={true}
+        pagingEnabled
+        showsHorizontalScrollIndicator={false}
+        style={globalStyles.FavouriteContainer}
+        onScroll={Animated.event([
+          {
+            nativeEvent: {
+              contentOffset: {
+                x: scrollX,
+              },
+            },
+          },
+        ])}
+        scrollEventThrottle={1}
+      >
+        {myFavourites?.length
+          ? myFavourites.map((resto) => {
             return (
-              <View key={persona.id}>
-                <CardReservation
-                  key={persona.id}
-                  persona={persona}
-                  index={persona.id}
-                />
+              <View
+                style={{
+                  maxWidth: "100%",
+                  width: windowWidth,
+                  height: "100%",
+                  justifyContent: "center"
+                }}
+                key={resto.idResto}
+              >
+                <CardFavourite
+                  key={resto.Id}
+                  resto={resto}
+                  navigation={navigation}
+                  index={resto.Id}
+                  setMyFavourites={setMyFavourites}
+                  myFavourites={myFavourites}
+                >
+                  {" "}
+                </CardFavourite>
               </View>
+            );
+          })
+          : null}
+      </ScrollView>
+      <View style={{
+        flex: 1,
+        maxHeight: "100%",
+        height: '20%',
+        backgroundColor: "#fdfdfd",
+
+      }}>
+        <View style={{ backgroundColor: "#eccdaa" }}>
+          <Text
+            style={{
+              fontSize: 25,
+              color: "#161616",
+              textAlign: "center",
+              marginTop: 5,
+            }}
+          >
+            <TagOutlined name="tag" color="#161616" size={25} /> Mis Reservas
+          </Text>
+          <Divider
+            orientation="horizontal"
+            width={2}
+            inset={true}
+            insetType={"middle"}
+            color={"rgba(00, 00, 00, .5)"}
+            style={{ marginVertical: 5 }}
+          />
+        </View>
+        <ScrollView style={{ padding: 10 }}>
+          {reservas?.map((reserva, index) => {
+            console.log(reserva)
+            return (
+              <CardReservation
+                key={index}
+                date={reserva.date.date} s
+                cantCupos={reserva.cantCupos}
+                nameResto={reserva.nameResto}
+                statusReserva={reserva.statusReserva}
+                idReserva={reserva.idReserva}
+                address={reserva.address}
+                navigation={navigation}
+                idResto={reserva.idResto}
+              />
             );
           })}
         </ScrollView>
-      </ScrollView>
+      </View>
     </View>
   );
 };
