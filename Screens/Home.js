@@ -1,13 +1,9 @@
 //----------REACT UTILS-----------
 import React, { useState, useEffect } from "react";
-//
 //----------REDUX UTILS-----------
 import { useDispatch, useSelector } from "react-redux";
 import CurrentId from "../Redux/Actions/CurrentId.js";
 import CurrentUser from "../Redux/Actions/CurrentUser.js";
-import UserFavourites from "../Redux/Actions/userFavourites.js";
-//
-//
 //----------REACT-NATIVE UTILS-----------
 import { BottomSheet, ListItem } from "react-native-elements";
 import {
@@ -22,37 +18,25 @@ import {
   Picker, 
   Pressable,
 } from "react-native";
-
-//import { MaterialIcons } from "@expo/vector-icons";
-//
-//
 //---------------------EXPO----------------------
 import * as Location from "expo-location";
 //----------FIREBASE UTILS-----------
 import firebase from "../database/firebase";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { doc, onSnapshot, collection, query, getDoc } from "firebase/firestore";
-//
-//
 //---------SCREENS---------------
 /* import SearchBar from "./SearchBar.js"; */
 import CardHome from "../components/CardHome.js";
-import Btn from "./Helpers/Btns.js";
-/* import Search from "./Search.js"; */
-//
 //-------STYLES-------
 import globalStyles from "./GlobalStyles.js";
-//
-//
 //-------INITIALIZATIONS-------
 const auth = getAuth();
 import { DEFAULT_PROFILE_IMAGE } from "@env";
 import setUserLocation from "../Redux/Actions/setUserLocation.js";
-
-//
 //---------------------------------------------------------------------------------------//
 import * as Animatable from "react-native-animatable";
 import { Feather } from "@expo/vector-icons";
+
 
 export default function Home({ navigation }) {
   //------LOGIN JOSE------------
@@ -195,9 +179,9 @@ export default function Home({ navigation }) {
       setAvailableCommerces(result);
     }
   }
+  const [visibleFiltro, isVisibleFiltro] = useState(false);
   const [selectedValue, setSelectedValue] = useState("");
   const [selectedValu, setSelectedValu] = useState("");
-  
   const updateUser = (itemValue) => {
     if(itemValue === "A-Z") {
       const result = availableCommerces.sort((a, b) => (a.title > b.title) ? 1 : -1)
@@ -295,7 +279,7 @@ export default function Home({ navigation }) {
       </View>
       </View>
      {/*  /----------------------------------------ORDENAMIENTO----------------------------------------/ */}
-      <View style={globalStyles.btnHome}>
+     {/*  <View style={globalStyles.btnHome}>
       <View style={globalStyles.btnFiltrosHome}>
       <Picker
         selectedValue={selectedValu}
@@ -307,7 +291,89 @@ export default function Home({ navigation }) {
         <Picker.Item label="A-Z" value="A-Z" />
         <Picker.Item label="Z-A" value="Z-A" />
       </Picker>
-    </View>
+    </View> */}
+    <View>
+          <Pressable onPress={() => isVisibleFiltro(true)}>
+            <TextInput
+              style={globalStyles.btnFiltrosHome}
+              editable={false}
+              placeholder="Ordenado por"
+              textAlign="center"
+              placeholderTextColor="#161616"
+              value={selectedValue}
+              value={selectedValu}
+              onPressIn={() => isVisibleFiltro(true)}
+            />
+          </Pressable>
+          <BottomSheet
+            isVisible={visibleFiltro}
+            containerStyle={{ backgroundColor: "#333a" }}
+          >
+            <ListItem
+              containerStyle={{ backgroundColor: "rgba(0.5,0.25,0,0.7)" }}
+              style={{
+                borderBottomWidth: 1,
+                borderColor: "#333a",
+                backgroundColor: "#fff0",
+              }}
+              onPress={() => {
+                updateUser("A-Z");
+                isVisibleFiltro(false);
+              }}
+            >
+              <ListItem.Content
+                style={{ backgroundColor: "#0000", alignItems: "center" }}
+              >
+                <ListItem.Title
+                  style={{ height: 35, color: "#fff", padding: 8 }}
+                >
+                  A-Z
+                </ListItem.Title>
+              </ListItem.Content>
+            </ListItem>
+            <ListItem
+              containerStyle={{ backgroundColor: "rgba(0.5,0.25,0,0.7)" }}
+              style={{
+                borderBottomWidth: 1,
+                borderColor: "#333a",
+                backgroundColor: "#fff0",
+              }}
+              onPress={() => {
+                updateUser("Z-A");
+                isVisibleFiltro(false);
+              }}
+            >
+              <ListItem.Content
+                style={{ backgroundColor: "#0000", alignItems: "center" }}
+              >
+                <ListItem.Title
+                  style={{ height: 35, color: "#fff", padding: 8 }}
+                >
+                  Z-A
+                </ListItem.Title>
+              </ListItem.Content>
+            </ListItem>
+
+            <ListItem
+              key={999}
+              containerStyle={{ backgroundColor: "#d14545" }}
+              style={{ borderBottomWidth: 1, borderColor: "#333a" }}
+              onPress={() => isVisibleFiltro(false)}
+            >
+              <ListItem.Content style={{ alignItems: "center" }}>
+                <ListItem.Title
+                  style={{
+                    height: 35,
+                    color: "#FFF",
+                    padding: 8,
+                    fontSize: 20,
+                  }}
+                >
+                  Cancelar
+                </ListItem.Title>
+              </ListItem.Content>
+            </ListItem>
+          </BottomSheet>
         {/*----------------------------------------FILTRADO------------------------------------------- */}
         <View>
           <Pressable onPress={() => isVisibleFiltros(true)}>
@@ -392,9 +458,8 @@ export default function Home({ navigation }) {
               </ListItem.Content>
             </ListItem>
           </BottomSheet>
-        </View>
+          </View>
       </View>
-
       <ScrollView>
         {availableCommerces.length && flagCards ? (
           <View>
