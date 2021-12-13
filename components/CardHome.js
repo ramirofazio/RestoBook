@@ -39,7 +39,7 @@ const CardMenu = ({ resto, navigation }) => {
   const [resultRating, setResultRating] = useState(0);
   const dispatch = useDispatch();
   const categories = useSelector((state) => state.categoriesResto);
-  useEffect(() => {}, []);
+  useEffect(() => { }, []);
   const isFocused = useIsFocused();
 
   const getFavs = async () => {
