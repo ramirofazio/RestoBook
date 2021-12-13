@@ -84,7 +84,6 @@ const ProfileResto = ({ navigation }) => {
 
 
   const [places, setPlaces] = useState(1)
-  const [sectorState, setSectorState] = useState([])
   const [timeReservaInicio, setTimeReservaInicio] = useState(0)
   const [timeReservaFin, setTimeReservaFin] = useState(0)
   const [timeHorarioComInicio, setTimeHorarioComInicio] = useState(0)
@@ -247,7 +246,6 @@ const ProfileResto = ({ navigation }) => {
     const obj = {
       timeRange: timesReserva,
       places: places,
-      sectors: sectorState,
       precioPorLugar: precioXLugar,
     };
     try {
@@ -591,7 +589,7 @@ const ProfileResto = ({ navigation }) => {
                   fontSize={20}
                 />
 
-                <Text style={globalStyles.texts}>Sectores disponibles: </Text>
+                {/* <Text style={globalStyles.texts}>Sectores disponibles: </Text>
                 <View style={{ display: "flex", flexDirection: "row" }}>
                   {sectoresResto.map((sector, index) => (
                     <TouchableOpacity
@@ -627,73 +625,72 @@ const ProfileResto = ({ navigation }) => {
                       </Text>
                     </TouchableOpacity>
                   ))}
-                </View>
+                </View> */}
 
                 <Text style={globalStyles.texts}>Resumen:</Text>
-                {sectorState?.length ? (
-                  <View
+
+                <View
+                  style={{
+                    borderWidth: 2,
+                    borderColor: "#eccdaa",
+                    borderRadius: 35,
+                    maxWidth: "100%",
+                    width: "90%",
+                    // height: "35%",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Text
                     style={{
-                      borderWidth: 2,
-                      borderColor: "#eccdaa",
-                      borderRadius: 35,
-                      maxWidth: "100%",
-                      width: "90%",
-                      // height: "35%",
-                      alignItems: "center",
-                      justifyContent: "center",
+                      marginVertical: 5,
+                      fontSize: 13,
+                      fontWeight: "bold",
                     }}
                   >
-                    <Text
-                      style={{
-                        marginVertical: 5,
-                        fontSize: 13,
-                        fontWeight: "bold",
-                      }}
-                    >
-                      Hora de Reserva: {timesReserva}
-                    </Text>
-                    <Text
-                      style={{
-                        marginVertical: 5,
-                        fontSize: 13,
-                        fontWeight: "bold",
-                      }}
-                    >
-                      Lugares Disponibles: {places}
-                    </Text>
-                    <Text
-                      style={{
-                        marginVertical: 5,
-                        fontSize: 13,
-                        fontWeight: "bold",
-                      }}
-                    >
-                      Precio Por Lugar: ${precioXLugar}
-                    </Text>
-                    <Text
-                      style={{
-                        marginTop: 15,
-                        fontSize: 15,
-                        fontWeight: "bold",
-                      }}
-                    >
-                      Sectores Seleccionados:{" "}
-                    </Text>
-                    <View style={{ display: "flex", flexDirection: "row" }}>
-                      {sectorState.map((sector) => (
-                        <Text
-                          style={{
-                            marginVertical: 8,
-                            fontSize: 13,
-                            fontWeight: "bold",
-                          }}
-                        >
-                          {sector} -{" "}
-                        </Text>
-                      ))}
-                    </View>
-                  </View>
-                ) : null}
+                    Hora de Reserva: {timesReserva}
+                  </Text>
+                  <Text
+                    style={{
+                      marginVertical: 5,
+                      fontSize: 13,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Lugares Disponibles: {places}
+                  </Text>
+                  <Text
+                    style={{
+                      marginVertical: 5,
+                      fontSize: 13,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Precio Por Lugar: ${precioXLugar}
+                  </Text>
+                  {/* <Text
+                    style={{
+                      marginTop: 15,
+                      fontSize: 15,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Sectores Seleccionados:{" "}
+                  </Text>
+                  <View style={{ display: "flex", flexDirection: "row" }}>
+                    {sectorState.map((sector) => (
+                      <Text
+                        style={{
+                          marginVertical: 8,
+                          fontSize: 13,
+                          fontWeight: "bold",
+                        }}
+                      >
+                        {sector} -{" "}
+                      </Text>
+                    ))}
+                  </View> */}
+                </View>
 
                 <TouchableOpacity
                   style={globalStyles.btnTodasComidas}

@@ -71,6 +71,8 @@ export default function AddReviewsRestorant({ navigation }) {
         <View style={styles.comentarios}>
           <TextInput
             placeholder="  Tu opinion..."
+            placeholderTextColor="#666"
+            textAlign="center"
             fontSize={15}
             containerStyle={styles.containerInput}
             style={globalStyles.inputComponent}
