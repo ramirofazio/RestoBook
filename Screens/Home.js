@@ -41,7 +41,7 @@ import { Feather } from "@expo/vector-icons";
 export default function Home({ navigation }) {
   const dispatch = useDispatch();
   //------LOGIN JOSE------------
-  const [visible, isVisible] = useState(false);
+  const [visibleModalGoogle, setVisibleModalGoogle] = useState(false);
   const [googleUser, setGoogleUser] = useState({
     name: "",
     lastName: "",
@@ -143,7 +143,7 @@ export default function Home({ navigation }) {
       if (!docSnap.exists()) {
         // console.log("if de getinfo!");
         setGoogleUser({ ...googleUser, email: auth.currentUser.email });
-        isVisible(true);
+        setVisibleModalGoogle(true);
       } else {
         //console.log("else de getinfo!");
         let obj = docSnap.data();
@@ -264,7 +264,7 @@ export default function Home({ navigation }) {
                   reservations: [],
                   payments: [],
                 });
-                isVisible(false);
+                setVisibleModalGoogle(false);
               }}
             >
               <Text style={globalStyles.texts}>Enviar</Text>
@@ -298,8 +298,8 @@ export default function Home({ navigation }) {
           <Feather name="search" style={styles.iconStyle} />
         </View>
       </View>
-  {/*  /----------------------------------------ORDENAMIENTO----------------------------------------/ */ }
-  {/*  <View style={globalStyles.btnHome}>
+      {/*  /----------------------------------------ORDENAMIENTO----------------------------------------/ */}
+      {/*  <View style={globalStyles.btnHome}>
       <View style={globalStyles.btnFiltrosHome}>
       <Picker
         selectedValue={selectedValu}
@@ -312,114 +312,21 @@ export default function Home({ navigation }) {
         <Picker.Item label="Z-A" value="Z-A" />
       </Picker>
     </View> */}
-  <View>
-    <Pressable onPress={() => isVisibleFiltro(true)}>
-      <TextInput
-        style={globalStyles.btnFiltrosHome}
-        editable={false}
-        placeholder="Ordenado por"
-        textAlign="center"
-        placeholderTextColor="#161616"
-        value={selectedValue}
-        value={selectedValu}
-        onPressIn={() => isVisibleFiltro(true)}
-      />
-    </Pressable>
-    <BottomSheet
-      isVisible={visibleFiltro}
-      containerStyle={{ backgroundColor: "#333a" }}
-    >
-      <ListItem
-        containerStyle={{ backgroundColor: "rgba(0.5,0.25,0,0.7)" }}
-        style={{
-          borderBottomWidth: 1,
-          borderColor: "#333a",
-          backgroundColor: "#fff0",
-        }}
-        onPress={() => {
-          updateUser("A-Z");
-          isVisibleFiltro(false);
-        }}
-      >
-        <ListItem.Content
-          style={{ backgroundColor: "#0000", alignItems: "center" }}
-        >
-          <ListItem.Title
-            style={{ height: 35, color: "#fff", padding: 8 }}
-          >
-            A-Z
-          </ListItem.Title>
-        </ListItem.Content>
-      </ListItem>
-      <ListItem
-        containerStyle={{ backgroundColor: "rgba(0.5,0.25,0,0.7)" }}
-        style={{
-          borderBottomWidth: 1,
-          borderColor: "#333a",
-          backgroundColor: "#fff0",
-        }}
-        onPress={() => {
-          updateUser("Z-A");
-          isVisibleFiltro(false);
-        }}
-      >
-        <ListItem.Content
-          style={{ backgroundColor: "#0000", alignItems: "center" }}
-        >
-          <ListItem.Title
-            style={{ height: 35, color: "#fff", padding: 8 }}
-          >
-            Z-A
-          </ListItem.Title>
-        </ListItem.Content>
-      </ListItem>
-
-      <ListItem
-        key={999}
-        containerStyle={{ backgroundColor: "#d14545" }}
-        style={{ borderBottomWidth: 1, borderColor: "#333a" }}
-        onPress={() => isVisibleFiltro(false)}
-      >
-        <ListItem.Content style={{ alignItems: "center" }}>
-          <ListItem.Title
-            style={{
-              height: 35,
-              color: "#FFF",
-              padding: 8,
-              fontSize: 20,
-            }}
-          >
-            Cancelar
-          </ListItem.Title>
-        </ListItem.Content>
-      </ListItem>
-    </BottomSheet>
-      {/*----------------------------------------BOTON MAPA------------------------------------------- */}
-      <TouchableOpacity style={globalStyles.btnFiltrosHome}>
-        <Text style={globalStyles.texts}><Icon
-          reverse
-          name="map-marker-alt"
-          type="font-awesome-5"
-          color="#FDFDFD"
-          reverseColor="#161616"
-          size={12}
-        /></Text>
-      </TouchableOpacity>
-      {/*----------------------------------------FILTRADO------------------------------------------- */}
       <View>
-        <Pressable onPress={() => isVisibleFiltros(true)}>
+        <Pressable onPress={() => isVisibleFiltro(true)}>
           <TextInput
             style={globalStyles.btnFiltrosHome}
             editable={false}
-            placeholder="Buscar por Categoria"
+            placeholder="Ordenado por"
             textAlign="center"
             placeholderTextColor="#161616"
-            value={category}
-            onPressIn={() => isVisibleFiltros(true)}
+            value={selectedValue}
+            value={selectedValu}
+            onPressIn={() => isVisibleFiltro(true)}
           />
         </Pressable>
         <BottomSheet
-          isVisible={visibleFiltros}
+          isVisible={visibleFiltro}
           containerStyle={{ backgroundColor: "#333a" }}
         >
           <ListItem
@@ -430,8 +337,8 @@ export default function Home({ navigation }) {
               backgroundColor: "#fff0",
             }}
             onPress={() => {
-              handleCategory(null);
-              isVisibleFiltros(false);
+              updateUser("A-Z");
+              isVisibleFiltro(false);
             }}
           >
             <ListItem.Content
@@ -440,50 +347,46 @@ export default function Home({ navigation }) {
               <ListItem.Title
                 style={{ height: 35, color: "#fff", padding: 8 }}
               >
-                Todos
+                A-Z
               </ListItem.Title>
             </ListItem.Content>
           </ListItem>
-          {categories.map((categoria, index) => (
-            <ListItem
-              key={index}
-                containerStyle={{ backgroundColor: "rgba(242, 242, 242,0.8)" }}
-              style={{
-                borderBottomWidth: 1,
-                borderColor: "#333a",
-                backgroundColor: "#fff0",
-              }}
-              onPress={() => {
-                handleCategory(categoria);
-                isVisibleFiltros(false);
-              }}
+          <ListItem
+            containerStyle={{ backgroundColor: "rgba(0.5,0.25,0,0.7)" }}
+            style={{
+              borderBottomWidth: 1,
+              borderColor: "#333a",
+              backgroundColor: "#fff0",
+            }}
+            onPress={() => {
+              updateUser("Z-A");
+              isVisibleFiltro(false);
+            }}
+          >
+            <ListItem.Content
+              style={{ backgroundColor: "#0000", alignItems: "center" }}
             >
-              <ListItem.Content
-                style={{ backgroundColor: "#0000", alignItems: "center" }}
+              <ListItem.Title
+                style={{ height: 35, color: "#fff", padding: 8 }}
               >
-                <ListItem.Title
-                    style={{
-                      height: 35,
-                      color: "#161616",
-                      paddingVertical: 5,
-                      fontWeight: "bold",
-                    }}
-                >
-                  {categoria}
-                </ListItem.Title>
-              </ListItem.Content>
-            </ListItem>
-          ))}
+                Z-A
+              </ListItem.Title>
+            </ListItem.Content>
+          </ListItem>
+
           <ListItem
             key={999}
             containerStyle={{ backgroundColor: "#d14545" }}
             style={{ borderBottomWidth: 1, borderColor: "#333a" }}
-            onPress={() => isVisibleFiltros(false)}
+            onPress={() => isVisibleFiltro(false)}
           >
             <ListItem.Content style={{ alignItems: "center" }}>
               <ListItem.Title
                 style={{
-                    height: 35, color: "#161616", fontSize: 20
+                  height: 35,
+                  color: "#FFF",
+                  padding: 8,
+                  fontSize: 20,
                 }}
               >
                 Cancelar
@@ -491,38 +394,135 @@ export default function Home({ navigation }) {
             </ListItem.Content>
           </ListItem>
         </BottomSheet>
-      </View>
-    </View>
-    <ScrollView>
-      {availableCommerces.length && flagCards ? (
+        {/*----------------------------------------BOTON MAPA------------------------------------------- */}
+        <TouchableOpacity style={globalStyles.btnFiltrosHome}>
+          <Text style={globalStyles.texts}><Icon
+            reverse
+            name="map-marker-alt"
+            type="font-awesome-5"
+            color="#FDFDFD"
+            reverseColor="#161616"
+            size={12}
+          /></Text>
+        </TouchableOpacity>
+        {/*----------------------------------------FILTRADO------------------------------------------- */}
         <View>
-          {availableCommerces
-            .filter((resto) => {
-              if (searchTerm === "") {
-                return resto;
-              } else {
-                return resto.title
-                  .toLowerCase()
-                  .includes(searchTerm.toLowerCase());
-              }
-            })
-            .map((resto) => {
-              return (
-                <CardHome
-                  key={resto.idResto}
-                  resto={resto}
-                  navigation={navigation}
-                ></CardHome>
-              );
-            })}
+          <Pressable onPress={() => isVisibleFiltros(true)}>
+            <TextInput
+              style={globalStyles.btnFiltrosHome}
+              editable={false}
+              placeholder="Buscar por Categoria"
+              textAlign="center"
+              placeholderTextColor="#161616"
+              value={category}
+              onPressIn={() => isVisibleFiltros(true)}
+            />
+          </Pressable>
+          <BottomSheet
+            isVisible={visibleFiltros}
+            containerStyle={{ backgroundColor: "#333a" }}
+          >
+            <ListItem
+              containerStyle={{ backgroundColor: "rgba(0.5,0.25,0,0.7)" }}
+              style={{
+                borderBottomWidth: 1,
+                borderColor: "#333a",
+                backgroundColor: "#fff0",
+              }}
+              onPress={() => {
+                handleCategory(null);
+                isVisibleFiltros(false);
+              }}
+            >
+              <ListItem.Content
+                style={{ backgroundColor: "#0000", alignItems: "center" }}
+              >
+                <ListItem.Title
+                  style={{ height: 35, color: "#fff", padding: 8 }}
+                >
+                  Todos
+                </ListItem.Title>
+              </ListItem.Content>
+            </ListItem>
+            {categories.map((categoria, index) => (
+              <ListItem
+                key={index}
+                containerStyle={{ backgroundColor: "rgba(242, 242, 242,0.8)" }}
+                style={{
+                  borderBottomWidth: 1,
+                  borderColor: "#333a",
+                  backgroundColor: "#fff0",
+                }}
+                onPress={() => {
+                  handleCategory(categoria);
+                  isVisibleFiltros(false);
+                }}
+              >
+                <ListItem.Content
+                  style={{ backgroundColor: "#0000", alignItems: "center" }}
+                >
+                  <ListItem.Title
+                    style={{
+                      height: 35,
+                      color: "#161616",
+                      paddingVertical: 5,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {categoria}
+                  </ListItem.Title>
+                </ListItem.Content>
+              </ListItem>
+            ))}
+            <ListItem
+              key={999}
+              containerStyle={{ backgroundColor: "#d14545" }}
+              style={{ borderBottomWidth: 1, borderColor: "#333a" }}
+              onPress={() => isVisibleFiltros(false)}
+            >
+              <ListItem.Content style={{ alignItems: "center" }}>
+                <ListItem.Title
+                  style={{
+                    height: 35, color: "#161616", fontSize: 20
+                  }}
+                >
+                  Cancelar
+                </ListItem.Title>
+              </ListItem.Content>
+            </ListItem>
+          </BottomSheet>
         </View>
-      ) : (
-        <View style={styles.loading}>
-          <ActivityIndicator size="large" color="#5555" />
-        </View>
-      )}
-    </ScrollView>
-  </View>
+      </View>
+      <ScrollView>
+        {availableCommerces.length && flagCards ? (
+          <View>
+            {availableCommerces
+              .filter((resto) => {
+                if (searchTerm === "") {
+                  return resto;
+                } else {
+                  return resto.title
+                    .toLowerCase()
+                    .includes(searchTerm.toLowerCase());
+                }
+              })
+              .map((resto) => {
+                return (
+                  <CardHome
+                    key={resto.idResto}
+                    resto={resto}
+                    navigation={navigation}
+                  ></CardHome>
+                );
+              })}
+          </View>
+        ) : (
+          <View style={styles.loading}>
+            <ActivityIndicator size="large" color="#5555" />
+          </View>
+        )}
+      </ScrollView>
+    </View>
   );
 }
 
