@@ -19,6 +19,7 @@ const globalStyles = StyleSheet.create({
     textAlign: "center",
   },
   btnTextFiltro: {
+    // paddingTop: 2,
     fontSize: 14,
     color: "#161616",
     fontWeight: "bold",
@@ -158,7 +159,7 @@ const globalStyles = StyleSheet.create({
     textAlign: "center",
     width: "100%",
     color: "#161616",
-    textTransform: "capitalize"
+    textTransform: "capitalize",
   },
   btnContainerCard: {
     // backgroundColor: 'violet',
@@ -213,12 +214,13 @@ const globalStyles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   cardsMenuTitle: {
-    fontSize: 25,
+    fontSize: 20,
     fontWeight: "bold",
     textAlign: "left",
     width: "100%",
   },
   cardsMenuDescriptionText: {
+    width: "90%",
     textAlign: "left",
     fontSize: 15,
     color: "grey",
@@ -229,7 +231,7 @@ const globalStyles = StyleSheet.create({
     maxHeight: "5%",
     alignSelf: "flex-end",
     alignItems: "flex-end",
-    marginTop: "-37%",
+    marginTop: "-31.5%",
     marginRight: "3.5%",
   },
   cardsMenuimg: {
@@ -295,7 +297,7 @@ const globalStyles = StyleSheet.create({
     fontSize: 13,
     padding: 1,
     textAlign: "center",
-    color: "#ECCEAB",
+    color: "#ECCDAA",
     textTransform: "capitalize",
     fontWeight: "bold",
   },
@@ -401,6 +403,42 @@ const globalStyles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
+  },
+
+  centeredMenuView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+    // backgroundColor: "blue",
+  },
+
+  modalMenuView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    paddingHorizontal: 5,
+    paddingVertical: 35,
+    width: "100%",
+    height: "95%",
+    alignItems: "center",
+    justifyContent: "space-between",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 30,
+      height: 30,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+
+  modalMenuText: {
+    marginVertical: 5,
+    textAlign: "center",
+    fontSize: 30,
+    fontWeight: "bold",
+    textTransform: "capitalize",
   },
 
   textStyle: {
