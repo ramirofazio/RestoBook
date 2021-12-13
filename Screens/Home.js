@@ -296,7 +296,7 @@ export default function Home({ navigation }) {
           <Pressable onPress={() => isVisibleFiltro(true)}>
             <TextInput
               style={globalStyles.btnFiltrosHome}
-              editable={false}
+              editable={false}      
               placeholder="Ordenado por"
               textAlign="center"
               placeholderTextColor="#161616"
