@@ -13,7 +13,7 @@ const auth = getAuth();
 
 const CardReservation = ({ date, cantCupos, nameResto, statusReserva, address, navigation, idResto }) => {
 
-  const [reviews, setReviews] = useState();
+  const restos = [];
 
 
   useEffect(() => {
@@ -22,7 +22,7 @@ const CardReservation = ({ date, cantCupos, nameResto, statusReserva, address, n
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
         let obj = docSnap.data();
-        setReviews(obj)
+        restos.push(obj)
 
       } else {
         alert("NO HAY INFO");
@@ -67,7 +67,9 @@ const CardReservation = ({ date, cantCupos, nameResto, statusReserva, address, n
         <View style={{ flexDirection: "column" }}>
           <TouchableOpacity
             style={{ marginVertical: 5 }}
-            onPress={() => navigation.navigate("AddReviewsRestorant")}
+            onPress={() => navigation.navigate("AddReviewsRestorant", {
+              nameResto: nameResto,
+            })}
           >
             <Icon name='square-edit-outline' type='material-community' color='#161616' size={25} />
           </TouchableOpacity>

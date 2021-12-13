@@ -377,7 +377,7 @@ const ProfileUser = ({ navigation }) => {
             return (
               <CardReservation
                 key={index}
-                date={reserva.date.date} s
+                date={reserva.date.date} 
                 cantCupos={reserva.cantCupos}
                 nameResto={reserva.nameResto}
                 statusReserva={reserva.statusReserva}

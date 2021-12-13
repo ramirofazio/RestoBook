@@ -133,7 +133,7 @@ const DetailsResto = ({ navigation }) => {
     });
   };
 
-  const { timeRange } = empresaDetail.reservationsParams
+  const { timeRange } = empresaDetail?.reservationsParams
   let horaInicio = timeRange.split("-")[0];
   let horaFin = timeRange.split("-")[1];
   const handleHorarioReserva = () => {
@@ -185,11 +185,12 @@ const DetailsResto = ({ navigation }) => {
         >
           {empresaDetail.title}
         </Text>
-            <Badge status={handleHorarioReserva() ? "success" : "error"} />
+        <Badge status={handleHorarioReserva() ? "success" : "error"} />
       </View>
       <ScrollView style={globalStyles.Home}>
+        {menuArr.length ? (
           <View style={globalStyles.btnTodasComidas}>
-            <TouchableOpacity onPress={() => getMenu()}>
+            <TouchableOpacity onPress={() => handleCategory()}>
               <Text
                 style={{
                   fontWeight: "bold",
@@ -202,108 +203,109 @@ const DetailsResto = ({ navigation }) => {
               </Text>
             </TouchableOpacity>
           </View>
+        ) : null}
 
-          <View style={styles.categoriesContainer}>
-            {/* mapear arr y devolver uno asi */}
+        <View style={styles.categoriesContainer}>
+          {/* mapear arr y devolver uno asi */}
 
-            {menuCategory?.map((categoria) => {
-              return (
-                <View
-                  style={globalStyles.categoriesViewDetail}
-                  key={`${categoria}_${Math.random()}`}
-                >
-                  <TouchableOpacity onPress={() => handleCategory(categoria)}>
-                    <Text style={globalStyles.categoriesText}>{categoria}</Text>
-                  </TouchableOpacity>
-                </View>
-              );
-            })}
-            {menuArr.length ? (
-              <View style={globalStyles.categoriesViewDetail} key={"empty"}>
-                <TouchableOpacity onPress={() => handleCategory()}>
-                  <Text style={globalStyles.categoriesText}>Limpiar</Text>
+          {menuCategory?.map((categoria) => {
+            return (
+              <View
+                style={globalStyles.categoriesViewDetail}
+                key={`${categoria}_${Math.random()}`}
+              >
+                <TouchableOpacity onPress={() => handleCategory(categoria)}>
+                  <Text style={globalStyles.categoriesText}>{categoria}</Text>
                 </TouchableOpacity>
               </View>
-            ) : null}
-          </View>
-          {menuArr.length > 0 ? (
-            <ScrollView style={styles.showMenu}>
-              {menuFiltered.length
-                ? menuFiltered.map((menu, index) => {
-                  return (
-                    <CardMenu key={index} menu={menu}>
-                      {" "}
-                    </CardMenu>
-                  );
-                })
-                : menuArr.map((menu, index) => {
-                  return (
-                    <CardMenu key={index} menu={menu}>
-                      {" "}
-                    </CardMenu>
-                  );
-                })}
-            </ScrollView>
-          ) : (
-            <Text
-              style={{ alignSelf: "center", fontSize: 30, marginVertical: 30 }}
-            >
-              {" "}
-              Menu No Disponible!
-            </Text>
-          )}
-
-          {handleHorarioReserva()
-            ?
-            <View onTouchStart={() => setModalVisible(!modalVisible)}>
-              <TouchableOpacity style={globalStyles.btnFiltrosHome}>
-                <Text style={globalStyles.btnTextFiltro}>
-                  <MaterialIcons
-                    name="payment"
-                    size={20}
-                    color="#161616"
-                  ></MaterialIcons>{" "}
-                  Quiero Reservar!
-                </Text>
+            );
+          })}
+          {/* {menuArr.length ? (
+            <View style={globalStyles.categoriesViewDetail} key={"empty"}>
+              <TouchableOpacity onPress={() => handleCategory()}>
+                <Text style={globalStyles.categoriesText}>Limpiar</Text>
               </TouchableOpacity>
             </View>
-            :
-            <View>
-              <TouchableOpacity style={globalStyles.btnFiltrosHome}>
-                <Text style={globalStyles.btnTextFiltro}>
-                  <MaterialIcons
-                    name="block"
-                    size={20}
-                    color="#161616"
-                  ></MaterialIcons>{" "}
-                  {horaInicio && horaFin ? `El horario de Reserva es de ${horaInicio} a ${horaFin}` : "No hay Horario de Reserva"}
-                </Text>
-              </TouchableOpacity>
-            </View>}
+          ) : null} */}
+        </View>
+        {menuArr.length > 0 ? (
+          <ScrollView style={styles.showMenu}>
+            {menuFiltered.length
+              ? menuFiltered.map((menu, index) => {
+                return (
+                  <CardMenu key={index} menu={menu}>
+                    {" "}
+                  </CardMenu>
+                );
+              })
+              : menuArr.map((menu, index) => {
+                return (
+                  <CardMenu key={index} menu={menu}>
+                    {" "}
+                  </CardMenu>
+                );
+              })}
+          </ScrollView>
+        ) : (
+          <Text
+            style={{ alignSelf: "center", fontSize: 30, marginVertical: 30 }}
+          >
+            {" "}
+            Menu No Disponible!
+          </Text>
+        )}
+
+        {handleHorarioReserva()
+          ?
+          <View onTouchStart={() => setModalVisible(!modalVisible)}>
+            <TouchableOpacity style={globalStyles.btnFiltrosHome}>
+              <Text style={globalStyles.btnTextFiltro}>
+                <MaterialIcons
+                  name="payment"
+                  size={20}
+                  color="#161616"
+                ></MaterialIcons>{" "}
+                Quiero Reservar!
+              </Text>
+            </TouchableOpacity>
+          </View>
+          :
+          <View>
+            <TouchableOpacity style={globalStyles.btnFiltrosHome}>
+              <Text style={globalStyles.btnTextFiltro}>
+                <MaterialIcons
+                  name="block"
+                  size={20}
+                  color="#161616"
+                ></MaterialIcons>{" "}
+                {horaInicio && horaFin ? `El horario de Reserva es de ${horaInicio} a ${horaFin}` : "No hay Horario de Reserva"}
+              </Text>
+            </TouchableOpacity>
+          </View>}
 
 
-          <View style={styles.googleMapsContainer}>
-            <MapView
-              ref={mapRef}
-              style={styles.googleMaps}
-              initialRegion={{
-                latitude: location.latitude,
-                longitude: location.longitude,
-                latitudeDelta: 0.004757,
-                longitudeDelta: 0.006866,
-              }}
+        <View style={styles.googleMapsContainer}>
+          <MapView
+            ref={mapRef}
+            style={styles.googleMaps}
+            initialRegion={{
+              latitude: location.latitude,
+              longitude: location.longitude,
+              latitudeDelta: 0.004757,
+              longitudeDelta: 0.006866,
+            }}
+          >
+            <Marker
+              title={empresaDetail.title}
+              pinColor='#0072B5'
+              coordinate={location}
+              description={`Distancia: ${distance.distance} Km - ETA: ${distance.ETA} Min`}
+              identifier="restoLocation"
+
             >
-              <Marker
-               title={empresaDetail.title}
-               pinColor='#0072B5'
-               coordinate={location}
-               description={`Distancia: ${distance.distance} Km - ETA: ${distance.ETA} Min`}
-               identifier="restoLocation"
-               
-               >
-              </Marker>
+            </Marker>
 
-            { Object.entries(userLocation).length > 0 && (
+            {Object.entries(userLocation).length > 0 && (
               <Marker
                 title="Your Location"
                 coordinate={userLocation}
@@ -311,26 +313,27 @@ const DetailsResto = ({ navigation }) => {
                 identifier="userLocation"
               />
             )}
-           { Object.entries(userLocation).length > 0 && location && (
-            <MapViewDirections
-              apikey={GOOGLE_API_KEY}
-              strokeWidth={1.5}
-              strokeColor="brown"
-              origin={userLocation}
-              destination={{
-                latitude: location.latitude,
-                longitude: location.longitude
-              }}
-              onReady={ resultado => {
-                const { distance, duration } = resultado;
-                const travelTime = Math.round(duration)
-                // const distanceSpliteado = distance.split('.')
-                // console.log(distanceSpliteado)
-                const travelDistance = distance.toString().slice(0, 4)
-                setDistance({distance: travelDistance, ETA: travelTime})
-              }}
+            {Object.entries(userLocation).length > 0 && location && (
+              <MapViewDirections
+                lineDashPattern={[0]}
+                apikey={GOOGLE_API_KEY}
+                strokeWidth={1.5}
+                strokeColor="brown"
+                origin={userLocation}
+                destination={{
+                  latitude: location.latitude,
+                  longitude: location.longitude
+                }}
+                onReady={resultado => {
+                  const { distance, duration } = resultado;
+                  const travelTime = Math.round(duration)
+                  // const distanceSpliteado = distance.split('.')
+                  // console.log(distanceSpliteado)
+                  const travelDistance = distance.toString().slice(0, 4)
+                  setDistance({ distance: travelDistance, ETA: travelTime })
+                }}
               />
-          )}
+            )}
           </MapView>
         </View>
         <Modal
@@ -378,7 +381,7 @@ const DetailsResto = ({ navigation }) => {
               />
 
               <Text style={globalStyles.modalText}>
-                Precio por Lugar ${empresaDetail.reservationsParams?.precioPorLugar}
+                Precio por Persona ${empresaDetail.reservationsParams?.precioPorLugar}
               </Text>
               <TouchableOpacity
                 style={globalStyles.btnLogin}
@@ -391,10 +394,11 @@ const DetailsResto = ({ navigation }) => {
             </View>
           </View>
         </Modal>
-        <View style={styles.listReviews}>
-          <ListReviews navigation={navigation} reviews={reviews} />
-        </View>
-        <View></View>
+        <ScrollView>
+          <View style={styles.listReviews}>
+            <ListReviews navigation={navigation} reviews={reviews} />
+          </View>
+        </ScrollView>
       </ScrollView >
     </View >
   );

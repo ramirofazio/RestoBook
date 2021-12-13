@@ -46,9 +46,9 @@ const CardFavourite = ({
   };
 
   const handleOnPress = () => {
-    dispatch(empresaDetail(resto));
-
-    navigation.navigate("DetailsResto");
+    console.log(resto)
+    // dispatch(empresaDetail(resto));
+    //navigation.navigate("DetailsResto");
   };
 
 
@@ -61,7 +61,7 @@ const CardFavourite = ({
         let modifiedFavs = myFavourites.filter(
           (element) => element.idResto !== infoFavourite.idResto
         );
-       // console.log(modifiedFavs);
+        // console.log(modifiedFavs);
         setMyFavourites(modifiedFavs);
         let docRef = doc(firebase.db, "Users", auth.currentUser.uid);
         await updateDoc(docRef, {

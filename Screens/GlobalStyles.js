@@ -213,6 +213,7 @@ const globalStyles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   cardsMenuTitle: {
+    textTransform: "capitalize",
     fontSize: 25,
     fontWeight: "bold",
     textAlign: "left",
