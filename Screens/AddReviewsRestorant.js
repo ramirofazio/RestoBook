@@ -15,6 +15,7 @@ import { isEmpty } from "lodash";
 import firebase from "../database/firebase";
 import { doc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import globalStyles from "./GlobalStyles";
+import { Card } from "react-native-elements/dist/card/Card";
 
 export default function AddReviewsRestorant({ navigation }) {
   const currentUser = useSelector((state) => state.currentUser);
@@ -58,6 +59,16 @@ export default function AddReviewsRestorant({ navigation }) {
   };
   return (
     <View style={styles.container}>
+      <Text style={{
+        color: "#000",
+        textAlign: "center",
+        width: "100%",
+        fontSize: 25,
+        fontWeight: "bold",
+        // marginBottom: -10,
+        paddingVertical: 1,
+      }}>{empresaDetail.title}</Text>
+
       <View>
         <View style={styles.viewRating}>
           <AirbnbRating
