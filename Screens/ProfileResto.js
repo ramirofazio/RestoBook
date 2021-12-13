@@ -54,9 +54,6 @@ import CardFavourite from "../components/CardFavourite";
 
 //
 //
-//---------CHECKBOX----------------------
-import Checkbox from "expo-checkbox";
-//
 //-------ICONS-------
 import { Icon } from "react-native-elements";
 //
@@ -81,16 +78,17 @@ const ProfileResto = ({ navigation }) => {
 
   const sectoresResto = useSelector((state) => state.sectoresResto);
 
-  const [modalAdminReservasVisible, setModalVisibleAdminReservas] =
-    useState(false);
-  const [modalEditVisible, setModalEditVisible] = useState(false);
+  const [modalAdminReservasVisible, setModalVisibleAdminReservas] = useState(false);
+  const [modalEditVisible, setModalEditVisible] = useState(false)
+  const [modalAdminHorarioVisible, setModalVisibleAdminHorario] = useState(false);
 
-  const [places, setPlaces] = useState(1);
-  const [sectorState, setSectorState] = useState([]);
-  const [timeReservaInicio, setTimeReservaInicio] = useState(0);
-  const [timeReservaFin, setTimeReservaFin] = useState(0);
-  const [precioXLugar, setPrecioXLugar] = useState(0);
-  const [flagValidate, setFlagValidate] = useState(false);
+
+  const [places, setPlaces] = useState(1)
+  const [timeReservaInicio, setTimeReservaInicio] = useState(0)
+  const [timeReservaFin, setTimeReservaFin] = useState(0)
+  const [timeHorarioComInicio, setTimeHorarioComInicio] = useState(0)
+  const [timeHorarioComFin, setTimeHorarioComFin] = useState(0)
+  const [precioXLugar, setPrecioXLugar] = useState(0)
 
   const [newCommerceInfo, setNewCommerceInfo] = useState({});
   const [uploading, setUploading] = useState(false);
@@ -221,20 +219,6 @@ const ProfileResto = ({ navigation }) => {
       .catch((err) => console.log(err));
   };
 
-  const scrollX = useRef(new Animated.Value(0)).current;
-  const { width: windowWidth } = useWindowDimensions();
-
-  const showTimepicker = () => {
-    setMode("time");
-    setShow(true);
-  };
-
-  const onChangeTimePicker = (event, selectedDate) => {
-    console.log(event.nativeEvent);
-    // const currentDate = selectedDate || date;
-    // setShow(Platform.OS === 'ios');
-    // setDate(currentDate);
-  };
 
   const handleSectores = (sector) => {
     if (!sectorState.includes(sector)) {
@@ -246,24 +230,22 @@ const ProfileResto = ({ navigation }) => {
     }
   };
 
-  const handleSectorPlaces = (num, sector) => {
-    setSectorPlaces(num);
-  };
-
   const clearStates = () => {
-    setTimeReservaInicio();
-    setTimeReservaFin();
-    setSectorState();
-    setPlaces();
-  };
+    setTimeReservaInicio()
+    setTimeReservaFin()
+    setSectorState()
+    setPlaces()
+    setTimeHorarioComInicio()
+    setTimeHorarioComFin()
+  }
+
 
   const timesReserva = timeReservaInicio + "-" + timeReservaFin;
-  const handleGuardar = async () => {
+  const handleGuardarAdmReservas = async () => {
     //if (flagValidate) {
     const obj = {
       timeRange: timesReserva,
       places: places,
-      sectors: sectorState,
       precioPorLugar: precioXLugar,
     };
     try {
@@ -271,8 +253,9 @@ const ProfileResto = ({ navigation }) => {
       await updateDoc(restoRef, {
         reservationsParams: obj,
       });
-      setModalVisibleAdminReservas(false);
-      clearStates();
+      alert("Cambios Guardados con Exito!")
+      setModalVisibleAdminReservas(false)
+      clearStates()
     } catch (err) {
       console.log(err);
     }
@@ -280,6 +263,21 @@ const ProfileResto = ({ navigation }) => {
     //   alert('Complete bien los campos')
     // }
   };
+
+  const horarioCom = timeHorarioComInicio + "-" + timeHorarioComFin;
+  const handleGuardarAdmHorarios = async () => {
+    try {
+      let restoRef = doc(firebase.db, "Restos", commerceInfo);
+      await updateDoc(restoRef, {
+        commerceTimeRange: horarioCom,
+      });
+      alert("Cambios Guardados con Exito!")
+      setModalVisibleAdminHorario(false)
+      clearStates()
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   return (
     <View style={globalStyles.Perfilcontainer}>
@@ -487,81 +485,86 @@ const ProfileResto = ({ navigation }) => {
                   <Text style={globalStyles.texts}>X</Text>
                 </TouchableOpacity>
 
-                <Text style={globalStyles.modalText}>
-                  Administración de reserva
-                </Text>
+                <Text style={globalStyles.modalText}>Administración de reserva</Text>
 
-                <Text style={globalStyles.texts}>
-                  Horario para reservar(24:00hs):
-                </Text>
-                <View style={{ display: "flex", flexDirection: "row" }}>
-                  <TextInput
-                    style={{
-                      alignSelf: "center",
-                      marginVertical: 10,
-                      borderRadius: 15,
-                      backgroundColor: "rgba(22, 22, 22, .2)",
-                      maxWidth: "100%",
-                      width: "30%",
-                      marginHorizontal: 5,
-                      paddingVertical: 5,
-                    }}
-                    placeholder="Hora Inicio"
-                    placeholderTextColor="#666"
-                    textAlign="center"
-                    keyboardType="numbers-and-punctuation"
-                    value={timeReservaInicio}
-                    onChangeText={(value) => setTimeReservaInicio(value)}
-                  />
-                  <Text
-                    style={{
-                      alignSelf: "center",
-                      fontSize: 14.5,
-                      fontWeight: "bold",
-                      paddingVertical: 1,
-                    }}
-                  >
-                    {" "}
-                    A{" "}
-                  </Text>
-                  <TextInput
-                    style={{
-                      alignSelf: "center",
-                      marginVertical: 10,
-                      borderRadius: 15,
-                      backgroundColor: "rgba(22, 22, 22, .2)",
-                      maxWidth: "100%",
-                      width: "30%",
-                      marginHorizontal: 5,
-                      paddingVertical: 5,
-                    }}
-                    placeholder="Hora Fin"
-                    placeholderTextColor="#666"
-                    textAlign="center"
-                    keyboardType="numbers-and-punctuation"
-                    value={timeReservaFin}
-                    onChangeText={(value) => setTimeReservaFin(value)}
-                  />
+
+                <Text style={globalStyles.texts}>Horario para reservar(24hs)</Text>
+
+                <View style={{ display: "flex", flexDirection: "row", marginVertical: 10 }}>
+                  <View style={{ flexDirection: "column", flex: 0.4 }}>
+                    <Text style={{
+                      alignSelf: "center"
+                    }}>Hora Inicio:</Text>
+                    <InputSpinner
+                      style={{
+                        maxWidth: '100%',
+                        width: "100%",
+                        marginVertical: 10,
+                        alignSelf: "center"
+                      }}
+                      value={timeReservaInicio}
+                      max={24}
+                      min={1}
+                      buttonFontSize={25}
+                      onChange={(value) => setTimeReservaInicio(value)}
+                      skin="clean"
+                      colorPress='#eccdaa'
+                      background="#f2f2f2"
+                      colorAsBackground={true}
+                      fontSize={20}
+                    />
+                  </View>
+                  <Text style={{
+                    alignSelf: "center",
+                    fontSize: 20,
+                    fontWeight: "bold",
+                    marginHorizontal: 10,
+                  }}> A </Text>
+                  <View style={{ flexDirection: "column", flex: 0.4 }}>
+
+                    <Text style={{
+                      alignSelf: "center"
+                    }}>Hora Fin:</Text>
+                    <InputSpinner
+                      style={{
+                        maxWidth: '100%',
+                        width: "100%",
+                        marginVertical: 10,
+                        alignSelf: "center"
+                      }}
+                      value={timeReservaFin}
+                      max={24}
+                      min={1}
+                      buttonFontSize={25}
+                      onChange={(value) => setTimeReservaFin(value)}
+                      skin="clean"
+                      colorPress='#eccdaa'
+                      background="#f2f2f2"
+                      colorAsBackground={true}
+                      fontSize={20}
+                    />
+                  </View>
                 </View>
 
                 <Text style={globalStyles.texts}> Precio por Lugar:</Text>
-                <TextInput
+                <InputSpinner
                   style={{
-                    alignSelf: "center",
-                    marginVertical: 10,
-                    borderRadius: 15,
-                    backgroundColor: "rgba(22, 22, 22, .2)",
-                    maxWidth: "100%",
+                    maxWidth: '100%',
                     width: "65%",
-                    marginHorizontal: 5,
-                    paddingVertical: 5,
+                    marginVertical: 10,
+                    alignSelf: "center"
                   }}
                   value={precioXLugar}
-                  placeholder="Precio"
-                  placeholderTextColor="#666"
-                  textAlign="center"
-                  keyboardType="numeric"
-                  onChangeText={(value) => setPrecioXLugar(value)}
+                  max={1000}
+                  min={0}
+                  buttonFontSize={25}
+                  step={50}
+                  onChange={(value) => setPrecioXLugar(value)}
+                  skin="clean"
+                  colorPress='#eccdaa'
+                  background="#f2f2f2"
+                  colorAsBackground={true}
+                  fontSize={20}
                 />
 
                 <Text style={globalStyles.texts}>
@@ -586,10 +589,11 @@ const ProfileResto = ({ navigation }) => {
                   fontSize={20}
                 />
 
-                <Text style={globalStyles.texts}>Sectores disponibles: </Text>
+                {/* <Text style={globalStyles.texts}>Sectores disponibles: </Text>
                 <View style={{ display: "flex", flexDirection: "row" }}>
-                  {sectoresResto.map((sector) => (
+                  {sectoresResto.map((sector, index) => (
                     <TouchableOpacity
+                      key={index}
                       style={{
                         alignItems: "center",
                         borderRadius: 15,
@@ -621,77 +625,76 @@ const ProfileResto = ({ navigation }) => {
                       </Text>
                     </TouchableOpacity>
                   ))}
-                </View>
+                </View> */}
 
                 <Text style={globalStyles.texts}>Resumen:</Text>
-                {sectorState?.length ? (
-                  <View
+
+                <View
+                  style={{
+                    borderWidth: 2,
+                    borderColor: "#eccdaa",
+                    borderRadius: 35,
+                    maxWidth: "100%",
+                    width: "90%",
+                    // height: "35%",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Text
                     style={{
-                      borderWidth: 2,
-                      borderColor: "#eccdaa",
-                      borderRadius: 35,
-                      maxWidth: "100%",
-                      width: "90%",
-                      // height: "35%",
-                      alignItems: "center",
-                      justifyContent: "center",
+                      marginVertical: 5,
+                      fontSize: 13,
+                      fontWeight: "bold",
                     }}
                   >
-                    <Text
-                      style={{
-                        marginVertical: 5,
-                        fontSize: 13,
-                        fontWeight: "bold",
-                      }}
-                    >
-                      Hora de Reserva: {timesReserva}
-                    </Text>
-                    <Text
-                      style={{
-                        marginVertical: 5,
-                        fontSize: 13,
-                        fontWeight: "bold",
-                      }}
-                    >
-                      Lugares Disponibles: {places}
-                    </Text>
-                    <Text
-                      style={{
-                        marginVertical: 5,
-                        fontSize: 13,
-                        fontWeight: "bold",
-                      }}
-                    >
-                      Precio Por Lugar: ${precioXLugar}
-                    </Text>
-                    <Text
-                      style={{
-                        marginTop: 15,
-                        fontSize: 15,
-                        fontWeight: "bold",
-                      }}
-                    >
-                      Sectores Seleccionados:{" "}
-                    </Text>
-                    <View style={{ display: "flex", flexDirection: "row" }}>
-                      {sectorState.map((sector) => (
-                        <Text
-                          style={{
-                            marginVertical: 8,
-                            fontSize: 13,
-                            fontWeight: "bold",
-                          }}
-                        >
-                          {sector} -{" "}
-                        </Text>
-                      ))}
-                    </View>
-                  </View>
-                ) : null}
+                    Hora de Reserva: {timesReserva}
+                  </Text>
+                  <Text
+                    style={{
+                      marginVertical: 5,
+                      fontSize: 13,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Lugares Disponibles: {places}
+                  </Text>
+                  <Text
+                    style={{
+                      marginVertical: 5,
+                      fontSize: 13,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Precio Por Lugar: ${precioXLugar}
+                  </Text>
+                  {/* <Text
+                    style={{
+                      marginTop: 15,
+                      fontSize: 15,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Sectores Seleccionados:{" "}
+                  </Text>
+                  <View style={{ display: "flex", flexDirection: "row" }}>
+                    {sectorState.map((sector) => (
+                      <Text
+                        style={{
+                          marginVertical: 8,
+                          fontSize: 13,
+                          fontWeight: "bold",
+                        }}
+                      >
+                        {sector} -{" "}
+                      </Text>
+                    ))}
+                  </View> */}
+                </View>
 
                 <TouchableOpacity
                   style={globalStyles.btnTodasComidas}
-                  onPress={() => handleGuardar()}
+                  onPress={() => handleGuardarAdmReservas()}
                 >
                   <Text style={globalStyles.texts}>Guardar</Text>
                 </TouchableOpacity>
@@ -700,8 +703,10 @@ const ProfileResto = ({ navigation }) => {
           </Modal>
         </TouchableOpacity>
 
+        {/* MODAL DE ADMINISTRAR HORARIO COMERCIAL */}
+
         <TouchableOpacity
-          onPress={() => alert("abro modal")}
+          onPress={() => setModalVisibleAdminHorario(!modalAdminHorarioVisible)}
           style={globalStyles.btnProfileResto}
         >
           <Icon name="clock" type="font-awesome-5" color="#392c28" size={24} />
@@ -709,6 +714,97 @@ const ProfileResto = ({ navigation }) => {
             Editar Horario Comercial
             {/* clock */}
           </Text>
+
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalAdminHorarioVisible}
+            onRequestClose={() => {
+              Alert.alert("Modal has been closed.");
+              setModalVisibleAdminHorario(!modalAdminHorarioVisible);
+            }}
+          >
+
+            <View style={globalStyles.centeredView}>
+              <View style={globalStyles.modalView}>
+                <TouchableOpacity
+                  style={globalStyles.btnTodasComidas}
+                  onPress={() => setModalVisibleAdminHorario(!modalAdminHorarioVisible)}
+                >
+                  <Text
+                    style={globalStyles.texts}
+                  >
+                    X
+                  </Text>
+                </TouchableOpacity>
+
+                <Text style={globalStyles.modalText}>Administración Horario Comercial(24hs)</Text>
+                <View style={{ display: "flex", flexDirection: "row", marginVertical: 10 }}>
+                  <View style={{ flexDirection: "column", flex: 0.4 }}>
+                    <Text style={{
+                      alignSelf: "center"
+                    }}>Hora Inicio:</Text>
+                    <InputSpinner
+                      style={{
+                        maxWidth: '100%',
+                        width: "100%",
+                        marginVertical: 10,
+                        alignSelf: "center"
+                      }}
+                      value={timeHorarioComInicio}
+                      max={24}
+                      min={1}
+                      buttonFontSize={25}
+                      onChange={(value) => setTimeHorarioComInicio(value)}
+                      skin="clean"
+                      colorPress='#eccdaa'
+                      background="#f2f2f2"
+                      colorAsBackground={true}
+                      fontSize={20}
+                    />
+                  </View>
+                  <Text style={{
+                    alignSelf: "center",
+                    fontSize: 20,
+                    fontWeight: "bold",
+                    marginHorizontal: 10,
+                  }}> A </Text>
+                  <View style={{ flexDirection: "column", flex: 0.4 }}>
+
+                    <Text style={{
+                      alignSelf: "center"
+                    }}>Hora Fin:</Text>
+                    <InputSpinner
+                      style={{
+                        maxWidth: '100%',
+                        width: "100%",
+                        marginVertical: 10,
+                        alignSelf: "center"
+                      }}
+                      value={timeHorarioComFin}
+                      max={24}
+                      min={1}
+                      buttonFontSize={25}
+                      onChange={(value) => setTimeHorarioComFin(value)}
+                      skin="clean"
+                      colorPress='#eccdaa'
+                      background="#f2f2f2"
+                      colorAsBackground={true}
+                      fontSize={20}
+                    />
+                  </View>
+                </View>
+
+                <TouchableOpacity
+                  style={globalStyles.btnTodasComidas}
+                  onPress={() => handleGuardarAdmHorarios()}
+                >
+                  <Text style={globalStyles.texts}>Guardar</Text>
+                </TouchableOpacity>
+
+              </View>
+            </View>
+          </Modal>
         </TouchableOpacity>
       </ScrollView>
     </View>

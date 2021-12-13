@@ -22,6 +22,7 @@ export default function AddReviewsRestorant({ navigation }) {
   const [rating, setRating] = useState(null);
   const [review, setReview] = useState("");
   const [errorReview, setErrorReview] = useState(null);
+
   const addReview = async () => {
     if (!validForm()) {
       return;
@@ -36,6 +37,7 @@ export default function AddReviewsRestorant({ navigation }) {
     };
 
     try {
+      console.log("New Values =>", newValues)
       let restoRef = doc(firebase.db, "Restos", empresaDetail.idResto);
       await updateDoc(restoRef, {
         reviews: arrayUnion(newValues),
@@ -56,11 +58,11 @@ export default function AddReviewsRestorant({ navigation }) {
   };
   return (
     <View style={styles.container}>
-        <View>
+      <View>
         <View style={styles.viewRating}>
           <AirbnbRating
             count={5}
-            reviews= {["Malo", "Regular", "Normal", "Bueno", "Excelente"]}
+            reviews={["Malo", "Regular", "Normal", "Bueno", "Excelente"]}
             defaultRating={0}
             size={15}
             onFinishRating={(value) => setRating(value)}
@@ -68,6 +70,8 @@ export default function AddReviewsRestorant({ navigation }) {
         </View>
           <TextInput
             placeholder="  Tu opinion..."
+            placeholderTextColor="#666"
+            textAlign="center"
             fontSize={15}
             containerStyle={styles.containerInput}
             style={globalStyles.inputComponent}
@@ -80,16 +84,15 @@ export default function AddReviewsRestorant({ navigation }) {
                 onPress={addReview}
                 >
             </Button> */}
-            <View style={styles.buton}>
-             <TouchableOpacity 
-                      style={globalStyles.btnFiltrosHome}
-                      onPress={addReview}
-                      errorMessage={errorReview}
-                      >
-                          <Text style={globalStyles.texts}>Escribe una opinion</Text>
-                      </TouchableOpacity>
-            </View>
-            </View>
+        <View style={styles.buton}>
+          <TouchableOpacity
+            style={globalStyles.btnFiltrosHome}
+            onPress={addReview}
+          >
+            <Text style={globalStyles.texts}>Escribe una opinion</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
     </View>
   );
 }
@@ -110,7 +113,7 @@ const styles = StyleSheet.create({
   input: {
   },
   buton: {
- padding: 30,
-marginTop:20
+    padding: 30,
+    marginTop: 20
   },
 });

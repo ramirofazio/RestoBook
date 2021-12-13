@@ -1,15 +1,12 @@
 //----------REACT UTILS-----------
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 //
 //----------REDUX UTILS-----------
 import { useDispatch, useSelector } from "react-redux";
 import CurrentId from "../Redux/Actions/CurrentId.js";
 import CurrentUser from "../Redux/Actions/CurrentUser.js";
-import UserFavourites from "../Redux/Actions/userFavourites.js";
-//
-//
 //----------REACT-NATIVE UTILS-----------
-import { BottomSheet, ListItem, Icon} from "react-native-elements";
+import { BottomSheet, ListItem, Icon } from "react-native-elements";
 import {
   View,
   ScrollView,
@@ -19,43 +16,37 @@ import {
   TextInput,
   Modal,
   ActivityIndicator,
-  Picker, 
+  Picker,
   Pressable,
-  KeyboardAvoidingView,
 } from "react-native";
-
-//import { MaterialIcons } from "@expo/vector-icons";
-//
-//
 //---------------------EXPO----------------------
 import * as Location from "expo-location";
 //----------FIREBASE UTILS-----------
 import firebase from "../database/firebase";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { doc, onSnapshot, collection, query, getDoc } from "firebase/firestore";
-//
-//
 //---------SCREENS---------------
 /* import SearchBar from "./SearchBar.js"; */
 import CardHome from "../components/CardHome.js";
-import Btn from "./Helpers/Btns.js";
-/* import Search from "./Search.js"; */
-//
 //-------STYLES-------
 import globalStyles from "./GlobalStyles.js";
 //
+//---------------------GEOLOCATION-------------------
+import MapView, { Marker } from "react-native-maps";
+//----------------------------------------------------
 //
 //-------INITIALIZATIONS-------
 const auth = getAuth();
 import { DEFAULT_PROFILE_IMAGE } from "@env";
 import setUserLocation from "../Redux/Actions/setUserLocation.js";
-
 //
 //---------------------------------------------------------------------------------------//
 import * as Animatable from "react-native-animatable";
 import { Feather } from "@expo/vector-icons";
 
+
 export default function Home({ navigation }) {
+  const dispatch = useDispatch();
   //------LOGIN JOSE------------
   const [visibleModalGoogle, setVisibleModalGoogle] = useState(false);
   const [googleUser, setGoogleUser] = useState({
@@ -68,16 +59,23 @@ export default function Home({ navigation }) {
   const [availableCommerces, setAvailableCommerces] = useState([]);
   const [flagCards, setFlagCards] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-
+  //-------------------GEOLOCATION---------------------------//
+  const [mapaVisible, setMapaVisible] = useState(false)
+  const userLocation = useSelector(state => state.userCoordinates)
+  const mapRef = useRef(null)
   //--------------FILTRADO MODAL-------------------------
-  const [allRestos, setAllRestos] = useState();
+  const [allRestos, setAllRestos] = useState([]);
   const [category, setCategory] = useState();
   const [visibleFiltros, isVisibleFiltros] = useState(false);
   const loggedUser = useSelector((state) => state.currentUser);
   const loggedId = useSelector((state) => state.currentId);
   const categories = useSelector((state) => state.categoriesResto);
 
-  const dispatch = useDispatch();
+  //---------------SEARCH BAR-------------------------
+  const [selectedValue, setSelectedValue] = useState("");
+  const [selectedValu, setSelectedValu] = useState("");
+  const [visibleFiltro, isVisibleFiltro] = useState(false);
+
 
   useEffect(() => {
     const q = query(collection(firebase.db, "Restos"));
@@ -93,6 +91,7 @@ export default function Home({ navigation }) {
       setAllRestos(arr);
     });
   }, []);
+
 
   onAuthStateChanged(auth, (usuarioFirebase) => {
     if (usuarioFirebase?.emailVerified) {
@@ -136,7 +135,7 @@ export default function Home({ navigation }) {
     let { coords } = await Location.getCurrentPositionAsync({
       accuracy: Location.Accuracy.Balanced,
     });
-    console.log(coords);
+    //console.log(coords);
     const location = {
       latitude: coords.latitude,
       longitude: coords.longitude,
@@ -148,24 +147,30 @@ export default function Home({ navigation }) {
 
   const getInfo = async () => {
     try {
-      console.log("getInfo!!!");
+      // console.log("getInfo!!!");
       const docRef = doc(firebase.db, "Users", auth.currentUser.uid);
       const docSnap = await getDoc(docRef);
-      console.log("dsnap", docSnap.exists());
+      // console.log("dsnap", docSnap.exists());
       if (!docSnap.exists()) {
-        console.log("if de getinfo!");
+        // console.log("if de getinfo!");
         setGoogleUser({ ...googleUser, email: auth.currentUser.email });
         setVisibleModalGoogle(true);
       } else {
-        console.log("else de getinfo!");
+        //console.log("else de getinfo!");
         let obj = docSnap.data();
-        dispatch(CurrentUser(obj));
+        dispatch(CurrentUser(obj))
         setFlagCards(true);
       }
     } catch (e) {
       console.log("error get", e);
     }
   };
+  // const calculateDistances = async (userLocation, restoLocation) => {
+  //   const arrayDistances = await axios(`https://maps.googleapis.com/maps/api/distancematrix/json?origins=${userLocation}&destinations=${restoLocation}&key=${GOOGLE_API_KEY}`)
+  //   console.log(arrayDistances)
+  // }
+  // const orderByDistance = (allRestos) => {
+  // }
   useEffect(() => {
     if (loggedId && auth.currentUser.uid) {
       getInfo();
@@ -201,18 +206,14 @@ export default function Home({ navigation }) {
       setAvailableCommerces(result);
     }
   }
-  const [selectedValue, setSelectedValue] = useState("");
-  const [selectedValu, setSelectedValu] = useState("");
-  
+
   const updateUser = (itemValue) => {
-    if(itemValue === "A-Z") {
+    if (itemValue === "A-Z") {
       const result = availableCommerces.sort((a, b) => (a.title > b.title) ? 1 : -1)
       setSelectedValue(result)
-    }else if(itemValue === "Z-A") {
-     const resulta = availableCommerces.sort((a, b) => (a.title < b.title) ? 1 : -1)
-     setSelectedValu(resulta)
-    }else if(itemValue === "Or") {
-    alert ("Seleccione un ordenamiento ")
+    } else if (itemValue === "Z-A") {
+      const resulta = availableCommerces.sort((a, b) => (a.title < b.title) ? 1 : -1)
+      setSelectedValu(resulta)
     }
   }
 
@@ -223,8 +224,8 @@ export default function Home({ navigation }) {
     <Text>Hola!</Text>
         </View>
       </BottomSheet> */}
-      <Modal 
-      visible={visibleModalGoogle}
+      <Modal
+        visible={visibleModalGoogle}
         animationType="slide"
         transparent={true}
       >
@@ -280,7 +281,7 @@ export default function Home({ navigation }) {
                   reservations: [],
                   payments: [],
                 });
-                isVisible(false);
+                setVisibleModalGoogle(false);
               }}
             >
               <Text style={globalStyles.texts}>Enviar</Text>
@@ -290,34 +291,34 @@ export default function Home({ navigation }) {
       </Modal>
       <View style={styles.textContainer}>
         {usuarioGlobal !== "" ? (
-          <Text style={styles.text}>{` Bienvenido ${usuarioGlobal}`}</Text>
+          <Text style={styles.text}>{` Welcome ${usuarioGlobal}`}</Text>
         ) : (
-          <Text style={styles.text}>Bienvenido a Resto Book</Text>
+          <Text style={styles.text}>Welcome to Resto Book</Text>
         )}
       </View>
-    {/*   ---------------------------------------Search ------------------------------------------------- */}
+      {/*   ---------------------------------------Search ------------------------------------------------- */}
       <View style={styles.container} >
-      <View style={styles.textInput}>
-      <Animatable.View animation="zoomIn" duration={1200}>
-        <TextInput
-        style={styles.texto}
-          onChangeText={(event) => {
-            setSearchTerm(event);
-          }}
-          placeholder="Search..."
-          placeholderTextColor="black"
-          underlineColorAndroid="transparent"
-        />
-       </Animatable.View>
+        <View style={styles.textInput}>
+          <Animatable.View animation="zoomIn" duration={1200}>
+            <TextInput
+              style={styles.texto}
+              onChangeText={(event) => {
+                setSearchTerm(event);
+              }}
+              placeholder="Search..."
+              placeholderTextColor="black"
+              underlineColorAndroid="transparent"
+            />
+          </Animatable.View>
+        </View>
+        <View style={styles.touchableOpacity}>
+          <Feather name="search" style={styles.iconStyle} />
+        </View>
       </View>
-      <View style={styles.touchableOpacity}>
-        <Feather name="search" style={styles.iconStyle} />
-      </View>
-      </View>
-     {/*  /----------------------------------------ORDENAMIENTO----------------------------------------/ */}
-      <View style={globalStyles.btnHome}>
+      {/*  /----------------------------------------ORDENAMIENTO----------------------------------------/ */}
+      {/*  <View style={globalStyles.btnHome}>
       <View style={globalStyles.btnFiltrosHome}>
-      <Picker
+      {/* <Picker
         selectedValue={selectedValu}
         selectedValue={selectedValue}
         style={{ height: 17, width: 130 }}
@@ -327,25 +328,116 @@ export default function Home({ navigation }) {
         <Picker.Item label="A-Z" value="A-Z" />
         <Picker.Item label="Z-A" value="Z-A" />
       </Picker>
-    </View>
-          {/*----------------------------------------BOTON MAPA------------------------------------------- */}
-    <TouchableOpacity style={globalStyles.btnFiltrosHome}>
-      <Text style={globalStyles.texts}><Icon
-                reverse
-                name="map-marker-alt"
-                type="font-awesome-5"
-                color="#FDFDFD"
-                reverseColor="#161616"
-                size={12}
-              /></Text>
-    </TouchableOpacity>
+    </View> */}
+      <View style={{flexDirection: "row", justifyContent: 'space-around', alignItems: 'center'}}>
+        <Pressable onPress={() => isVisibleFiltro(true)}>
+          <TextInput
+            style={globalStyles.btnFiltrosHome}
+            editable={false}
+            placeholder="Ordenar por"
+            fontWeight={'bold'}
+            fontSize= {15}
+            textAlign="center"
+            placeholderTextColor="#161616"
+            value={selectedValue}
+            value={selectedValu}
+            onPressIn={() => isVisibleFiltro(true)}
+          />
+        </Pressable>
+        <BottomSheet
+          isVisible={visibleFiltro}
+          containerStyle={{ backgroundColor: "#333a" }}
+        >
+          <ListItem
+            containerStyle={{ backgroundColor: "rgba(242, 242, 242,0.8)" }}
+            style={{
+              borderBottomWidth: 1,
+              borderColor: "#333a",
+              backgroundColor: "#fff0",
+            }}
+            onPress={() => {
+              updateUser("A-Z");
+              isVisibleFiltro(false);
+            }}
+          >
+            <ListItem.Content
+              style={{ backgroundColor: "#0000", alignItems: "center" }}
+            >
+              <ListItem.Title
+                style={{ height: 35,
+                  color: "#161616",
+                  paddingVertical: 5,
+                  fontWeight: "bold"}}
+              >
+                A-Z
+              </ListItem.Title>
+            </ListItem.Content>
+          </ListItem>
+          <ListItem
+            containerStyle={{ backgroundColor: "rgba(242, 242, 242,0.8)" }}
+            style={{
+              borderBottomWidth: 1,
+              borderColor: "#333a",
+              backgroundColor: "#fff0",
+            }}
+            onPress={() => {
+              updateUser("Z-A");
+              isVisibleFiltro(false);
+            }}
+          >
+            <ListItem.Content
+              style={{ backgroundColor: "#0000", alignItems: "center" }}
+            >
+              <ListItem.Title
+                style={{ height: 35,
+                  color: "#161616",
+                  paddingVertical: 5,
+                  fontWeight: "bold" }}
+              >
+                Z-A
+              </ListItem.Title>
+            </ListItem.Content>
+          </ListItem>
+
+          <ListItem
+            key={999}
+            containerStyle={{ backgroundColor: "#eccdaa" }}
+            style={{ borderBottomWidth: 1, borderColor: "#ffff"}}
+            onPress={() => isVisibleFiltro(false)}
+          >
+            <ListItem.Content style={{ alignItems: "center" }}>
+              <ListItem.Title
+                style={{
+                  height: 35, color: "#161616", fontSize: 20
+                }}
+              >
+                Cancelar
+              </ListItem.Title>
+            </ListItem.Content>
+          </ListItem>
+        </BottomSheet>
+        {/*----------------------------------------BOTON MAPA------------------------------------------- */}
+        <TouchableOpacity
+          style={globalStyles.btnFiltrosHome}
+          onPress={() => setMapaVisible(!mapaVisible)}>
+          <Text style={globalStyles.texts}><Icon
+            reverse
+            name="map-marker-alt"
+            type="font-awesome-5"
+            color="#FDFDFD"
+            reverseColor="#161616"
+            size={12}
+          /></Text>
+        </TouchableOpacity>
         {/*----------------------------------------FILTRADO------------------------------------------- */}
         <View>
           <Pressable onPress={() => isVisibleFiltros(true)}>
             <TextInput
               style={globalStyles.btnFiltrosHome}
               editable={false}
-              placeholder="Buscar por Categoria"
+              placeholder="Categorias"
+              fontSize={15}
+              fontWeight={'bold'}
               textAlign="center"
               placeholderTextColor="#161616"
               value={category}
@@ -372,12 +464,10 @@ export default function Home({ navigation }) {
                 style={{ backgroundColor: "#0000", alignItems: "center" }}
               >
                 <ListItem.Title
-                  style={{
-                    height: 35,
+                  style={{ height: 35,
                     color: "#161616",
                     paddingVertical: 5,
-                    fontWeight: "bold",
-                  }}
+                    fontWeight: "bold", }}
                 >
                   Todos
                 </ListItem.Title>
@@ -386,7 +476,7 @@ export default function Home({ navigation }) {
             {categories.map((categoria, index) => (
               <ListItem
                 key={index}
-                containerStyle={{backgroundColor: "rgba(242, 242, 242,0.8)" }}
+                containerStyle={{ backgroundColor: "rgba(242, 242, 242,0.8)"}}
                 style={{
                   borderBottomWidth: 1,
                   borderColor: "#333a",
@@ -401,10 +491,12 @@ export default function Home({ navigation }) {
                   style={{ backgroundColor: "#0000", alignItems: "center" }}
                 >
                   <ListItem.Title
-                    style={{height: 35,
+                    style={{
+                      height: 35,
                       color: "#161616",
                       paddingVertical: 5,
-                      fontWeight: "bold", }}
+                      fontWeight: "bold",
+                    }}
                   >
                     {categoria}
                   </ListItem.Title>
@@ -420,7 +512,7 @@ export default function Home({ navigation }) {
               <ListItem.Content style={{ alignItems: "center" }}>
                 <ListItem.Title
                   style={{
-                     height: 35, color: "#161616", fontSize: 20 
+                    height: 35, color: "#161616", fontSize: 20
                   }}
                 >
                   Cancelar
@@ -430,7 +522,6 @@ export default function Home({ navigation }) {
           </BottomSheet>
         </View>
       </View>
-
       <ScrollView>
         {availableCommerces.length && flagCards ? (
           <View>
@@ -460,6 +551,62 @@ export default function Home({ navigation }) {
           </View>
         )}
       </ScrollView>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={mapaVisible}
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+          setMapaVisible(!mapaVisible);
+        }}
+      >
+        <View style={globalStyles.centeredView}>
+          <View style={styles.modalView}>
+            <View style={styles.googleMapsContainer}>
+              <TouchableOpacity
+                style={globalStyles.btnTodasComidas}
+                onPress={() => setMapaVisible(!mapaVisible)}
+              >
+                <Text style={globalStyles.texts}>X</Text>
+              </TouchableOpacity>
+              {Object.entries(userLocation).length > 0 && (
+                <MapView
+                  ref={mapRef}
+                  userInterfaceStyle='light'
+                  style={styles.googleMaps}
+                  initialRegion={{
+                    latitude: userLocation.latitude,
+                    longitude: userLocation.longitude,
+                    latitudeDelta: 0.1,
+                    longitudeDelta: 0.1
+                  }}
+                >
+                  {Object.entries(userLocation).length > 0 && (
+                    <Marker
+                      title='Your location'
+                      pinColor='#0072B5'
+                      coordinate={userLocation}
+                      identifier="userLocation"
+                    />
+                  )}
+                  {allRestos.length > 0 && allRestos.map(resto => {
+                    return (
+                      <Marker
+                        key={resto.idResto}
+                        title={resto.title}
+                        description={resto.description}
+                        pinColor="red"
+                        coordinate={resto.location}
+                        identifier={resto.title}
+                      />
+                    )
+                  })}
+                </MapView>
+              )}
+            </View>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -474,6 +621,39 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 4,
     marginTop: 10,
+  },
+  googleMapsContainer: {
+    flex: 1,
+    width: '100%',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    borderWidth: 1,
+    borderColor: 'white',
+    padding: 10,
+    borderRadius: 20
+  },
+  googleMaps: {
+    marginTop: 10,
+    flex: 1,
+    borderRadius: 18,
+  },
+  modalView: {
+    backgroundColor: "rgba(0, 0, 0, 0.2)",
+    borderRadius: 20,
+    padding: 5,
+    width: "95%",
+    height: "95%",
+    alignItems: "center",
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 12,
+    },
+    shadowOpacity: 0.58,
+    shadowRadius: 16.0,
+    display: 'flex',
+    elevation: 100,
   },
   textContainer2: {
     flex: 1,
@@ -539,7 +719,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   container: {
-    marginTop: 15,
+    marginVertical: 10,
     backgroundColor: "#F0EEEE",
     height: 35,
     flexDirection: "row",
