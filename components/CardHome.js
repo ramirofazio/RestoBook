@@ -152,7 +152,6 @@ const CardMenu = ({ resto, navigation }) => {
   }
 
 
-
   return (
     <View style={globalStyles.cardsContainer}>
       <Badge status={handleHorarioReserva() ? "success" : "error"} />

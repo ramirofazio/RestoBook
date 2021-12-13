@@ -551,14 +551,10 @@ const ProfileResto = ({ navigation }) => {
                 <Text style={globalStyles.texts}> Precio por Lugar:</Text>
                 <InputSpinner
                   style={{
-                    alignSelf: "center",
-                    marginVertical: 10,
-                    borderRadius: 15,
-                    backgroundColor: "rgba(22, 22, 22, .2)",
-                    maxWidth: "100%",
+                    maxWidth: '100%',
                     width: "65%",
-                    marginHorizontal: 5,
-                    paddingVertical: 5,
+                    marginVertical: 10,
+                    alignSelf: "center"
                   }}
                   value={precioXLugar}
                   max={1000}

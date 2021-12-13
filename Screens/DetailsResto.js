@@ -21,6 +21,7 @@ import {
   TextInput,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
+import { Badge } from 'react-native-elements'
 //---------------------GEOLOCATION-------------------
 import { GOOGLE_API_KEY } from "@env";
 import MapView, { Marker } from "react-native-maps";
@@ -81,7 +82,7 @@ const DetailsResto = ({ navigation }) => {
   const { location } = empresaDetail;
   const userLocation = useSelector((state) => state.userCoordinates);
   const mapRef = useRef(null);
-  //-----------------------HORARIOS-------------------------------
+
 
   const onPressReservar = async (cantLugares, precioCabeza) => {
     const url = await axios({
@@ -184,10 +185,12 @@ const DetailsResto = ({ navigation }) => {
             paddingVertical: 3,
             color: "#161616",
             letterSpacing: 1,
+            textTransform: "capitalize"
           }}
         >
           {empresaDetail.title}
         </Text>
+            <Badge status={handleHorarioReserva() ? "success" : "error"} />
       </View>
       <ScrollView style={globalStyles.Home}>
         <View>
@@ -252,7 +255,7 @@ const DetailsResto = ({ navigation }) => {
               style={{ alignSelf: "center", fontSize: 30, marginVertical: 30 }}
             >
               {" "}
-              Agrega una comida!
+              Menu No Disponible!
             </Text>
           )}
 
