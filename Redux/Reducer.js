@@ -4,14 +4,48 @@ import {
   ADD_MENU,
   CURRENT_USER,
   CURRENT_ID,
+  SET_COMMERCE,
+  USER_FAVOURITES,
+  GET_COMMERCE_INFO,
+  SET_USER_LOCATION,
 } from "./Actions/Constants.js";
 
 let initialState = {
   empresas: [],
-  empresaDetail: [],
   menus: [],
+  commerce: false,
   currentId: null,
-  currentUser: null,
+  currentUser: {},
+  empresaDetail: [],
+  commerceInfo: null,
+  userCoordinates: {},
+  favourites: [],
+  categoriesResto: [
+    "Pizzas/Empanadas",
+    "Rotiseria",
+    "Pastas",
+    "Parrilla",
+    "Sushi",
+    "Hamburguesas",
+    "Fingerfood",
+    "Drinks",
+    "Otros",
+  ],
+  categoriesMenu: [
+    "Pizza",
+    "Pasta",
+    "Bebida",
+    "Guarnicion",
+    "Postre",
+    "Plato Principal",
+  ],
+  sectoresResto: [
+    "Terraza",
+    "Salón Principal",
+    "Patio",
+    "Vereda",
+  ],
+
 };
 
 const RootReducer = (state = initialState, action) => {
@@ -24,12 +58,11 @@ const RootReducer = (state = initialState, action) => {
       };
     case EMPRESA_DETAIL:
       const empresaDetail = action.payload;
-      //console.log(dataEmpresa[0])
+
       return {
         ...state,
         empresaDetail: empresaDetail,
       };
-
     case ADD_EMPRESA:
       return {
         ...state,
@@ -44,6 +77,26 @@ const RootReducer = (state = initialState, action) => {
       return {
         ...state,
         currentId: action.payload,
+      };
+    case SET_COMMERCE:
+      return {
+        ...state,
+        commerce: true,
+      };
+    case USER_FAVOURITES:
+      return {
+        ...state,
+        favourites: action.payload,
+      };
+    case GET_COMMERCE_INFO:
+      return {
+        ...state,
+        commerceInfo: action.payload,
+      };
+    case SET_USER_LOCATION:
+      return {
+        ...state,
+        userCoordinates: action.payload,
       };
     default:
       return state;

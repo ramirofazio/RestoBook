@@ -3,7 +3,7 @@ import React, { useState } from "react";
 //
 //
 //----------REDUX UTILS-----------
-
+import { useSelector } from "react-redux";
 //
 //
 //----------REACT-NATIVE UTILS-----------
@@ -29,36 +29,49 @@ const auth = getAuth();
 //
 
 export default function NavDetail({ navigation }) {
+  const empresaDetail = useSelector((state) => state.empresaDetail);
   const [logged, setLogged] = useState(false);
-
+  const [owner, isOwner] = useState(false);
   onAuthStateChanged(auth, (usuarioFirebase) => {
     if (usuarioFirebase?.emailVerified) {
       setLogged(true);
-      //console.log("userFirebase", usuarioFirebase);
     } else {
       setLogged(false);
     }
   });
-
+  onAuthStateChanged(auth, (usuarioFirebase) => {
+    if (usuarioFirebase) {
+      if (empresaDetail.idUser === usuarioFirebase.uid) {
+        isOwner(true);
+      } else {
+        isOwner(false);
+      }
+    } else {
+      isOwner(false);
+    }
+  });
   return (
-    <View style={styles.container}>
-      <View style={styles.navDetail}>
-        <View style={styles.info}>
-          <Image
-            source={require("../assets/icon.png")}
-            style={globalStyles.img}
-          />
-          <Text style={styles.title}>Resto Book</Text>
+    <View style={globalStyles.navHome}>
+      <View style={{
+          display: "flex",
+          flexDirection: "row",
+          width: "90%",
+          paddingHorizontal: 5,
+          marginHorizontal: -10,
+        }}>
+        <View style={globalStyles.containerTitle}>
+          <Text style={globalStyles.title}>Resto Book</Text>
         </View>
-        <View style={styles.btnMenu}>
-          {logged ? (
-            <Btn
-              nombre="Add Food!"
-              ruta="AddMenuResto"
-              navigation={navigation}
-            />
-          ) : null}
+        <View style={globalStyles.btnContainer}>
+            {owner &&
+              <Btn
+                nombre="Agregar Comida!"
+                ruta="AddMenuResto"
+                navigation={navigation}
+              />
+            }
         </View>
+
       </View>
     </View>
   );

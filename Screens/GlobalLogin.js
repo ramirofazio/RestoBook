@@ -3,36 +3,60 @@ import React, { useState } from "react";
 //
 //
 //----------REDUX UTILS-----------
-
+//
+//
+//----------FORMIK UTILS-----------
+import { Formik } from "formik";
 //
 //
 //----------REACT-NATIVE UTILS-----------
 import {
   View,
-  Button,
   Text,
   TextInput,
   ScrollView,
   TouchableOpacity,
   StyleSheet,
+  Alert,
+  Modal,
+  Image,
+  KeyboardAvoidingView,
 } from "react-native";
-//
-//
+
+import { BottomSheet } from "react-native-elements";
+
 //----------FIREBASE UTILS-----------
 import {
   getAuth,
   signInWithEmailAndPassword,
-  signInWithRedirect,
   GoogleAuthProvider,
   createUserWithEmailAndPassword,
   sendEmailVerification,
+  signInWithCredential,
+  signInWithRedirect,
+  getRedirectResult,
   onAuthStateChanged,
+  sendPasswordResetEmail,
 } from "firebase/auth";
+
 import firebase from "../database/firebase";
+import * as firebaseAuth from "firebase/auth";
 //
 //
 //---------SCREENS & COMPONENTS---------------
 
+//
+//
+//----------ENV-----------
+import {
+  GOOGLE_0AUTH_ANDROID_ID,
+  GOOGLE_0AUTH_IOS_ID,
+  DEFAULT_PROFILE_IMAGE,
+} from "@env";
+//
+//
+//---------EXPO---------------
+import * as Google from "expo-google-app-auth";
 //
 //
 //-------ICONS-------
@@ -45,188 +69,498 @@ import globalStyles from "./GlobalStyles";
 //
 //-------INITIALIZATIONS-------
 const auth = getAuth();
-const googleProvider = new GoogleAuthProvider();
+const provider = new GoogleAuthProvider();
+
+//const googleProvider = new GoogleAuthProvider();
+//
+//-------YUP(Validacion)------
+import * as yup from "yup";
+import Btn from "./Helpers/Btns";
 //
 //---------------------------------------------------------------------------------------//
 //
+
+const GlobalLoginSchema = yup.object({
+  email: yup.string().required().email(),
+  password: yup.string().required().min(6).max(12),
+});
+
+const GlobalRegisterSchema = yup.object({
+  name: yup.string().required(),
+  lastName: yup.string().required(),
+  cel: yup.number().required(),
+  email: yup.string().required().email(),
+  password: yup.string().required().min(6).max(12),
+  passwordConfirm: yup
+    .string()
+    .required()
+    .test(
+      "password-match",
+      "passwords must match",
+      async (value, testContext) => testContext.parent.password === value
+    ),
+});
+
 const GlobalLogin = ({ navigation }) => {
-  const [user, setUser] = useState({
-    mail: "",
-    password: "",
-    secureTextEntry: true,
-    iconName: "eye",
-  });
-  const [registered, setRegistered] = useState(true);
-
-  const email = user.mail;
-  const pass = user.password;
-
-  const handleChangeUser = (field, value) => {
-    setUser({
-      ...user,
-      [field]: value,
-    });
-  };
-
-  // const logUserWithGoogle = async () => {
-  //   try {
-  //     const newUser = await signInWithRedirect(auth, googleProvider);
-  //     if (auth.currentUser) {
-  //       console.log("works");
-  //       props.navigation.navigate("RestoBook");
-  //     } else {
-  //       console.log("NO works");
-  //     }
-  //   } catch (error) {
-  //     alert("error!");
-  //     console.log(error);
-  //   }
-  // };
-
-  const logEmpresa = async () => {
+  const [visible, isVisible] = useState(false);
+  const [forgottvisible, isforgottVisible] = useState(false);
+  const [forgottedMail, setForgottedMail] = useState("");
+  const [flagLoginOrRegister, setFlagLoginOrRegister] = useState(true);
+  const [flagSecureText, setFlagSecureText] = useState(true);
+  const Glogin = async () => {
     try {
-      const newUser = await signInWithEmailAndPassword(auth, email, pass);
-      if (auth.currentUser.emailVerified) {
-        alert("Welcome");
-        navigation.navigate("RestoBook");
-      } else {
-        navigation.navigate("AwaitEmail");
-      }
-    } catch (error) {
-      const errorCode = error.code;
-      console.log("errorCode", errorCode);
-      switch (errorCode) {
-        case "auth/wrong-password":
-          alert("Wrong password");
-          break;
-        case "auth/user-not-found":
-          alert("User not found");
-          break;
-        case "auth/internal-error":
-          alert("Enter your password!");
-          break;
-        default:
-          alert("Error");
-      }
-    }
-  };
-
-  const saveEmpresa = async () => {
-    try {
-      await createUserWithEmailAndPassword(auth, email, pass);
-      onAuthStateChanged(auth, (usuarioFirebase) => {
-        if (usuarioFirebase) {
-          sendEmailVerification(auth.currentUser)
-            .then(handleChangeUser("mail", ""))
-            .then(handleChangeUser("password", ""))
-            .then(alert("Sign Up!"))
-            .then(navigation.navigate("AwaitEmail"));
-        }
+      const result = await Google.logInAsync({
+        iosClientId: GOOGLE_0AUTH_IOS_ID,
+        androidClientId: GOOGLE_0AUTH_ANDROID_ID,
       });
-    } catch (error) {
-      const errorCode = error.code;
-      console.log("errorCode", errorCode);
-      switch (errorCode) {
-        case "auth/invalid-email":
-          alert("Invalid Email");
-          break;
-        case "auth/weak-password":
-          alert("password must be at least 6 characters");
-          break;
-        case "auth/email-already-in-use":
-          alert("Email already in-use");
-          break;
-        default:
-          break;
+
+      if (result.type === "success") {
+        const credential = firebaseAuth.GoogleAuthProvider.credential(
+          result.idToken,
+          result.accessToken
+        );
+
+        // const credential = (result.idToken, result.accessToken);
+        signInWithCredential(auth, credential).catch((error) => {
+          console.log(error);
+          alert("error!");
+        });
+
+        navigation.navigate("RestoBook");
       }
+    } catch ({ message }) {
+      alert("login: Error" + message);
     }
   };
 
-  const buttonText = [
-    "Log In",
-    "Sign Up",
-    "I don't have an account yet",
-    "I already have an account",
-  ];
+  if (flagLoginOrRegister) {
+    return (
+      //------------LOGIN---------------
 
-  const onIconPress = () => {
-    let iconName = user.secureTextEntry ? "eye-off" : "eye";
-    setUser({
-      ...user,
-      secureTextEntry: !user.secureTextEntry,
-      iconName: iconName,
-    });
-  };
-
-  return (
-    <View style={globalStyles.Home}>
-      <ScrollView contentContainerStyle={{ flex: 1 }}>
-        <View style={globalStyles.inputContainer}>
-          <View style={globalStyles.inputComponent}>
-            <TextInput
-              style={globalStyles.texts}
-              placeholder="Email"
-              value={user.mail}
-              onChangeText={(value) => handleChangeUser("mail", value)}
-            />
-          </View>
-          <View style={globalStyles.inputComponent}>
-            <TextInput
-              style={globalStyles.texts}
-              onPress={onIconPress}
-              secureTextEntry={user.secureTextEntry}
-              placeholder="Password"
-              value={user.password}
-              onChangeText={(value) => handleChangeUser("password", value)}
-            />
-            {/* <View>
-              <TouchableOpacity
-                onPress={onIconPress}
-                style={styles.inputComponent}
-              >
-                <Icon name={user.iconName} size={20} />
-              </TouchableOpacity>
-            </View> */}
-          </View>
-        </View>
-
-        <View style={globalStyles.container}>
-          <TouchableOpacity
-            style={globalStyles.touchLog}
-            onPress={() => logEmpresa()}
-          >
-            <Text style={globalStyles.fontLog}>Log In</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={globalStyles.touchLog}
-            onPress={() => saveEmpresa()}
-          >
-            <Text style={globalStyles.fontLog}>Sign Up</Text>
-          </TouchableOpacity>
-          {/* <TouchableOpacity
-            style={globalStyles.touchFlag}
-            onPress={() =>
-              registered ? setRegistered(false) : setRegistered(true)
+      <View style={globalStyles.Home}>
+        <Text
+          style={{
+            textAlign: "center",
+            fontSize: 30,
+            paddingVertical: 5,
+            color: "#161616",
+            letterSpacing: 1,
+          }}
+        >
+          Login
+        </Text>
+        <Formik
+          initialValues={{
+            email: "",
+            password: "",
+          }}
+          validationSchema={GlobalLoginSchema}
+          onSubmit={async ({ email, password }) => {
+            try {
+              const newUser = await signInWithEmailAndPassword(
+                auth,
+                email,
+                password
+              );
+              if (auth.currentUser.emailVerified) {
+                //alert("Welcome");
+                navigation.navigate("RestoBook");
+              } else {
+                navigation.navigate("AwaitEmail");
+              }
+            } catch (err) {
+              alert(err);
             }
-          >
-            <Text style={globalStyles.fontLog}>
-              {registered ? buttonText[2] : buttonText[3]}
-            </Text>
-          </TouchableOpacity> */}
+          }}
+        >
+          {(props) => (
+            <View style={globalStyles.inputContainer}>
+              <View style={globalStyles.inputComponent}>
+                <TextInput
+                  style={globalStyles.texts}
+                  placeholder="Email"
+                  onChangeText={props.handleChange("email")}
+                  value={props.values.email}
+                  onBlur={props.handleBlur("email")}
+                />
+              </View>
+              {props.touched.email && props.errors.email ? (
+                <Text style={globalStyles.errorText}>{props.errors.email}</Text>
+              ) : null}
+              <View style={globalStyles.inputComponent}>
+                <TextInput
+                  style={globalStyles.texts}
+                  placeholder="Password"
+                  onChangeText={props.handleChange("password")}
+                  value={props.values.password}
+                  secureTextEntry={flagSecureText}
+                  onBlur={props.handleBlur("password")}
+                />
+              </View>
+              {props.touched.password && props.errors.password ? (
+                <Text style={globalStyles.errorText}>
+                  {props.errors.password}
+                </Text>
+              ) : null}
+              <TouchableOpacity
+                style={globalStyles.eye}
+                onPress={() =>
+                  flagSecureText
+                    ? setFlagSecureText(false)
+                    : setFlagSecureText(true)
+                }
+              >
+                <Icon
+                  name={flagSecureText ? "eye-off" : "eye"}
+                  size={20}
+                  style={{ alignSelf: "center" }}
+                />
+              </TouchableOpacity>
+              <View style={globalStyles.btnContainerLogin}>
+                <TouchableOpacity
+                  style={globalStyles.btnTodasComidas}
+                  onPress={() => props.handleSubmit()}
+                >
+                  <Text style={globalStyles.fontLog}>Log In</Text>
+                </TouchableOpacity>
 
-          {/* <Text>O</Text>
-          <TouchableOpacity
-            style={globalStyles.touchLog}
-            onPress={() => logUserWithGoogle()}
-          >
-            <Text style={globalStyles.fontLog}>Sign In With Google</Text>
-          </TouchableOpacity> */}
-        </View>
-      </ScrollView>
-    </View>
-  );
+                <TouchableOpacity
+                  style={styles.googleButton}
+                  onPress={() => Glogin()}
+                >
+                  <Image
+                    style={globalStyles.img}
+                    source={require("../assets/googleIcon2.png")}
+                  ></Image>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={globalStyles.btnLogin}
+                  onPress={() => {
+                    isforgottVisible(true);
+                  }}
+                >
+                  <Text style={globalStyles.fontLog}>Olvidé mi contraseña</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={globalStyles.btnLogin}
+                  onPress={() => setFlagLoginOrRegister(false)}
+                >
+                  <Text style={globalStyles.fontLog}>
+                    No tengo una cuenta todavia
+                  </Text>
+                </TouchableOpacity>
+
+                <BottomSheet isVisible={visible} style={styles.forgottenPass}>
+                  <View>
+                    <TouchableOpacity onPress={() => isforgottVisible(false)}>
+                      <Text>X</Text>
+                    </TouchableOpacity>
+                    <TextInput
+                      placeholder="........"
+                      style={styles.inputForgotten}
+                      onChangeText={(value) => setForgottedMail(value)}
+                    ></TextInput>
+                    <TouchableOpacity
+                      onPress={() => {
+                        sendPasswordResetEmail(auth, forgottedMail)
+                          .then(alert("Revisa tu casilla!"))
+                          .then(isforgottVisible(false));
+                      }}
+                    >
+                      <Text>Enviar</Text>
+                    </TouchableOpacity>
+                  </View>
+                </BottomSheet>
+              </View>
+            </View>
+          )}
+        </Formik>
+      </View>
+    );
+  } else {
+    return (
+      //-------------------REGISTER---------------------
+              <KeyboardAvoidingView
+                    behavior={Platform.OS === "ios" ? "padding" : "height"}
+                    style={globalStyles.modalInputContainer}
+              >
+      <View>
+        <Modal animationType="slide" transparent={true}>
+          <View View style={globalStyles.centeredView}>
+            <View style={globalStyles.modalView}>
+              <TouchableOpacity
+                style={globalStyles.btnTodasComidas}
+                onPress={() => setFlagLoginOrRegister(!flagLoginOrRegister)}
+              >
+                <Text style={globalStyles.texts}> X </Text>
+              </TouchableOpacity>
+              <Formik
+                initialValues={{
+                  name: "",
+                  lastName: "",
+                  cel: "",
+                  email: "",
+                  password: "",
+                  passwordConfirm: "",
+                }}
+                validationSchema={GlobalRegisterSchema}
+                onSubmit={async (values) => {
+                  //console.log(values);
+                  try {
+                    //-----AUTENTICA USER-----------
+                    await createUserWithEmailAndPassword(
+                      auth,
+                      values.email,
+                      values.password
+                    );
+                    onAuthStateChanged(auth, (usuarioFirebase) => {
+                      if (usuarioFirebase) {
+                        //-----AGREGA A COLECCION USER--------
+                        firebase.db
+                          .collection("Users")
+                          .doc(auth.currentUser.uid)
+                          .set({
+                            id: auth.currentUser.uid,
+                            name: values.name.toLowerCase(),
+                            lastName: values.lastName.toLowerCase(),
+                            cel: values.cel,
+                            email: values.email.toLowerCase(),
+                            commerce: false,
+                            profileImage: DEFAULT_PROFILE_IMAGE,
+                            reservations: [],
+                            payments: [],
+                            favourites: [],
+                          })
+                          .then(sendEmailVerification(auth.currentUser))
+                          .then(setFlagLoginOrRegister(true))
+                          .then(isVisible(false))
+                          .then(navigation.navigate("AwaitEmail"));
+                      }
+                    });
+                  } catch (err) {
+                    alert(err);
+                  }
+                }}
+              >
+                {(props) => (
+                      <ScrollView contentContainerStyle={{alignItems: 'center'}}>
+                  <View style={globalStyles.modalInputContainer}>
+                      <Text style={styles.modalText}>
+                        Registrarse en RestoBook
+                      </Text>
+                      <View style={globalStyles.inputComponent}>
+
+                          <TextInput
+                          style={globalStyles.texts}
+                          placeholder="Nombre"
+                          onChangeText={props.handleChange("name")}
+                          value={props.values.name}
+                          onBlur={props.handleBlur("name")}
+                        />
+                      </View>
+                      {props.touched.name && props.errors.name ? (
+                        <Text style={globalStyles.errorText}>
+                          {props.errors.name}
+                        </Text>
+                      ) : null}
+                      <View style={globalStyles.inputComponent}>
+                        <TextInput
+                          style={globalStyles.texts}
+                          placeholder="Apellido"
+                          onChangeText={props.handleChange("lastName")}
+                          value={props.values.lastName}
+                          onBlur={props.handleBlur("lastName")}
+                        />
+                      </View>
+                      {props.touched.lastName && props.errors.lastName ? (
+                        <Text style={globalStyles.errorText}>
+                          {props.errors.lastName}
+                        </Text>
+                      ) : null}
+                      <View style={globalStyles.inputComponent}>
+                        <TextInput
+                          style={globalStyles.texts}
+                          placeholder="Telephone"
+                          onChangeText={props.handleChange("cel")}
+                          value={props.values.cel}
+                          onBlur={props.handleBlur("cel")}
+                          keyboardType="numeric"
+                        />
+                      </View>
+                      {props.touched.cel && props.errors.cel ? (
+                        <Text style={globalStyles.errorText}>
+                          {props.errors.cel}
+                        </Text>
+                      ) : null}
+                      <View style={globalStyles.inputComponent}>
+                        <TextInput
+                          style={globalStyles.texts}
+                          placeholder="Email"
+                          onChangeText={props.handleChange("email")}
+                          value={props.values.email}
+                          onBlur={props.handleBlur("email")}
+                        />
+                      </View>
+                      {props.touched.email && props.errors.email ? (
+                        <Text style={globalStyles.errorText}>
+                          {props.errors.email}
+                        </Text>
+                      ) : null}
+                      <View style={globalStyles.inputComponent}>
+                        <TextInput
+                          style={globalStyles.texts}
+                          placeholder="password"
+                          onChangeText={props.handleChange("password")}
+                          value={props.values.password}
+                          secureTextEntry={flagSecureText}
+                          onBlur={props.handleBlur("password")}
+                        />
+                      </View>
+                      {props.touched.password && props.errors.password ? (
+                        <Text style={globalStyles.errorText}>
+                          {props.errors.password}
+                        </Text>
+                      ) : null}
+                      <View style={globalStyles.inputComponent}>
+                        <TextInput
+                          style={globalStyles.texts}
+                          placeholder="Confirm password"
+                          onChangeText={props.handleChange("passwordConfirm")}
+                          value={props.values.passwordConfirm}
+                          secureTextEntry={flagSecureText}
+                          onBlur={props.handleBlur("passwordConfirm")}
+                        />
+                      </View>
+                      {props.touched.passwordConfirm &&
+                      props.errors.passwordConfirm ? (
+                        <Text style={globalStyles.errorText}>
+                          {props.errors.passwordConfirm}
+                        </Text>
+                      ) : null}
+                      <TouchableOpacity
+                        style={globalStyles.eye}
+                        onPress={() =>
+                          flagSecureText
+                            ? setFlagSecureText(false)
+                            : setFlagSecureText(true)
+                        }
+                      >
+                        <Icon
+                          name={flagSecureText ? "eye-off" : "eye"}
+                          size={20}
+                        />
+                     </TouchableOpacity>
+                     
+                      <View style={globalStyles.btnContainerLogin}>
+                        <TouchableOpacity
+                          style={globalStyles.btnLogin}
+                          onPress={() => {
+                            props.handleSubmit() &&
+                              setFlagLoginOrRegister(true);
+                          }}
+                        >
+                          <Text style={globalStyles.fontLog}>Registrarse</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          style={globalStyles.btnLogin}
+                          onPress={() => setFlagLoginOrRegister(true)}
+                        >
+                          <Text style={globalStyles.fontLog}>
+                            Ya tengo una cuenta
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+                        </ScrollView>
+                        
+                )}
+              </Formik>
+            </View>
+          </View>
+        </Modal>
+      </View>
+                </KeyboardAvoidingView>
+    );
+  }
 };
+const styles = StyleSheet.create({
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 70,
+    //backgroundColor: "blur",
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    width: "50%",
+    height: "80%",
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 30,
+      height: 30,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  buttonOpen: {
+    backgroundColor: "#F194FF",
+  },
+  buttonClose: {
+    backgroundColor: "#2196F3",
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center",
+    fontSize: 25,
+    fontWeight: "bold",
+  },
+  botton: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    //float: "right",
+  },
+  bottonClose: {
+    backgroundColor: "#2196F3",
+  },
+  googleButton: {
+    marginTop: 10,
+  },
+  forgottenPass: {
+    backgroundColor: "antiquewhite",
+    height: "50%",
+    alignItems: "center",
+    justifyContent: "center",
+    alignContent: "center",
+    borderBottomWidth: 5,
+    borderBottomColor: "black",
+  },
 
-const styles = StyleSheet.create({});
+  inputForgotten: {
+    marginTop: 200,
+    justifyContent: "center",
+    alignItems: "center",
+
+    backgroundColor: "orange",
+  },
+});
+
 export default GlobalLogin;
