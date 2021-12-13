@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { AirbnbRating, Rating, Card, Text, Icon, Badge } from "react-native-elements";
+import {
+  AirbnbRating,
+  Rating,
+  Card,
+  Text,
+  Icon,
+  Badge,
+} from "react-native-elements";
 import {
   View,
   Image,
@@ -40,7 +47,6 @@ const CardMenu = ({ resto, navigation }) => {
   const dispatch = useDispatch();
   const categories = useSelector((state) => state.categoriesResto);
   const isFocused = useIsFocused();
-
 
   const getFavs = async () => {
     if (CurrentId) {
@@ -141,25 +147,27 @@ const CardMenu = ({ resto, navigation }) => {
     }
   };
 
-  let horaInicio = resto.commerceTimeRange ? resto.commerceTimeRange.split("-")[0] : null;
-  let horaFin = resto.commerceTimeRange ? resto.commerceTimeRange.split("-")[1] : null;
+  let horaInicio = resto.commerceTimeRange
+    ? resto.commerceTimeRange.split("-")[0]
+    : null;
+  let horaFin = resto.commerceTimeRange
+    ? resto.commerceTimeRange.split("-")[1]
+    : null;
   const handleHorarioReserva = () => {
     let horaActual = new Date().getHours();
     //console.log(horaActual, horaInicio, horaFin)
     if (horaActual >= horaInicio && horaActual < horaFin) {
-      return true
+      return true;
     } else {
-      return false
+      return false;
     }
-  }
-
+  };
 
   return (
     <View style={globalStyles.cardsContainer}>
       <Badge status={handleHorarioReserva() ? "success" : "error"} containerStyle={{ position: 'absolute', top: 25, left: 20}} />
       <TouchableOpacity onPress={() => handleOnPress({resto})}>
         <View style={globalStyles.containerImgCard}>
-
           <Image
             style={globalStyles.cardsHomeimg}
             source={{

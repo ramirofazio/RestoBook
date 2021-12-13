@@ -78,17 +78,18 @@ const ProfileResto = ({ navigation }) => {
 
   const sectoresResto = useSelector((state) => state.sectoresResto);
 
-  const [modalAdminReservasVisible, setModalVisibleAdminReservas] = useState(false);
-  const [modalEditVisible, setModalEditVisible] = useState(false)
-  const [modalAdminHorarioVisible, setModalVisibleAdminHorario] = useState(false);
+  const [modalAdminReservasVisible, setModalVisibleAdminReservas] =
+    useState(false);
+  const [modalEditVisible, setModalEditVisible] = useState(false);
+  const [modalAdminHorarioVisible, setModalVisibleAdminHorario] =
+    useState(false);
 
-
-  const [places, setPlaces] = useState(1)
-  const [timeReservaInicio, setTimeReservaInicio] = useState(0)
-  const [timeReservaFin, setTimeReservaFin] = useState(0)
-  const [timeHorarioComInicio, setTimeHorarioComInicio] = useState(0)
-  const [timeHorarioComFin, setTimeHorarioComFin] = useState(0)
-  const [precioXLugar, setPrecioXLugar] = useState(0)
+  const [places, setPlaces] = useState(1);
+  const [timeReservaInicio, setTimeReservaInicio] = useState(0);
+  const [timeReservaFin, setTimeReservaFin] = useState(0);
+  const [timeHorarioComInicio, setTimeHorarioComInicio] = useState(0);
+  const [timeHorarioComFin, setTimeHorarioComFin] = useState(0);
+  const [precioXLugar, setPrecioXLugar] = useState(0);
 
   const [newCommerceInfo, setNewCommerceInfo] = useState({});
   const [uploading, setUploading] = useState(false);
@@ -219,7 +220,6 @@ const ProfileResto = ({ navigation }) => {
       .catch((err) => console.log(err));
   };
 
-
   const handleSectores = (sector) => {
     if (!sectorState.includes(sector)) {
       setSectorState([...sectorState, sector]);
@@ -231,14 +231,13 @@ const ProfileResto = ({ navigation }) => {
   };
 
   const clearStates = () => {
-    setTimeReservaInicio()
-    setTimeReservaFin()
-    setSectorState()
-    setPlaces()
-    setTimeHorarioComInicio()
-    setTimeHorarioComFin()
-  }
-
+    setTimeReservaInicio();
+    setTimeReservaFin();
+    setSectorState();
+    setPlaces();
+    setTimeHorarioComInicio();
+    setTimeHorarioComFin();
+  };
 
   const timesReserva = timeReservaInicio + "-" + timeReservaFin;
   const handleGuardarAdmReservas = async () => {
@@ -253,9 +252,9 @@ const ProfileResto = ({ navigation }) => {
       await updateDoc(restoRef, {
         reservationsParams: obj,
       });
-      alert("Cambios Guardados con Exito!")
-      setModalVisibleAdminReservas(false)
-      clearStates()
+      alert("Cambios Guardados con Exito!");
+      setModalVisibleAdminReservas(false);
+      clearStates();
     } catch (err) {
       console.log(err);
     }
@@ -271,13 +270,13 @@ const ProfileResto = ({ navigation }) => {
       await updateDoc(restoRef, {
         commerceTimeRange: horarioCom,
       });
-      alert("Cambios Guardados con Exito!")
-      setModalVisibleAdminHorario(false)
-      clearStates()
+      alert("Cambios Guardados con Exito!");
+      setModalVisibleAdminHorario(false);
+      clearStates();
     } catch (err) {
       console.log(err);
     }
-  }
+  };
 
   return (
     <View style={globalStyles.Perfilcontainer}>
@@ -426,7 +425,7 @@ const ProfileResto = ({ navigation }) => {
                           email: newCommerceInfo.email,
                         })
                         .then(alert("cambios guardados!"))
-                        .then(setModalVisible(false))
+                        .then(setModalEditVisible(false))
                         .catch((error) => alert("error!"));
                     }}
                   >
@@ -485,22 +484,35 @@ const ProfileResto = ({ navigation }) => {
                   <Text style={globalStyles.texts}>X</Text>
                 </TouchableOpacity>
 
-                <Text style={globalStyles.modalText}>Administración de reserva</Text>
+                <Text style={globalStyles.modalText}>
+                  Administración de reserva
+                </Text>
 
+                <Text style={globalStyles.texts}>
+                  Horario para reservar(24hs)
+                </Text>
 
-                <Text style={globalStyles.texts}>Horario para reservar(24hs)</Text>
-
-                <View style={{ display: "flex", flexDirection: "row", marginVertical: 10 }}>
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    marginVertical: 10,
+                  }}
+                >
                   <View style={{ flexDirection: "column", flex: 0.4 }}>
-                    <Text style={{
-                      alignSelf: "center"
-                    }}>Hora Inicio:</Text>
+                    <Text
+                      style={{
+                        alignSelf: "center",
+                      }}
+                    >
+                      Hora Inicio:
+                    </Text>
                     <InputSpinner
                       style={{
-                        maxWidth: '100%',
+                        maxWidth: "100%",
                         width: "100%",
                         marginVertical: 10,
-                        alignSelf: "center"
+                        alignSelf: "center",
                       }}
                       value={timeReservaInicio}
                       max={24}
@@ -508,29 +520,37 @@ const ProfileResto = ({ navigation }) => {
                       buttonFontSize={25}
                       onChange={(value) => setTimeReservaInicio(value)}
                       skin="clean"
-                      colorPress='#eccdaa'
+                      colorPress="#eccdaa"
                       background="#f2f2f2"
                       colorAsBackground={true}
                       fontSize={20}
                     />
                   </View>
-                  <Text style={{
-                    alignSelf: "center",
-                    fontSize: 20,
-                    fontWeight: "bold",
-                    marginHorizontal: 10,
-                  }}> A </Text>
+                  <Text
+                    style={{
+                      alignSelf: "center",
+                      fontSize: 20,
+                      fontWeight: "bold",
+                      marginHorizontal: 10,
+                    }}
+                  >
+                    {" "}
+                    A{" "}
+                  </Text>
                   <View style={{ flexDirection: "column", flex: 0.4 }}>
-
-                    <Text style={{
-                      alignSelf: "center"
-                    }}>Hora Fin:</Text>
+                    <Text
+                      style={{
+                        alignSelf: "center",
+                      }}
+                    >
+                      Hora Fin:
+                    </Text>
                     <InputSpinner
                       style={{
-                        maxWidth: '100%',
+                        maxWidth: "100%",
                         width: "100%",
                         marginVertical: 10,
-                        alignSelf: "center"
+                        alignSelf: "center",
                       }}
                       value={timeReservaFin}
                       max={24}
@@ -538,7 +558,7 @@ const ProfileResto = ({ navigation }) => {
                       buttonFontSize={25}
                       onChange={(value) => setTimeReservaFin(value)}
                       skin="clean"
-                      colorPress='#eccdaa'
+                      colorPress="#eccdaa"
                       background="#f2f2f2"
                       colorAsBackground={true}
                       fontSize={20}
@@ -549,10 +569,10 @@ const ProfileResto = ({ navigation }) => {
                 <Text style={globalStyles.texts}> Precio por Lugar:</Text>
                 <InputSpinner
                   style={{
-                    maxWidth: '100%',
+                    maxWidth: "100%",
                     width: "65%",
                     marginVertical: 10,
-                    alignSelf: "center"
+                    alignSelf: "center",
                   }}
                   value={precioXLugar}
                   max={1000}
@@ -561,7 +581,7 @@ const ProfileResto = ({ navigation }) => {
                   step={50}
                   onChange={(value) => setPrecioXLugar(value)}
                   skin="clean"
-                  colorPress='#eccdaa'
+                  colorPress="#eccdaa"
                   background="#f2f2f2"
                   colorAsBackground={true}
                   fontSize={20}
@@ -724,32 +744,41 @@ const ProfileResto = ({ navigation }) => {
               setModalVisibleAdminHorario(!modalAdminHorarioVisible);
             }}
           >
-
             <View style={globalStyles.centeredView}>
               <View style={globalStyles.modalView}>
                 <TouchableOpacity
                   style={globalStyles.btnTodasComidas}
-                  onPress={() => setModalVisibleAdminHorario(!modalAdminHorarioVisible)}
+                  onPress={() =>
+                    setModalVisibleAdminHorario(!modalAdminHorarioVisible)
+                  }
                 >
-                  <Text
-                    style={globalStyles.texts}
-                  >
-                    X
-                  </Text>
+                  <Text style={globalStyles.texts}>X</Text>
                 </TouchableOpacity>
 
-                <Text style={globalStyles.modalText}>Administración Horario Comercial(24hs)</Text>
-                <View style={{ display: "flex", flexDirection: "row", marginVertical: 10 }}>
+                <Text style={globalStyles.modalText}>
+                  Administración Horario Comercial(24hs)
+                </Text>
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    marginVertical: 10,
+                  }}
+                >
                   <View style={{ flexDirection: "column", flex: 0.4 }}>
-                    <Text style={{
-                      alignSelf: "center"
-                    }}>Hora Inicio:</Text>
+                    <Text
+                      style={{
+                        alignSelf: "center",
+                      }}
+                    >
+                      Hora Inicio:
+                    </Text>
                     <InputSpinner
                       style={{
-                        maxWidth: '100%',
+                        maxWidth: "100%",
                         width: "100%",
                         marginVertical: 10,
-                        alignSelf: "center"
+                        alignSelf: "center",
                       }}
                       value={timeHorarioComInicio}
                       max={24}
@@ -757,29 +786,37 @@ const ProfileResto = ({ navigation }) => {
                       buttonFontSize={25}
                       onChange={(value) => setTimeHorarioComInicio(value)}
                       skin="clean"
-                      colorPress='#eccdaa'
+                      colorPress="#eccdaa"
                       background="#f2f2f2"
                       colorAsBackground={true}
                       fontSize={20}
                     />
                   </View>
-                  <Text style={{
-                    alignSelf: "center",
-                    fontSize: 20,
-                    fontWeight: "bold",
-                    marginHorizontal: 10,
-                  }}> A </Text>
+                  <Text
+                    style={{
+                      alignSelf: "center",
+                      fontSize: 20,
+                      fontWeight: "bold",
+                      marginHorizontal: 10,
+                    }}
+                  >
+                    {" "}
+                    A{" "}
+                  </Text>
                   <View style={{ flexDirection: "column", flex: 0.4 }}>
-
-                    <Text style={{
-                      alignSelf: "center"
-                    }}>Hora Fin:</Text>
+                    <Text
+                      style={{
+                        alignSelf: "center",
+                      }}
+                    >
+                      Hora Fin:
+                    </Text>
                     <InputSpinner
                       style={{
-                        maxWidth: '100%',
+                        maxWidth: "100%",
                         width: "100%",
                         marginVertical: 10,
-                        alignSelf: "center"
+                        alignSelf: "center",
                       }}
                       value={timeHorarioComFin}
                       max={24}
@@ -787,7 +824,7 @@ const ProfileResto = ({ navigation }) => {
                       buttonFontSize={25}
                       onChange={(value) => setTimeHorarioComFin(value)}
                       skin="clean"
-                      colorPress='#eccdaa'
+                      colorPress="#eccdaa"
                       background="#f2f2f2"
                       colorAsBackground={true}
                       fontSize={20}
@@ -801,7 +838,6 @@ const ProfileResto = ({ navigation }) => {
                 >
                   <Text style={globalStyles.texts}>Guardar</Text>
                 </TouchableOpacity>
-
               </View>
             </View>
           </Modal>

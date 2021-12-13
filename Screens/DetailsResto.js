@@ -61,17 +61,18 @@ const DetailsResto = ({ navigation }) => {
   const [precioCabeza, setPrecioCabeza] = useState();
   const [cantLugares, setCantLugares] = useState(1);
   const [modalVisible, setModalVisible] = useState(false);
-
+  const [modalMenuVisible, setmodalMenuVisible] = useState(false);
   //--------------------------FILTROS CATEGORY--------------------------
   const [menuArr, setMenuArr] = useState([]);
   const [menuFiltered, setMenuFiltered] = useState([]);
+  const [menuHeader, setMenuHeader] = useState("Menu");
   const [menuCategory, setMenuCategory] = useState();
   const empresaDetail = useSelector((state) => state.empresaDetail);
   //--------------------GEOLOCATION-------------------------------
-  const { location } = empresaDetail
-  const [distance, setDistance] = useState({})
-  const userLocation = useSelector(state => state.userCoordinates)
-  const mapRef = useRef(null)
+  const { location } = empresaDetail;
+  const [distance, setDistance] = useState({});
+  const userLocation = useSelector((state) => state.userCoordinates);
+  const mapRef = useRef(null);
   //--------------------------------------------------------------
   const number = "+541168020511";
   //WhatsApp
@@ -92,9 +93,9 @@ const DetailsResto = ({ navigation }) => {
     });
     setModalVisible(false);
     navigation.navigate("WebViewScreen", {
-      url: url.data
-    })
-  }
+      url: url.data,
+    });
+  };
   useEffect(() => {
     if (Object.entries(userLocation).length === 0 || !location) return;
     //Zoom & fit to markers
@@ -102,24 +103,6 @@ const DetailsResto = ({ navigation }) => {
       edgePadding: { top: 50, right: 50, bottom: 50, left: 50 },
     });
   }, []);
-  // const getMenu = () => {
-  //   const q = query(collection(firebase.db, "Restos"));
-  //   const unsubscribe = onSnapshot(q, (querySnapshot) => {
-  //     let menu = [];
-  // console.log("SNAP DETAILSRESTO 115");
-  //     querySnapshot.forEach((doc) => {
-  //       if (doc.id === empresaDetail.idResto) {
-  //         let obj = doc.data();
-  //         menu = obj.menu;
-  //         setMenuArr(menu);
-  //       }
-  //     });
-  //   });
-  //   setMenuCategory("");
-  // };
-  // useEffect(() => {
-  //   getMenu();
-  // }, []);
 
   const getInfo = () => {
     const q = doc(firebase.db, "Restos", empresaDetail.idResto);
@@ -133,7 +116,7 @@ const DetailsResto = ({ navigation }) => {
     });
   };
 
-  const { timeRange } = empresaDetail.reservationsParams
+  const { timeRange } = empresaDetail?.reservationsParams;
   let horaInicio = timeRange.split("-")[0];
   let horaFin = timeRange.split("-")[1];
   const handleHorarioReserva = () => {
@@ -141,34 +124,38 @@ const DetailsResto = ({ navigation }) => {
 
     //console.log(horaActual, horaInicio, horaFin)
     if (horaActual >= horaInicio && horaActual < horaFin) {
-      return true
+      return true;
     } else {
-      return false
+      return false;
     }
-  }
-
+  };
 
   useEffect(() => {
     getInfo();
   }, []);
 
-  // useEffect(() => {
-  //   const q = doc(firebase.db, "Restos", empresaDetail.idResto);
-  //   const unsubscribe = onSnapshot(q, (doc) => {
-  //     console.log("SNAP DETAILSRESTO 151");
-  //     setReviews(doc.data().reviews);
-  //   });
-  // }, []);
-
   const handleCategory = async (category) => {
     if (!category) {
       setMenuFiltered(menuArr);
+      setMenuHeader("Menu");
     } else {
       let filtered = menuArr.filter((element) => element.category === category);
       setMenuFiltered(filtered);
+      setMenuHeader(category);
     }
   };
 
+  const foodInfo = (target) => {
+    let filtered;
+    if (target === "vegan") {
+      filtered = menuArr.filter((element) => element.vegan === true);
+      setMenuFiltered(filtered);
+    }
+    if (target === "glutenFree") {
+      filtered = menuArr.filter((element) => element.glutenFree === true);
+      setMenuFiltered(filtered);
+    }
+  };
 
 
   return (
@@ -181,7 +168,7 @@ const DetailsResto = ({ navigation }) => {
             paddingVertical: 3,
             color: "#161616",
             letterSpacing: 1,
-            textTransform: "capitalize"
+            textTransform: "capitalize",
           }}
         >
           {empresaDetail.title}
@@ -216,122 +203,69 @@ const DetailsResto = ({ navigation }) => {
         </Text>
       </View>
       <ScrollView style={globalStyles.Home}>
-          <View style={globalStyles.btnTodasComidas}>
-            <TouchableOpacity onPress={() => getMenu()}>
-              <Text
-                style={{
-                  fontWeight: "bold",
-                  fontSize: 15,
-                  padding: 1,
-                  alignSelf: "center",
-                }}
-              >
-                Todas Las Comidas
+        <View onTouchStart={() => setmodalMenuVisible(!modalMenuVisible)}>
+          <TouchableOpacity style={globalStyles.btnFiltrosHome}>
+            <Text style={globalStyles.btnTextFiltro}>
+              <MaterialIcons
+                name="restaurant"
+                size={20}
+                color="#161616"
+              ></MaterialIcons>{" "}
+              Ver Menu
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        {handleHorarioReserva() ? (
+          <View onTouchStart={() => setModalVisible(!modalVisible)}>
+            <TouchableOpacity style={globalStyles.btnFiltrosHome}>
+              <Text style={globalStyles.btnTextFiltro}>
+                <MaterialIcons
+                  name="payment"
+                  size={20}
+                  color="#161616"
+                ></MaterialIcons>{" "}
+                Quiero Reservar!
               </Text>
             </TouchableOpacity>
           </View>
-
-          <View style={styles.categoriesContainer}>
-            {/* mapear arr y devolver uno asi */}
-
-            {menuCategory?.map((categoria) => {
-              return (
-                <View
-                  style={globalStyles.categoriesViewDetail}
-                  key={`${categoria}_${Math.random()}`}
-                >
-                  <TouchableOpacity onPress={() => handleCategory(categoria)}>
-                    <Text style={globalStyles.categoriesText}>{categoria}</Text>
-                  </TouchableOpacity>
-                </View>
-              );
-            })}
-            {menuArr.length ? (
-              <View style={globalStyles.categoriesViewDetail} key={"empty"}>
-                <TouchableOpacity onPress={() => handleCategory()}>
-                  <Text style={globalStyles.categoriesText}>Limpiar</Text>
-                </TouchableOpacity>
-              </View>
-            ) : null}
+        ) : (
+          <View>
+            <TouchableOpacity style={globalStyles.btnFiltrosHome}>
+              <Text style={globalStyles.btnTextFiltro}>
+                <MaterialIcons
+                  name="block"
+                  size={20}
+                  color="#161616"
+                ></MaterialIcons>{" "}
+                {horaInicio && horaFin
+                  ? `El horario de Reserva es de ${horaInicio} a ${horaFin}`
+                  : "No hay Horario de Reserva"}
+              </Text>
+            </TouchableOpacity>
           </View>
-          {menuArr.length > 0 ? (
-            <ScrollView style={styles.showMenu}>
-              {menuFiltered.length
-                ? menuFiltered.map((menu, index) => {
-                  return (
-                    <CardMenu key={index} menu={menu}>
-                      {" "}
-                    </CardMenu>
-                  );
-                })
-                : menuArr.map((menu, index) => {
-                  return (
-                    <CardMenu key={index} menu={menu}>
-                      {" "}
-                    </CardMenu>
-                  );
-                })}
-            </ScrollView>
-          ) : (
-            <Text
-              style={{ alignSelf: "center", fontSize: 30, marginVertical: 30 }}
-            >
-              {" "}
-              Menu No Disponible!
-            </Text>
-          )}
+        )}
 
-          {handleHorarioReserva()
-            ?
-            <View onTouchStart={() => setModalVisible(!modalVisible)}>
-              <TouchableOpacity style={globalStyles.btnFiltrosHome}>
-                <Text style={globalStyles.btnTextFiltro}>
-                  <MaterialIcons
-                    name="payment"
-                    size={20}
-                    color="#161616"
-                  ></MaterialIcons>{" "}
-                  Quiero Reservar!
-                </Text>
-              </TouchableOpacity>
-            </View>
-            :
-            <View>
-              <TouchableOpacity style={globalStyles.btnFiltrosHome}>
-                <Text style={globalStyles.btnTextFiltro}>
-                  <MaterialIcons
-                    name="block"
-                    size={20}
-                    color="#161616"
-                  ></MaterialIcons>{" "}
-                  {horaInicio && horaFin ? `El horario de Reserva es de ${horaInicio} a ${horaFin}` : "No hay Horario de Reserva"}
-                </Text>
-              </TouchableOpacity>
-            </View>}
+        <View style={styles.googleMapsContainer}>
+          <MapView
+            ref={mapRef}
+            style={styles.googleMaps}
+            initialRegion={{
+              latitude: location.latitude,
+              longitude: location.longitude,
+              latitudeDelta: 0.004757,
+              longitudeDelta: 0.006866,
+            }}
+          >
+            <Marker
+              title={empresaDetail.title}
+              pinColor="#0072B5"
+              coordinate={location}
+              description={`Distancia: ${distance.distance} Km - ETA: ${distance.ETA} Min`}
+              identifier="restoLocation"
+            ></Marker>
 
-
-          <View style={styles.googleMapsContainer}>
-            <MapView
-              ref={mapRef}
-              style={styles.googleMaps}
-              initialRegion={{
-                latitude: location.latitude,
-                longitude: location.longitude,
-                latitudeDelta: 0.004757,
-                longitudeDelta: 0.006866,
-              }}
-            >
-              <Marker
-               title={empresaDetail.title}
-               pinColor='#0072B5'
-               coordinate={location}
-               description={`Distancia: ${distance.distance} Km - ETA: ${distance.ETA} Min`}
-               identifier="restoLocation"
-               
-               >
-              </Marker>
-
-            { Object.entries(userLocation).length > 0 && (
+            {Object.entries(userLocation).length > 0 && (
               <Marker
                 title="Your Location"
                 coordinate={userLocation}
@@ -339,27 +273,27 @@ const DetailsResto = ({ navigation }) => {
                 identifier="userLocation"
               />
             )}
-           { Object.entries(userLocation).length > 0 && location && (
-            <MapViewDirections
-              lineDashPattern={[0]}
-              apikey={GOOGLE_API_KEY}
-              strokeWidth={1.5}
-              strokeColor="brown"
-              origin={userLocation}
-              destination={{
-                latitude: location.latitude,
-                longitude: location.longitude
-              }}
-              onReady={ resultado => {
-                const { distance, duration } = resultado;
-                const travelTime = Math.round(duration)
-                // const distanceSpliteado = distance.split('.')
-                // console.log(distanceSpliteado)
-                const travelDistance = distance.toString().slice(0, 4)
-                setDistance({distance: travelDistance, ETA: travelTime})
-              }}
+            {Object.entries(userLocation).length > 0 && location && (
+              <MapViewDirections
+                lineDashPattern={[0]}
+                apikey={GOOGLE_API_KEY}
+                strokeWidth={1.5}
+                strokeColor="brown"
+                origin={userLocation}
+                destination={{
+                  latitude: location.latitude,
+                  longitude: location.longitude,
+                }}
+                onReady={(resultado) => {
+                  const { distance, duration } = resultado;
+                  const travelTime = Math.round(duration);
+                  // const distanceSpliteado = distance.split('.')
+                  // console.log(distanceSpliteado)
+                  const travelDistance = distance.toString().slice(0, 4);
+                  setDistance({ distance: travelDistance, ETA: travelTime });
+                }}
               />
-          )}
+            )}
           </MapView>
         </View>
         <Modal
@@ -390,7 +324,7 @@ const DetailsResto = ({ navigation }) => {
 
               <InputSpinner
                 style={{
-                  maxWidth: '100%',
+                  maxWidth: "100%",
                   width: "65%",
                   marginVertical: 10,
                 }}
@@ -400,23 +334,172 @@ const DetailsResto = ({ navigation }) => {
                 buttonFontSize={25}
                 onChange={(num) => setCantLugares(num)}
                 skin="clean"
-                colorPress='#eccdaa'
+                colorPress="#eccdaa"
                 background="#f2f2f2"
                 colorAsBackground={true}
                 fontSize={20}
               />
 
               <Text style={globalStyles.modalText}>
-                Precio por Lugar ${empresaDetail.reservationsParams?.precioPorLugar}
+                Precio por Lugar $
+                {empresaDetail.reservationsParams?.precioPorLugar}
               </Text>
               <TouchableOpacity
                 style={globalStyles.btnLogin}
-                onPress={() => onPressReservar(cantLugares, empresaDetail.reservationsParams?.precioPorLugar)}
+                onPress={() =>
+                  onPressReservar(
+                    cantLugares,
+                    empresaDetail.reservationsParams?.precioPorLugar
+                  )
+                }
               >
                 <Text style={globalStyles.texts}>
-                  Completar reserva por ${cantLugares * empresaDetail.reservationsParams?.precioPorLugar}
+                  Completar reserva por $
+                  {cantLugares *
+                    empresaDetail.reservationsParams?.precioPorLugar}
                 </Text>
               </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+
+        {/* Nuevo Modal Menu */}
+
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalMenuVisible}
+          onRequestClose={() => {
+            setmodalMenuVisible(!modalMenuVisible);
+          }}
+        >
+          <View style={globalStyles.centeredMenuView}>
+            <View style={globalStyles.modalMenuView}>
+              <TouchableOpacity
+                style={globalStyles.btnCloseMenu}
+                onPress={() => setmodalMenuVisible(!modalMenuVisible)}
+              >
+                <MaterialIcons
+                  onPress={() => setmodalMenuVisible(false)}
+                  name="arrow-back-ios"
+                  size={20}
+                  color="#161616"
+                ></MaterialIcons>
+              </TouchableOpacity>
+              <Text style={globalStyles.modalMenuText}>{menuHeader}</Text>
+              <View style={styles.categoriesFilterContainer}>
+                {menuArr.length ? (
+                  <View style={globalStyles.categoriesViewDetail} key={"empty"}>
+                    <TouchableOpacity onPress={() => foodInfo("vegan")}>
+                      <Text style={globalStyles.categoriesText}>Vegan</Text>
+                    </TouchableOpacity>
+                  </View>
+                ) : null}
+                {menuArr.length ? (
+                  <View style={globalStyles.categoriesViewDetail} key={"vegan"}>
+                    <TouchableOpacity onPress={() => handleCategory()}>
+                      <Text style={globalStyles.categoriesText}>Limpiar</Text>
+                    </TouchableOpacity>
+                  </View>
+                ) : null}
+                {menuArr.length ? (
+                  <View
+                    style={globalStyles.categoriesViewDetail}
+                    key={"glutenFree"}
+                  >
+                    <TouchableOpacity onPress={() => foodInfo("glutenFree")}>
+                      <Text style={globalStyles.categoriesText}>Sin TACC</Text>
+                    </TouchableOpacity>
+                  </View>
+                ) : null}
+              </View>
+              <View style={styles.categoriesContainer}>
+                {menuCategory?.map((categoria) => {
+                  return (
+                    <View
+                      style={globalStyles.categoriesViewDetail}
+                      key={`${categoria}_${Math.random()}`}
+                    >
+                      <TouchableOpacity
+                        onPress={() => handleCategory(categoria)}
+                      >
+                        <Text style={globalStyles.categoriesText}>
+                          {categoria}
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                  );
+                })}
+              </View>
+
+              {menuArr.length > 0 ? (
+                <ScrollView style={styles.showMenu}>
+                  {menuFiltered.length
+                    ? menuFiltered.map((menu, index) => {
+                        return (
+                          <CardMenu key={index} menu={menu}>
+                            {" "}
+                          </CardMenu>
+                        );
+                      })
+                    : menuArr.map((menu, index) => {
+                        return (
+                          <CardMenu key={index} menu={menu}>
+                            {" "}
+                          </CardMenu>
+                        );
+                      })}
+                </ScrollView>
+              ) : (
+                <Text
+                  style={{
+                    alignSelf: "center",
+                    fontSize: 30,
+                    marginVertical: 30,
+                  }}
+                >
+                  {" "}
+                  Menu No Disponible!
+                </Text>
+              )}
+
+              {/* <InputSpinner
+                style={{
+                  maxWidth: "100%",
+                  width: "65%",
+                  marginVertical: 10,
+                }}
+                value={cantLugares}
+                max={50}
+                min={1}
+                buttonFontSize={25}
+                onChange={(num) => setCantLugares(num)}
+                skin="clean"
+                colorPress="#eccdaa"
+                background="#f2f2f2"
+                colorAsBackground={true}
+                fontSize={20}
+              />
+
+              <Text style={globalStyles.modalText}>
+                Precio por Lugar $
+                {empresaDetail.reservationsParams?.precioPorLugar}
+              </Text>
+              <TouchableOpacity
+                style={globalStyles.btnLogin}
+                onPress={() =>
+                  onPressReservar(
+                    cantLugares,
+                    empresaDetail.reservationsParams?.precioPorLugar
+                  )
+                }
+              >
+                <Text style={globalStyles.texts}>
+                  Completar reserva por $
+                  {cantLugares *
+                    empresaDetail.reservationsParams?.precioPorLugar}
+                </Text>
+              </TouchableOpacity> */}
             </View>
           </View>
         </Modal>
@@ -424,8 +507,8 @@ const DetailsResto = ({ navigation }) => {
           <ListReviews navigation={navigation} reviews={reviews} />
         </View>
         <View></View>
-      </ScrollView >
-    </View >
+      </ScrollView>
+    </View>
   );
 };
 const styles = StyleSheet.create({
@@ -448,6 +531,16 @@ const styles = StyleSheet.create({
   },
 
   categoriesContainer: {
+    width: "100%",
+    height: 33,
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-around",
+    borderRadius: 20,
+    margin: 5,
+  },
+  categoriesFilterContainer: {
+    width: "50%",
     height: 33,
     alignItems: "center",
     flexDirection: "row",
@@ -456,8 +549,10 @@ const styles = StyleSheet.create({
     margin: 5,
   },
   showMenu: {
+    width: "100%",
     height: 250,
-    padding: 10,
+    paddingHorizontal: 0,
+    paddingVertical: 0,
     borderWidth: 0,
   },
   googleMapsContainer: {

@@ -21,6 +21,7 @@ import {
   Modal,
   Image,
   KeyboardAvoidingView,
+  ActivityIndicator,
 } from "react-native";
 
 import { BottomSheet } from "react-native-elements";
@@ -107,6 +108,7 @@ const GlobalLogin = ({ navigation }) => {
   const [forgottedMail, setForgottedMail] = useState("");
   const [flagLoginOrRegister, setFlagLoginOrRegister] = useState(true);
   const [flagSecureText, setFlagSecureText] = useState(true);
+  const [googleLoading, setGoogleLoading] = useState(false);
   const Glogin = async () => {
     try {
       const result = await Google.logInAsync({
@@ -223,16 +225,22 @@ const GlobalLogin = ({ navigation }) => {
                 >
                   <Text style={globalStyles.fontLog}>Ingresar</Text>
                 </TouchableOpacity>
-
-                <TouchableOpacity
-                  style={styles.googleButton}
-                  onPress={() => Glogin()}
-                >
-                  <Image
-                    style={globalStyles.img}
-                    source={require("../assets/googleIcon2.png")}
-                  ></Image>
-                </TouchableOpacity>
+                {googleLoading ? (
+                  <ActivityIndicator size="large" color="#5555" />
+                ) : (
+                  <TouchableOpacity
+                    style={styles.googleButton}
+                    onPress={() => {
+                      setGoogleLoading(true);
+                      Glogin();
+                    }}
+                  >
+                    <Image
+                      style={globalStyles.img}
+                      source={require("../assets/googleIcon2.png")}
+                    ></Image>
+                  </TouchableOpacity>
+                )}
 
                 <TouchableOpacity
                   style={globalStyles.btnLogin}
@@ -345,13 +353,14 @@ const GlobalLogin = ({ navigation }) => {
                   }}
                 >
                   {(props) => (
-                    <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
+                    <ScrollView
+                      contentContainerStyle={{ alignItems: "center" }}
+                    >
                       <View style={globalStyles.modalInputContainer}>
                         <Text style={styles.modalText}>
                           Registrarse en RestoBook
                         </Text>
                         <View style={globalStyles.inputComponent}>
-
                           <TextInput
                             style={globalStyles.texts}
                             placeholder="Nombre"
@@ -440,7 +449,7 @@ const GlobalLogin = ({ navigation }) => {
                           />
                         </View>
                         {props.touched.passwordConfirm &&
-                          props.errors.passwordConfirm ? (
+                        props.errors.passwordConfirm ? (
                           <Text style={globalStyles.errorText}>
                             {props.errors.passwordConfirm}
                           </Text>
@@ -467,7 +476,9 @@ const GlobalLogin = ({ navigation }) => {
                                 setFlagLoginOrRegister(true);
                             }}
                           >
-                            <Text style={globalStyles.fontLog}>Registrarse</Text>
+                            <Text style={globalStyles.fontLog}>
+                              Registrarse
+                            </Text>
                           </TouchableOpacity>
                           <TouchableOpacity
                             style={globalStyles.btnLogin}
@@ -480,7 +491,6 @@ const GlobalLogin = ({ navigation }) => {
                         </View>
                       </View>
                     </ScrollView>
-
                   )}
                 </Formik>
               </View>
