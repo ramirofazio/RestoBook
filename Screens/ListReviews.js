@@ -5,7 +5,6 @@ import { onAuthStateChanged, getAuth } from "firebase/auth";
 import { Icon } from 'react-native-elements';
 import globalStyles from './GlobalStyles';
 import CardReviews from "../components/CardReviews";
-import empresaDetail from '../Redux/Actions/empresaDetail';
 const auth=getAuth();
 
 export default function ListReviews({navigation, reviews}){
@@ -62,11 +61,19 @@ export default function ListReviews({navigation, reviews}){
 
                 )
 }
-const styles = StyleSheet.create({
-    
-    mustLoginText:{
-        margin:20,
-        backgroundColor:'white',
-    },
 
+const styles = StyleSheet.create({
+    container:{
+    },
+    btnAddReview:{
+    },
+    btnTitleAddReview:{
+    },
+    mustLoginText:{
+    },
+    showMenu: {
+        height: 250,
+        padding: 5,
+        borderWidth: 0,
+      },
 }) 

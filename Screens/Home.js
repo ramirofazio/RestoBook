@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import CurrentId from "../Redux/Actions/CurrentId.js";
 import CurrentUser from "../Redux/Actions/CurrentUser.js";
 //----------REACT-NATIVE UTILS-----------
-import { BottomSheet, ListItem } from "react-native-elements";
+import { BottomSheet, ListItem, Icon } from "react-native-elements";
 import {
   View,
   ScrollView,
@@ -15,7 +15,7 @@ import {
   TextInput,
   Modal,
   ActivityIndicator,
-  Picker, 
+  Picker,
   Pressable,
 } from "react-native";
 //---------------------EXPO----------------------
@@ -39,6 +39,7 @@ import { Feather } from "@expo/vector-icons";
 
 
 export default function Home({ navigation }) {
+  const dispatch = useDispatch();
   //------LOGIN JOSE------------
   const [visible, isVisible] = useState(false);
   const [googleUser, setGoogleUser] = useState({
@@ -59,13 +60,18 @@ export default function Home({ navigation }) {
   const loggedUser = useSelector((state) => state.currentUser);
   const loggedId = useSelector((state) => state.currentId);
   const categories = useSelector((state) => state.categoriesResto);
-  const dispatch = useDispatch();
+
+  //---------------SEARCH BAR-------------------------
+  const [selectedValue, setSelectedValue] = useState("");
+  const [selectedValu, setSelectedValu] = useState("");
+  const [visibleFiltro, isVisibleFiltro] = useState(false);
+
 
   useEffect(() => {
     const q = query(collection(firebase.db, "Restos"));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       let arr = [];
-      console.log("SNAP HOME 84");
+      console.log("SNAP HOME 89");
       querySnapshot.forEach((doc) => {
         let obj = doc.data();
         obj.idResto = doc.id;
@@ -118,7 +124,7 @@ export default function Home({ navigation }) {
     let { coords } = await Location.getCurrentPositionAsync({
       accuracy: Location.Accuracy.Balanced,
     });
-    console.log(coords);
+    //console.log(coords);
     const location = {
       latitude: coords.latitude,
       longitude: coords.longitude,
@@ -130,12 +136,16 @@ export default function Home({ navigation }) {
 
   const getInfo = async () => {
     try {
+      // console.log("getInfo!!!");
       const docRef = doc(firebase.db, "Users", auth.currentUser.uid);
       const docSnap = await getDoc(docRef);
+      // console.log("dsnap", docSnap.exists());
       if (!docSnap.exists()) {
+        // console.log("if de getinfo!");
         setGoogleUser({ ...googleUser, email: auth.currentUser.email });
         isVisible(true);
       } else {
+        //console.log("else de getinfo!");
         let obj = docSnap.data();
 
         setFlagCards(true);
@@ -179,18 +189,14 @@ export default function Home({ navigation }) {
       setAvailableCommerces(result);
     }
   }
-  const [visibleFiltro, isVisibleFiltro] = useState(false);
-  const [selectedValue, setSelectedValue] = useState("");
-  const [selectedValu, setSelectedValu] = useState("");
+
   const updateUser = (itemValue) => {
-    if(itemValue === "A-Z") {
+    if (itemValue === "A-Z") {
       const result = availableCommerces.sort((a, b) => (a.title > b.title) ? 1 : -1)
       setSelectedValue(result)
-    }else if(itemValue === "Z-A") {
-     const resulta = availableCommerces.sort((a, b) => (a.title < b.title) ? 1 : -1)
-     setSelectedValu(resulta)
-    }else if(itemValue === "Or") {
-    alert ("Seleccione un ordenamiento ")
+    } else if (itemValue === "Z-A") {
+      const resulta = availableCommerces.sort((a, b) => (a.title < b.title) ? 1 : -1)
+      setSelectedValu(resulta)
     }
   }
 
@@ -201,55 +207,69 @@ export default function Home({ navigation }) {
     <Text>Hola!</Text>
         </View>
       </BottomSheet> */}
-      <Modal Modal visible={visible} style={styles.googleUserModal}>
-        <View style={styles.googleUserForm}>
-          <TextInput
-            style={styles.googleTextinput}
-            placeholder="Nombre"
-            onChangeText={(value) => {
-              setGoogleUser({
-                ...googleUser,
-                name: value,
-              });
-            }}
-          />
-          <TextInput
-            placeholder="Apellido"
-            onChangeText={(value) => {
-              setGoogleUser({
-                ...googleUser,
-                lastName: value,
-              });
-            }}
-          />
-          <TextInput
-            placeholder="Celular"
-            onChangeText={(value) => {
-              setGoogleUser({
-                ...googleUser,
-                cel: value,
-              });
-            }}
-          />
-          <TouchableOpacity
-            onPress={() => {
-              firebase.db.collection("Users").doc(auth.currentUser.uid).set({
-                id: auth.currentUser.uid,
-                name: googleUser.name,
-                lastName: googleUser.lastName,
-                cel: googleUser.cel,
-                email: googleUser.email,
-                commerce: false,
-                profileImage: DEFAULT_PROFILE_IMAGE,
-                reservations: [],
-                payments: [],
-              });
-              isVisible(false);
-              alert("Gracias!");
-            }}
-          >
-            <Text>Enviar</Text>
-          </TouchableOpacity>
+      <Modal
+        visible={visibleModalGoogle}
+        animationType="slide"
+        transparent={true}
+      >
+        <View style={globalStyles.centeredView}>
+          <View style={globalStyles.modalView}>
+            <TextInput
+              style={globalStyles.inputComponent}
+              placeholder="Nombre"
+              placeholderTextColor="#666"
+              textAlign="center"
+              onChangeText={(value) => {
+                setGoogleUser({
+                  ...googleUser,
+                  name: value,
+                });
+              }}
+            />
+            <TextInput
+              style={globalStyles.inputComponent}
+              placeholder="Apellido"
+              placeholderTextColor="#666"
+              textAlign="center"
+              onChangeText={(value) => {
+                setGoogleUser({
+                  ...googleUser,
+                  lastName: value,
+                });
+              }}
+            />
+            <TextInput
+              style={globalStyles.inputComponent}
+              placeholder="Celular"
+              placeholderTextColor="#666"
+              textAlign="center"
+              onChangeText={(value) => {
+                setGoogleUser({
+                  ...googleUser,
+                  cel: value,
+                });
+              }}
+            />
+            <TouchableOpacity
+              style={globalStyles.btnTodasComidas}
+              onPress={() => {
+                firebase.db.collection("Users").doc(auth.currentUser.uid).set({
+                  id: auth.currentUser.uid,
+                  name: googleUser.name,
+                  lastName: googleUser.lastName,
+                  cel: googleUser.cel,
+                  email: googleUser.email,
+                  commerce: false,
+                  profileImage: DEFAULT_PROFILE_IMAGE,
+                  reservations: [],
+                  payments: [],
+                });
+                isVisible(false);
+              }}
+            >
+              <Text style={globalStyles.texts}>Enviar</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </Modal>
       <View style={styles.textContainer}>
@@ -259,27 +279,27 @@ export default function Home({ navigation }) {
           <Text style={styles.text}>Welcome to Resto Book</Text>
         )}
       </View>
-    {/*   ---------------------------------------Search ------------------------------------------------- */}
+      {/*   ---------------------------------------Search ------------------------------------------------- */}
       <View style={styles.container} >
-      <View style={styles.textInput}>
-      <Animatable.View animation="zoomIn" duration={1200}>
-        <TextInput
-        style={styles.texto}
-          onChangeText={(event) => {
-            setSearchTerm(event);
-          }}
-          placeholder="Search..."
-          placeholderTextColor="black"
-          underlineColorAndroid="transparent"
-        />
-       </Animatable.View>
+        <View style={styles.textInput}>
+          <Animatable.View animation="zoomIn" duration={1200}>
+            <TextInput
+              style={styles.texto}
+              onChangeText={(event) => {
+                setSearchTerm(event);
+              }}
+              placeholder="Search..."
+              placeholderTextColor="black"
+              underlineColorAndroid="transparent"
+            />
+          </Animatable.View>
+        </View>
+        <View style={styles.touchableOpacity}>
+          <Feather name="search" style={styles.iconStyle} />
+        </View>
       </View>
-      <View style={styles.touchableOpacity}>
-        <Feather name="search" style={styles.iconStyle} />
-      </View>
-      </View>
-     {/*  /----------------------------------------ORDENAMIENTO----------------------------------------/ */}
-     {/*  <View style={globalStyles.btnHome}>
+  {/*  /----------------------------------------ORDENAMIENTO----------------------------------------/ */ }
+  {/*  <View style={globalStyles.btnHome}>
       <View style={globalStyles.btnFiltrosHome}>
       <Picker
         selectedValue={selectedValu}
@@ -292,114 +312,149 @@ export default function Home({ navigation }) {
         <Picker.Item label="Z-A" value="Z-A" />
       </Picker>
     </View> */}
-    <View>
-          <Pressable onPress={() => isVisibleFiltro(true)}>
-            <TextInput
-              style={globalStyles.btnFiltrosHome}
-              editable={false}      
-              placeholder="Ordenado por"
-              textAlign="center"
-              placeholderTextColor="#161616"
-              value={selectedValue}
-              value={selectedValu}
-              onPressIn={() => isVisibleFiltro(true)}
-            />
-          </Pressable>
-          <BottomSheet
-            isVisible={visibleFiltro}
-            containerStyle={{ backgroundColor: "#333a" }}
+  <View>
+    <Pressable onPress={() => isVisibleFiltro(true)}>
+      <TextInput
+        style={globalStyles.btnFiltrosHome}
+        editable={false}
+        placeholder="Ordenado por"
+        textAlign="center"
+        placeholderTextColor="#161616"
+        value={selectedValue}
+        value={selectedValu}
+        onPressIn={() => isVisibleFiltro(true)}
+      />
+    </Pressable>
+    <BottomSheet
+      isVisible={visibleFiltro}
+      containerStyle={{ backgroundColor: "#333a" }}
+    >
+      <ListItem
+        containerStyle={{ backgroundColor: "rgba(0.5,0.25,0,0.7)" }}
+        style={{
+          borderBottomWidth: 1,
+          borderColor: "#333a",
+          backgroundColor: "#fff0",
+        }}
+        onPress={() => {
+          updateUser("A-Z");
+          isVisibleFiltro(false);
+        }}
+      >
+        <ListItem.Content
+          style={{ backgroundColor: "#0000", alignItems: "center" }}
+        >
+          <ListItem.Title
+            style={{ height: 35, color: "#fff", padding: 8 }}
           >
-            <ListItem
-              containerStyle={{ backgroundColor: "rgba(0.5,0.25,0,0.7)" }}
-              style={{
-                borderBottomWidth: 1,
-                borderColor: "#333a",
-                backgroundColor: "#fff0",
-              }}
-              onPress={() => {
-                updateUser("A-Z");
-                isVisibleFiltro(false);
-              }}
-            >
-              <ListItem.Content
-                style={{ backgroundColor: "#0000", alignItems: "center" }}
-              >
-                <ListItem.Title
-                  style={{ height: 35, color: "#fff", padding: 8 }}
-                >
-                  A-Z
-                </ListItem.Title>
-              </ListItem.Content>
-            </ListItem>
-            <ListItem
-              containerStyle={{ backgroundColor: "rgba(0.5,0.25,0,0.7)" }}
-              style={{
-                borderBottomWidth: 1,
-                borderColor: "#333a",
-                backgroundColor: "#fff0",
-              }}
-              onPress={() => {
-                updateUser("Z-A");
-                isVisibleFiltro(false);
-              }}
-            >
-              <ListItem.Content
-                style={{ backgroundColor: "#0000", alignItems: "center" }}
-              >
-                <ListItem.Title
-                  style={{ height: 35, color: "#fff", padding: 8 }}
-                >
-                  Z-A
-                </ListItem.Title>
-              </ListItem.Content>
-            </ListItem>
+            A-Z
+          </ListItem.Title>
+        </ListItem.Content>
+      </ListItem>
+      <ListItem
+        containerStyle={{ backgroundColor: "rgba(0.5,0.25,0,0.7)" }}
+        style={{
+          borderBottomWidth: 1,
+          borderColor: "#333a",
+          backgroundColor: "#fff0",
+        }}
+        onPress={() => {
+          updateUser("Z-A");
+          isVisibleFiltro(false);
+        }}
+      >
+        <ListItem.Content
+          style={{ backgroundColor: "#0000", alignItems: "center" }}
+        >
+          <ListItem.Title
+            style={{ height: 35, color: "#fff", padding: 8 }}
+          >
+            Z-A
+          </ListItem.Title>
+        </ListItem.Content>
+      </ListItem>
 
-            <ListItem
-              key={999}
-              containerStyle={{ backgroundColor: "#d14545" }}
-              style={{ borderBottomWidth: 1, borderColor: "#333a" }}
-              onPress={() => isVisibleFiltro(false)}
-            >
-              <ListItem.Content style={{ alignItems: "center" }}>
-                <ListItem.Title
-                  style={{
-                    height: 35,
-                    color: "#FFF",
-                    padding: 8,
-                    fontSize: 20,
-                  }}
-                >
-                  Cancelar
-                </ListItem.Title>
-              </ListItem.Content>
-            </ListItem>
-          </BottomSheet>
-        {/*----------------------------------------FILTRADO------------------------------------------- */}
-        <View>
-          <Pressable onPress={() => isVisibleFiltros(true)}>
-            <TextInput
-              style={globalStyles.btnFiltrosHome}
-              editable={false}
-              placeholder="Buscar por Categoria"
-              textAlign="center"
-              placeholderTextColor="#161616"
-              value={category}
-              onPressIn={() => isVisibleFiltros(true)}
-            />
-          </Pressable>
-          <BottomSheet
-            isVisible={visibleFiltros}
-            containerStyle={{ backgroundColor: "#333a" }}
+      <ListItem
+        key={999}
+        containerStyle={{ backgroundColor: "#d14545" }}
+        style={{ borderBottomWidth: 1, borderColor: "#333a" }}
+        onPress={() => isVisibleFiltro(false)}
+      >
+        <ListItem.Content style={{ alignItems: "center" }}>
+          <ListItem.Title
+            style={{
+              height: 35,
+              color: "#FFF",
+              padding: 8,
+              fontSize: 20,
+            }}
           >
+            Cancelar
+          </ListItem.Title>
+        </ListItem.Content>
+      </ListItem>
+    </BottomSheet>
+      {/*----------------------------------------BOTON MAPA------------------------------------------- */}
+      <TouchableOpacity style={globalStyles.btnFiltrosHome}>
+        <Text style={globalStyles.texts}><Icon
+          reverse
+          name="map-marker-alt"
+          type="font-awesome-5"
+          color="#FDFDFD"
+          reverseColor="#161616"
+          size={12}
+        /></Text>
+      </TouchableOpacity>
+      {/*----------------------------------------FILTRADO------------------------------------------- */}
+      <View>
+        <Pressable onPress={() => isVisibleFiltros(true)}>
+          <TextInput
+            style={globalStyles.btnFiltrosHome}
+            editable={false}
+            placeholder="Buscar por Categoria"
+            textAlign="center"
+            placeholderTextColor="#161616"
+            value={category}
+            onPressIn={() => isVisibleFiltros(true)}
+          />
+        </Pressable>
+        <BottomSheet
+          isVisible={visibleFiltros}
+          containerStyle={{ backgroundColor: "#333a" }}
+        >
+          <ListItem
+            containerStyle={{ backgroundColor: "rgba(0.5,0.25,0,0.7)" }}
+            style={{
+              borderBottomWidth: 1,
+              borderColor: "#333a",
+              backgroundColor: "#fff0",
+            }}
+            onPress={() => {
+              handleCategory(null);
+              isVisibleFiltros(false);
+            }}
+          >
+            <ListItem.Content
+              style={{ backgroundColor: "#0000", alignItems: "center" }}
+            >
+              <ListItem.Title
+                style={{ height: 35, color: "#fff", padding: 8 }}
+              >
+                Todos
+              </ListItem.Title>
+            </ListItem.Content>
+          </ListItem>
+          {categories.map((categoria, index) => (
             <ListItem
-              containerStyle={{ backgroundColor: "rgba(0.5,0.25,0,0.7)" }}
+              key={index}
+                containerStyle={{ backgroundColor: "rgba(242, 242, 242,0.8)" }}
               style={{
                 borderBottomWidth: 1,
                 borderColor: "#333a",
                 backgroundColor: "#fff0",
               }}
               onPress={() => {
-                handleCategory(null);
+                handleCategory(categoria);
                 isVisibleFiltros(false);
               }}
             >
@@ -407,89 +462,67 @@ export default function Home({ navigation }) {
                 style={{ backgroundColor: "#0000", alignItems: "center" }}
               >
                 <ListItem.Title
-                  style={{ height: 35, color: "#fff", padding: 8 }}
+                    style={{
+                      height: 35,
+                      color: "#161616",
+                      paddingVertical: 5,
+                      fontWeight: "bold",
+                    }}
                 >
-                  Todos
+                  {categoria}
                 </ListItem.Title>
               </ListItem.Content>
             </ListItem>
-            {categories.map((categoria, index) => (
-              <ListItem
-                key={index}
-                containerStyle={{ backgroundColor: "rgba(0.5,0.25,0,0.7)" }}
+          ))}
+          <ListItem
+            key={999}
+            containerStyle={{ backgroundColor: "#d14545" }}
+            style={{ borderBottomWidth: 1, borderColor: "#333a" }}
+            onPress={() => isVisibleFiltros(false)}
+          >
+            <ListItem.Content style={{ alignItems: "center" }}>
+              <ListItem.Title
                 style={{
-                  borderBottomWidth: 1,
-                  borderColor: "#333a",
-                  backgroundColor: "#fff0",
-                }}
-                onPress={() => {
-                  handleCategory(categoria);
-                  isVisibleFiltros(false);
+                    height: 35, color: "#161616", fontSize: 20
                 }}
               >
-                <ListItem.Content
-                  style={{ backgroundColor: "#0000", alignItems: "center" }}
-                >
-                  <ListItem.Title
-                    style={{ height: 35, color: "#fff", padding: 8 }}
-                  >
-                    {categoria}
-                  </ListItem.Title>
-                </ListItem.Content>
-              </ListItem>
-            ))}
-            <ListItem
-              key={999}
-              containerStyle={{ backgroundColor: "#d14545" }}
-              style={{ borderBottomWidth: 1, borderColor: "#333a" }}
-              onPress={() => isVisibleFiltros(false)}
-            >
-              <ListItem.Content style={{ alignItems: "center" }}>
-                <ListItem.Title
-                  style={{
-                    height: 35,
-                    color: "#FFF",
-                    padding: 8,
-                    fontSize: 20,
-                  }}
-                >
-                  Cancelar
-                </ListItem.Title>
-              </ListItem.Content>
-            </ListItem>
-          </BottomSheet>
-          </View>
+                Cancelar
+              </ListItem.Title>
+            </ListItem.Content>
+          </ListItem>
+        </BottomSheet>
       </View>
-      <ScrollView>
-        {availableCommerces.length && flagCards ? (
-          <View>
-            {availableCommerces
-              .filter((resto) => {
-                if (searchTerm === "") {
-                  return resto;
-                } else {
-                  return resto.title
-                    .toLowerCase()
-                    .includes(searchTerm.toLowerCase());
-                }
-              })
-              .map((resto) => {
-                return (
-                  <CardHome
-                    key={resto.idResto}
-                    resto={resto}
-                    navigation={navigation}
-                  ></CardHome>
-                );
-              })}
-          </View>
-        ) : (
-          <View style={styles.loading}>
-            <ActivityIndicator size="large" color="#5555" />
-          </View>
-        )}
-      </ScrollView>
     </View>
+    <ScrollView>
+      {availableCommerces.length && flagCards ? (
+        <View>
+          {availableCommerces
+            .filter((resto) => {
+              if (searchTerm === "") {
+                return resto;
+              } else {
+                return resto.title
+                  .toLowerCase()
+                  .includes(searchTerm.toLowerCase());
+              }
+            })
+            .map((resto) => {
+              return (
+                <CardHome
+                  key={resto.idResto}
+                  resto={resto}
+                  navigation={navigation}
+                ></CardHome>
+              );
+            })}
+        </View>
+      ) : (
+        <View style={styles.loading}>
+          <ActivityIndicator size="large" color="#5555" />
+        </View>
+      )}
+    </ScrollView>
+  </View>
   );
 }
 

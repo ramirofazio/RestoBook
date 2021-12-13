@@ -31,8 +31,8 @@ export default function WebViewScreen({ route, navigation }) {
     if (currentUrl.includes("/approved")) {
       try {
         const reservaId = currentUrl.split("=");
-        console.log(reservaId);
-        console.log(reservaId[1]);
+        //console.log(reservaId);
+        //console.log(reservaId[1]);
         // let payment_status = paramsUrl.get('status');
         const newreserva = {
           idReserva: reservaId[1],
@@ -51,8 +51,8 @@ export default function WebViewScreen({ route, navigation }) {
     }
   };
   const sendEmail = () => {
-    console.log("Entro a sendEmail");
-    console.log("reserva dentro de sendEmail: ", reserva);
+    //console.log("Entro a sendEmail");
+    //console.log("reserva dentro de sendEmail: ", reserva);
     const templateParams = {
       subject: `Tu reserva en ${empresaDetail.title} fue confirmada`,
       name: currentUser.name,
@@ -62,8 +62,8 @@ export default function WebViewScreen({ route, navigation }) {
       idReserva: "reserva.idReserva",
     };
     const sendEmail = () => {
-      console.log("Entro a sendEmail");
-      console.log("reserva dentro de sendEmail: ", reserva);
+      //console.log("Entro a sendEmail");
+      //console.log("reserva dentro de sendEmail: ", reserva);
       const templateParams = {
         subject: `Tu reserva en ${empresaDetail.title} fue confirmada`,
         name: currentUser.name,
@@ -80,8 +80,8 @@ export default function WebViewScreen({ route, navigation }) {
       }, 5100);
     };
     const reservaToDB = async () => {
-      console.log("currentUser: ", currentUser);
-      console.log("reserva dentro de reserva ToDB : ", reserva);
+      //console.log("currentUser: ", currentUser);
+      //console.log("reserva dentro de reserva ToDB : ", reserva);
       const reservation = {
         idReserva: reserva.idReserva,
         statusReserva: reserva.statusReserva,
@@ -95,9 +95,9 @@ export default function WebViewScreen({ route, navigation }) {
         await updateDoc(userRef, {
           reservations: arrayUnion(reservation),
         });
-        console.log(
-          `Reserva en Resto: ${empresaDetail.title}, con id: ${reservation.idReserva} para el usuario ${currentUser.name}`
-        );
+        //console.log(
+         // `Reserva en Resto: ${empresaDetail.title}, con id: ${reservation.idReserva} para el usuario ${currentUser.name}`
+        //);
       } catch (err) {
         console.log(err);
       }
@@ -106,9 +106,9 @@ export default function WebViewScreen({ route, navigation }) {
         await updateDoc(restoRef, {
           reservations: arrayUnion(reservation),
         });
-        console.log(
-          `Reserva actualizada en User: ${currentUser.name}, con id: ${reservation.idReserva}`
-        );
+       // console.log(
+       //   `Reserva actualizada en User: ${currentUser.name}, con id: ${reservation.idReserva}`
+       // );
       } catch (err) {
         console.log(err);
       }
@@ -129,7 +129,7 @@ export default function WebViewScreen({ route, navigation }) {
 
     useEffect(() => {
       if (didMountRef.current) {
-        console.log("entro con didMountRef en true");
+       // console.log("entro con didMountRef en true");
         getInfo();
       } else {
         didMountRef.current = true;
