@@ -2,7 +2,7 @@ import React from "react";
 import { Card, Text } from "react-native-elements";
 import { View, Image, StyleSheet } from "react-native";
 import globalStyles from "../Screens/GlobalStyles";
-
+import { CLOUDINARY_CONSTANT, DEFAULT_FOOD_IMAGE } from "@env";
 const CardMenu = ({ menu }) => {
   return (
     <View style={globalStyles.menuCardsContainer}>
@@ -28,7 +28,7 @@ const CardMenu = ({ menu }) => {
         <Image
           style={globalStyles.cardsMenuimg}
           source={{
-            uri: "https://res.cloudinary.com/restobook/image/upload/v1639179500/restohenry/gqtxegrmrooeowtucez9.png",
+            uri: CLOUDINARY_CONSTANT + menu.img,
           }}
         />
       </View>
