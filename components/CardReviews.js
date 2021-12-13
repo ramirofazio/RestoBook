@@ -53,7 +53,7 @@ export default function CardReviews({ reseña }) {
                     showRating={false}
                 >
                 </AirbnbRating>
-          <Text style={styles.cardsMenuTitle}>{reseña.review}</Text>
+          <Text style={styles.cardsMenuTitle} >{reseña.review}</Text>
           <View>
             </View>
             
@@ -77,19 +77,19 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
   },
   img:{
-    width:50,
+    width:60,
     borderRadius:7,
-    height:50,
+    height:60,
   },
   cardsMenuContainer:{
     marginTop:20,
     flex: 1,
     height:80,
-
+    padding:7,
     borderBottomColor: "#e3e3e3",
     borderBottomWidth:1,
     width:"100%",
-    justifyContent:"space-between"
+    justifyContent:"space-around"
   },
   viewInfo:{
     marginBottom:30,
@@ -105,18 +105,16 @@ const styles = StyleSheet.create({
   cardsMenuTitle: {
     justifyContent:"flex-start",
     fontWeight: "bold",
+    fontSize:12,
   },
   cardDate:{
-    width: '30.6%',
-    alignSelf: "flex-end",
-    alignItems: "center",
-    marginBottom:20
+    width: '100%',
+    justifyContent:"flex-end"
   },
   date:{
+    marginLeft:270,
     color: 'grey',
-    fontSize:11,
-    position: "absolute",
-    right:0,
+    fontSize:10,
   }
 })
 
