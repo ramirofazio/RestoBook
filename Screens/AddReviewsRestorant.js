@@ -49,12 +49,12 @@ export default function AddReviewsRestorant({ navigation }) {
   };
   const validForm = () => {
     setErrorReview(null);
-    let isValue = true;
+    let isValid = true;
     if (isEmpty(review)) {
       setErrorReview("Completá tu comentario", 3000);
-      isValue = false;
+      isValid = false;
     }
-    return isValue;
+    return isValid;
   };
   return (
     <View style={styles.container}>
@@ -84,15 +84,16 @@ export default function AddReviewsRestorant({ navigation }) {
                 onPress={addReview}
                 >
             </Button> */}
-        <View style={styles.buton}>
-          <TouchableOpacity
-            style={globalStyles.btnFiltrosHome}
-            onPress={addReview}
-          >
-            <Text style={globalStyles.texts}>Escribe una opinion</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+            <View style={styles.buton}>
+             <TouchableOpacity 
+                      style={globalStyles.btnFiltrosHome}
+                      onPress={addReview}
+                      errorMessage={errorReview}
+                      >
+                          <Text style={globalStyles.texts}>Escribe una opinion</Text>
+                      </TouchableOpacity>
+            </View>
+            </View>
     </View>
   );
 }
