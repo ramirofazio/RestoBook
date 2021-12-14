@@ -176,7 +176,7 @@ const DetailsResto = ({ navigation }) => {
             <Badge status={handleHorarioReserva() ? "success" : "error"}   containerStyle={{ position: 'absolute', top: 20, right: 15}}/>
       </View>
 
-
+    <ScrollView style={globalStyles.Home}>
       <View style={globalStyles.descriptionRestoContainer}>
         <Text  style={globalStyles.textoDescription}>{empresaDetail.description}</Text>
         <Text style={globalStyles.textoDescription}>
@@ -202,7 +202,6 @@ const DetailsResto = ({ navigation }) => {
                 {empresaDetail.location.address},
         </Text>
       </View>
-      <ScrollView style={globalStyles.Home}>
         <View onTouchStart={() => setmodalMenuVisible(!modalMenuVisible)}>
           <TouchableOpacity style={globalStyles.btnFiltrosHome}>
             <Text style={globalStyles.btnTextFiltro}>
