@@ -15,6 +15,9 @@ LogBox.ignoreLogs([
 LogBox.ignoreLogs([
   "Animated.event now requires a second argument for options",
 ]);
+LogBox.ignoreLogs([
+  "Can't open url: about:srcdoc",
+]);
 export default function App() {
   // const Stack = createStackNavigator();
 

@@ -37,12 +37,15 @@ const CardFavourite = ({
   const dispatch = useDispatch();
   const [deleting, setDeleting] = useState(false);
   const [hearthColor, setHearthColor] = useState("red");
+  
+  console.log('Resto in cardFavourites: ', resto)
   let infoFavourite = {
     idResto: resto.idResto,
     title: resto.title,
     phone: resto.phone,
     location: resto.location,
     img: resto.img,
+    reservationsParams: resto.reservationsParams
   };
 
   const handleOnPress = () => {

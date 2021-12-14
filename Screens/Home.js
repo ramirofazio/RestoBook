@@ -14,11 +14,12 @@ import {
   StyleSheet,
   Image,
   TouchableOpacity,
-  TextInput,
+  TextInput, 
   Modal,
   ActivityIndicator,
   Picker,
   Pressable,
+  Alert,
 } from "react-native";
 //---------------------EXPO----------------------
 import * as Location from "expo-location";
@@ -45,6 +46,7 @@ import setUserLocation from "../Redux/Actions/setUserLocation.js";
 //---------------------------------------------------------------------------------------//
 import * as Animatable from "react-native-animatable";
 import { Feather } from "@expo/vector-icons";
+import CardMaps from "../components/CardMaps.js";
 
 
 export default function Home({ navigation }) {
@@ -99,7 +101,6 @@ export default function Home({ navigation }) {
     if (usuarioFirebase?.emailVerified) {
       if (loggedId !== usuarioFirebase.uid) {
         dispatch(CurrentId(usuarioFirebase.uid));
-
         // const unsub = onSnapshot(
         //   doc(firebase.db, "Users", usuarioFirebase.uid),
         //   (doc) => {
@@ -421,7 +422,28 @@ export default function Home({ navigation }) {
         {/*----------------------------------------BOTON MAPA------------------------------------------- */}
         <TouchableOpacity
           style={globalStyles.btnFiltrosHome}
-          onPress={() => setMapaVisible(!mapaVisible)}>
+          onPress={() => {
+            if(loggedUser) {
+              setMapaVisible(!mapaVisible)
+            } else {
+              Alert.alert(
+                'Debes estar logeado para ver el Mapa de tu zona',
+                'Desea ir a la pantalla de Login?',
+                [
+                  {
+                    text: 'Ahora no',
+                    onPress: () => console.log('No quiere logearse'),
+                    style: 'cancel'
+                  },
+                  {
+                    text: 'Si, por favor',
+                    onPress: () => navigation.navigate('GlobalLogin')
+                  }
+                ]
+              )
+            }
+          }}
+          >
           <Text style={globalStyles.texts}><Icon
             reverse
             name="map-marker-alt"
@@ -602,7 +624,7 @@ export default function Home({ navigation }) {
                         identifier={resto.title}
                       >
                         <Callout tooltip>
-                          <CardHome key={resto.idResto} resto={resto} navigation={navigation} ></CardHome>
+                          <CardMaps key={resto.idResto} resto={resto} navigation={navigation} ></CardMaps>
                         </Callout>  
                       </Marker>
                     )

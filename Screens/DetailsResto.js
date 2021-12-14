@@ -67,6 +67,7 @@ const DetailsResto = ({ navigation }) => {
   const [menuFiltered, setMenuFiltered] = useState([]);
   const [menuCategory, setMenuCategory] = useState();
   const empresaDetail = useSelector((state) => state.empresaDetail);
+  console.log('Empresa detail: ', empresaDetail)
   //--------------------GEOLOCATION-------------------------------
   const { location } = empresaDetail
   const [distance, setDistance] = useState({})
@@ -92,7 +93,9 @@ const DetailsResto = ({ navigation }) => {
     });
     setModalVisible(false);
     navigation.navigate("WebViewScreen", {
-      url: url.data
+      url: url.data,
+      cantLugares,
+      unitPrice: empresaDetail.reservationsParams?.precioPorLugar
     })
   }
   useEffect(() => {
@@ -313,6 +316,7 @@ const DetailsResto = ({ navigation }) => {
             )}
            { Object.entries(userLocation).length > 0 && location && (
             <MapViewDirections
+              lineDashPattern={[0]}
               apikey={GOOGLE_API_KEY}
               strokeWidth={1.5}
               strokeColor="brown"
