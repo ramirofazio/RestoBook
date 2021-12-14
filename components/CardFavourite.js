@@ -43,14 +43,17 @@ const CardFavourite = ({
     phone: resto.phone,
     location: resto.location,
     img: resto.img,
+    description: resto.description,
+    reservationsParams: resto.reservationsParams
   };
 
   const handleOnPress = () => {
-    console.log(resto)
-    // dispatch(empresaDetail(resto));
-    //navigation.navigate("DetailsResto");
-  };
+    console.log("resto", resto);
 
+    dispatch(empresaDetail(resto));
+
+    navigation.navigate("DetailsResto");
+  };
 
   const removeFromFavourite = async () => {
     if (auth?.currentUser?.uid) {
@@ -74,7 +77,6 @@ const CardFavourite = ({
     }
   };
 
-
   return (
     <View style={globalStyles.cardsFavouriteContainer}>
       <TouchableOpacity onPress={() => handleOnPress()}>
@@ -91,7 +93,7 @@ const CardFavourite = ({
               <ActivityIndicator
                 size="large"
                 color="#5555"
-              // style={globalStyles.imgProfile}
+                // style={globalStyles.imgProfile}
               />
             ) : (
               <Text style={globalStyles.cardsHomeTitle}>{resto.title}</Text>

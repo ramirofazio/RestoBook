@@ -19,6 +19,7 @@ const globalStyles = StyleSheet.create({
     textAlign: "center",
   },
   btnTextFiltro: {
+    // paddingTop: 2,
     fontSize: 14,
     color: "#161616",
     fontWeight: "bold",
@@ -140,18 +141,18 @@ const globalStyles = StyleSheet.create({
     // backgroundColor: 'green',
     maxHeight: "120%",
     height: "90%",
-    marginLeft:20,
+    marginLeft: 20,
     width: "50%",
     alignSelf: "center",
     justifyContent: "space-around",
   },
   cardsDescriptionText: {
     //backgroundColor: 'lightblue',
-    textAlign:"center",
+    textAlign: "center",
     width: "100%",
-    justifyContent:"space-around",
+    justifyContent: "space-around",
     fontSize: 12,
-    height:60,
+    height: 60,
     fontWeight: "bold",
     maxHeight: "120%",
   },
@@ -162,7 +163,7 @@ const globalStyles = StyleSheet.create({
     textAlign: "center",
     width: "100%",
     color: "#161616",
-    textTransform: "capitalize"
+    textTransform: "capitalize",
   },
   btnContainerCard: {
     // backgroundColor: 'violet',
@@ -218,12 +219,13 @@ const globalStyles = StyleSheet.create({
   },
   cardsMenuTitle: {
     textTransform: "capitalize",
-    fontSize: 25,
+    fontSize: 20,
     fontWeight: "bold",
     textAlign: "left",
     width: "100%",
   },
   cardsMenuDescriptionText: {
+    width: "90%",
     textAlign: "left",
     fontSize: 15,
     color: "grey",
@@ -234,7 +236,7 @@ const globalStyles = StyleSheet.create({
     maxHeight: "5%",
     alignSelf: "flex-end",
     alignItems: "flex-end",
-    marginTop: "-37%",
+    marginTop: "-31.5%",
     marginRight: "3.5%",
   },
   cardsMenuimg: {
@@ -283,6 +285,33 @@ const globalStyles = StyleSheet.create({
 
     elevation: 8,
   },
+  descriptionRestoContainer: {
+    borderRadius: 50,
+    marginVertical: 15,
+    width: "80%",
+    height: "25%",
+    alignSelf: "center",
+    alignItems: "center",
+    backgroundColor: "#f2f2f2",
+    justifyContent: "space-around",
+    paddingHorizontal: 5,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.27,
+    shadowRadius: 4.65,
+
+    elevation: 6,
+  },
+  textoDescription: {
+    textAlign: "center",
+    fontSize: 15,
+    color: "#161616",
+    fontWeight: 'bold',
+    textTransform: "capitalize"
+  },
   //------------------------------------------------------------------------------------------------------
 
   // --------------------------------------------CATEGORIAS LOCAL --------------------------------------------
@@ -300,7 +329,7 @@ const globalStyles = StyleSheet.create({
     fontSize: 13,
     padding: 1,
     textAlign: "center",
-    color: "#ECCEAB",
+    color: "#ECCDAA",
     textTransform: "capitalize",
     fontWeight: "bold",
   },
@@ -346,6 +375,7 @@ const globalStyles = StyleSheet.create({
     maxHeight: "25%",
     height: "100%",
   },
+
   btnProfileResto: {
     color: "transparent",
     borderWidth: 3,
@@ -360,17 +390,18 @@ const globalStyles = StyleSheet.create({
     justifyContent: "center",
   },
   cardsFavouriteContainer: {
-    flex: 1,
-    alignSelf: "center",
+    justifyContent: 'center',
     backgroundColor: "#f2f2f2",
-    marginHorizontal: 10,
-    marginVertical: 8,
-    paddingHorizontal: 5,
-    paddingVertical: 5,
+    // marginHorizontal: -5,
+    // marginVertical: 5,
+    // paddingHorizontal: 5,
+    // paddingVertical: 5,
     borderRadius: 25,
-    width: "95%",
-    height: 150,
-    shadowColor: "#000",
+    borderWidth: 1,
+    borderColor: "rgba(22, 22, 22, .2)",
+    width: "100%",
+    height: "100%",
+    shadowColor: "#161616",
     shadowOffset: {
       width: 0,
       height: 2,
@@ -405,6 +436,64 @@ const globalStyles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 4,
+    elevation: 5,
+  },
+
+  centeredMenuView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+    // backgroundColor: "blue",
+  },
+
+  modalMenuView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    paddingHorizontal: 5,
+    paddingVertical: 5,
+    width: "100%",
+    height: "95%",
+    alignItems: "center",
+    justifyContent: "space-between",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 30,
+      height: 30,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+
+  modalMenuText: {
+    marginVertical: 5,
+    textAlign: "center",
+    fontSize: 30,
+    fontWeight: "bold",
+    textTransform: "capitalize",
+  },
+
+  btnCloseMenu: {
+    marginVertical: 7,
+    width: "25%",
+    height: 30,
+    alignSelf: "flex-start",
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 2,
+    borderColor: "#eccdaa",
+    backgroundColor: "#f2f2f2",
+    borderRadius: 25,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 4.84,
+
     elevation: 5,
   },
 
@@ -447,6 +536,7 @@ const globalStyles = StyleSheet.create({
     shadowRadius: 16.0,
     elevation: 100,
   },
+
   //------------------------------------------------------------------------------------------------------
   title: {
     fontSize: 25,
@@ -535,6 +625,16 @@ const globalStyles = StyleSheet.create({
     // marginBottom: -10,
     paddingVertical: 1,
   },
+
+  textsSwitch: {
+    color: "#858383",
+    textAlign: "center",
+    width: "50%",
+    fontSize: 15,
+    fontWeight: "bold",
+    // marginBottom: -10,
+    paddingVertical: 1,
+  },
   textDownButton: {
     textAlign: "center",
 
@@ -566,6 +666,18 @@ const globalStyles = StyleSheet.create({
     maxWidth: "100%",
     width: "60%",
   },
+  switchComponent: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    alignSelf: "center",
+    marginVertical: 10,
+    borderRadius: 10,
+    backgroundColor: "rgba(22, 22, 22, .2)",
+    maxWidth: "100%",
+    width: "60%",
+  },
+
   modalInputContainer: {
     flex: 2,
     alignItems: "center",

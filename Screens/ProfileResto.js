@@ -78,17 +78,18 @@ const ProfileResto = ({ navigation }) => {
 
   const sectoresResto = useSelector((state) => state.sectoresResto);
 
-  const [modalAdminReservasVisible, setModalVisibleAdminReservas] = useState(false);
-  const [modalEditVisible, setModalEditVisible] = useState(false)
-  const [modalAdminHorarioVisible, setModalVisibleAdminHorario] = useState(false);
+  const [modalAdminReservasVisible, setModalVisibleAdminReservas] =
+    useState(false);
+  const [modalEditVisible, setModalEditVisible] = useState(false);
+  const [modalAdminHorarioVisible, setModalVisibleAdminHorario] =
+    useState(false);
 
-
-  const [places, setPlaces] = useState(1)
-  const [timeReservaInicio, setTimeReservaInicio] = useState(0)
-  const [timeReservaFin, setTimeReservaFin] = useState(0)
-  const [timeHorarioComInicio, setTimeHorarioComInicio] = useState(0)
-  const [timeHorarioComFin, setTimeHorarioComFin] = useState(0)
-  const [precioXLugar, setPrecioXLugar] = useState(0)
+  const [places, setPlaces] = useState(1);
+  const [timeReservaInicio, setTimeReservaInicio] = useState(0);
+  const [timeReservaFin, setTimeReservaFin] = useState(0);
+  const [timeHorarioComInicio, setTimeHorarioComInicio] = useState(0);
+  const [timeHorarioComFin, setTimeHorarioComFin] = useState(0);
+  const [precioXLugar, setPrecioXLugar] = useState(0);
 
   const [newCommerceInfo, setNewCommerceInfo] = useState({});
   const [uploading, setUploading] = useState(false);
@@ -221,14 +222,13 @@ const ProfileResto = ({ navigation }) => {
 
 
   const clearStates = () => {
-    setTimeReservaInicio()
-    setTimeReservaFin()
-    setSectorState()
-    setPlaces()
-    setTimeHorarioComInicio()
-    setTimeHorarioComFin()
-  }
-
+    setTimeReservaInicio();
+    setTimeReservaFin();
+    setSectorState();
+    setPlaces();
+    setTimeHorarioComInicio();
+    setTimeHorarioComFin();
+  };
 
   const timesReserva = timeReservaInicio + "-" + timeReservaFin;
   const handleGuardarAdmReservas = async () => {
@@ -243,9 +243,9 @@ const ProfileResto = ({ navigation }) => {
       await updateDoc(restoRef, {
         reservationsParams: obj,
       });
-      alert("Cambios Guardados con Exito!")
-      setModalVisibleAdminReservas(false)
-      clearStates()
+      alert("Cambios Guardados con Exito!");
+      setModalVisibleAdminReservas(false);
+      clearStates();
     } catch (err) {
       console.log(err);
     }
@@ -261,13 +261,13 @@ const ProfileResto = ({ navigation }) => {
       await updateDoc(restoRef, {
         commerceTimeRange: horarioCom,
       });
-      alert("Cambios Guardados con Exito!")
-      setModalVisibleAdminHorario(false)
-      clearStates()
+      alert("Cambios Guardados con Exito!");
+      setModalVisibleAdminHorario(false);
+      clearStates();
     } catch (err) {
       console.log(err);
     }
-  }
+  };
 
   return (
     <View style={globalStyles.Perfilcontainer}>
@@ -324,7 +324,6 @@ const ProfileResto = ({ navigation }) => {
             transparent={true}
             visible={modalEditVisible}
             onRequestClose={() => {
-              Alert.alert("Modal has been closed.");
               setModalEditVisible(!modalEditVisible);
             }}
           >
@@ -413,7 +412,7 @@ const ProfileResto = ({ navigation }) => {
                         email: newCommerceInfo.email,
                       })
                       .then(alert("cambios guardados!"))
-                      .then(setModalVisible(false))
+                      .then(setModalEditVisible(false))
                       .catch((error) => alert("error!"));
                   }}
                 >

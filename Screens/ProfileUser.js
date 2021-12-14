@@ -16,6 +16,8 @@ import {
   ScrollView,
 } from "react-native";
 import { Divider } from "react-native-elements";
+import Carousel from 'react-native-snap-carousel';
+
 import * as ImagePicker from "expo-image-picker";
 //------FIREBASE----------------
 import firebase from "../database/firebase";
@@ -138,6 +140,24 @@ const ProfileUser = ({ navigation }) => {
 
   const scrollX = useRef(new Animated.Value(0)).current;
   const { width: windowWidth } = useWindowDimensions();
+
+  const renderItem = ({item, index}) => {
+    return (
+      <View
+          style={globalStyles.cardsFavouriteContainer}
+          key={item.idResto}
+      >
+        <CardFavourite
+          key={index}
+          resto={item}
+          navigation={navigation}
+          setMyFavourites={setMyFavourites}
+          myFavourites={myFavourites}
+        >
+        </CardFavourite>
+      </View>
+    )
+  }
 
   return (
     <View style={globalStyles.Perfilcontainer}>

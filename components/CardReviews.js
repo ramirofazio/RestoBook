@@ -4,7 +4,7 @@ import { View, Image, StyleSheet } from "react-native";
 import globalStyles from "../Screens/GlobalStyles";
 import { useSelector } from "react-redux";
 import firebase from "../database/firebase";
-import moment from 'moment/min/moment-with-locales'
+import moment from "moment/min/moment-with-locales";
 import { getAuth } from "firebase/auth";
 import {
   doc,
@@ -33,6 +33,11 @@ export default function CardReviews({ reseña }) {
   };
   useEffect(() => {
     getImage();
+    // console.log(
+    //   `${reseña.review} =>`,
+    //   new Date(reseña.createAt.seconds * 1000)
+    // );
+    console.log("reseña", moment(reseña.createAt.seconds * 1000).format("LLL"));
   }, []);
 
 
@@ -45,7 +50,8 @@ export default function CardReviews({ reseña }) {
             userProfileImage
               ? { uri: CLOUDINARY_CONSTANT + userProfileImage }
               : { uri: CLOUDINARY_CONSTANT + DEFAULT_PROFILE_IMAGE }
-          } />
+          }
+        />
       </View>
       <View style={styles.viewInfo}>
         <AirbnbRating
@@ -92,12 +98,12 @@ const styles = StyleSheet.create({
     borderBottomColor: "#e3e3e3",
     borderBottomWidth: 1,
     width: "100%",
-    justifyContent: "space-around"
+    justifyContent: "space-around",
   },
   viewInfo: {
     marginBottom: 30,
     alignSelf: "center",
-    width: '50.6%',
+    width: "50.6%",
     justifyContent: "space-between",
     alignItems: "flex-start",
   },
@@ -111,14 +117,12 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   cardDate: {
-    width: '100%',
-    justifyContent: "flex-end"
+    width: "100%",
+    justifyContent: "flex-end",
   },
   date: {
     marginLeft: 270,
-    color: 'grey',
+    color: "grey",
     fontSize: 10,
-  }
-})
-
-
+  },
+});
