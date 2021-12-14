@@ -394,11 +394,9 @@ const DetailsResto = ({ navigation }) => {
             </View>
           </View>
         </Modal>
-        <ScrollView>
-          <View style={styles.listReviews}>
-            <ListReviews navigation={navigation} reviews={reviews} />
-          </View>
-        </ScrollView>
+        <View style={styles.listReviews}>
+          <ListReviews navigation={navigation} reviews={reviews} />
+        </View>
       </ScrollView >
     </View >
   );
