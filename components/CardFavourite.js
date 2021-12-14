@@ -37,6 +37,8 @@ const CardFavourite = ({
   const dispatch = useDispatch();
   const [deleting, setDeleting] = useState(false);
   const [hearthColor, setHearthColor] = useState("red");
+  
+  console.log('Resto in cardFavourites: ', resto)
   let infoFavourite = {
     idResto: resto.idResto,
     title: resto.title,
@@ -84,6 +86,8 @@ const CardFavourite = ({
           <Image
             style={globalStyles.cardsHomeimg}
             source={{ uri: CLOUDINARY_CONSTANT + resto.img }}
+            resizeMode="contain"
+
           />
         </View>
 
@@ -93,17 +97,17 @@ const CardFavourite = ({
               <ActivityIndicator
                 size="large"
                 color="#5555"
-                // style={globalStyles.imgProfile}
+              // style={globalStyles.imgProfile}
               />
             ) : (
               <Text style={globalStyles.cardsHomeTitle}>{resto.title}</Text>
             )}
           </View>
 
-                
-          <View style={{margin : 4 ,justifyContent: 'space-evenly'}}>
+
+          <View style={{ margin: 5 }}>
             <Text style={globalStyles.cardsDescriptionText}>
-              <Icon 
+              <Icon
                 reverse
                 name="map-marker-alt"
                 type="font-awesome-5"
@@ -114,21 +118,21 @@ const CardFavourite = ({
                 {resto.location.address.split(",")[0]},
                 {resto.location.address.split(",")[1]}
             </Text>
-          
+
             <Text style={globalStyles.cardsDescriptionText}>
-              <Icon 
+              <Icon
                 reverse
                 name="phone-alt"
                 type="font-awesome-5"
                 color="#eecdaa"
                 reverseColor="#161616"
                 size={11}
-                />
+              />
               {resto.phone}
             </Text>
           </View>
         </View>
-          
+
 
         <View style={globalStyles.btnContainerCard}>
           <View>

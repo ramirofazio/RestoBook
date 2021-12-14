@@ -95,9 +95,9 @@ const ProfileResto = ({ navigation }) => {
   const [uploading, setUploading] = useState(false);
 
   //cantidad de favoritos
-  const [favoritesQty, setFavoritesQty] = useState(null);
+  const [favoritesQty, setFavoritesQty] = useState(0);
   //promedio del rating
-  const [resultRating, setResultRating] = useState(null);
+  const [resultRating, setResultRating] = useState(0);
   useEffect(() => {
     const getInfo = async () => {
       const docRef = doc(firebase.db, "Restos", commerceInfo);
@@ -125,35 +125,20 @@ const ProfileResto = ({ navigation }) => {
     getInfo();
   }, [commerceInfo]);
 
-  const getRating = () => {
-    let totalRating = 0;
-    if (availableCommerces?.reviews?.length) {
-      for (let i = 0; i < availableCommerces?.reviews?.length; i++) {
-        totalRating += availableCommerces?.reviews[i]?.rating;
-      }
-      let resultado = totalRating / availableCommerces?.reviews?.length;
-      setResultRating(resultado);
-    } else {
-      setResultRating(totalRating);
-    }
-  };
-
   const getFavQty = async () => {
     try {
-      const docRef = query(
-        collection(firebase.db, "Users"),
-        where("favourites", "!=", "[]")
-      );
+      const docRef = query(collection(firebase.db, "Users"));
       const docSnap = await getDocs(docRef);
       if (!docSnap.empty) {
         let totalFavs = 0;
         docSnap.forEach((doc) => {
           let obj = doc.data();
-          if (obj.favourites.length) {
+          if (obj?.favourites?.length) {
             let favourites = obj.favourites.filter(
               (element) => element.idResto === availableCommerces?.id
             );
             totalFavs += favourites.length;
+            console.log("total", totalFavs);
           }
         });
         setFavoritesQty(totalFavs);
@@ -164,9 +149,16 @@ const ProfileResto = ({ navigation }) => {
   };
 
   useEffect(() => {
+    console.log("rating", resultRating);
+  }, [resultRating]);
+
+  useEffect(() => {
+    console.log("favs", favoritesQty);
+  }, [favoritesQty]);
+
+  useEffect(() => {
     getFavQty();
-    getRating();
-  }, [commerceInfo]);
+  }, [availableCommerces]);
 
   useEffect(() => {
     return () => {
@@ -243,7 +235,7 @@ const ProfileResto = ({ navigation }) => {
         reservationsParams: obj,
       });
       alert("Cambios Guardados con Exito!");
-      setModalVisibleAdminReservas(false);
+      setModalAdminReservasVisible(!modalAdminReservasVisible);
       clearStates();
     } catch (err) {
       console.log(err);
@@ -279,6 +271,7 @@ const ProfileResto = ({ navigation }) => {
                 uri: CLOUDINARY_CONSTANT + image,
               }}
               style={globalStyles.imgProfile}
+              
             />
           </TouchableOpacity>
         ) : (
@@ -434,8 +427,8 @@ const ProfileResto = ({ navigation }) => {
                   size={50}
                   style={{justifyContent: 'center', marginLeft: -280}}
             />
-            <Text style={{justifyContent: 'flex-start', alignSelf: "center", alignItems: "center", flexDirection: "column", backgroundColor: "red"}}>
-            info dinamica
+            <Text style={{alignSelf: "center", bottom: 40, fontWeight: "bold", fontSize: 20}}>
+            {favoritesQty}
              </Text>
       </View>
 
@@ -448,8 +441,8 @@ const ProfileResto = ({ navigation }) => {
                   size={50}
                   style={{marginLeft: -280}}
             />
-          <Text style={{ alignSelf: "center", paddingBottom: 80, backgroundColor: "red"}}>
-            info dinamica
+          <Text style={{ alignSelf: "center", bottom: 40, fontSize: 20, fontWeight: "bold"}}>
+            {Math.floor(resultRating)}
           </Text>
       </View>
       {/* MODAL DE ADMINISTRAR RESERVAS */}
