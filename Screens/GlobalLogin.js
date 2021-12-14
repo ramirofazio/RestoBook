@@ -38,13 +38,15 @@ import {
   getRedirectResult,
   onAuthStateChanged,
   sendPasswordResetEmail,
+  TwitterAuthProvider,
 } from "firebase/auth";
 
 import firebase from "../database/firebase";
 import * as firebaseAuth from "firebase/auth";
 //
 //
-//---------SCREENS & COMPONENTS---------------
+//---------MATERIAL ICONS---------------
+import { MaterialIcons } from "@expo/vector-icons";
 
 //
 //
@@ -101,6 +103,10 @@ const GlobalRegisterSchema = yup.object({
       async (value, testContext) => testContext.parent.password === value
     ),
 });
+
+const resetPasSchema = yup.object({
+  email: yup.string().required().email(),
+})
 
 const GlobalLogin = ({ navigation }) => {
   const [visible, isVisible] = useState(false);
@@ -262,7 +268,80 @@ const GlobalLogin = ({ navigation }) => {
                   </Text>
                 </TouchableOpacity>
 
-                <BottomSheet isVisible={visible} style={styles.forgottenPass}>
+                {/*----------------MODAL RESET PASS---------------------- */}
+
+                <Modal
+                  animationType="slide"
+                  transparent={true}
+                  visible={forgottvisible}
+                  onRequestClose={() => {
+                    isforgottVisible(!forgottvisible);
+                  }}
+                >
+                  <Formik
+                    initialValues={{
+                      email: "",
+                    }}
+                    validationSchema={resetPasSchema}
+                    onSubmit={({ email }) => {
+                      sendPasswordResetEmail(auth, email)
+                        .then(alert("Revisa tu casilla!"))
+                        .then(isforgottVisible(!forgottvisible));
+                    }}
+                  >
+                    {(props) => (
+                      <View style={globalStyles.centeredView}>
+                        <View style={globalStyles.modalView}>
+                          <TouchableOpacity
+                            style={globalStyles.btnCloseMenu}
+                            onPress={() => isforgottVisible(!forgottvisible)}
+                          >
+                            <MaterialIcons
+                              name="arrow-back-ios"
+                              size={20}
+                              color="#161616"
+                            ></MaterialIcons>
+                          </TouchableOpacity>
+                          <Text
+                            style={{
+                              textAlign: "center",
+                              fontSize: 30,
+                              paddingVertical: 5,
+                              color: "#161616",
+                              letterSpacing: 1,
+                            }}
+                          >
+                            Recuperar Contraseña
+                          </Text>
+                          <View style={globalStyles.inputComponent}>
+                            <TextInput
+                              style={globalStyles.texts}
+                              placeholder="email"
+                              placeholderTextColor="#666"
+                              textAlign="center"
+                              onChangeText={props.handleChange("email")}
+                              value={props.values.email}
+                              onBlur={props.handleBlur("email")}
+                            />
+                          </View>
+                          {props.touched.email && props.errors.email ? (
+                            <Text style={globalStyles.errorText}>
+                              {props.errors.email}
+                            </Text>
+                          ) : null}
+                          <TouchableOpacity
+                            style={globalStyles.btnTodasComidas}
+                            onPress={() => props.handleSubmit()}
+                          >
+                            <Text style={globalStyles.texts}>Enviar</Text>
+                          </TouchableOpacity>
+                        </View>
+                      </View>
+                    )}
+                  </Formik>
+                </Modal>
+
+                <BottomSheet isVisible={TwitterAuthProvider} style={styles.forgottenPass}>
                   <View>
                     <TouchableOpacity onPress={() => isforgottVisible(false)}>
                       <Text>X</Text>

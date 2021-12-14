@@ -364,7 +364,7 @@ const DetailsResto = ({ navigation }) => {
           </View>
         </Modal>
 
-        {/* Nuevo Modal Menu */}
+        {/*----------------------------Nuevo Modal Menu------------------------------------ */}
 
         <Modal
           animationType="slide"
