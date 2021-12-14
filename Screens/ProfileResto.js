@@ -243,7 +243,7 @@ const ProfileResto = ({ navigation }) => {
         reservationsParams: obj,
       });
       alert("Cambios Guardados con Exito!");
-      setModalVisibleAdminReservas(false);
+      setModalAdminReservasVisible(!modalAdminReservasVisible);
       clearStates();
     } catch (err) {
       console.log(err);
