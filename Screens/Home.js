@@ -12,12 +12,14 @@ import {
   ScrollView,
   Text,
   StyleSheet,
+  Image,
   TouchableOpacity,
-  TextInput,
+  TextInput, 
   Modal,
   ActivityIndicator,
   Picker,
   Pressable,
+  Alert,
 } from "react-native";
 //---------------------EXPO----------------------
 import * as Location from "expo-location";
@@ -32,12 +34,13 @@ import CardHome from "../components/CardHome.js";
 import globalStyles from "./GlobalStyles.js";
 //
 //---------------------GEOLOCATION-------------------
-import MapView, { Marker } from "react-native-maps";
+import MapView, { Callout, Marker } from "react-native-maps";
 //----------------------------------------------------
 //
 //-------INITIALIZATIONS-------
 const auth = getAuth();
 import { DEFAULT_PROFILE_IMAGE } from "@env";
+import { CLOUDINARY_CONSTANT } from "@env";
 import setUserLocation from "../Redux/Actions/setUserLocation.js";
 //
 //---------------------------------------------------------------------------------------//
@@ -48,6 +51,7 @@ import * as yup from "yup";
 //----------FORMIK UTILS-----------
 import { Formik } from "formik";
 //
+import CardMaps from "../components/CardMaps.js";
 
 
 //-------VALIDATION SCHEMA GOOGLE LOGIN--------------
@@ -103,7 +107,6 @@ export default function Home({ navigation }) {
     if (usuarioFirebase?.emailVerified) {
       if (loggedId !== usuarioFirebase.uid) {
         dispatch(CurrentId(usuarioFirebase.uid));
-
         // const unsub = onSnapshot(
         //   doc(firebase.db, "Users", usuarioFirebase.uid),
         //   (doc) => {
@@ -457,8 +460,29 @@ export default function Home({ navigation }) {
         {/*----------------------------------------BOTON MAPA------------------------------------------- */}
         <TouchableOpacity
           style={globalStyles.btnFiltrosHome}
-          onPress={() => setMapaVisible(!mapaVisible)}>
-          <Icon
+          onPress={() => {
+            if(loggedUser) {
+              setMapaVisible(!mapaVisible)
+            } else {
+              Alert.alert(
+                'Debes estar logeado para ver el Mapa de tu zona',
+                'Desea ir a la pantalla de Login?',
+                [
+                  {
+                    text: 'Ahora no',
+                    onPress: () => console.log('No quiere logearse'),
+                    style: 'cancel'
+                  },
+                  {
+                    text: 'Si, por favor',
+                    onPress: () => navigation.navigate('GlobalLogin')
+                  }
+                ]
+              )
+            }
+          }}
+          >
+          <Text style={globalStyles.texts}><Icon
             reverse
             name="map-marker-alt"
             type="font-awesome-5"
@@ -466,6 +490,7 @@ export default function Home({ navigation }) {
             reverseColor="#161616"
             size={12}
           />
+          </Text>
         </TouchableOpacity>
         {/*----------------------------------------FILTRADO------------------------------------------- */}
         <View>
@@ -638,7 +663,11 @@ export default function Home({ navigation }) {
                         pinColor="red"
                         coordinate={resto.location}
                         identifier={resto.title}
-                      />
+                      >
+                        <Callout tooltip>
+                          <CardMaps key={resto.idResto} resto={resto} navigation={navigation} ></CardMaps>
+                        </Callout>  
+                      </Marker>
                     )
                   })}
                 </MapView>
