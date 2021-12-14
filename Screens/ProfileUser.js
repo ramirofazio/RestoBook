@@ -141,11 +141,11 @@ const ProfileUser = ({ navigation }) => {
   const scrollX = useRef(new Animated.Value(0)).current;
   const { width: windowWidth } = useWindowDimensions();
 
-  const renderItem = ({item, index}) => {
+  const renderItem = ({ item, index }) => {
     return (
       <View
-          style={globalStyles.cardsFavouriteContainer}
-          key={item.idResto}
+        style={globalStyles.cardsFavouriteContainer}
+        key={item.idResto}
       >
         <CardFavourite
           key={index}
@@ -320,25 +320,45 @@ const ProfileUser = ({ navigation }) => {
           color={"rgba(00, 00, 00, .5)"}
           style={{ marginVertical: 5 }}
         />
-      </View>
-      <ScrollView
-        horizontal={true}
-        pagingEnabled
-        showsHorizontalScrollIndicator={false}
-        style={globalStyles.FavouriteContainer}
-        onScroll={Animated.event([
-          {
-            nativeEvent: {
-              contentOffset: {
-                x: scrollX,
-              },
-            },
-          },
-        ])}
-        scrollEventThrottle={1}
-      >
-        {myFavourites?.length
-          ? myFavourites.map((resto) => {
+
+        {!myFavourites?.length ? <View style={globalStyles.FavouriteContainer}>
+          <Text style={{ textAlign: "center", color: "grey", textAlignVertical: 'center', fontWeight: "bold" }}>Aún no tienes favoritos! Cuando los agregues aparecerán aqui
+          </Text>
+        </View>
+          :
+          (<View style={globalStyles.FavouriteContainer} >
+            <Carousel
+              data={myFavourites}
+              renderItem={renderItem}
+              itemWidth={320}
+              sliderWidth={400}
+              inactiveSlideShift={1}
+              useScrollView={true}
+              layout={'default'}
+            />
+          </View>)
+        }
+
+        <Text
+          style={{
+            fontSize: 25,
+            color: "#161616",
+            textAlign: "center",
+            marginTop: 5,
+          }}
+        >
+          <TagOutlined name="tag" color="#161616" size={25} /> Mis Reservas
+        </Text>
+        <Divider
+          orientation="horizontal"
+          width={2}
+          inset={true}
+          insetType={"middle"}
+          color={"rgba(00, 00, 00, .5)"}
+          style={{ marginVertical: 5 }}
+        />
+        <ScrollView style={{ overflow: "scroll" }}>
+          {reservas.map((persona) => {
             return (
               <View
                 style={{
@@ -361,54 +381,54 @@ const ProfileUser = ({ navigation }) => {
                 </CardFavourite>
               </View>
             );
-          })
-          : null}
-      </ScrollView>
-      <View style={{
-        flex: 1,
-        maxHeight: "100%",
-        height: '20%',
-        backgroundColor: "#fdfdfd",
-
-      }}>
-        <View style={{ backgroundColor: "#eccdaa" }}>
-          <Text
-            style={{
-              fontSize: 25,
-              color: "#161616",
-              textAlign: "center",
-              marginTop: 5,
-            }}
-          >
-            <TagOutlined name="tag" color="#161616" size={25} /> Mis Reservas
-          </Text>
-          <Divider
-            orientation="horizontal"
-            width={2}
-            inset={true}
-            insetType={"middle"}
-            color={"rgba(00, 00, 00, .5)"}
-            style={{ marginVertical: 5 }}
-          />
-        </View>
-        <ScrollView style={{ padding: 10 }}>
-          {reservas?.map((reserva, index) => {
-            console.log(reserva)
-            return (
-              <CardReservation
-                key={index}
-                date={reserva.date.date} 
-                cantCupos={reserva.cantCupos}
-                nameResto={reserva.nameResto}
-                statusReserva={reserva.statusReserva}
-                idReserva={reserva.idReserva}
-                address={reserva.address}
-                navigation={navigation}
-                idResto={reserva.idResto}
-              />
-            );
           })}
         </ScrollView>
+        <View style={{
+          flex: 1,
+          maxHeight: "100%",
+          height: '20%',
+          backgroundColor: "#fdfdfd",
+
+        }}>
+          <View style={{ backgroundColor: "#eccdaa" }}>
+            <Text
+              style={{
+                fontSize: 25,
+                color: "#161616",
+                textAlign: "center",
+                marginTop: 5,
+              }}
+            >
+              <TagOutlined name="tag" color="#161616" size={25} /> Mis Reservas
+            </Text>
+            <Divider
+              orientation="horizontal"
+              width={2}
+              inset={true}
+              insetType={"middle"}
+              color={"rgba(00, 00, 00, .5)"}
+              style={{ marginVertical: 5 }}
+            />
+          </View>
+          <ScrollView style={{ padding: 10 }}>
+            {reservas?.map((reserva, index) => {
+              console.log(reserva)
+              return (
+                <CardReservation
+                  key={index}
+                  date={reserva.date.date}
+                  cantCupos={reserva.cantCupos}
+                  nameResto={reserva.nameResto}
+                  statusReserva={reserva.statusReserva}
+                  idReserva={reserva.idReserva}
+                  address={reserva.address}
+                  navigation={navigation}
+                  idResto={reserva.idResto}
+                />
+              );
+            })}
+          </ScrollView>
+        </View>
       </View>
     </View>
   );

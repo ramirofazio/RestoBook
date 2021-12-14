@@ -59,27 +59,22 @@ export default function CardReviews({ reseña }) {
           size={10}
           defaultRating={reseña.rating}
           showRating={false}
-        >
-        </AirbnbRating>
-        <Text style={styles.cardsMenuTitle} >{reseña.review}</Text>
-        <View>
-        </View>
-
+        ></AirbnbRating>
+        <Text style={styles.cardsMenuTitle}>{reseña.review}</Text>
+        <View></View>
       </View>
       <View style={styles.cardDate}>
-        <Text style={styles.date}>{moment(createReview).format("LLL")}</Text>
+        <Text style={styles.date}>
+          {moment(reseña.createAt.seconds * 1000).format("LLL")}
+        </Text>
       </View>
     </View>
-
   );
 }
 
-
-
-
 const styles = StyleSheet.create({
   cardsImg: {
-    width: '15.6%',
+    width: "15.6%",
     flex: 1,
     padding: 1,
     justifyContent: "space-between",

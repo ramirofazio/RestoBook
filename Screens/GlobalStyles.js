@@ -285,32 +285,32 @@ const globalStyles = StyleSheet.create({
 
     elevation: 8,
   },
-  descriptionRestoContainer: {
-    borderRadius: 50,
-    marginVertical: 15,
-    width: "80%",
-    height: "25%",
-    alignSelf: "center",
-    alignItems: "center",
-    backgroundColor: "#f2f2f2",
-    justifyContent: "space-around",
-    paddingHorizontal: 5,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 3,
-    },
-    shadowOpacity: 0.27,
-    shadowRadius: 4.65,
+  descriptionRestoContainer : {
+        borderRadius: 50,
+        marginVertical: 15,
+        width: "80%",
+        height: "25%",
+        alignSelf: "center",
+        alignItems: "center",
+        backgroundColor: "#f2f2f2",
+        justifyContent: "space-around",
+        paddingHorizontal: 5,
+        shadowColor: "#000",
+        shadowOffset: {
+          width: 0,
+          height: 3,
+        },
+        shadowOpacity: 0.27,
+        shadowRadius: 4.65,
 
-    elevation: 6,
+        elevation: 6,
   },
-  textoDescription: {
-    textAlign: "center",
-    fontSize: 15,
-    color: "#161616",
-    fontWeight: 'bold',
-    textTransform: "capitalize"
+  textoDescription : {
+            textAlign: "center",
+            fontSize: 15,
+            color: "#161616",
+            fontWeight: 'bold',
+            textTransform: "capitalize"
   },
   //------------------------------------------------------------------------------------------------------
 
@@ -536,7 +536,7 @@ const globalStyles = StyleSheet.create({
     shadowRadius: 16.0,
     elevation: 100,
   },
-
+  
   //------------------------------------------------------------------------------------------------------
   title: {
     fontSize: 25,
