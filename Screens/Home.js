@@ -159,7 +159,6 @@ export default function Home({ navigation }) {
       // console.log("dsnap", docSnap.exists());
       if (!docSnap.exists()) {
         // console.log("if de getinfo!");
-        setGoogleUser({ ...googleUser, email: auth.currentUser.email });
         setVisibleModalGoogle(true);
       } else {
         //console.log("else de getinfo!");
@@ -233,7 +232,7 @@ export default function Home({ navigation }) {
 
       {/*--------------------MODAL GOOGLE LOGIN--------------------------- */}
       <Modal
-        visible={false}
+        visible={visibleModalGoogle}
         animationType="slide"
         transparent={true}
       >
@@ -248,8 +247,8 @@ export default function Home({ navigation }) {
           onSubmit={({ name, lastName, cel }) => {
             firebase.db.collection("Users").doc(auth.currentUser.uid).set({
               id: auth.currentUser.uid,
-              name: name,
-              lastName: lastName,
+              name: name.toLowerCase(),
+              lastName: lastName.toLowerCase(),
               cel: cel,
               email: auth.currentUser.email,
               commerce: false,
@@ -272,7 +271,7 @@ export default function Home({ navigation }) {
                     letterSpacing: 1,
                   }}
                 >
-                  Registrarse
+                  Terminar Registro
                 </Text>
                 <View style={globalStyles.inputComponent}>
                   <TextInput
@@ -338,7 +337,7 @@ export default function Home({ navigation }) {
 
       <View style={styles.textContainer}>
         {usuarioGlobal !== "" ? (
-          <Text style={styles.text}>{` Bienvenido ${usuarioGlobal}`}</Text>
+          <Text style={styles.text}>{` Bienvenido ${usuarioGlobal.slice(0, 1).toUpperCase() + usuarioGlobal.slice(1)}`}</Text>
         ) : (
           <Text style={styles.text}>Bienvenido a Resto Book</Text>
         )}
