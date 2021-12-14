@@ -181,6 +181,7 @@ const GlobalLogin = ({ navigation }) => {
                 <TextInput
                   style={globalStyles.texts}
                   placeholder="Email"
+                  placeholderTextColor="#666"
                   onChangeText={props.handleChange("email")}
                   value={props.values.email}
                   onBlur={props.handleBlur("email")}
@@ -193,6 +194,7 @@ const GlobalLogin = ({ navigation }) => {
                 <TextInput
                   style={globalStyles.texts}
                   placeholder="Password"
+                  placeholderTextColor="#666"
                   onChangeText={props.handleChange("password")}
                   value={props.values.password}
                   secureTextEntry={flagSecureText}
@@ -449,7 +451,7 @@ const GlobalLogin = ({ navigation }) => {
                           />
                         </View>
                         {props.touched.passwordConfirm &&
-                        props.errors.passwordConfirm ? (
+                          props.errors.passwordConfirm ? (
                           <Text style={globalStyles.errorText}>
                             {props.errors.passwordConfirm}
                           </Text>
