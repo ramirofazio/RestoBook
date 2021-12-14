@@ -21,6 +21,7 @@ import {
   Modal,
   Image,
   KeyboardAvoidingView,
+  ActivityIndicator,
 } from "react-native";
 
 import { BottomSheet } from "react-native-elements";
@@ -107,6 +108,7 @@ const GlobalLogin = ({ navigation }) => {
   const [forgottedMail, setForgottedMail] = useState("");
   const [flagLoginOrRegister, setFlagLoginOrRegister] = useState(true);
   const [flagSecureText, setFlagSecureText] = useState(true);
+  const [googleLoading, setGoogleLoading] = useState(false);
   const Glogin = async () => {
     try {
       const result = await Google.logInAsync({
@@ -147,7 +149,7 @@ const GlobalLogin = ({ navigation }) => {
             letterSpacing: 1,
           }}
         >
-          Login
+          Iniciar Sesión
         </Text>
         <Formik
           initialValues={{
@@ -179,6 +181,7 @@ const GlobalLogin = ({ navigation }) => {
                 <TextInput
                   style={globalStyles.texts}
                   placeholder="Email"
+                  placeholderTextColor="#666"
                   onChangeText={props.handleChange("email")}
                   value={props.values.email}
                   onBlur={props.handleBlur("email")}
@@ -191,6 +194,7 @@ const GlobalLogin = ({ navigation }) => {
                 <TextInput
                   style={globalStyles.texts}
                   placeholder="Password"
+                  placeholderTextColor="#666"
                   onChangeText={props.handleChange("password")}
                   value={props.values.password}
                   secureTextEntry={flagSecureText}
@@ -221,18 +225,24 @@ const GlobalLogin = ({ navigation }) => {
                   style={globalStyles.btnTodasComidas}
                   onPress={() => props.handleSubmit()}
                 >
-                  <Text style={globalStyles.fontLog}>Log In</Text>
+                  <Text style={globalStyles.fontLog}>Ingresar</Text>
                 </TouchableOpacity>
-
-                <TouchableOpacity
-                  style={styles.googleButton}
-                  onPress={() => Glogin()}
-                >
-                  <Image
-                    style={globalStyles.img}
-                    source={require("../assets/googleIcon2.png")}
-                  ></Image>
-                </TouchableOpacity>
+                {googleLoading ? (
+                  <ActivityIndicator size="large" color="#5555" />
+                ) : (
+                  <TouchableOpacity
+                    style={styles.googleButton}
+                    onPress={() => {
+                      setGoogleLoading(true);
+                      Glogin();
+                    }}
+                  >
+                    <Image
+                      style={globalStyles.img}
+                      source={require("../assets/googleIcon2.png")}
+                    ></Image>
+                  </TouchableOpacity>
+                )}
 
                 <TouchableOpacity
                   style={globalStyles.btnLogin}
@@ -345,13 +355,14 @@ const GlobalLogin = ({ navigation }) => {
                   }}
                 >
                   {(props) => (
-                    <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
+                    <ScrollView
+                      contentContainerStyle={{ alignItems: "center" }}
+                    >
                       <View style={globalStyles.modalInputContainer}>
                         <Text style={styles.modalText}>
                           Registrarse en RestoBook
                         </Text>
                         <View style={globalStyles.inputComponent}>
-
                           <TextInput
                             style={globalStyles.texts}
                             placeholder="Nombre"
@@ -467,7 +478,9 @@ const GlobalLogin = ({ navigation }) => {
                                 setFlagLoginOrRegister(true);
                             }}
                           >
-                            <Text style={globalStyles.fontLog}>Registrarse</Text>
+                            <Text style={globalStyles.fontLog}>
+                              Registrarse
+                            </Text>
                           </TouchableOpacity>
                           <TouchableOpacity
                             style={globalStyles.btnLogin}
@@ -480,7 +493,6 @@ const GlobalLogin = ({ navigation }) => {
                         </View>
                       </View>
                     </ScrollView>
-
                   )}
                 </Formik>
               </View>

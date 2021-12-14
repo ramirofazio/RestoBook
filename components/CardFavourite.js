@@ -45,15 +45,17 @@ const CardFavourite = ({
     phone: resto.phone,
     location: resto.location,
     img: resto.img,
+    description: resto.description,
     reservationsParams: resto.reservationsParams
   };
 
   const handleOnPress = () => {
+    console.log("resto", resto);
+
     dispatch(empresaDetail(resto));
 
     navigation.navigate("DetailsResto");
   };
-
 
   const removeFromFavourite = async () => {
     if (auth?.currentUser?.uid) {
@@ -64,7 +66,7 @@ const CardFavourite = ({
         let modifiedFavs = myFavourites.filter(
           (element) => element.idResto !== infoFavourite.idResto
         );
-       // console.log(modifiedFavs);
+        // console.log(modifiedFavs);
         setMyFavourites(modifiedFavs);
         let docRef = doc(firebase.db, "Users", auth.currentUser.uid);
         await updateDoc(docRef, {
@@ -77,7 +79,6 @@ const CardFavourite = ({
     }
   };
 
-
   return (
     <View style={globalStyles.cardsFavouriteContainer}>
       <TouchableOpacity onPress={() => handleOnPress()}>
@@ -85,6 +86,8 @@ const CardFavourite = ({
           <Image
             style={globalStyles.cardsHomeimg}
             source={{ uri: CLOUDINARY_CONSTANT + resto.img }}
+            resizeMode="contain"
+
           />
         </View>
 
@@ -101,21 +104,22 @@ const CardFavourite = ({
             )}
           </View>
 
-          <View>
+
+          <View style={{ margin: 5 }}>
             <Text style={globalStyles.cardsDescriptionText}>
               <Icon
                 reverse
                 name="map-marker-alt"
                 type="font-awesome-5"
                 color="#eecdaa"
+                textAlign="beseline"
                 reverseColor="#161616"
                 size={11}
-              />{" "}
+              />
               {resto.location.address.split(",")[0]},
               {resto.location.address.split(",")[1]}
             </Text>
-          </View>
-          <View>
+
             <Text style={globalStyles.cardsDescriptionText}>
               <Icon
                 reverse
@@ -124,11 +128,12 @@ const CardFavourite = ({
                 color="#eecdaa"
                 reverseColor="#161616"
                 size={11}
-              />{" "}
+              />
               {resto.phone}
             </Text>
           </View>
         </View>
+
 
         <View style={globalStyles.btnContainerCard}>
           <View>
