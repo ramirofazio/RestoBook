@@ -18,6 +18,7 @@ import {
 const auth = getAuth();
 import { CLOUDINARY_CONSTANT, DEFAULT_PROFILE_IMAGE } from "@env";
 export default function CardReviews({ reseña }) {
+  const createReview = new Date(reseña.createAt.seconds * 1000)
   const [rating, setRating] = useState(null);
   const [userProfileImage, setUserProfileImage] = useState(null);
 
@@ -39,6 +40,7 @@ export default function CardReviews({ reseña }) {
     console.log("reseña", moment(reseña.createAt.seconds * 1000).format("LLL"));
   }, []);
 
+
   return (
     <View style={styles.cardsMenuContainer}>
       <View style={styles.cardsImg}>
@@ -49,6 +51,7 @@ export default function CardReviews({ reseña }) {
               ? { uri: CLOUDINARY_CONSTANT + userProfileImage }
               : { uri: CLOUDINARY_CONSTANT + DEFAULT_PROFILE_IMAGE }
           }
+
         />
       </View>
       <View style={styles.viewInfo}>

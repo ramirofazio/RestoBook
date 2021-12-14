@@ -83,7 +83,7 @@ const globalStyles = StyleSheet.create({
     alignSelf: "center",
     backgroundColor: "#f2f2f2",
     marginHorizontal: 10,
-    marginVertical: 5,
+    marginVertical: 8,
     paddingHorizontal: 5,
     paddingVertical: 5,
     borderRadius: 25,
@@ -141,16 +141,20 @@ const globalStyles = StyleSheet.create({
     // backgroundColor: 'green',
     maxHeight: "120%",
     height: "90%",
-    width: "35%",
+    marginLeft: 20,
+    width: "50%",
     alignSelf: "center",
     justifyContent: "space-around",
   },
   cardsDescriptionText: {
-    // backgroundColor: 'lightblue',
+    //backgroundColor: 'lightblue',
     textAlign: "center",
     width: "100%",
-    fontSize: 13,
+    justifyContent: "space-around",
+    fontSize: 12,
+    height: 50,
     fontWeight: "bold",
+    maxHeight: "120%",
   },
   cardsHomeTitle: {
     // backgroundColor: "#5555",
@@ -165,7 +169,7 @@ const globalStyles = StyleSheet.create({
     // backgroundColor: 'violet',
     maxHeight: "120%",
     height: 120,
-    width: "31.6%",
+    width: "20.6%",
     alignSelf: "flex-end",
     alignItems: "center",
     marginTop: -120,
@@ -214,6 +218,7 @@ const globalStyles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   cardsMenuTitle: {
+    textTransform: "capitalize",
     fontSize: 20,
     fontWeight: "bold",
     textAlign: "left",
@@ -281,9 +286,9 @@ const globalStyles = StyleSheet.create({
     elevation: 8,
   },
   descriptionRestoContainer : {
-        borderRadius: 50,
+        borderRadius: 15,
         marginVertical: 15,
-        width: "80%",
+        width: "95%",
         height: "25%",
         alignSelf: "center",
         alignItems: "center",
@@ -333,7 +338,7 @@ const globalStyles = StyleSheet.create({
   // ---------------------------- PROFILE USER Y RESTO  Y CARD FAVOURITE ----------------------------------------------------
   Perfilcontainer: {
     flex: 1,
-    backgroundColor: "#f2f2f2",
+    backgroundColor: "#fdfdfd",
   },
   imgContainer: {
     flex: 2,
@@ -366,7 +371,7 @@ const globalStyles = StyleSheet.create({
   },
   FavouriteContainer: {
     overflow: "scroll",
-    backgroundColor: "#d0d0d0",
+    backgroundColor: "#fdfdfd",
     maxHeight: "25%",
     height: "100%",
   },
@@ -398,12 +403,13 @@ const globalStyles = StyleSheet.create({
     height: "100%",
     shadowColor: "#161616",
     shadowOffset: {
-      width: 1,
+      width: 0,
       height: 2,
     },
-    shadowOpacity: 3,
-    shadowRadius: 5,
-    elevation: 10,
+    shadowOpacity: 0.2,
+    shadowRadius: 4.84,
+
+    elevation: 5,
   },
   // ------------------------------------------------------------------------------------------------------
   //------------------------------MODAL PROFILES-----------------------------------------------------------
@@ -497,7 +503,7 @@ const globalStyles = StyleSheet.create({
     textAlign: "center",
   },
   modalText: {
-    marginVertical: 15,
+    marginVertical: 10,
     textAlign: "center",
     fontSize: 30,
     fontWeight: "bold",
@@ -530,7 +536,28 @@ const globalStyles = StyleSheet.create({
     shadowRadius: 16.0,
     elevation: 100,
   },
-  
+  btnDetail: {
+    backgroundColor: "#fdfdfd",
+    paddingVertical: 5,
+    paddingHorizontal: 9,
+    marginVertical: 7,
+    borderRadius: 15,
+    alignItems: "center",
+    alignSelf: "center",
+    justifyContent: "center",
+    borderWidth: 2,
+    width: "95%",
+    borderColor: "#eccdaa",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    shadowOpacity: 0.34,
+    shadowRadius: 6.27,
+
+    elevation: 6,
+  },
   //------------------------------------------------------------------------------------------------------
   title: {
     fontSize: 25,
@@ -550,7 +577,7 @@ const globalStyles = StyleSheet.create({
   navHome: {
     flexDirection: "row",
     width: "100%",
-    backgroundColor: "#161616",
+    // backgroundColor: "#161616",
   },
   touchLog: {
     marginTop: 10,

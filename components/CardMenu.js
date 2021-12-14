@@ -38,6 +38,7 @@ const CardMenu = ({ menu }) => {
           source={{
             uri: CLOUDINARY_CONSTANT + menu.img,
           }}
+          resizeMode="contain"
         />
       </View>
     </View>

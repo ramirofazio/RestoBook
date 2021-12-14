@@ -43,18 +43,24 @@ import setUserLocation from "../Redux/Actions/setUserLocation.js";
 //---------------------------------------------------------------------------------------//
 import * as Animatable from "react-native-animatable";
 import { Feather } from "@expo/vector-icons";
+//-------YUP(Validacion)------
+import * as yup from "yup";
+//----------FORMIK UTILS-----------
+import { Formik } from "formik";
+//
 
+
+//-------VALIDATION SCHEMA GOOGLE LOGIN--------------
+const googleLoginSchema = yup.object({
+  name: yup.string().required(),
+  lastName: yup.string().required(),
+  cel: yup.number().required(),
+});
 
 export default function Home({ navigation }) {
   const dispatch = useDispatch();
   //------LOGIN JOSE------------
   const [visibleModalGoogle, setVisibleModalGoogle] = useState(false);
-  const [googleUser, setGoogleUser] = useState({
-    name: "",
-    lastName: "",
-    cel: "",
-    email: "",
-  });
   const [usuarioGlobal, setUsuarioGlobal] = useState("");
   const [availableCommerces, setAvailableCommerces] = useState([]);
   const [flagCards, setFlagCards] = useState(false);
@@ -224,71 +230,112 @@ export default function Home({ navigation }) {
     <Text>Hola!</Text>
         </View>
       </BottomSheet> */}
+
+      {/*--------------------MODAL GOOGLE LOGIN--------------------------- */}
       <Modal
-        visible={visibleModalGoogle}
+        visible={false}
         animationType="slide"
         transparent={true}
       >
-        <View style={globalStyles.centeredView}>
-          <View style={globalStyles.modalView}>
-            <TextInput
-              style={globalStyles.inputComponent}
-              placeholder="Nombre"
-              placeholderTextColor="#666"
-              textAlign="center"
-              onChangeText={(value) => {
-                setGoogleUser({
-                  ...googleUser,
-                  name: value,
-                });
-              }}
-            />
-            <TextInput
-              style={globalStyles.inputComponent}
-              placeholder="Apellido"
-              placeholderTextColor="#666"
-              textAlign="center"
-              onChangeText={(value) => {
-                setGoogleUser({
-                  ...googleUser,
-                  lastName: value,
-                });
-              }}
-            />
-            <TextInput
-              style={globalStyles.inputComponent}
-              placeholder="Celular"
-              placeholderTextColor="#666"
-              textAlign="center"
-              onChangeText={(value) => {
-                setGoogleUser({
-                  ...googleUser,
-                  cel: value,
-                });
-              }}
-            />
-            <TouchableOpacity
-              style={globalStyles.btnTodasComidas}
-              onPress={() => {
-                firebase.db.collection("Users").doc(auth.currentUser.uid).set({
-                  id: auth.currentUser.uid,
-                  name: googleUser.name,
-                  lastName: googleUser.lastName,
-                  cel: googleUser.cel,
-                  email: googleUser.email,
-                  commerce: false,
-                  profileImage: DEFAULT_PROFILE_IMAGE,
-                  reservations: [],
-                  payments: [],
-                });
-                setVisibleModalGoogle(false);
-              }}
-            >
-              <Text style={globalStyles.texts}>Enviar</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+        <Formik
+          initialValues={{
+            name: "",
+            lastName: "",
+            cel: "",
+            email: "",
+          }}
+          validationSchema={googleLoginSchema}
+          onSubmit={({ name, lastName, cel }) => {
+            firebase.db.collection("Users").doc(auth.currentUser.uid).set({
+              id: auth.currentUser.uid,
+              name: name,
+              lastName: lastName,
+              cel: cel,
+              email: auth.currentUser.email,
+              commerce: false,
+              profileImage: DEFAULT_PROFILE_IMAGE,
+              reservations: [],
+              payments: [],
+            });
+            setVisibleModalGoogle(false);
+          }}
+        >
+          {(props) => (
+            <View style={globalStyles.centeredView}>
+              <View style={globalStyles.modalView}>
+                <Text
+                  style={{
+                    textAlign: "center",
+                    fontSize: 30,
+                    paddingVertical: 5,
+                    color: "#161616",
+                    letterSpacing: 1,
+                  }}
+                >
+                  Registrarse
+                </Text>
+                <View style={globalStyles.inputComponent}>
+                  <TextInput
+                    style={globalStyles.texts}
+                    placeholder="Nombre"
+                    placeholderTextColor="#666"
+                    textAlign="center"
+                    onChangeText={props.handleChange("name")}
+                    value={props.values.name}
+                    onBlur={props.handleBlur("name")}
+                  />
+                </View>
+                {props.touched.name && props.errors.name ? (
+                  <Text style={globalStyles.errorText}>
+                    {props.errors.name}
+                  </Text>
+                ) : null}
+                <View style={globalStyles.inputComponent}>
+                  <TextInput
+                    style={globalStyles.texts}
+                    placeholder="Apellido"
+                    placeholderTextColor="#666"
+                    textAlign="center"
+                    onChangeText={props.handleChange("lastName")}
+                    value={props.values.lastName}
+                    onBlur={props.handleBlur("lastName")}
+                  />
+                </View>
+                {props.touched.lastName && props.errors.lastName ? (
+                  <Text style={globalStyles.errorText}>
+                    {props.errors.lastName}
+                  </Text>
+                ) : null}
+                <View style={globalStyles.inputComponent}>
+                  <TextInput
+                    style={globalStyles.texts}
+                    placeholder="Celular"
+                    placeholderTextColor="#666"
+                    textAlign="center"
+                    onChangeText={props.handleChange("cel")}
+                    value={props.values.cel}
+                    onBlur={props.handleBlur("cel")}
+                  />
+                </View>
+                {props.touched.cel && props.errors.cel ? (
+                  <Text style={globalStyles.errorText}>
+                    {props.errors.cel}
+                  </Text>
+                ) : null}
+                <TouchableOpacity
+                  style={globalStyles.btnTodasComidas}
+                  onPress={() => props.handleSubmit()}
+                >
+                  <Text style={globalStyles.texts}>Enviar</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          )}
+        </Formik>
       </Modal>
+
+      {/*--------------FIN MODAL GOOGLE LOGIN------------------------- */}
+
       <View style={styles.textContainer}>
         {usuarioGlobal !== "" ? (
           <Text style={styles.text}>{` Bienvenido ${usuarioGlobal}`}</Text>
@@ -316,27 +363,14 @@ export default function Home({ navigation }) {
         </View>
       </View>
       {/*  /----------------------------------------ORDENAMIENTO----------------------------------------/ */}
-      {/*  <View style={globalStyles.btnHome}>
-      <View style={globalStyles.btnFiltrosHome}>
-      {/* <Picker
-        selectedValue={selectedValu}
-        selectedValue={selectedValue}
-        style={{ height: 17, width: 130 }}
-        onValueChange={updateUser}
-      >
-        <Picker.Item label="Ordenado" value="Or" />
-        <Picker.Item label="A-Z" value="A-Z" />
-        <Picker.Item label="Z-A" value="Z-A" />
-      </Picker>
-    </View> */}
-      <View style={{flexDirection: "row", justifyContent: 'space-around', alignItems: 'center'}}>
+      <View style={{ flexDirection: "row", justifyContent: 'space-around', alignItems: 'center' }}>
         <Pressable onPress={() => isVisibleFiltro(true)}>
           <TextInput
             style={globalStyles.btnFiltrosHome}
             editable={false}
             placeholder="Ordenar por"
             fontWeight={'bold'}
-            fontSize= {15}
+            fontSize={15}
             textAlign="center"
             placeholderTextColor="#161616"
             value={selectedValue}
@@ -364,10 +398,12 @@ export default function Home({ navigation }) {
               style={{ backgroundColor: "#0000", alignItems: "center" }}
             >
               <ListItem.Title
-                style={{ height: 35,
+                style={{
+                  height: 35,
                   color: "#161616",
                   paddingVertical: 5,
-                  fontWeight: "bold"}}
+                  fontWeight: "bold"
+                }}
               >
                 A-Z
               </ListItem.Title>
@@ -389,10 +425,12 @@ export default function Home({ navigation }) {
               style={{ backgroundColor: "#0000", alignItems: "center" }}
             >
               <ListItem.Title
-                style={{ height: 35,
+                style={{
+                  height: 35,
                   color: "#161616",
                   paddingVertical: 5,
-                  fontWeight: "bold" }}
+                  fontWeight: "bold"
+                }}
               >
                 Z-A
               </ListItem.Title>
@@ -402,7 +440,7 @@ export default function Home({ navigation }) {
           <ListItem
             key={999}
             containerStyle={{ backgroundColor: "#eccdaa" }}
-            style={{ borderBottomWidth: 1, borderColor: "#ffff"}}
+            style={{ borderBottomWidth: 1, borderColor: "#ffff" }}
             onPress={() => isVisibleFiltro(false)}
           >
             <ListItem.Content style={{ alignItems: "center" }}>
@@ -420,14 +458,14 @@ export default function Home({ navigation }) {
         <TouchableOpacity
           style={globalStyles.btnFiltrosHome}
           onPress={() => setMapaVisible(!mapaVisible)}>
-          <Text><Icon
+          <Icon
             reverse
             name="map-marker-alt"
             type="font-awesome-5"
             color="#FDFDFD"
             reverseColor="#161616"
             size={12}
-          /></Text>
+          />
         </TouchableOpacity>
         {/*----------------------------------------FILTRADO------------------------------------------- */}
         <View>
@@ -464,10 +502,12 @@ export default function Home({ navigation }) {
                 style={{ backgroundColor: "#0000", alignItems: "center" }}
               >
                 <ListItem.Title
-                  style={{ height: 35,
+                  style={{
+                    height: 35,
                     color: "#161616",
                     paddingVertical: 5,
-                    fontWeight: "bold", }}
+                    fontWeight: "bold",
+                  }}
                 >
                   Todos
                 </ListItem.Title>
@@ -476,7 +516,7 @@ export default function Home({ navigation }) {
             {categories.map((categoria, index) => (
               <ListItem
                 key={index}
-                containerStyle={{ backgroundColor: "rgba(242, 242, 242,0.8)"}}
+                containerStyle={{ backgroundColor: "rgba(242, 242, 242,0.8)" }}
                 style={{
                   borderBottomWidth: 1,
                   borderColor: "#333a",
@@ -556,7 +596,7 @@ export default function Home({ navigation }) {
         transparent={true}
         visible={mapaVisible}
         onRequestClose={() => {
-          Alert.alert("Modal has been closed.");
+
           setMapaVisible(!mapaVisible);
         }}
       >

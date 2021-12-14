@@ -150,10 +150,12 @@ const DetailsResto = ({ navigation }) => {
     if (target === "vegan") {
       filtered = menuArr.filter((element) => element.vegan === true);
       setMenuFiltered(filtered);
+      setMenuHeader("Veggie");
     }
     if (target === "glutenFree") {
       filtered = menuArr.filter((element) => element.glutenFree === true);
       setMenuFiltered(filtered);
+      setMenuHeader("Glutenfree");
     }
   };
 
@@ -176,7 +178,7 @@ const DetailsResto = ({ navigation }) => {
             <Badge status={handleHorarioReserva() ? "success" : "error"}   containerStyle={{ position: 'absolute', top: 20, right: 15}}/>
       </View>
 
-
+    <ScrollView style={globalStyles.Home}>
       <View style={globalStyles.descriptionRestoContainer}>
         <Text  style={globalStyles.textoDescription}>{empresaDetail.description}</Text>
         <Text style={globalStyles.textoDescription}>
@@ -202,9 +204,8 @@ const DetailsResto = ({ navigation }) => {
                 {empresaDetail.location.address},
         </Text>
       </View>
-      <ScrollView style={globalStyles.Home}>
         <View onTouchStart={() => setmodalMenuVisible(!modalMenuVisible)}>
-          <TouchableOpacity style={globalStyles.btnFiltrosHome}>
+          <TouchableOpacity style={globalStyles.btnDetail}>
             <Text style={globalStyles.btnTextFiltro}>
               <MaterialIcons
                 name="restaurant"
@@ -218,7 +219,7 @@ const DetailsResto = ({ navigation }) => {
 
         {handleHorarioReserva() ? (
           <View onTouchStart={() => setModalVisible(!modalVisible)}>
-            <TouchableOpacity style={globalStyles.btnFiltrosHome}>
+            <TouchableOpacity style={globalStyles.btnDetail}>
               <Text style={globalStyles.btnTextFiltro}>
                 <MaterialIcons
                   name="payment"
@@ -231,7 +232,7 @@ const DetailsResto = ({ navigation }) => {
           </View>
         ) : (
           <View>
-            <TouchableOpacity style={globalStyles.btnFiltrosHome}>
+            <TouchableOpacity style={globalStyles.btnDetail}>
               <Text style={globalStyles.btnTextFiltro}>
                 <MaterialIcons
                   name="block"
@@ -341,7 +342,7 @@ const DetailsResto = ({ navigation }) => {
               />
 
               <Text style={globalStyles.modalText}>
-                Precio por Lugar $
+                Precio por Persona $
                 {empresaDetail.reservationsParams?.precioPorLugar}
               </Text>
               <TouchableOpacity
@@ -503,16 +504,14 @@ const DetailsResto = ({ navigation }) => {
             </View>
           </View>
         </Modal>
+      </ScrollView >
         <View style={styles.listReviews}>
           <ListReviews navigation={navigation} reviews={reviews} />
         </View>
-        <View></View>
-      </ScrollView>
-    </View>
+    </View >
   );
 };
 const styles = StyleSheet.create({
-  listReviews: {},
   container: {
     flex: 1,
     backgroundColor: "pink",
