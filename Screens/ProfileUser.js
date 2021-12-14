@@ -59,8 +59,7 @@ const ProfileUser = ({ navigation }) => {
   const [uploading, setUploading] = useState(false);
   const [image, setImage] = useState("");
   const [myFavourites, setMyFavourites] = useState();
-
-  const reservas = currentUser?.reservations
+  const [reservas, setReservas] = useState()
   // useEffect(() => {
   //   const getFavs = async () => {
   //     const docRef = doc(firebase.db, "Users", loggedId);
@@ -85,6 +84,7 @@ const ProfileUser = ({ navigation }) => {
         setCurrentUser(obj);
         setNewUserInfo(obj);
         setMyFavourites(obj.favourites);
+        setReservas(obj.reservations)
       } else {
         alert("NO HAY INFO");
       }
@@ -300,7 +300,7 @@ const ProfileUser = ({ navigation }) => {
           </Modal>
         </View>
       </View>
-      <View style={{ backgroundColor: '#eccdaa' }}>
+      <View style={{}}>
         <Text
           style={{
             fontSize: 25,
@@ -330,7 +330,7 @@ const ProfileUser = ({ navigation }) => {
             <Carousel
               data={myFavourites}
               renderItem={renderItem}
-              itemWidth={320}
+              itemWidth={300}
               sliderWidth={400}
               inactiveSlideShift={1}
               useScrollView={true}
@@ -339,50 +339,6 @@ const ProfileUser = ({ navigation }) => {
           </View>)
         }
 
-        <Text
-          style={{
-            fontSize: 25,
-            color: "#161616",
-            textAlign: "center",
-            marginTop: 5,
-          }}
-        >
-          <TagOutlined name="tag" color="#161616" size={25} /> Mis Reservas
-        </Text>
-        <Divider
-          orientation="horizontal"
-          width={2}
-          inset={true}
-          insetType={"middle"}
-          color={"rgba(00, 00, 00, .5)"}
-          style={{ marginVertical: 5 }}
-        />
-        <ScrollView style={{ overflow: "scroll" }}>
-          {reservas.map((persona) => {
-            return (
-              <View
-                style={{
-                  maxWidth: "100%",
-                  width: windowWidth,
-                  height: "100%",
-                  justifyContent: "center"
-                }}
-                key={resto.idResto}
-              >
-                <CardFavourite
-                  key={resto.Id}
-                  resto={resto}
-                  navigation={navigation}
-                  index={resto.Id}
-                  setMyFavourites={setMyFavourites}
-                  myFavourites={myFavourites}
-                >
-                  {" "}
-                </CardFavourite>
-              </View>
-            );
-          })}
-        </ScrollView>
         <View style={{
           flex: 1,
           maxHeight: "100%",
@@ -390,7 +346,7 @@ const ProfileUser = ({ navigation }) => {
           backgroundColor: "#fdfdfd",
 
         }}>
-          <View style={{ backgroundColor: "#eccdaa" }}>
+          <View>
             <Text
               style={{
                 fontSize: 25,
@@ -412,7 +368,7 @@ const ProfileUser = ({ navigation }) => {
           </View>
           <ScrollView style={{ padding: 10 }}>
             {reservas?.map((reserva, index) => {
-              console.log(reserva)
+              // console.log(reserva)
               return (
                 <CardReservation
                   key={index}
@@ -435,89 +391,3 @@ const ProfileUser = ({ navigation }) => {
 };
 
 export default ProfileUser;
-
-///////////////////FUNCION STORAGE FIREBASE LAIAL COMENTADA PARA REVISION///////////
-// const uploadImage = async () => {
-//     const blob = await new Promise((resolve, reject) => {
-//         const xhr = new XMLHttpRequest();
-//         xhr.onload = function() {
-//           resolve(xhr.response);
-//         };
-//         xhr.onerror = function() {
-//           reject(new TypeError('Network request failed'));
-//         };
-//         xhr.responseType = 'blob';
-//         xhr.open('GET', image, true);
-//         xhr.send(null);
-//       });
-
-//     const ref = firebase.storage.ref().child(new Date().toISOString())
-//     const snapshot = ref.put(blob)
-
-//     snapshot.on(
-//         firebase.storage.TaskEvent.STATE_CHANGED,
-//         () => {
-//         setUploading(true)
-//     },
-//     (error)=> {
-//         setUploading(false)
-//         console.log(error)
-//         blob.close()
-//         return
-//     },
-//     () => {
-//         snapshot.snapshot.ref.getDownloadURL().then((url)=> {
-//             setUploading(false)
-//             console.log('download url: ', url)
-//             blob.close();
-//             return url
-//         })
-//     }
-//     )
-// }
-// return (
-//     <View style={styles.container} >
-//         <ScrollView style={styles.container} contentContainerStyle={{flex: 1}}>
-//             <View style={styles.imgContainer}>
-//                 {
-//                     !image ?
-//                     <Image
-//                         source={'https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-unknown-social-media-user-photo-default-avatar-profile-icon-vector-unknown-social-media-user-184816085.jpg'}
-//                         style={styles.img}
-//                     />
-//                     :
-//                     <Image
-//                         source={image.localUri}
-//                         style={styles.img}
-//                     />
-//                 }
-//                 {/* {
-//                     image ? (<TouchableOpacity onPress={openImagePicker}>
-//                         <Image
-//                             source={{ uri: image !== null ? image.localUri : 'https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-unknown-social-media-user-photo-default-avatar-profile-icon-vector-unknown-social-media-user-184816085.jpg' }}
-//                             style={styles.img}
-//                         />
-//                     </TouchableOpacity>)
-//                         : (<TouchableOpacity onPress={openImagePicker}>
-//                             <Image
-//                                 source={{ uri: image !== null ? image.localUri : 'https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-unknown-social-media-user-photo-default-avatar-profile-icon-vector-unknown-social-media-user-184816085.jpg' }}
-//                                 style={styles.img}
-//                             />
-//                         </TouchableOpacity>
-//                         )
-
-//                     } */}
-//                     {/* { // si la imagen no se esta cargando a firebase que este el boton
-//                         !uploading ? <TouchableOpacity
-//                         style={globalStyles.btn}
-//                         onPress={uploadImage}
-//                         >
-//                             <Text>SUBIR IMAGEN</Text>
-//                         </TouchableOpacity>
-//                         :
-//                         // y cuando se este cargando que active el spiner
-//                         (
-//                         <ActivityIndicator size='large' color='#5555'/>
-//                         )
-//                     } */}
-///////////////////////////////////////////////////////////////////////////

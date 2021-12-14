@@ -424,14 +424,14 @@ export default function Home({ navigation }) {
         <TouchableOpacity
           style={globalStyles.btnFiltrosHome}
           onPress={() => setMapaVisible(!mapaVisible)}>
-          <Text><Icon
+          <Icon
             reverse
             name="map-marker-alt"
             type="font-awesome-5"
             color="#FDFDFD"
             reverseColor="#161616"
             size={12}
-          /></Text>
+          />
         </TouchableOpacity>
         {/*----------------------------------------FILTRADO------------------------------------------- */}
         <View>

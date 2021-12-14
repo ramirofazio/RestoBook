@@ -78,10 +78,10 @@ const ProfileResto = ({ navigation }) => {
 
   const sectoresResto = useSelector((state) => state.sectoresResto);
 
-  const [modalAdminReservasVisible, setModalVisibleAdminReservas] =
+  const [modalAdminReservasVisible, setModalAdminReservasVisible] =
     useState(false);
   const [modalEditVisible, setModalEditVisible] = useState(false);
-  const [modalAdminHorarioVisible, setModalVisibleAdminHorario] =
+  const [modalAdminHorarioVisible, setModalAdminHorarioVisible] =
     useState(false);
 
   const [places, setPlaces] = useState(1);
@@ -261,7 +261,7 @@ const ProfileResto = ({ navigation }) => {
         commerceTimeRange: horarioCom,
       });
       alert("Cambios Guardados con Exito!");
-      setModalVisibleAdminHorario(false);
+      setModalAdminHorarioVisible(false);
       clearStates();
     } catch (err) {
       console.log(err);
@@ -422,22 +422,17 @@ const ProfileResto = ({ navigation }) => {
           </Modal>
         </View>
       </View>
-      <Text
-        style={{
-          fontSize: 20,
-          fontWeight: "bold",
-          color: "#161616",
-          paddingVertical: 15,
-          textAlign: "center",
-          textTransform: "capitalize",
-        }}
-      >
-        {availableCommerces?.description}
-      </Text>
-      {/* MODAL DE ADMINISTRAR RESERVAS */}
+      <View style={{
+        backgroundColor: "red",
+        width: "100%",
+        height: "5%"
+      }}>
 
+      </View>
+
+      {/* MODAL DE ADMINISTRAR RESERVAS */}
       <TouchableOpacity
-        onPress={() => setModalVisibleAdminReservas(true)}
+        onPress={() => setModalAdminReservasVisible(!modalAdminReservasVisible)}
         style={globalStyles.btnProfileResto}
       >
         <Icon
@@ -451,61 +446,13 @@ const ProfileResto = ({ navigation }) => {
         </Text>
 
       </TouchableOpacity>
-      {/* <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalAdminReservasVisible}
-          onRequestClose={() => {
-            Alert.alert("Modal has been closed.");
-            setModalVisibleAdminReservas(!modalVisibleAdminReservas);
-          }}
-        >
-          <View style={globalStyles.centeredView}>
-            <View style={globalStyles.modalView}>
-              <TouchableOpacity
-                style={globalStyles.btnTodasComidas}
-                onPress={() =>
-                  setModalVisibleAdminReservas(!modalAdminReservasVisible)
-                }
-              >
-                <Text style={globalStyles.texts}>X</Text>
-              </TouchableOpacity>
 
-              <Text style={globalStyles.modalText}>Administración de reserva</Text>
-
-
-              <Text style={globalStyles.texts}>Horario para reservar(24hs)</Text>
-
-              <View style={{ display: "flex", flexDirection: "row", marginVertical: 10 }}>
-                <View style={{ flexDirection: "column", flex: 0.4 }}>
-                  <Text style={{
-                    alignSelf: "center"
-                  }}>Hora Inicio:</Text>
-                  <InputSpinner
-                    style={{
-                      maxWidth: '100%',
-                      width: "100%",
-                      marginVertical: 10,
-                      alignSelf: "center"
-                    }}
-                    value={timeReservaInicio}
-                    max={24}
-                    min={1}
-                    buttonFontSize={25}
-                    onChange={(value) => setTimeReservaInicio(value)}
-                    skin="clean"
-                    colorPress='#eccdaa'
-                    background="#f2f2f2"
-                    colorAsBackground={true}
-                    fontSize={20}
-                  /> */}
       <Modal
         animationType="slide"
         transparent={true}
         visible={modalAdminReservasVisible}
         onRequestClose={() => {
-          Alert.alert("Modal has been closed.");
-          setModalVisibleAdminReservas(!modalVisibleAdminReservas);
+          setModalAdminReservasVisible(!modalAdminReservasVisible);
         }}
       >
         <View style={globalStyles.centeredView}>
@@ -513,7 +460,7 @@ const ProfileResto = ({ navigation }) => {
             <TouchableOpacity
               style={globalStyles.btnTodasComidas}
               onPress={() =>
-                setModalVisibleAdminReservas(!modalAdminReservasVisible)
+                setModalAdminReservasVisible(!modalAdminReservasVisible)
               }
             >
               <Text style={globalStyles.texts}>X</Text>
@@ -600,217 +547,109 @@ const ProfileResto = ({ navigation }) => {
                 />
               </View>
             </View>
-            {/* <Text style={{
-                  alignSelf: "center",
-                  fontSize: 20,
+
+            <Text style={globalStyles.texts}> Precio por Lugar:</Text>
+            <InputSpinner
+              style={{
+                maxWidth: "100%",
+                width: "65%",
+                marginVertical: 10,
+                alignSelf: "center",
+              }}
+              value={precioXLugar}
+              max={1000}
+              min={0}
+              buttonFontSize={25}
+              step={50}
+              onChange={(value) => setPrecioXLugar(value)}
+              skin="clean"
+              colorPress="#eccdaa"
+              background="#f2f2f2"
+              colorAsBackground={true}
+              fontSize={20}
+            />
+
+            <Text style={globalStyles.texts}>
+              {" "}
+              Cantidad de lugares disponibles:
+            </Text>
+            <InputSpinner
+              style={{
+                maxWidth: "100%",
+                width: "65%",
+                marginVertical: 10,
+              }}
+              value={places}
+              max={50}
+              min={1}
+              buttonFontSize={25}
+              onChange={(num) => setPlaces(num)}
+              skin="clean"
+              colorPress="#eccdaa"
+              background="#f2f2f2"
+              colorAsBackground={true}
+              fontSize={20}
+            />
+
+
+            <Text style={globalStyles.texts}>Resumen:</Text>
+
+            <View
+              style={{
+                borderWidth: 2,
+                borderColor: "#eccdaa",
+                borderRadius: 35,
+                maxWidth: "100%",
+                width: "90%",
+                // height: "35%",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Text
+                style={{
+                  marginVertical: 5,
+                  fontSize: 13,
                   fontWeight: "bold",
-                  marginHorizontal: 10,
-                }}> A </Text>
-                <View style={{ flexDirection: "column", flex: 0.4 }}>
+                }}
+              >
+                Hora de Reserva: {timesReserva}
+              </Text>
+              <Text
+                style={{
+                  marginVertical: 5,
+                  fontSize: 13,
+                  fontWeight: "bold",
+                }}
+              >
+                Lugares Disponibles: {places}
+              </Text>
+              <Text
+                style={{
+                  marginVertical: 5,
+                  fontSize: 13,
+                  fontWeight: "bold",
+                }}
+              >
+                Precio Por Lugar: ${precioXLugar}
+              </Text>
 
-                  <Text style={{
-                    alignSelf: "center"
-                  }}>Hora Fin:</Text>
-                  <InputSpinner
-                    style={{
-                      maxWidth: '100%',
-                      width: "100%",
-                      marginVertical: 10,
-                      alignSelf: "center"
-                    }}
-                    value={timeReservaFin}
-                    max={24}
-                    min={1}
-                    buttonFontSize={25}
-                    onChange={(value) => setTimeReservaFin(value)}
-                    skin="clean"
-                    colorPress='#eccdaa'
-                    background="#f2f2f2"
-                    colorAsBackground={true}
-                    fontSize={20}
-                  />
-                </View> */}
+            </View>
+
+            <TouchableOpacity
+              style={globalStyles.btnTodasComidas}
+              onPress={() => handleGuardarAdmReservas()}
+            >
+              <Text style={globalStyles.texts}>Guardar</Text>
+            </TouchableOpacity>
           </View>
-          <Text style={globalStyles.texts}> Precio por Lugar:</Text>
-          <InputSpinner
-            style={{
-              maxWidth: "100%",
-              width: "65%",
-              marginVertical: 10,
-              alignSelf: "center",
-            }}
-            value={precioXLugar}
-            max={1000}
-            min={0}
-            buttonFontSize={25}
-            step={50}
-            onChange={(value) => setPrecioXLugar(value)}
-            skin="clean"
-            colorPress="#eccdaa"
-            background="#f2f2f2"
-            colorAsBackground={true}
-            fontSize={20}
-          />
-
-          <Text style={globalStyles.texts}> Precio por Lugar:</Text>
-          <InputSpinner
-            style={{
-              maxWidth: '100%',
-              width: "65%",
-              marginVertical: 10,
-              alignSelf: "center"
-            }}
-            value={precioXLugar}
-            max={1000}
-            min={0}
-            buttonFontSize={25}
-            step={50}
-            onChange={(value) => setPrecioXLugar(value)}
-            skin="clean"
-            colorPress='#eccdaa'
-            background="#f2f2f2"
-            colorAsBackground={true}
-            fontSize={20}
-          />
-
-          <Text style={globalStyles.texts}>
-            {" "}
-            Cantidad de lugares disponibles:
-          </Text>
-          <InputSpinner
-            style={{
-              maxWidth: "100%",
-              width: "65%",
-              marginVertical: 10,
-            }}
-            value={places}
-            max={50}
-            min={1}
-            buttonFontSize={25}
-            onChange={(num) => setPlaces(num)}
-            skin="clean"
-            colorPress="#eccdaa"
-            background="#f2f2f2"
-            colorAsBackground={true}
-            fontSize={20}
-          />
-
-          {/* <Text style={globalStyles.texts}>Sectores disponibles: </Text>
-                <View style={{ display: "flex", flexDirection: "row" }}>
-                  {sectoresResto.map((sector, index) => (
-                    <TouchableOpacity
-                      key={index}
-                      style={{
-                        alignItems: "center",
-                        borderRadius: 15,
-                        marginHorizontal: 5,
-                        backgroundColor: "#f2f2f2",
-                        borderColor: "#eccdaa",
-                        borderWidth: 2,
-                        marginVertical: 5,
-                        shadowColor: "#000",
-                        shadowOffset: {
-                          width: 0,
-                          height: 2,
-                        },
-                        shadowOpacity: 0.2,
-                        shadowRadius: 4.84,
-
-                        elevation: 5,
-                      }}
-                      onPress={() => handleSectores(sector)}
-                    >
-                      <Text
-                        style={{
-                          padding: 7,
-                          fontWeight: "bold",
-                          color: "#4e4e4e",
-                        }}
-                      >
-                        {sector}
-                      </Text>
-                    </TouchableOpacity>
-                  ))}
-                </View> */}
-
-          <Text style={globalStyles.texts}>Resumen:</Text>
-
-          <View
-            style={{
-              borderWidth: 2,
-              borderColor: "#eccdaa",
-              borderRadius: 35,
-              maxWidth: "100%",
-              width: "90%",
-              // height: "35%",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Text
-              style={{
-                marginVertical: 5,
-                fontSize: 13,
-                fontWeight: "bold",
-              }}
-            >
-              Hora de Reserva: {timesReserva}
-            </Text>
-            <Text
-              style={{
-                marginVertical: 5,
-                fontSize: 13,
-                fontWeight: "bold",
-              }}
-            >
-              Lugares Disponibles: {places}
-            </Text>
-            <Text
-              style={{
-                marginVertical: 5,
-                fontSize: 13,
-                fontWeight: "bold",
-              }}
-            >
-              Precio Por Lugar: ${precioXLugar}
-            </Text>
-            {/* <Text
-                    style={{
-                      marginTop: 15,
-                      fontSize: 15,
-                      fontWeight: "bold",
-                    }}
-                  >
-                    Sectores Seleccionados:{" "}
-                  </Text>
-                  <View style={{ display: "flex", flexDirection: "row" }}>
-                    {sectorState.map((sector) => (
-                      <Text
-                        style={{
-                          marginVertical: 8,
-                          fontSize: 13,
-                          fontWeight: "bold",
-                        }}
-                      >
-                        {sector} -{" "}
-                      </Text>
-                    ))}
-                  </View> */}
-          </View>
-
-          <TouchableOpacity
-            style={globalStyles.btnTodasComidas}
-            onPress={() => handleGuardarAdmReservas()}
-          >
-            <Text style={globalStyles.texts}>Guardar</Text>
-          </TouchableOpacity>
         </View>
       </Modal>
 
       {/* MODAL DE ADMINISTRAR HORARIO COMERCIAL */}
 
       < TouchableOpacity
-        onPress={() => setModalVisibleAdminHorario(!modalAdminHorarioVisible)}
+        onPress={() => setModalAdminHorarioVisible(!modalAdminHorarioVisible)}
         style={globalStyles.btnProfileResto}
       >
         <Icon name="clock" type="font-awesome-5" color="#392c28" size={24} />
@@ -824,8 +663,7 @@ const ProfileResto = ({ navigation }) => {
           transparent={true}
           visible={modalAdminHorarioVisible}
           onRequestClose={() => {
-            Alert.alert("Modal has been closed.");
-            setModalVisibleAdminHorario(!modalAdminHorarioVisible);
+            setModalAdminHorarioVisible(!modalAdminHorarioVisible);
           }}
         >
           <View style={globalStyles.centeredView}>
@@ -833,7 +671,7 @@ const ProfileResto = ({ navigation }) => {
               <TouchableOpacity
                 style={globalStyles.btnTodasComidas}
                 onPress={() =>
-                  setModalVisibleAdminHorario(!modalAdminHorarioVisible)
+                  setModalAdminHorarioVisible(!modalAdminHorarioVisible)
                 }
               >
                 <Text style={globalStyles.texts}>X</Text>

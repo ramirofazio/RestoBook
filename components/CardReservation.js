@@ -15,29 +15,13 @@ const CardReservation = ({ date, cantCupos, nameResto, statusReserva, address, n
 
   const restos = [];
 
-
-  useEffect(() => {
-    const getInfo = async () => {
-      const docRef = doc(firebase.db, "Restos", idResto);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        let obj = docSnap.data();
-        restos.push(obj)
-
-      } else {
-        alert("NO HAY INFO");
-      }
-    };
-    getInfo();
-  }, []);
-
-  const celphone = "+54 9" + "NUMERO RESTO";
-  const trimmedName = auth?.currentUser?.email?.split("@")[0];
-  const handleWhatsapp = async () => {
-    await Linking.openURL(
-      `whatsapp://send?text=Hola ${nameResto}, mi nombre es ${trimmedName} y quiero generar una reserva&phone=${'+5492477313700'}`
-    );
-  };
+  // const celphone = "+54 9" + "NUMERO RESTO";
+  // const trimmedName = auth?.currentUser?.email?.split("@")[0];
+  // const handleWhatsapp = async () => {
+  //   await Linking.openURL(
+  //     `whatsapp://send?text=Hola ${nameResto}, mi nombre es ${trimmedName} y quiero generar una reserva&phone=${'+5492477313700'}`
+  //   );
+  // };
 
 
   return (
@@ -65,22 +49,24 @@ const CardReservation = ({ date, cantCupos, nameResto, statusReserva, address, n
         </View>
 
         <View style={{ flexDirection: "column" }}>
+
           <TouchableOpacity
             style={{ marginVertical: 5 }}
             onPress={() => navigation.navigate("AddReviewsRestorant", {
               nameResto: nameResto,
             })}
           >
+            <Text>Crear Reseña</Text>
             <Icon name='square-edit-outline' type='material-community' color='#161616' size={25} />
           </TouchableOpacity>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={() => handleWhatsapp()}>
             <Image
               style={globalStyles.wspImage}
               // resizeMode="contain"
               source={require("../assets/whatsAppIcon.png")}
             />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </View>
     </View>
