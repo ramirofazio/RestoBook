@@ -422,14 +422,36 @@ const ProfileResto = ({ navigation }) => {
           </Modal>
         </View>
       </View>
-      <View style={{
-        backgroundColor: "red",
-        width: "100%",
-        height: "5%"
-      }}>
 
+        
+      <View style={globalStyles.estadisticasContainer}>
+          <Text style={globalStyles.titleEstadistica}>Cantidad de favoritos recibidos:</Text>
+  
+            <Icon
+                  name="heart"
+                  type="antdesign"
+                  color='#Ef5050'
+                  size={50}
+                  style={{justifyContent: 'center', marginLeft: -280}}
+            />
+            <Text style={{justifyContent: 'flex-start', alignSelf: "center", alignItems: "center", flexDirection: "column", backgroundColor: "red"}}>
+            info dinamica
+             </Text>
       </View>
 
+      <View style={globalStyles.estadisticasContainer}>
+          <Text style={globalStyles.titleEstadistica}>Rating promedio total:</Text>
+            <Icon
+                  name="star"
+                  type="antdesign"
+                  color='#F5ea2c'
+                  size={50}
+                  style={{marginLeft: -280}}
+            />
+          <Text style={{ alignSelf: "center", paddingBottom: 80, backgroundColor: "red"}}>
+            info dinamica
+          </Text>
+      </View>
       {/* MODAL DE ADMINISTRAR RESERVAS */}
       <TouchableOpacity
         onPress={() => setModalAdminReservasVisible(!modalAdminReservasVisible)}
@@ -763,8 +785,8 @@ const ProfileResto = ({ navigation }) => {
             </TouchableOpacity>
           </View>
         </Modal >
-      </TouchableOpacity >
-    </View >
+      </TouchableOpacity>
+    </View>
   );
 };
 
