@@ -21,6 +21,7 @@ import {
 } from "react-native";
 import { Divider } from "react-native-elements";
 import * as ImagePicker from "expo-image-picker";
+import { MaterialIcons } from "@expo/vector-icons";
 //------FIREBASE----------------
 import firebase from "../database/firebase";
 import {
@@ -94,6 +95,9 @@ const ProfileResto = ({ navigation }) => {
   const [newCommerceInfo, setNewCommerceInfo] = useState({});
   const [uploading, setUploading] = useState(false);
 
+//Modal de Reservas
+const [modalReservaVisible, setmodalReservaVisible] = useState(false);
+const [reservas, setReservas] = useState()
   //cantidad de favoritos
   const [favoritesQty, setFavoritesQty] = useState(null);
   //promedio del rating
@@ -118,12 +122,14 @@ const ProfileResto = ({ navigation }) => {
         setAvailableCommerces(obj);
         setImage(obj.restoImage);
         setNewCommerceInfo(obj);
+        setReservas(obj.reservations)
       } else {
         alert("NO HAY INFO");
       }
     };
     getInfo();
-  }, [commerceInfo]);
+  }, [commerceInfo]); 
+  console.log(reservas)
 
   const getRating = () => {
     let totalRating = 0;
@@ -763,7 +769,63 @@ const ProfileResto = ({ navigation }) => {
             </TouchableOpacity>
           </View>
         </Modal >
+
+   {/* MODAL PARA VER RESERVA*/}
+
       </TouchableOpacity >
+      <View onTouchStart={() => setmodalReservaVisible(!modalReservaVisible)}>
+          <TouchableOpacity style={globalStyles.btnFiltrosHome}>
+            <Text style={globalStyles.btnTextFiltro}>
+              Ver Reservas
+            </Text>
+          </TouchableOpacity>
+ 
+           {/* Nuevo Modal Reserva */}
+
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalReservaVisible}
+          onRequestClose={() => {
+            setmodalReservaVisible(!modalReservaVisible);
+          }}
+        >
+          <View style={globalStyles.centeredMenuView}>
+            <View style={globalStyles.modalMenuView}>
+              <TouchableOpacity
+                style={globalStyles.btnCloseMenu}
+                onPress={() => setmodalReservaVisible(!modalReservaVisible)}
+              >  
+              <Text>     <MaterialIcons
+                  onPress={() => setmodalMenuVisible(false)}
+                  name="arrow-back-ios"
+                  size={20}
+                  color="#161616"
+                ></MaterialIcons></Text>
+              </TouchableOpacity>
+
+              <View > 
+                      <TouchableOpacity
+                      >
+                        <Text style={globalStyles.categoriesText}>
+                        hola
+                        </Text>
+                      </TouchableOpacity>
+              </View>
+                <Text
+                  style={{
+                    alignSelf: "center",
+                    fontSize: 30,
+                    marginVertical: 30,
+                  }}
+                >
+                  {" "}
+                  Sin reservas
+                </Text>
+              </View>
+          </View>
+        </Modal>
+        </View>
     </View >
   );
 };
