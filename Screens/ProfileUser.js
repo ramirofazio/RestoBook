@@ -16,6 +16,8 @@ import {
   ScrollView,
 } from "react-native";
 import { Divider } from "react-native-elements";
+import Carousel from 'react-native-snap-carousel';
+
 import * as ImagePicker from "expo-image-picker";
 //------FIREBASE----------------
 import firebase from "../database/firebase";
@@ -167,12 +169,27 @@ const ProfileUser = ({ navigation }) => {
   const scrollX = useRef(new Animated.Value(0)).current;
   const { width: windowWidth } = useWindowDimensions();
 
+  const renderItem = ({item, index}) => {
+    return (
+      <View
+          style={globalStyles.cardsFavouriteContainer}
+          key={item.idResto}
+      >
+        <CardFavourite
+          key={index}
+          resto={item}
+          navigation={navigation}
+          setMyFavourites={setMyFavourites}
+          myFavourites={myFavourites}
+        >
+        </CardFavourite>
+      </View>
+    )
+  }
+
   return (
     <View style={globalStyles.Perfilcontainer}>
-      <ScrollView
-        style={globalStyles.Perfilcontainer}
-        contentContainerStyle={{ flex: 1 }}
-      >
+      
         <View style={globalStyles.imgContainer}>
           {image && !uploading ? (
             <TouchableOpacity onPress={openImagePickerAsync}>
@@ -330,44 +347,25 @@ const ProfileUser = ({ navigation }) => {
           color={"rgba(00, 00, 00, .5)"}
           style={{ marginVertical: 10 }}
         />
-        <ScrollView
-          horizontal={true}
-          pagingEnabled
-          showsHorizontalScrollIndicator={false}
-          style={globalStyles.FavouriteContainer}
-          onScroll={Animated.event([
-            {
-              nativeEvent: {
-                contentOffset: {
-                  x: scrollX,
-                },
-              },
-            },
-          ])}
-          scrollEventThrottle={1}
-        >
-          {myFavourites?.length
-            ? myFavourites.map((resto) => {
-                return (
-                  <View
-                    style={{ width: windowWidth, height: 250 }}
-                    key={resto.idResto}
-                  >
-                    <CardFavourite
-                      key={resto.Id}
-                      resto={resto}
-                      navigation={navigation}
-                      index={resto.Id}
-                      setMyFavourites={setMyFavourites}
-                      myFavourites={myFavourites}
-                    >
-                      {" "}
-                    </CardFavourite>
-                  </View>
-                );
-              })
-            : null}
-        </ScrollView>
+
+        { !myFavourites?.length ? <View style={globalStyles.FavouriteContainer}>
+          <Text style={{textAlign: "center", color: "grey", textAlignVertical: 'center', fontWeight: "bold"}}>Aún no tienes favoritos! Cuando los agregues aparecerán aqui
+          </Text>
+        </View>
+         :
+        (<View style={globalStyles.FavouriteContainer} >
+          <Carousel
+            data={myFavourites}
+            renderItem={renderItem}
+            itemWidth={320}
+            sliderWidth={400}
+            inactiveSlideShift={1}
+            useScrollView={true} 
+            layout={'default'}
+          />
+        </View>)
+        }
+        
         <Text
           style={{
             fontSize: 25,
@@ -399,7 +397,6 @@ const ProfileUser = ({ navigation }) => {
             );
           })}
         </ScrollView>
-      </ScrollView>
     </View>
   );
 };
