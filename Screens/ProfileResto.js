@@ -279,6 +279,7 @@ const ProfileResto = ({ navigation }) => {
                 uri: CLOUDINARY_CONSTANT + image,
               }}
               style={globalStyles.imgProfile}
+              
             />
           </TouchableOpacity>
         ) : (
