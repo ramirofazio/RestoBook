@@ -100,36 +100,36 @@ const CardFavourite = ({
             )}
           </View>
 
-          <View style={{margin:4}}>
+                
+          <View style={{margin: 5}}>
             <Text style={globalStyles.cardsDescriptionText}>
               <Icon 
-                marginTop={10}
                 reverse
                 name="map-marker-alt"
                 type="font-awesome-5"
                 color="#eecdaa"
+                textAlign="beseline"
                 reverseColor="#161616"
                 size={11}
-              />{" "}
+              />
               {resto.location.address.split(",")[0]},
               {resto.location.address.split(",")[1]}
             </Text>
-          </View>
-          <View>
+          
             <Text style={globalStyles.cardsDescriptionText}>
               <Icon 
-               marginTop={5}
                 reverse
                 name="phone-alt"
                 type="font-awesome-5"
                 color="#eecdaa"
                 reverseColor="#161616"
                 size={11}
-              />{" "}
+                />
               {resto.phone}
             </Text>
           </View>
         </View>
+          
 
         <View style={globalStyles.btnContainerCard}>
           <View>

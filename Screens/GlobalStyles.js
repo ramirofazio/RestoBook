@@ -152,7 +152,7 @@ const globalStyles = StyleSheet.create({
     width: "100%",
     justifyContent: "space-around",
     fontSize: 12,
-    height: 60,
+    height: 50,
     fontWeight: "bold",
     maxHeight: "120%",
   },
