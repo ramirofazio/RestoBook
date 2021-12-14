@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     mustLoginText: {
     },
     showMenu: {
-        height: 250,
+        height: 200,
         padding: 5,
         borderWidth: 0,
     },

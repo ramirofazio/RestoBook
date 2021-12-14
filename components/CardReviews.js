@@ -51,6 +51,7 @@ export default function CardReviews({ reseña }) {
               ? { uri: CLOUDINARY_CONSTANT + userProfileImage }
               : { uri: CLOUDINARY_CONSTANT + DEFAULT_PROFILE_IMAGE }
           }
+
         />
       </View>
       <View style={styles.viewInfo}>

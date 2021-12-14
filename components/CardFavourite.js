@@ -84,6 +84,8 @@ const CardFavourite = ({
           <Image
             style={globalStyles.cardsHomeimg}
             source={{ uri: CLOUDINARY_CONSTANT + resto.img }}
+            resizeMode="contain"
+
           />
         </View>
 
@@ -93,43 +95,43 @@ const CardFavourite = ({
               <ActivityIndicator
                 size="large"
                 color="#5555"
-                // style={globalStyles.imgProfile}
+              // style={globalStyles.imgProfile}
               />
             ) : (
               <Text style={globalStyles.cardsHomeTitle}>{resto.title}</Text>
             )}
           </View>
 
-          <View style={{margin:4}}>
+
+          <View style={{ margin: 5 }}>
             <Text style={globalStyles.cardsDescriptionText}>
-              <Icon 
-                marginTop={10}
+              <Icon
                 reverse
                 name="map-marker-alt"
                 type="font-awesome-5"
                 color="#eecdaa"
+                textAlign="beseline"
                 reverseColor="#161616"
                 size={11}
-              />{" "}
+              />
               {resto.location.address.split(",")[0]},
               {resto.location.address.split(",")[1]}
             </Text>
-          </View>
-          <View>
+
             <Text style={globalStyles.cardsDescriptionText}>
-              <Icon 
-               marginTop={5}
+              <Icon
                 reverse
                 name="phone-alt"
                 type="font-awesome-5"
                 color="#eecdaa"
                 reverseColor="#161616"
                 size={11}
-              />{" "}
+              />
               {resto.phone}
             </Text>
           </View>
         </View>
+
 
         <View style={globalStyles.btnContainerCard}>
           <View>

@@ -147,12 +147,13 @@ const CardMenu = ({ resto, navigation }) => {
     }
   };
 
-  let horaInicio = resto.commerceTimeRange
-    ? resto.commerceTimeRange.split("-")[0]
+  let horaInicio = resto.reservationsParams
+    ? resto.reservationsParams.timeRange.split("-")[0]
     : null;
-  let horaFin = resto.commerceTimeRange
-    ? resto.commerceTimeRange.split("-")[1]
+  let horaFin = resto.reservationsParams.timeRange
+    ? resto.reservationsParams.timeRange.split("-")[1]
     : null;
+  //console.log(resto.title, horaFin)
   const handleHorarioReserva = () => {
     let horaActual = new Date().getHours();
     //console.log(horaActual, horaInicio, horaFin)
@@ -165,8 +166,8 @@ const CardMenu = ({ resto, navigation }) => {
 
   return (
     <View style={globalStyles.cardsContainer}>
-      <Badge status={handleHorarioReserva() ? "success" : "error"} containerStyle={{ position: 'absolute', top: 25, left: 20}} />
-      <TouchableOpacity onPress={() => handleOnPress({resto})}>
+      <Badge status={handleHorarioReserva() ? "success" : "error"} containerStyle={{ position: 'absolute', top: 25, left: 20 }} />
+      <TouchableOpacity onPress={() => handleOnPress({ resto })}>
         <View style={globalStyles.containerImgCard}>
           <Image
             style={globalStyles.cardsHomeimg}

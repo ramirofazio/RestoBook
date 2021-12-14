@@ -38,6 +38,7 @@ import {
   getRedirectResult,
   onAuthStateChanged,
   sendPasswordResetEmail,
+  TwitterAuthProvider,
 } from "firebase/auth";
 
 import firebase from "../database/firebase";
@@ -181,6 +182,7 @@ const GlobalLogin = ({ navigation }) => {
                 <TextInput
                   style={globalStyles.texts}
                   placeholder="Email"
+                  placeholderTextColor="#666"
                   onChangeText={props.handleChange("email")}
                   value={props.values.email}
                   onBlur={props.handleBlur("email")}
@@ -193,6 +195,7 @@ const GlobalLogin = ({ navigation }) => {
                 <TextInput
                   style={globalStyles.texts}
                   placeholder="Password"
+                  placeholderTextColor="#666"
                   onChangeText={props.handleChange("password")}
                   value={props.values.password}
                   secureTextEntry={flagSecureText}
@@ -260,7 +263,7 @@ const GlobalLogin = ({ navigation }) => {
                   </Text>
                 </TouchableOpacity>
 
-                <BottomSheet isVisible={visible} style={styles.forgottenPass}>
+                <BottomSheet isVisible={TwitterAuthProvider} style={styles.forgottenPass}>
                   <View>
                     <TouchableOpacity onPress={() => isforgottVisible(false)}>
                       <Text>X</Text>
@@ -449,7 +452,7 @@ const GlobalLogin = ({ navigation }) => {
                           />
                         </View>
                         {props.touched.passwordConfirm &&
-                        props.errors.passwordConfirm ? (
+                          props.errors.passwordConfirm ? (
                           <Text style={globalStyles.errorText}>
                             {props.errors.passwordConfirm}
                           </Text>
