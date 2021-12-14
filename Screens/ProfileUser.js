@@ -211,7 +211,6 @@ const ProfileUser = ({ navigation }) => {
             transparent={true}
             visible={modalVisible}
             onRequestClose={() => {
-              Alert.alert("Modal has been closed.");
               setModalVisible(!modalVisible);
             }}
           >
@@ -300,7 +299,7 @@ const ProfileUser = ({ navigation }) => {
           </Modal>
         </View>
       </View>
-      <View style={{}}>
+     
         <Text
           style={{
             fontSize: 25,
@@ -330,7 +329,7 @@ const ProfileUser = ({ navigation }) => {
             <Carousel
               data={myFavourites}
               renderItem={renderItem}
-              itemWidth={300}
+              itemWidth={305}
               sliderWidth={400}
               inactiveSlideShift={1}
               useScrollView={true}
@@ -386,7 +385,6 @@ const ProfileUser = ({ navigation }) => {
           </ScrollView>
         </View>
       </View>
-    </View>
   );
 };
 

@@ -556,7 +556,7 @@ const globalStyles = StyleSheet.create({
   navHome: {
     flexDirection: "row",
     width: "100%",
-    backgroundColor: "#161616",
+    // backgroundColor: "#161616",
   },
   touchLog: {
     marginTop: 10,
