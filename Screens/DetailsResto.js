@@ -341,7 +341,7 @@ const DetailsResto = ({ navigation }) => {
               />
 
               <Text style={globalStyles.modalText}>
-                Precio por Lugar $
+                Precio por Persona $
                 {empresaDetail.reservationsParams?.precioPorLugar}
               </Text>
               <TouchableOpacity
@@ -506,9 +506,8 @@ const DetailsResto = ({ navigation }) => {
         <View style={styles.listReviews}>
           <ListReviews navigation={navigation} reviews={reviews} />
         </View>
-        <View></View>
-      </ScrollView>
-    </View>
+      </ScrollView >
+    </View >
   );
 };
 const styles = StyleSheet.create({

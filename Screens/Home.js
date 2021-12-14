@@ -329,14 +329,14 @@ export default function Home({ navigation }) {
         <Picker.Item label="Z-A" value="Z-A" />
       </Picker>
     </View> */}
-      <View style={{flexDirection: "row", justifyContent: 'space-around', alignItems: 'center'}}>
+      <View style={{ flexDirection: "row", justifyContent: 'space-around', alignItems: 'center' }}>
         <Pressable onPress={() => isVisibleFiltro(true)}>
           <TextInput
             style={globalStyles.btnFiltrosHome}
             editable={false}
             placeholder="Ordenar por"
             fontWeight={'bold'}
-            fontSize= {15}
+            fontSize={15}
             textAlign="center"
             placeholderTextColor="#161616"
             value={selectedValue}
@@ -364,10 +364,12 @@ export default function Home({ navigation }) {
               style={{ backgroundColor: "#0000", alignItems: "center" }}
             >
               <ListItem.Title
-                style={{ height: 35,
+                style={{
+                  height: 35,
                   color: "#161616",
                   paddingVertical: 5,
-                  fontWeight: "bold"}}
+                  fontWeight: "bold"
+                }}
               >
                 A-Z
               </ListItem.Title>
@@ -389,10 +391,12 @@ export default function Home({ navigation }) {
               style={{ backgroundColor: "#0000", alignItems: "center" }}
             >
               <ListItem.Title
-                style={{ height: 35,
+                style={{
+                  height: 35,
                   color: "#161616",
                   paddingVertical: 5,
-                  fontWeight: "bold" }}
+                  fontWeight: "bold"
+                }}
               >
                 Z-A
               </ListItem.Title>
@@ -402,7 +406,7 @@ export default function Home({ navigation }) {
           <ListItem
             key={999}
             containerStyle={{ backgroundColor: "#eccdaa" }}
-            style={{ borderBottomWidth: 1, borderColor: "#ffff"}}
+            style={{ borderBottomWidth: 1, borderColor: "#ffff" }}
             onPress={() => isVisibleFiltro(false)}
           >
             <ListItem.Content style={{ alignItems: "center" }}>
@@ -420,14 +424,14 @@ export default function Home({ navigation }) {
         <TouchableOpacity
           style={globalStyles.btnFiltrosHome}
           onPress={() => setMapaVisible(!mapaVisible)}>
-          <Text><Icon
+          <Icon
             reverse
             name="map-marker-alt"
             type="font-awesome-5"
             color="#FDFDFD"
             reverseColor="#161616"
             size={12}
-          /></Text>
+          />
         </TouchableOpacity>
         {/*----------------------------------------FILTRADO------------------------------------------- */}
         <View>
@@ -464,10 +468,12 @@ export default function Home({ navigation }) {
                 style={{ backgroundColor: "#0000", alignItems: "center" }}
               >
                 <ListItem.Title
-                  style={{ height: 35,
+                  style={{
+                    height: 35,
                     color: "#161616",
                     paddingVertical: 5,
-                    fontWeight: "bold", }}
+                    fontWeight: "bold",
+                  }}
                 >
                   Todos
                 </ListItem.Title>
@@ -476,7 +482,7 @@ export default function Home({ navigation }) {
             {categories.map((categoria, index) => (
               <ListItem
                 key={index}
-                containerStyle={{ backgroundColor: "rgba(242, 242, 242,0.8)"}}
+                containerStyle={{ backgroundColor: "rgba(242, 242, 242,0.8)" }}
                 style={{
                   borderBottomWidth: 1,
                   borderColor: "#333a",
@@ -556,7 +562,7 @@ export default function Home({ navigation }) {
         transparent={true}
         visible={mapaVisible}
         onRequestClose={() => {
-          Alert.alert("Modal has been closed.");
+
           setMapaVisible(!mapaVisible);
         }}
       >

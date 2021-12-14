@@ -100,9 +100,10 @@ const CardFavourite = ({
             )}
           </View>
 
-          <View>
+          <View style={{margin:4}}>
             <Text style={globalStyles.cardsDescriptionText}>
-              <Icon
+              <Icon 
+                marginTop={10}
                 reverse
                 name="map-marker-alt"
                 type="font-awesome-5"
@@ -116,7 +117,8 @@ const CardFavourite = ({
           </View>
           <View>
             <Text style={globalStyles.cardsDescriptionText}>
-              <Icon
+              <Icon 
+               marginTop={5}
                 reverse
                 name="phone-alt"
                 type="font-awesome-5"
