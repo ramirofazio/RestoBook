@@ -502,15 +502,14 @@ const DetailsResto = ({ navigation }) => {
             </View>
           </View>
         </Modal>
+      </ScrollView >
         <View style={styles.listReviews}>
           <ListReviews navigation={navigation} reviews={reviews} />
         </View>
-      </ScrollView >
     </View >
   );
 };
 const styles = StyleSheet.create({
-  listReviews: {},
   container: {
     flex: 1,
     backgroundColor: "pink",
