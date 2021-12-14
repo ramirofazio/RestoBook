@@ -43,8 +43,8 @@ const CardFavourite = ({
     phone: resto.phone,
     location: resto.location,
     img: resto.img,
-    reservationsParams: resto.reservationsParams,
     description: resto.description,
+    reservationsParams: resto.reservationsParams
   };
 
   const handleOnPress = () => {

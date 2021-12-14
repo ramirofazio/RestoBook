@@ -280,6 +280,33 @@ const globalStyles = StyleSheet.create({
 
     elevation: 8,
   },
+  descriptionRestoContainer : {
+        borderRadius: 50,
+        marginVertical: 15,
+        width: "80%",
+        height: "25%",
+        alignSelf: "center",
+        alignItems: "center",
+        backgroundColor: "#f2f2f2",
+        justifyContent: "space-around",
+        paddingHorizontal: 5,
+        shadowColor: "#000",
+        shadowOffset: {
+          width: 0,
+          height: 3,
+        },
+        shadowOpacity: 0.27,
+        shadowRadius: 4.65,
+
+        elevation: 6,
+  },
+  textoDescription : {
+            textAlign: "center",
+            fontSize: 15,
+            color: "#161616",
+            fontWeight: 'bold',
+            textTransform: "capitalize"
+  },
   //------------------------------------------------------------------------------------------------------
 
   // --------------------------------------------CATEGORIAS LOCAL --------------------------------------------
@@ -358,17 +385,17 @@ const globalStyles = StyleSheet.create({
     justifyContent: "center",
   },
   cardsFavouriteContainer: {
-    alignSelf: "center",
+    justifyContent: 'center',
     backgroundColor: "#f2f2f2",
-    marginHorizontal: 10,
-    marginVertical: 5,
-    paddingHorizontal: 5,
-    paddingVertical: 5,
+    // marginHorizontal: -5,
+    // marginVertical: 5,
+    // paddingHorizontal: 5,
+    // paddingVertical: 5,
     borderRadius: 25,
     borderWidth: 1,
     borderColor: "rgba(22, 22, 22, .2)",
-    width: "95%",
-    height: "70%",
+    width: "100%",
+    height: "100%",
     shadowColor: "#161616",
     shadowOffset: {
       width: 1,
@@ -503,6 +530,7 @@ const globalStyles = StyleSheet.create({
     shadowRadius: 16.0,
     elevation: 100,
   },
+  
   //------------------------------------------------------------------------------------------------------
   title: {
     fontSize: 25,

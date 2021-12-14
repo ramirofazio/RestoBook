@@ -87,8 +87,8 @@ const CardMenu = ({ resto, navigation }) => {
     phone: resto.phone,
     location: resto.location,
     img: resto.restoImage,
-    reservationsParams: resto.reservationsParams,
     description: resto.description,
+    reservationsParams: resto.reservationsParams
   };
   const celphone = "+54 9" + resto.phone;
   const trimmedName = auth?.currentUser?.email?.split("@")[0];
@@ -165,8 +165,8 @@ const CardMenu = ({ resto, navigation }) => {
 
   return (
     <View style={globalStyles.cardsContainer}>
-      <Badge status={handleHorarioReserva() ? "success" : "error"} />
-      <TouchableOpacity onPress={() => handleOnPress()}>
+      <Badge status={handleHorarioReserva() ? "success" : "error"} containerStyle={{ position: 'absolute', top: 25, left: 20}} />
+      <TouchableOpacity onPress={() => handleOnPress({resto})}>
         <View style={globalStyles.containerImgCard}>
           <Image
             style={globalStyles.cardsHomeimg}
