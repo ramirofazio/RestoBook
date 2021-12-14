@@ -482,7 +482,7 @@ export default function Home({ navigation }) {
             }
           }}
           >
-          <Text style={globalStyles.texts}><Icon
+            <Icon
             reverse
             name="map-marker-alt"
             type="font-awesome-5"
@@ -490,7 +490,6 @@ export default function Home({ navigation }) {
             reverseColor="#161616"
             size={12}
           />
-          </Text>
         </TouchableOpacity>
         {/*----------------------------------------FILTRADO------------------------------------------- */}
         <View>
