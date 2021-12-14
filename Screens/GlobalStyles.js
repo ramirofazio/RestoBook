@@ -147,14 +147,13 @@ const globalStyles = StyleSheet.create({
     justifyContent: "space-around",
   },
   cardsDescriptionText: {
-    //backgroundColor: 'lightblue',
+    // backgroundColor: 'lightblue',
     textAlign: "center",
     width: "100%",
-    justifyContent: "space-around",
+    height: "38%",
     fontSize: 12,
-    height: 50,
     fontWeight: "bold",
-    maxHeight: "120%",
+    marginBottom: -2
   },
   cardsHomeTitle: {
     // backgroundColor: "#5555",

@@ -101,19 +101,18 @@ const CardFavourite = ({
           </View>
 
                 
-          <View style={{margin: 5}}>
+          <View style={{margin : 4 ,justifyContent: 'space-evenly'}}>
             <Text style={globalStyles.cardsDescriptionText}>
               <Icon 
                 reverse
                 name="map-marker-alt"
                 type="font-awesome-5"
                 color="#eecdaa"
-                textAlign="beseline"
                 reverseColor="#161616"
                 size={11}
-              />
-              {resto.location.address.split(",")[0]},
-              {resto.location.address.split(",")[1]}
+                />
+                {resto.location.address.split(",")[0]},
+                {resto.location.address.split(",")[1]}
             </Text>
           
             <Text style={globalStyles.cardsDescriptionText}>
