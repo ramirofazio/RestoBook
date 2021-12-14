@@ -211,7 +211,6 @@ const ProfileUser = ({ navigation }) => {
             transparent={true}
             visible={modalVisible}
             onRequestClose={() => {
-              Alert.alert("Modal has been closed.");
               setModalVisible(!modalVisible);
             }}
           >
@@ -268,11 +267,28 @@ const ProfileUser = ({ navigation }) => {
                 <TouchableOpacity
                   style={globalStyles.btnLogin}
                   onPress={() => {
-                    sendPasswordResetEmail(auth, currentUser?.email)
-                      .then(alert("Revisa tu casilla y volve a ingresar!"))
-                      .then(signOut(auth))
-                      .then(setModalVisible(false))
-                      .then(navigation.navigate("RestoBook"));
+                    Alert.alert(
+                      "¿Seguro que quieres cambiar tu contraseña?",
+                      "Cerraremos tu sesión y te enviaremos un email para reestablecerla.",
+                      [
+                        {
+                          style: "cancel",
+                          text: "Cancelar",
+                        },
+                        {
+                          text: "Ok",
+                          onPress: () => {
+                            sendPasswordResetEmail(auth, currentUser?.email)
+                              .then(signOut(auth))
+                              .then(setModalVisible(false))
+                              .then(navigation.navigate("RestoBook"));
+                          },
+                        },
+                      ],
+                      {
+                        cancelable: true,
+                      }
+                    );
                   }}
                 >
                   <Text style={globalStyles.texts}>Cambiar contraseña</Text>
@@ -300,7 +316,7 @@ const ProfileUser = ({ navigation }) => {
           </Modal>
         </View>
       </View>
-      <View style={{}}>
+     
         <Text
           style={{
             fontSize: 25,
@@ -330,7 +346,7 @@ const ProfileUser = ({ navigation }) => {
             <Carousel
               data={myFavourites}
               renderItem={renderItem}
-              itemWidth={300}
+              itemWidth={305}
               sliderWidth={400}
               inactiveSlideShift={1}
               useScrollView={true}
@@ -386,7 +402,6 @@ const ProfileUser = ({ navigation }) => {
           </ScrollView>
         </View>
       </View>
-    </View>
   );
 };
 

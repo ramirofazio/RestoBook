@@ -152,7 +152,7 @@ const globalStyles = StyleSheet.create({
     width: "100%",
     justifyContent: "space-around",
     fontSize: 12,
-    height: 60,
+    height: 50,
     fontWeight: "bold",
     maxHeight: "120%",
   },
@@ -286,9 +286,9 @@ const globalStyles = StyleSheet.create({
     elevation: 8,
   },
   descriptionRestoContainer : {
-        borderRadius: 50,
+        borderRadius: 15,
         marginVertical: 15,
-        width: "80%",
+        width: "95%",
         height: "25%",
         alignSelf: "center",
         alignItems: "center",
@@ -536,7 +536,28 @@ const globalStyles = StyleSheet.create({
     shadowRadius: 16.0,
     elevation: 100,
   },
-  
+  btnDetail: {
+    backgroundColor: "#fdfdfd",
+    paddingVertical: 5,
+    paddingHorizontal: 9,
+    marginVertical: 7,
+    borderRadius: 15,
+    alignItems: "center",
+    alignSelf: "center",
+    justifyContent: "center",
+    borderWidth: 2,
+    width: "95%",
+    borderColor: "#eccdaa",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    shadowOpacity: 0.34,
+    shadowRadius: 6.27,
+
+    elevation: 6,
+  },
   //------------------------------------------------------------------------------------------------------
   title: {
     fontSize: 25,
@@ -556,7 +577,7 @@ const globalStyles = StyleSheet.create({
   navHome: {
     flexDirection: "row",
     width: "100%",
-    backgroundColor: "#161616",
+    // backgroundColor: "#161616",
   },
   touchLog: {
     marginTop: 10,
