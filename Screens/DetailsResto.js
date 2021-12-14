@@ -150,10 +150,12 @@ const DetailsResto = ({ navigation }) => {
     if (target === "vegan") {
       filtered = menuArr.filter((element) => element.vegan === true);
       setMenuFiltered(filtered);
+      setMenuHeader("Veggie");
     }
     if (target === "glutenFree") {
       filtered = menuArr.filter((element) => element.glutenFree === true);
       setMenuFiltered(filtered);
+      setMenuHeader("Glutenfree");
     }
   };
 
@@ -203,7 +205,7 @@ const DetailsResto = ({ navigation }) => {
         </Text>
       </View>
         <View onTouchStart={() => setmodalMenuVisible(!modalMenuVisible)}>
-          <TouchableOpacity style={globalStyles.btnFiltrosHome}>
+          <TouchableOpacity style={globalStyles.btnDetail}>
             <Text style={globalStyles.btnTextFiltro}>
               <MaterialIcons
                 name="restaurant"
@@ -217,7 +219,7 @@ const DetailsResto = ({ navigation }) => {
 
         {handleHorarioReserva() ? (
           <View onTouchStart={() => setModalVisible(!modalVisible)}>
-            <TouchableOpacity style={globalStyles.btnFiltrosHome}>
+            <TouchableOpacity style={globalStyles.btnDetail}>
               <Text style={globalStyles.btnTextFiltro}>
                 <MaterialIcons
                   name="payment"
@@ -230,7 +232,7 @@ const DetailsResto = ({ navigation }) => {
           </View>
         ) : (
           <View>
-            <TouchableOpacity style={globalStyles.btnFiltrosHome}>
+            <TouchableOpacity style={globalStyles.btnDetail}>
               <Text style={globalStyles.btnTextFiltro}>
                 <MaterialIcons
                   name="block"
