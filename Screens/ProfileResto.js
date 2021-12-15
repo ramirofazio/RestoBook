@@ -125,35 +125,20 @@ const ProfileResto = ({ navigation }) => {
     getInfo();
   }, [commerceInfo]);
 
-  const getRating = () => {
-    let totalRating = 0;
-    if (availableCommerces?.reviews?.length) {
-      for (let i = 0; i < availableCommerces?.reviews?.length; i++) {
-        totalRating += availableCommerces?.reviews[i]?.rating;
-      }
-      let resultado = totalRating / availableCommerces?.reviews?.length;
-      setResultRating(resultado);
-    } else {
-      setResultRating(totalRating);
-    }
-  };
-
   const getFavQty = async () => {
     try {
-      const docRef = query(
-        collection(firebase.db, "Users"),
-        where("favourites", "!=", "[]")
-      );
+      const docRef = query(collection(firebase.db, "Users"));
       const docSnap = await getDocs(docRef);
       if (!docSnap.empty) {
         let totalFavs = 0;
         docSnap.forEach((doc) => {
           let obj = doc.data();
-          if (obj.favourites.length) {
+          if (obj?.favourites?.length) {
             let favourites = obj.favourites.filter(
               (element) => element.idResto === availableCommerces?.id
             );
             totalFavs += favourites.length;
+            console.log("total", totalFavs);
           }
         });
         setFavoritesQty(totalFavs);
@@ -164,9 +149,16 @@ const ProfileResto = ({ navigation }) => {
   };
 
   useEffect(() => {
+    console.log("rating", resultRating);
+  }, [resultRating]);
+
+  useEffect(() => {
+    console.log("favs", favoritesQty);
+  }, [favoritesQty]);
+
+  useEffect(() => {
     getFavQty();
-    getRating();
-  }, [commerceInfo]);
+  }, [availableCommerces]);
 
   useEffect(() => {
     return () => {
@@ -270,7 +262,6 @@ const ProfileResto = ({ navigation }) => {
 
   return (
     <View style={globalStyles.Perfilcontainer}>
-
       <View style={globalStyles.imgContainer}>
         {image && !uploading ? (
           <TouchableOpacity onPress={openImagePickerAsync}>
@@ -279,7 +270,6 @@ const ProfileResto = ({ navigation }) => {
                 uri: CLOUDINARY_CONSTANT + image,
               }}
               style={globalStyles.imgProfile}
-              
             />
           </TouchableOpacity>
         ) : (
@@ -423,13 +413,13 @@ const ProfileResto = ({ navigation }) => {
           </Modal>
         </View>
       </View>
-      <View style={{
-        backgroundColor: "red",
-        width: "100%",
-        height: "5%"
-      }}>
-
-      </View>
+      <View
+        style={{
+          backgroundColor: "red",
+          width: "100%",
+          height: "5%",
+        }}
+      ></View>
 
       {/* MODAL DE ADMINISTRAR RESERVAS */}
       <TouchableOpacity
@@ -445,7 +435,6 @@ const ProfileResto = ({ navigation }) => {
         <Text style={{ fontSize: 25, color: "#392c28", textAlign: "center" }}>
           Administrar Reservas
         </Text>
-
       </TouchableOpacity>
 
       <Modal
@@ -471,9 +460,7 @@ const ProfileResto = ({ navigation }) => {
               Administración de reserva
             </Text>
 
-            <Text style={globalStyles.texts}>
-              Horario para reservar(24hs)
-            </Text>
+            <Text style={globalStyles.texts}>Horario para reservar(24hs)</Text>
 
             <View
               style={{
@@ -592,7 +579,6 @@ const ProfileResto = ({ navigation }) => {
               fontSize={20}
             />
 
-
             <Text style={globalStyles.texts}>Resumen:</Text>
 
             <View
@@ -634,7 +620,6 @@ const ProfileResto = ({ navigation }) => {
               >
                 Precio Por Lugar: ${precioXLugar}
               </Text>
-
             </View>
 
             <TouchableOpacity
@@ -649,7 +634,7 @@ const ProfileResto = ({ navigation }) => {
 
       {/* MODAL DE ADMINISTRAR HORARIO COMERCIAL */}
 
-      < TouchableOpacity
+      <TouchableOpacity
         onPress={() => setModalAdminHorarioVisible(!modalAdminHorarioVisible)}
         style={globalStyles.btnProfileResto}
       >
@@ -763,9 +748,9 @@ const ProfileResto = ({ navigation }) => {
               <Text style={globalStyles.texts}>Guardar</Text>
             </TouchableOpacity>
           </View>
-        </Modal >
-      </TouchableOpacity >
-    </View >
+        </Modal>
+      </TouchableOpacity>
+    </View>
   );
 };
 
