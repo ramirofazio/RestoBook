@@ -383,14 +383,6 @@ const ProfileUser = ({ navigation }) => {
           />
         </View>
         <ScrollView style={{ padding: 10 }}>
-          <TouchableOpacity
-            style={globalStyles.btn}
-            onPress={() => navigation.navigate("AddReviewsRestorant", {
-              nameResto: "probando"
-            })}>
-            <Text style={globalStyles.texts}>resenia</Text>
-          </TouchableOpacity>
-
           {reservas?.map((reserva, index) => {
             // console.log(reserva)
             return (
