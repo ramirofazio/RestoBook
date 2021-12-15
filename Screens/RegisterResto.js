@@ -298,6 +298,7 @@ const RegisterResto = ({ navigation }) => {
                   commerceTimeRange: "0-24",
                 })
                 .then(navigation.navigate("RestoBook"))
+                .then(alert('Tu resto fue creado con éxito'))
                 .then(
                   currentUser.commerce
                     ? firebase.db.collection("Users").doc(id).update({
@@ -307,7 +308,6 @@ const RegisterResto = ({ navigation }) => {
                         commerce: true,
                       })
                 )
-
                 .then(dispatch(SetCommerce(1)))
             } catch (error) {
               console.log(error);

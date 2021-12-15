@@ -220,17 +220,17 @@ export default function Home({ navigation }) {
       const result = availableCommerces.sort((a, b) =>
         a.title > b.title ? 1 : -1
       );
-      setSelectedValue(result);
+      setAvailableCommerces(result);
     } else if (itemValue === "Z-A") {
       const resulta = availableCommerces.sort((a, b) =>
         a.title < b.title ? 1 : -1
       );
-      setSelectedValu(resulta);
+      setAvailableCommerces(resulta);
     }
   };
 
   const showByDistance = () => {
-   const orderedRestos = allRestos.sort(function(a,b){
+   const orderedRestos = availableCommerces.sort(function(a,b){
       if( getDistance(userLocation, a.location)  > getDistance(userLocation, b.location) ) return 1
       if( getDistance(userLocation, b.location) > getDistance(userLocation, a.location) ) return -1
       return 0;
@@ -412,7 +412,7 @@ export default function Home({ navigation }) {
               backgroundColor: "#fff0",
             }}
             onPress={() => {
-              updateUser("A-Z");
+              showByDistance()
               isVisibleFiltro(false);
             }}
           >
@@ -439,7 +439,34 @@ export default function Home({ navigation }) {
               backgroundColor: "#fff0",
             }}
             onPress={() => {
-              showByDistance()
+              setAvailableCommerces(allRestos)
+              isVisibleFiltro(false);
+            }}
+          >
+            <ListItem.Content
+              style={{ backgroundColor: "#0000", alignItems: "center" }}
+            >
+              <ListItem.Title
+                style={{
+                  height: 35,
+                  color: "#161616",
+                  paddingVertical: 5,
+                  fontWeight: "bold",
+                }}
+              >
+                Mostrar Todos
+              </ListItem.Title>
+            </ListItem.Content>
+          </ListItem>
+          <ListItem
+            containerStyle={{ backgroundColor: "rgba(242, 242, 242,0.8)" }}
+            style={{
+              borderBottomWidth: 1,
+              borderColor: "#333a",
+              backgroundColor: "#fff0",
+            }}
+            onPress={() => {
+              updateUser("A-Z");
               isVisibleFiltro(false);
             }}
           >

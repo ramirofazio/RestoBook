@@ -1,5 +1,5 @@
 //----------REACT UTILS-----------
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 //
 //----------REDUX UTILS-----------
 import { useSelector } from "react-redux";
@@ -14,8 +14,6 @@ import {
   Pressable,
   ActivityIndicator,
   Switch,
-  TouchableWithoutFeedback,
-  Keyboard,
 } from "react-native";
 import { BottomSheet, ListItem } from "react-native-elements";
 //
@@ -50,18 +48,24 @@ const MenuRestoSchema = yup.object({
   price: yup.number().required().positive().integer().max(2000),
 });
 
-const AddMenuResto = ({ navigation }) => {
+const ModifyMenuResto = ({ navigation }) => {
   const empresaDetail = useSelector((state) => state.empresaDetail);
+  const itemToModify = useSelector((state) => state.itemToModify);
   const currentId = useSelector((state) => state.currentId);
   const [spinner, setSpinner] = useState(false);
   const idResto = empresaDetail.idResto;
   const [isVisible, setIsVisible] = useState(false);
-  const [category, setCategory] = useState();
+  const [category, setCategory] = useState(itemToModify.category);
   const categories = useSelector((state) => state.categoriesMenu);
   const [selectedImage, setSelectedImage] = useState(DEFAULT_FOOD_IMAGE);
   const [uploading, setUploading] = useState(false);
-  const [vegan, setVegan] = useState(false);
-  const [glutenFree, setGlutenFree] = useState(false);
+  const [vegan, setVegan] = useState(itemToModify.vegan);
+  const [glutenFree, setGlutenFree] = useState(itemToModify.glutenFree);
+
+  useEffect(() => {
+    console.log("ITEM: ", itemToModify);
+  }, [itemToModify]);
+
   let openImagePickerAsync = async () => {
     setUploading(true);
     let permissionResult =
@@ -107,7 +111,6 @@ const AddMenuResto = ({ navigation }) => {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
     <View style={globalStyles.Home}>
       <View style={globalStyles.inputComponent}>
         <Pressable onPress={() => setIsVisible(true)}>
@@ -188,11 +191,11 @@ const AddMenuResto = ({ navigation }) => {
 
       <Formik
         initialValues={{
-          foodName: "",
-          description: "",
-          price: "",
-          category: "",
-          img: selectedImage,
+          foodName: itemToModify?.foodName,
+          description: itemToModify.description,
+          price: itemToModify.price,
+          category: itemToModify.category,
+          img: itemToModify.img,
         }}
         validationSchema={MenuRestoSchema}
         onSubmit={async (values) => {
@@ -214,7 +217,6 @@ const AddMenuResto = ({ navigation }) => {
               menu: arrayUnion(newValues),
             });
             setSpinner(false);
-            navigation.navigate("DetailsResto");
           } catch (err) {
             console.log(err);
           }
@@ -296,7 +298,12 @@ const AddMenuResto = ({ navigation }) => {
             />
 
             <View style={globalStyles.btnTodasComidas}>
-              <TouchableOpacity onPress={() => props.handleSubmit()}>
+              <TouchableOpacity
+                onPress={() => {
+                  props.handleSubmit();
+                  navigation.navigate("DetailsResto");
+                }}
+              >
                 <Text style={globalStyles.texts}>Agregar!</Text>
               </TouchableOpacity>
             </View>
@@ -304,8 +311,7 @@ const AddMenuResto = ({ navigation }) => {
         )}
       </Formik>
     </View>
-    </TouchableWithoutFeedback>
   );
 };
 
-export default AddMenuResto;
+export default ModifyMenuResto;

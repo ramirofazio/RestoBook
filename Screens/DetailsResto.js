@@ -18,7 +18,7 @@ import {
   TextInput,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import { Badge, Icon } from 'react-native-elements'
+import { Badge, Icon } from "react-native-elements";
 //---------------------GEOLOCATION-------------------
 import { GOOGLE_API_KEY } from "@env";
 import MapView, { Marker } from "react-native-maps";
@@ -56,7 +56,9 @@ const auth = getAuth();
 const DetailsResto = ({ navigation }) => {
   //--------------------------REVIEWS-------------------------------
   const [reviews, setReviews] = useState();
-
+  //--------------------------OWNER-------------------------------
+  const [owner, setOwner] = useState(null);
+  const currentId = useSelector((state) => state.currentId);
   //--------------------------MERCADO PAGO--------------------------
   const [precioCabeza, setPrecioCabeza] = useState();
   const [cantLugares, setCantLugares] = useState(1);
@@ -95,9 +97,9 @@ const DetailsResto = ({ navigation }) => {
     navigation.navigate("WebViewScreen", {
       url: url.data,
       cantLugares,
-      unitPrice: empresaDetail.reservationsParams?.precioPorLugar
-    })
-  }
+      unitPrice: empresaDetail.reservationsParams?.precioPorLugar,
+    });
+  };
   useEffect(() => {
     if (Object.entries(userLocation).length === 0 || !location) return;
     //Zoom & fit to markers
@@ -112,6 +114,7 @@ const DetailsResto = ({ navigation }) => {
       let obj = doc.data();
       let categories = obj.menu.map((element) => element.category);
       let categoriesNoRepeat = [...new Set(categories)];
+      setOwner(obj.idUser);
       setMenuCategory(categoriesNoRepeat);
       setMenuArr(obj.menu);
       setReviews(obj.reviews);
@@ -161,7 +164,6 @@ const DetailsResto = ({ navigation }) => {
     }
   };
 
-
   return (
     <View style={globalStyles.Home}>
       <View style={globalStyles.headerResto}>
@@ -177,35 +179,40 @@ const DetailsResto = ({ navigation }) => {
         >
           {empresaDetail.title}
         </Text>
-            <Badge status={handleHorarioReserva() ? "success" : "error"}   containerStyle={{ position: 'absolute', top: 20, right: 15}}/>
+        <Badge
+          status={handleHorarioReserva() ? "success" : "error"}
+          containerStyle={{ position: "absolute", top: 20, right: 15 }}
+        />
       </View>
 
-    <ScrollView style={globalStyles.Home}>
-      <View style={globalStyles.descriptionRestoContainer}>
-        <Text  style={globalStyles.textoDescription}>{empresaDetail.description}</Text>
-        <Text style={globalStyles.textoDescription}>
-                <Icon
-                  reverse
-                  name="phone-alt"
-                  type="font-awesome-5"
-                  color="#eecdaa"
-                  reverseColor="#161616"
-                  size={11}
-                />
-                {empresaDetail.phone}
-        </Text>
-        <Text style={globalStyles.textoDescription}>
-                <Icon
-                  reverse
-                  name="map-marker-alt"
-                  type="font-awesome-5"
-                  color="#eecdaa"
-                  reverseColor="#161616"
-                  size={11}
-                />
-                {empresaDetail.location.address},
-        </Text>
-      </View>
+      <ScrollView style={globalStyles.Home}>
+        <View style={globalStyles.descriptionRestoContainer}>
+          <Text style={globalStyles.textoDescription}>
+            {empresaDetail.description}
+          </Text>
+          <Text style={globalStyles.textoDescription}>
+            <Icon
+              reverse
+              name="phone-alt"
+              type="font-awesome-5"
+              color="#eecdaa"
+              reverseColor="#161616"
+              size={11}
+            />
+            {empresaDetail.phone}
+          </Text>
+          <Text style={globalStyles.textoDescription}>
+            <Icon
+              reverse
+              name="map-marker-alt"
+              type="font-awesome-5"
+              color="#eecdaa"
+              reverseColor="#161616"
+              size={11}
+            />
+            {empresaDetail.location.address},
+          </Text>
+        </View>
         <View onTouchStart={() => setmodalMenuVisible(!modalMenuVisible)}>
           <TouchableOpacity style={globalStyles.btnDetail}>
             <Text style={globalStyles.btnTextFiltro}>
@@ -276,25 +283,25 @@ const DetailsResto = ({ navigation }) => {
                 identifier="userLocation"
               />
             )}
-           { Object.entries(userLocation).length > 0 && location && (
-            <MapViewDirections
-              lineDashPattern={[0]}
-              apikey={GOOGLE_API_KEY}
-              strokeWidth={1.5}
-              strokeColor="brown"
-              origin={userLocation}
-              destination={{
-                latitude: location.latitude,
-                longitude: location.longitude
-              }}
-              onReady={ resultado => {
-                const { distance, duration } = resultado;
-                const travelTime = Math.round(duration)
-                // const distanceSpliteado = distance.split('.')
-                // console.log(distanceSpliteado)
-                const travelDistance = distance.toString().slice(0, 4)
-                setDistance({distance: travelDistance, ETA: travelTime})
-              }}
+            {Object.entries(userLocation).length > 0 && location && (
+              <MapViewDirections
+                lineDashPattern={[0]}
+                apikey={GOOGLE_API_KEY}
+                strokeWidth={1.5}
+                strokeColor="brown"
+                origin={userLocation}
+                destination={{
+                  latitude: location.latitude,
+                  longitude: location.longitude,
+                }}
+                onReady={(resultado) => {
+                  const { distance, duration } = resultado;
+                  const travelTime = Math.round(duration);
+                  // const distanceSpliteado = distance.split('.')
+                  // console.log(distanceSpliteado)
+                  const travelDistance = distance.toString().slice(0, 4);
+                  setDistance({ distance: travelDistance, ETA: travelTime });
+                }}
               />
             )}
           </MapView>
@@ -389,6 +396,7 @@ const DetailsResto = ({ navigation }) => {
                   color="#161616"
                 ></MaterialIcons>
               </TouchableOpacity>
+
               <Text style={globalStyles.modalMenuText}>{menuHeader}</Text>
               <View style={styles.categoriesFilterContainer}>
                 {menuArr.length ? (
@@ -440,14 +448,24 @@ const DetailsResto = ({ navigation }) => {
                   {menuFiltered.length
                     ? menuFiltered.map((menu, index) => {
                         return (
-                          <CardMenu key={index} menu={menu}>
+                          <CardMenu
+                            key={index}
+                            menu={menu}
+                            navigation={navigation}
+                            setmodalMenuVisible={setmodalMenuVisible}
+                          >
                             {" "}
                           </CardMenu>
                         );
                       })
                     : menuArr.map((menu, index) => {
                         return (
-                          <CardMenu key={index} menu={menu}>
+                          <CardMenu
+                            key={index}
+                            menu={menu}
+                            navigation={navigation}
+                            setmodalMenuVisible={setmodalMenuVisible}
+                          >
                             {" "}
                           </CardMenu>
                         );
@@ -506,11 +524,11 @@ const DetailsResto = ({ navigation }) => {
             </View>
           </View>
         </Modal>
-      </ScrollView >
-        <View style={styles.listReviews}>
-          <ListReviews navigation={navigation} reviews={reviews} />
-        </View>
-    </View >
+      </ScrollView>
+      <View style={styles.listReviews}>
+        <ListReviews navigation={navigation} reviews={reviews} />
+      </View>
+    </View>
   );
 };
 const styles = StyleSheet.create({

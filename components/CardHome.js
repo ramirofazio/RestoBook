@@ -37,6 +37,7 @@ import { useIsFocused } from "@react-navigation/native";
 
 const auth = getAuth();
 import { CLOUDINARY_CONSTANT } from "@env";
+import { Alert } from "react-native";
 
 const CardMenu = ({ resto, navigation }) => {
   // const userFavourites = useSelector((state) => state.favourites);
@@ -53,7 +54,7 @@ const CardMenu = ({ resto, navigation }) => {
     if (CurrentId) {
       const docRef = doc(firebase.db, "Users", CurrentId);
       const docSnap = await getDoc(docRef);
-      if (docSnap.exists) {
+      if (docSnap.exists()) {
         let obj = docSnap.data().favourites;
         setUserFavourites(obj);
       }
@@ -73,7 +74,6 @@ const CardMenu = ({ resto, navigation }) => {
       setResultRating(totalRating);
     }
   };
-
   useEffect(() => {
     if (isFocused) {
       getFavs();
@@ -123,8 +123,9 @@ const CardMenu = ({ resto, navigation }) => {
   };
 
   const addToFavourite = async () => {
-    if (auth?.currentUser?.uid) {
+    if (auth?.currentUser?.uid && CurrentId) {
       try {
+        console.log(CurrentId)
         // console.log("consolelog en InfoFavourite: ", infoFavourite);
         setHearthColor("red");
         let docRef = doc(firebase.db, "Users", auth.currentUser.uid);
@@ -245,7 +246,7 @@ const CardMenu = ({ resto, navigation }) => {
         <View style={globalStyles.btnContainerCard}>
           <View>
             <TouchableOpacity onPress={() => {
-              if (loggedUser) {
+              if (auth?.currentUser?.uid && CurrentId) {
                 handleWhatsapp()
               } else {
                 Alert.alert(

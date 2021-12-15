@@ -77,7 +77,7 @@ export default function NavHome({ title, navigation }) {
     );
 
     const querySnapshot = onSnapshot(q, (querySnapshot) => {
-      console.log("entre a querySnap")
+      console.log("entre a querySnap 80");
       let arr = [];
       querySnapshot.forEach((doc) => {
         let obj = doc.data();
@@ -86,7 +86,7 @@ export default function NavHome({ title, navigation }) {
         };
         arr.push(infoCard);
       });
-      console.log(arr)
+      console.log(arr);
       if (arr.length === 1) {
         isCommerce(1);
       }

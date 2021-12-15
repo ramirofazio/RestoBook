@@ -230,7 +230,6 @@ const ProfileResto = ({ navigation }) => {
   const clearStates = () => {
     setTimeReservaInicio();
     setTimeReservaFin();
-    setSectorState();
     setPlaces();
     setPrecioXLugar(0);
     setTimeHorarioComInicio();
