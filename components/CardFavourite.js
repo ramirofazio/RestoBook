@@ -46,11 +46,11 @@ const CardFavourite = ({
     location: resto.location,
     img: resto.img,
     description: resto.description,
-    reservationsParams: resto.reservationsParams
+    reservationsParams: resto.reservationsParams,
   };
 
   const handleOnPress = () => {
-    console.log("resto", resto);
+    // console.log("resto", resto);
 
     dispatch(empresaDetail(resto));
 
@@ -87,7 +87,6 @@ const CardFavourite = ({
             style={globalStyles.cardsHomeimg}
             source={{ uri: CLOUDINARY_CONSTANT + resto.img }}
             resizeMode="contain"
-
           />
         </View>
 
@@ -97,7 +96,7 @@ const CardFavourite = ({
               <ActivityIndicator
                 size="large"
                 color="#5555"
-              // style={globalStyles.imgProfile}
+                // style={globalStyles.imgProfile}
               />
             ) : (
               <Text style={globalStyles.cardsHomeTitle}>{resto.title}</Text>
@@ -135,7 +134,6 @@ const CardFavourite = ({
             </Text>
           </View>
         </View>
-
 
         <View style={globalStyles.btnContainerCard}>
           <View>

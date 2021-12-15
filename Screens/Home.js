@@ -14,7 +14,7 @@ import {
   StyleSheet,
   Image,
   TouchableOpacity,
-  TextInput, 
+  TextInput,
   Modal,
   ActivityIndicator,
   Picker,
@@ -55,7 +55,6 @@ import { Formik } from "formik";
 //
 import CardMaps from "../components/CardMaps.js";
 
-
 //-------VALIDATION SCHEMA GOOGLE LOGIN--------------
 const googleLoginSchema = yup.object({
   name: yup.string().required(),
@@ -72,9 +71,9 @@ export default function Home({ navigation }) {
   const [flagCards, setFlagCards] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   //-------------------GEOLOCATION---------------------------//
-  const [mapaVisible, setMapaVisible] = useState(false)
-  const userLocation = useSelector(state => state.userCoordinates)
-  const mapRef = useRef(null)
+  const [mapaVisible, setMapaVisible] = useState(false);
+  const userLocation = useSelector((state) => state.userCoordinates);
+  const mapRef = useRef(null);
   //--------------FILTRADO MODAL-------------------------
   const [allRestos, setAllRestos] = useState([]);
   const [category, setCategory] = useState();
@@ -87,7 +86,6 @@ export default function Home({ navigation }) {
   const [selectedValue, setSelectedValue] = useState("");
   const [selectedValu, setSelectedValu] = useState("");
   const [visibleFiltro, isVisibleFiltro] = useState(false);
-
 
   useEffect(() => {
     const q = query(collection(firebase.db, "Restos"));
@@ -103,7 +101,6 @@ export default function Home({ navigation }) {
         setAllRestos(arr);
     });
   }, []);
-
 
   onAuthStateChanged(auth, (usuarioFirebase) => {
     if (usuarioFirebase?.emailVerified) {
@@ -169,7 +166,7 @@ export default function Home({ navigation }) {
       } else {
         //console.log("else de getinfo!");
         let obj = docSnap.data();
-        dispatch(CurrentUser(obj))
+        dispatch(CurrentUser(obj));
         setFlagCards(true);
       }
     } catch (e) {
@@ -218,17 +215,21 @@ export default function Home({ navigation }) {
     } else {
       setAvailableCommerces(result);
     }
-  }
+  };
 
   const updateUser = (itemValue) => {
     if (itemValue === "A-Z") {
-      const result = availableCommerces.sort((a, b) => (a.title > b.title) ? 1 : -1)
-      setSelectedValue(result)
+      const result = availableCommerces.sort((a, b) =>
+        a.title > b.title ? 1 : -1
+      );
+      setSelectedValue(result);
     } else if (itemValue === "Z-A") {
-      const resulta = availableCommerces.sort((a, b) => (a.title < b.title) ? 1 : -1)
-      setSelectedValu(resulta)
+      const resulta = availableCommerces.sort((a, b) =>
+        a.title < b.title ? 1 : -1
+      );
+      setSelectedValu(resulta);
     }
-  }
+  };
 
   const showByDistance = () => {
    const orderedRestos = allRestos.sort(function(a,b){
@@ -270,6 +271,8 @@ export default function Home({ navigation }) {
               cel: cel,
               email: auth.currentUser.email,
               commerce: false,
+              multiCommerce: false,
+              favourites: [],
               profileImage: DEFAULT_PROFILE_IMAGE,
               reservations: [],
               payments: [],
@@ -335,9 +338,7 @@ export default function Home({ navigation }) {
                   />
                 </View>
                 {props.touched.cel && props.errors.cel ? (
-                  <Text style={globalStyles.errorText}>
-                    {props.errors.cel}
-                  </Text>
+                  <Text style={globalStyles.errorText}>{props.errors.cel}</Text>
                 ) : null}
                 <TouchableOpacity
                   style={globalStyles.btnTodasComidas}
@@ -361,7 +362,7 @@ export default function Home({ navigation }) {
         )}
       </View>
       {/*   ---------------------------------------Search ------------------------------------------------- */}
-      <View style={styles.container} >
+      <View style={styles.container}>
         <View style={styles.textInput}>
           <Animatable.View animation="zoomIn" duration={1200}>
             <TextInput
@@ -380,13 +381,19 @@ export default function Home({ navigation }) {
         </View>
       </View>
       {/*  /----------------------------------------ORDENAMIENTO----------------------------------------/ */}
-      <View style={{ flexDirection: "row", justifyContent: 'space-around', alignItems: 'center' }}>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-around",
+          alignItems: "center",
+        }}
+      >
         <Pressable onPress={() => isVisibleFiltro(true)}>
           <TextInput
             style={globalStyles.btnFiltrosHome}
             editable={false}
             placeholder="Ordenar por"
-            fontWeight={'bold'}
+            fontWeight={"bold"}
             fontSize={15}
             textAlign="center"
             placeholderTextColor="#161616"
@@ -419,7 +426,7 @@ export default function Home({ navigation }) {
                   height: 35,
                   color: "#161616",
                   paddingVertical: 5,
-                  fontWeight: "bold"
+                  fontWeight: "bold",
                 }}
               >
                 A-Z
@@ -446,7 +453,7 @@ export default function Home({ navigation }) {
                   height: 35,
                   color: "#161616",
                   paddingVertical: 5,
-                  fontWeight: "bold"
+                  fontWeight: "bold",
                 }}
               >
                 Z-A
@@ -463,7 +470,9 @@ export default function Home({ navigation }) {
             <ListItem.Content style={{ alignItems: "center" }}>
               <ListItem.Title
                 style={{
-                  height: 35, color: "#161616", fontSize: 20
+                  height: 35,
+                  color: "#161616",
+                  fontSize: 20,
                 }}
               >
                 Cancelar
@@ -475,24 +484,24 @@ export default function Home({ navigation }) {
         <TouchableOpacity
           style={globalStyles.btnFiltrosHome}
           onPress={() => {
-            if(loggedUser) {
-              setMapaVisible(!mapaVisible)
+            if (loggedUser) {
+              setMapaVisible(!mapaVisible);
             } else {
               Alert.alert(
-                'Debes estar logeado para ver el Mapa de tu zona',
-                'Desea ir a la pantalla de Login?',
+                "Debes estar logeado para ver el Mapa de tu zona",
+                "Desea ir a la pantalla de Login?",
                 [
                   {
-                    text: 'Ahora no',
-                    onPress: () => console.log('No quiere logearse'),
-                    style: 'cancel'
+                    text: "Ahora no",
+                    onPress: () => console.log("No quiere logearse"),
+                    style: "cancel",
                   },
                   {
-                    text: 'Si, por favor',
-                    onPress: () => navigation.navigate('GlobalLogin')
-                  }
+                    text: "Si, por favor",
+                    onPress: () => navigation.navigate("GlobalLogin"),
+                  },
                 ]
-              )
+              );
             }
           }}
           >
@@ -513,7 +522,7 @@ export default function Home({ navigation }) {
               editable={false}
               placeholder="Categorias"
               fontSize={15}
-              fontWeight={'bold'}
+              fontWeight={"bold"}
               textAlign="center"
               placeholderTextColor="#161616"
               value={category}
@@ -590,7 +599,9 @@ export default function Home({ navigation }) {
               <ListItem.Content style={{ alignItems: "center" }}>
                 <ListItem.Title
                   style={{
-                    height: 35, color: "#161616", fontSize: 20
+                    height: 35,
+                    color: "#161616",
+                    fontSize: 20,
                   }}
                 >
                   Cancelar
@@ -634,7 +645,6 @@ export default function Home({ navigation }) {
         transparent={true}
         visible={mapaVisible}
         onRequestClose={() => {
-
           setMapaVisible(!mapaVisible);
         }}
       >
@@ -650,39 +660,44 @@ export default function Home({ navigation }) {
               {Object.entries(userLocation).length > 0 && (
                 <MapView
                   ref={mapRef}
-                  userInterfaceStyle='light'
+                  userInterfaceStyle="light"
                   style={styles.googleMaps}
                   initialRegion={{
                     latitude: userLocation.latitude,
                     longitude: userLocation.longitude,
                     latitudeDelta: 0.1,
-                    longitudeDelta: 0.1
+                    longitudeDelta: 0.1,
                   }}
                 >
                   {Object.entries(userLocation).length > 0 && (
                     <Marker
-                      title='Your location'
-                      pinColor='#0072B5'
+                      title="Your location"
+                      pinColor="#0072B5"
                       coordinate={userLocation}
                       identifier="userLocation"
                     />
                   )}
-                  {allRestos.length > 0 && allRestos.map(resto => {
-                    return (
-                      <Marker
-                        key={resto.idResto}
-                        title={resto.title}
-                        description={resto.description}
-                        pinColor="red"
-                        coordinate={resto.location}
-                        identifier={resto.title}
-                      >
-                        <Callout tooltip onPress={() => setMapaVisible(!mapaVisible)}>
-                          <CardMaps key={resto.idResto} resto={resto} navigation={navigation} ></CardMaps>
-                        </Callout>  
-                      </Marker>
-                    )
-                  })}
+                  {allRestos.length > 0 &&
+                    allRestos.map((resto) => {
+                      return (
+                        <Marker
+                          key={resto.idResto}
+                          title={resto.title}
+                          description={resto.description}
+                          pinColor="red"
+                          coordinate={resto.location}
+                          identifier={resto.title}
+                        >
+                          <Callout tooltip>
+                            <CardMaps
+                              key={resto.idResto}
+                              resto={resto}
+                              navigation={navigation}
+                            ></CardMaps>
+                          </Callout>
+                        </Marker>
+                      );
+                    })}
                 </MapView>
               )}
             </View>
@@ -706,12 +721,12 @@ const styles = StyleSheet.create({
   },
   googleMapsContainer: {
     flex: 1,
-    width: '100%',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    width: "100%",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
     borderWidth: 1,
-    borderColor: 'white',
+    borderColor: "white",
     padding: 10,
-    borderRadius: 20
+    borderRadius: 20,
   },
   googleMaps: {
     marginTop: 10,
@@ -734,7 +749,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.58,
     shadowRadius: 16.0,
-    display: 'flex',
+    display: "flex",
     elevation: 100,
   },
   textContainer2: {
