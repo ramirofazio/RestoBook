@@ -135,7 +135,7 @@ const globalStyles = StyleSheet.create({
   cardsMenuimg: {
     width: 80,
     height: 80,
-    borderRadius: 25,
+    borderRadius: 10,
   },
   cardsDescriptionContainer: {
     // backgroundColor: 'green',
@@ -222,6 +222,7 @@ const globalStyles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "left",
     width: "100%",
+    marginTop: -20
   },
   cardsMenuDescriptionText: {
     width: "90%",
