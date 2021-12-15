@@ -52,7 +52,7 @@ const CardMenu = ({ resto, navigation }) => {
     if (CurrentId) {
       const docRef = doc(firebase.db, "Users", CurrentId);
       const docSnap = await getDoc(docRef);
-      if (docSnap.exists) {
+      if (docSnap.exists()) {
         let obj = docSnap.data().favourites;
         setUserFavourites(obj);
       }
