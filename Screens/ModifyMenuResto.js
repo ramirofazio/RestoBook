@@ -1,5 +1,5 @@
 //----------REACT UTILS-----------
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 //
 //----------REDUX UTILS-----------
 import { useSelector } from "react-redux";
@@ -48,8 +48,9 @@ const MenuRestoSchema = yup.object({
   price: yup.number().required().positive().integer().max(2000),
 });
 
-const AddMenuResto = ({ navigation }) => {
+const ModifyMenuResto = ({ navigation }) => {
   const empresaDetail = useSelector((state) => state.empresaDetail);
+  const itemToModify = useSelector((state) => state.itemToModify);
   const currentId = useSelector((state) => state.currentId);
   const [spinner, setSpinner] = useState(false);
   const idResto = empresaDetail.idResto;
@@ -60,6 +61,11 @@ const AddMenuResto = ({ navigation }) => {
   const [uploading, setUploading] = useState(false);
   const [vegan, setVegan] = useState(false);
   const [glutenFree, setGlutenFree] = useState(false);
+
+  useEffect(() => {
+    console.log("ITEM: ", itemToModify);
+  }, [itemToModify]);
+
   let openImagePickerAsync = async () => {
     setUploading(true);
     let permissionResult =
@@ -185,11 +191,11 @@ const AddMenuResto = ({ navigation }) => {
 
       <Formik
         initialValues={{
-          foodName: "",
-          description: "",
-          price: "",
-          category: "",
-          img: selectedImage,
+          foodName: itemToModify?.foodName,
+          description: itemToModify.description,
+          price: itemToModify.price,
+          category: itemToModify.category,
+          img: itemToModify.img,
         }}
         validationSchema={MenuRestoSchema}
         onSubmit={async (values) => {
@@ -211,7 +217,6 @@ const AddMenuResto = ({ navigation }) => {
               menu: arrayUnion(newValues),
             });
             setSpinner(false);
-            navigation.navigate("DetailsResto");
           } catch (err) {
             console.log(err);
           }
@@ -293,7 +298,12 @@ const AddMenuResto = ({ navigation }) => {
             />
 
             <View style={globalStyles.btnTodasComidas}>
-              <TouchableOpacity onPress={() => props.handleSubmit()}>
+              <TouchableOpacity
+                onPress={() => {
+                  props.handleSubmit();
+                  navigation.navigate("DetailsResto");
+                }}
+              >
                 <Text style={globalStyles.texts}>Agregar!</Text>
               </TouchableOpacity>
             </View>
@@ -304,4 +314,4 @@ const AddMenuResto = ({ navigation }) => {
   );
 };
 
-export default AddMenuResto;
+export default ModifyMenuResto;

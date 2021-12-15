@@ -1,16 +1,69 @@
 import React from "react";
 import { Card, Text } from "react-native-elements";
-import { View, Image, StyleSheet } from "react-native";
+import { View, Image, StyleSheet, TouchableOpacity } from "react-native";
 import globalStyles from "../Screens/GlobalStyles";
 import { CLOUDINARY_CONSTANT, DEFAULT_FOOD_IMAGE } from "@env";
 import glutenFree from "../assets/sin-gluten.png";
 import vegan from "../assets/vegano.png";
-const CardMenu = ({ menu }) => {
+import { useSelector, useDispatch } from "react-redux";
+import firebase from "../database/firebase";
+import {
+  doc,
+  updateDoc,
+  arrayUnion,
+  arrayRemove,
+  getDoc,
+  where,
+} from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+import { NavigationContainer } from "@react-navigation/native";
+import ItemToModify from "../Redux/Actions/ItemToModify";
+const auth = getAuth();
+const CardMenu = ({ menu, navigation, setmodalMenuVisible }) => {
+  const dispatch = useDispatch();
+  const currentId = useSelector((state) => state.currentId);
+
+  const deleteItem = async () => {
+    let docRef = doc(firebase.db, "Restos", menu.idResto);
+    let docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      let obj = docSnap.data();
+      let target = obj.menu.filter(
+        (element) =>
+          element.foodName === menu.foodName &&
+          element.description === menu.description
+      );
+      let realTarget = target[0];
+      if (realTarget) {
+        await updateDoc(docRef, {
+          menu: arrayRemove(realTarget),
+        });
+      }
+      setmodalMenuVisible(false);
+    }
+  };
+
+  const updateItem = () => {
+    let itemToModify = menu;
+    dispatch(ItemToModify(itemToModify));
+    deleteItem();
+    setmodalMenuVisible(false);
+    navigation.navigate("ModifyMenuResto");
+  };
+
   return (
     <View style={globalStyles.menuCardsContainer}>
       <View style={globalStyles.cardsMenuDescriptionContainer}>
         <Card.Title style={globalStyles.cardsMenuTitle}>
-          {menu.foodName}
+          {menu.foodName}{" "}
+          {menu.idUser === currentId ? (
+            <TouchableOpacity
+              onPress={() => updateItem()}
+              style={{ backgroundColor: "red", width: 30, height: 30 }}
+            >
+              <Text> Editar</Text>
+            </TouchableOpacity>
+          ) : null}
         </Card.Title>
         <Card.Divider
           orientation="horizontal"
@@ -29,7 +82,23 @@ const CardMenu = ({ menu }) => {
             <Image source={vegan} style={{ width: 20, height: 20 }} />
           ) : null}
         </Text>
-        <Text style={styles.textPrice}>$ {menu.price}</Text>
+
+        <Text style={styles.textPrice}>
+          $ {menu.price}
+          {menu.idUser === currentId ? (
+            <TouchableOpacity
+              onPress={() => deleteItem()}
+              style={{ backgroundColor: "red", width: 30, height: 30 }}
+            >
+              <Text> Borrar</Text>
+            </TouchableOpacity>
+          ) : null}
+          {/* {menu.idUser === currentId ? (
+            <TouchableOpacity onPress={() => updateItem()}>
+              <Text> J</Text>
+            </TouchableOpacity>
+          ) : null} */}
+        </Text>
       </View>
 
       <View style={globalStyles.containerImgCardMenu}>

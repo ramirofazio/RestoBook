@@ -8,9 +8,11 @@ import {
   USER_FAVOURITES,
   GET_COMMERCE_INFO,
   SET_USER_LOCATION,
+  ITEM_TO_MODIFY,
 } from "./Actions/Constants.js";
 
 let initialState = {
+  itemToModify: null,
   empresas: [],
   menus: [],
   commerce: 0,
@@ -75,7 +77,7 @@ const RootReducer = (state = initialState, action) => {
     case SET_COMMERCE:
       return {
         ...state,
-        commerce: commerce + action.payload,
+        commerce: action.payload,
       };
     case USER_FAVOURITES:
       return {
@@ -91,6 +93,11 @@ const RootReducer = (state = initialState, action) => {
       return {
         ...state,
         userCoordinates: action.payload,
+      };
+    case ITEM_TO_MODIFY:
+      return {
+        ...state,
+        itemToModify: action.payload,
       };
     default:
       return state;
