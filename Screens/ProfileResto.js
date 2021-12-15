@@ -101,9 +101,9 @@ const [modalReservaVisible, setmodalReservaVisible] = useState(false);
 const [reservas, setReservas] = useState()
 
   //cantidad de favoritos
-  const [favoritesQty, setFavoritesQty] = useState(null);
+  const [favoritesQty, setFavoritesQty] = useState(0);
   //promedio del rating
-  const [resultRating, setResultRating] = useState(null);
+  const [resultRating, setResultRating] = useState(0);
   useEffect(() => {
     const getInfo = async () => {
       const docRef = doc(firebase.db, "Restos", commerceInfo);
@@ -132,35 +132,20 @@ const [reservas, setReservas] = useState()
     getInfo();
   }, [commerceInfo]); 
 
-  const getRating = () => {
-    let totalRating = 0;
-    if (availableCommerces?.reviews?.length) {
-      for (let i = 0; i < availableCommerces?.reviews?.length; i++) {
-        totalRating += availableCommerces?.reviews[i]?.rating;
-      }
-      let resultado = totalRating / availableCommerces?.reviews?.length;
-      setResultRating(resultado);
-    } else {
-      setResultRating(totalRating);
-    }
-  };
-
   const getFavQty = async () => {
     try {
-      const docRef = query(
-        collection(firebase.db, "Users"),
-        where("favourites", "!=", "[]")
-      );
+      const docRef = query(collection(firebase.db, "Users"));
       const docSnap = await getDocs(docRef);
       if (!docSnap.empty) {
         let totalFavs = 0;
         docSnap.forEach((doc) => {
           let obj = doc.data();
-          if (obj.favourites.length) {
+          if (obj?.favourites?.length) {
             let favourites = obj.favourites.filter(
               (element) => element.idResto === availableCommerces?.id
             );
             totalFavs += favourites.length;
+            console.log("total", totalFavs);
           }
         });
         setFavoritesQty(totalFavs);
@@ -171,9 +156,16 @@ const [reservas, setReservas] = useState()
   };
 
   useEffect(() => {
+    console.log("rating", resultRating);
+  }, [resultRating]);
+
+  useEffect(() => {
+    console.log("favs", favoritesQty);
+  }, [favoritesQty]);
+
+  useEffect(() => {
     getFavQty();
-    getRating();
-  }, [commerceInfo]);
+  }, [availableCommerces]);
 
   useEffect(() => {
     return () => {
@@ -250,7 +242,7 @@ const [reservas, setReservas] = useState()
         reservationsParams: obj,
       });
       alert("Cambios Guardados con Exito!");
-      setModalVisibleAdminReservas(false);
+      setModalAdminReservasVisible(!modalAdminReservasVisible);
       clearStates();
     } catch (err) {
       console.log(err);
@@ -277,7 +269,6 @@ const [reservas, setReservas] = useState()
 console.log(reservas)
   return (
     <View style={globalStyles.Perfilcontainer}>
-
       <View style={globalStyles.imgContainer}>
         {image && !uploading ? (
           <TouchableOpacity onPress={openImagePickerAsync}>
@@ -429,14 +420,33 @@ console.log(reservas)
           </Modal>
         </View>
       </View>
-      <View style={{
-        backgroundColor: "red",
-        width: "100%",
-        height: "5%"
-      }}>
-
+ 
+      <View style={globalStyles.estadisticasContainer}>
+          <Text style={globalStyles.titleEstadistica}>Cantidad de favoritos recibidos:</Text>
+            <Icon
+                  name="heart"
+                  type="antdesign"
+                  color='#Ef5050'
+                  size={50}
+                  style={{justifyContent: 'center', marginLeft: -280}}
+            />
+            <Text style={{alignSelf: "center", bottom: 40, fontWeight: "bold", fontSize: 20}}>
+            {favoritesQty}
+             </Text>
       </View>
-
+      <View style={globalStyles.estadisticasContainer}>
+          <Text style={globalStyles.titleEstadistica}>Rating promedio total:</Text>
+            <Icon
+                  name="star"
+                  type="antdesign"
+                  color='#F5ea2c'
+                  size={50}
+                  style={{marginLeft: -280}}
+            />
+          <Text style={{ alignSelf: "center", bottom: 40, fontSize: 20, fontWeight: "bold"}}>
+            {Math.floor(resultRating)}
+          </Text>
+      </View>
       {/* MODAL DE ADMINISTRAR RESERVAS */}
       <TouchableOpacity
         onPress={() => setModalAdminReservasVisible(!modalAdminReservasVisible)}
@@ -451,7 +461,6 @@ console.log(reservas)
         <Text style={{ fontSize: 25, color: "#392c28", textAlign: "center" }}>
           Administrar Reservas
         </Text>
-
       </TouchableOpacity>
 
       <Modal
@@ -477,9 +486,7 @@ console.log(reservas)
               Administración de reserva
             </Text>
 
-            <Text style={globalStyles.texts}>
-              Horario para reservar(24hs)
-            </Text>
+            <Text style={globalStyles.texts}>Horario para reservar(24hs)</Text>
 
             <View
               style={{
@@ -598,7 +605,6 @@ console.log(reservas)
               fontSize={20}
             />
 
-
             <Text style={globalStyles.texts}>Resumen:</Text>
 
             <View
@@ -640,7 +646,6 @@ console.log(reservas)
               >
                 Precio Por Lugar: ${precioXLugar}
               </Text>
-
             </View>
 
             <TouchableOpacity
@@ -655,7 +660,7 @@ console.log(reservas)
 
       {/* MODAL DE ADMINISTRAR HORARIO COMERCIAL */}
 
-      < TouchableOpacity
+      <TouchableOpacity
         onPress={() => setModalAdminHorarioVisible(!modalAdminHorarioVisible)}
         style={globalStyles.btnProfileResto}
       >

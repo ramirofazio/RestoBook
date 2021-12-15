@@ -12,12 +12,14 @@ import {
   ScrollView,
   Text,
   StyleSheet,
+  Image,
   TouchableOpacity,
   TextInput,
   Modal,
   ActivityIndicator,
   Picker,
   Pressable,
+  Alert,
 } from "react-native";
 //---------------------EXPO----------------------
 import * as Location from "expo-location";
@@ -32,37 +34,44 @@ import CardHome from "../components/CardHome.js";
 import globalStyles from "./GlobalStyles.js";
 //
 //---------------------GEOLOCATION-------------------
-import MapView, { Marker } from "react-native-maps";
+import MapView, { Callout, Marker } from "react-native-maps";
 //----------------------------------------------------
 //
 //-------INITIALIZATIONS-------
 const auth = getAuth();
 import { DEFAULT_PROFILE_IMAGE } from "@env";
+import { CLOUDINARY_CONSTANT } from "@env";
 import setUserLocation from "../Redux/Actions/setUserLocation.js";
 //
 //---------------------------------------------------------------------------------------//
 import * as Animatable from "react-native-animatable";
 import { Feather } from "@expo/vector-icons";
+//-------YUP(Validacion)------
+import * as yup from "yup";
+//----------FORMIK UTILS-----------
+import { Formik } from "formik";
+//
+import CardMaps from "../components/CardMaps.js";
 
+//-------VALIDATION SCHEMA GOOGLE LOGIN--------------
+const googleLoginSchema = yup.object({
+  name: yup.string().required(),
+  lastName: yup.string().required(),
+  cel: yup.number().required(),
+});
 
 export default function Home({ navigation }) {
   const dispatch = useDispatch();
   //------LOGIN JOSE------------
   const [visibleModalGoogle, setVisibleModalGoogle] = useState(false);
-  const [googleUser, setGoogleUser] = useState({
-    name: "",
-    lastName: "",
-    cel: "",
-    email: "",
-  });
   const [usuarioGlobal, setUsuarioGlobal] = useState("");
   const [availableCommerces, setAvailableCommerces] = useState([]);
   const [flagCards, setFlagCards] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   //-------------------GEOLOCATION---------------------------//
-  const [mapaVisible, setMapaVisible] = useState(false)
-  const userLocation = useSelector(state => state.userCoordinates)
-  const mapRef = useRef(null)
+  const [mapaVisible, setMapaVisible] = useState(false);
+  const userLocation = useSelector((state) => state.userCoordinates);
+  const mapRef = useRef(null);
   //--------------FILTRADO MODAL-------------------------
   const [allRestos, setAllRestos] = useState([]);
   const [category, setCategory] = useState();
@@ -75,7 +84,6 @@ export default function Home({ navigation }) {
   const [selectedValue, setSelectedValue] = useState("");
   const [selectedValu, setSelectedValu] = useState("");
   const [visibleFiltro, isVisibleFiltro] = useState(false);
-
 
   useEffect(() => {
     const q = query(collection(firebase.db, "Restos"));
@@ -92,12 +100,10 @@ export default function Home({ navigation }) {
     });
   }, []);
 
-
   onAuthStateChanged(auth, (usuarioFirebase) => {
     if (usuarioFirebase?.emailVerified) {
       if (loggedId !== usuarioFirebase.uid) {
         dispatch(CurrentId(usuarioFirebase.uid));
-
         // const unsub = onSnapshot(
         //   doc(firebase.db, "Users", usuarioFirebase.uid),
         //   (doc) => {
@@ -158,7 +164,7 @@ export default function Home({ navigation }) {
       } else {
         //console.log("else de getinfo!");
         let obj = docSnap.data();
-        dispatch(CurrentUser(obj))
+        dispatch(CurrentUser(obj));
         setFlagCards(true);
       }
     } catch (e) {
@@ -205,17 +211,21 @@ export default function Home({ navigation }) {
     } else {
       setAvailableCommerces(result);
     }
-  }
+  };
 
   const updateUser = (itemValue) => {
     if (itemValue === "A-Z") {
-      const result = availableCommerces.sort((a, b) => (a.title > b.title) ? 1 : -1)
-      setSelectedValue(result)
+      const result = availableCommerces.sort((a, b) =>
+        a.title > b.title ? 1 : -1
+      );
+      setSelectedValue(result);
     } else if (itemValue === "Z-A") {
-      const resulta = availableCommerces.sort((a, b) => (a.title < b.title) ? 1 : -1)
-      setSelectedValu(resulta)
+      const resulta = availableCommerces.sort((a, b) =>
+        a.title < b.title ? 1 : -1
+      );
+      setSelectedValu(resulta);
     }
-  }
+  };
 
   return (
     <View style={globalStyles.Home}>
@@ -224,71 +234,108 @@ export default function Home({ navigation }) {
     <Text>Hola!</Text>
         </View>
       </BottomSheet> */}
-      <Modal
-        visible={visibleModalGoogle}
-        animationType="slide"
-        transparent={true}
-      >
-        <View style={globalStyles.centeredView}>
-          <View style={globalStyles.modalView}>
-            <TextInput
-              style={globalStyles.inputComponent}
-              placeholder="Nombre"
-              placeholderTextColor="#666"
-              textAlign="center"
-              onChangeText={(value) => {
-                setGoogleUser({
-                  ...googleUser,
-                  name: value,
-                });
-              }}
-            />
-            <TextInput
-              style={globalStyles.inputComponent}
-              placeholder="Apellido"
-              placeholderTextColor="#666"
-              textAlign="center"
-              onChangeText={(value) => {
-                setGoogleUser({
-                  ...googleUser,
-                  lastName: value,
-                });
-              }}
-            />
-            <TextInput
-              style={globalStyles.inputComponent}
-              placeholder="Celular"
-              placeholderTextColor="#666"
-              textAlign="center"
-              onChangeText={(value) => {
-                setGoogleUser({
-                  ...googleUser,
-                  cel: value,
-                });
-              }}
-            />
-            <TouchableOpacity
-              style={globalStyles.btnTodasComidas}
-              onPress={() => {
-                firebase.db.collection("Users").doc(auth.currentUser.uid).set({
-                  id: auth.currentUser.uid,
-                  name: googleUser.name,
-                  lastName: googleUser.lastName,
-                  cel: googleUser.cel,
-                  email: googleUser.email,
-                  commerce: false,
-                  profileImage: DEFAULT_PROFILE_IMAGE,
-                  reservations: [],
-                  payments: [],
-                });
-                setVisibleModalGoogle(false);
-              }}
-            >
-              <Text style={globalStyles.texts}>Enviar</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+
+      {/*--------------------MODAL GOOGLE LOGIN--------------------------- */}
+      <Modal visible={false} animationType="slide" transparent={true}>
+        <Formik
+          initialValues={{
+            name: "",
+            lastName: "",
+            cel: "",
+            email: "",
+          }}
+          validationSchema={googleLoginSchema}
+          onSubmit={({ name, lastName, cel }) => {
+            firebase.db.collection("Users").doc(auth.currentUser.uid).set({
+              id: auth.currentUser.uid,
+              name: name,
+              lastName: lastName,
+              cel: cel,
+              email: auth.currentUser.email,
+              commerce: false,
+              multiCommerce: false,
+              favourites: [],
+              profileImage: DEFAULT_PROFILE_IMAGE,
+              reservations: [],
+              payments: [],
+            });
+            setVisibleModalGoogle(false);
+          }}
+        >
+          {(props) => (
+            <View style={globalStyles.centeredView}>
+              <View style={globalStyles.modalView}>
+                <Text
+                  style={{
+                    textAlign: "center",
+                    fontSize: 30,
+                    paddingVertical: 5,
+                    color: "#161616",
+                    letterSpacing: 1,
+                  }}
+                >
+                  Registrarse
+                </Text>
+                <View style={globalStyles.inputComponent}>
+                  <TextInput
+                    style={globalStyles.texts}
+                    placeholder="Nombre"
+                    placeholderTextColor="#666"
+                    textAlign="center"
+                    onChangeText={props.handleChange("name")}
+                    value={props.values.name}
+                    onBlur={props.handleBlur("name")}
+                  />
+                </View>
+                {props.touched.name && props.errors.name ? (
+                  <Text style={globalStyles.errorText}>
+                    {props.errors.name}
+                  </Text>
+                ) : null}
+                <View style={globalStyles.inputComponent}>
+                  <TextInput
+                    style={globalStyles.texts}
+                    placeholder="Apellido"
+                    placeholderTextColor="#666"
+                    textAlign="center"
+                    onChangeText={props.handleChange("lastName")}
+                    value={props.values.lastName}
+                    onBlur={props.handleBlur("lastName")}
+                  />
+                </View>
+                {props.touched.lastName && props.errors.lastName ? (
+                  <Text style={globalStyles.errorText}>
+                    {props.errors.lastName}
+                  </Text>
+                ) : null}
+                <View style={globalStyles.inputComponent}>
+                  <TextInput
+                    style={globalStyles.texts}
+                    placeholder="Celular"
+                    placeholderTextColor="#666"
+                    textAlign="center"
+                    onChangeText={props.handleChange("cel")}
+                    value={props.values.cel}
+                    onBlur={props.handleBlur("cel")}
+                  />
+                </View>
+                {props.touched.cel && props.errors.cel ? (
+                  <Text style={globalStyles.errorText}>{props.errors.cel}</Text>
+                ) : null}
+                <TouchableOpacity
+                  style={globalStyles.btnTodasComidas}
+                  onPress={() => props.handleSubmit()}
+                >
+                  <Text style={globalStyles.texts}>Enviar</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          )}
+        </Formik>
       </Modal>
+
+      {/*--------------FIN MODAL GOOGLE LOGIN------------------------- */}
+
       <View style={styles.textContainer}>
         {usuarioGlobal !== "" ? (
           <Text style={styles.text}>{` Bienvenido ${usuarioGlobal}`}</Text>
@@ -297,7 +344,7 @@ export default function Home({ navigation }) {
         )}
       </View>
       {/*   ---------------------------------------Search ------------------------------------------------- */}
-      <View style={styles.container} >
+      <View style={styles.container}>
         <View style={styles.textInput}>
           <Animatable.View animation="zoomIn" duration={1200}>
             <TextInput
@@ -316,26 +363,19 @@ export default function Home({ navigation }) {
         </View>
       </View>
       {/*  /----------------------------------------ORDENAMIENTO----------------------------------------/ */}
-      {/*  <View style={globalStyles.btnHome}>
-      <View style={globalStyles.btnFiltrosHome}>
-      {/* <Picker
-        selectedValue={selectedValu}
-        selectedValue={selectedValue}
-        style={{ height: 17, width: 130 }}
-        onValueChange={updateUser}
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-around",
+          alignItems: "center",
+        }}
       >
-        <Picker.Item label="Ordenado" value="Or" />
-        <Picker.Item label="A-Z" value="A-Z" />
-        <Picker.Item label="Z-A" value="Z-A" />
-      </Picker>
-    </View> */}
-      <View style={{ flexDirection: "row", justifyContent: 'space-around', alignItems: 'center' }}>
         <Pressable onPress={() => isVisibleFiltro(true)}>
           <TextInput
             style={globalStyles.btnFiltrosHome}
             editable={false}
             placeholder="Ordenar por"
-            fontWeight={'bold'}
+            fontWeight={"bold"}
             fontSize={15}
             textAlign="center"
             placeholderTextColor="#161616"
@@ -368,7 +408,7 @@ export default function Home({ navigation }) {
                   height: 35,
                   color: "#161616",
                   paddingVertical: 5,
-                  fontWeight: "bold"
+                  fontWeight: "bold",
                 }}
               >
                 A-Z
@@ -395,7 +435,7 @@ export default function Home({ navigation }) {
                   height: 35,
                   color: "#161616",
                   paddingVertical: 5,
-                  fontWeight: "bold"
+                  fontWeight: "bold",
                 }}
               >
                 Z-A
@@ -412,7 +452,9 @@ export default function Home({ navigation }) {
             <ListItem.Content style={{ alignItems: "center" }}>
               <ListItem.Title
                 style={{
-                  height: 35, color: "#161616", fontSize: 20
+                  height: 35,
+                  color: "#161616",
+                  fontSize: 20,
                 }}
               >
                 Cancelar
@@ -423,15 +465,38 @@ export default function Home({ navigation }) {
         {/*----------------------------------------BOTON MAPA------------------------------------------- */}
         <TouchableOpacity
           style={globalStyles.btnFiltrosHome}
-          onPress={() => setMapaVisible(!mapaVisible)}>
-          <Icon
-            reverse
-            name="map-marker-alt"
-            type="font-awesome-5"
-            color="#FDFDFD"
-            reverseColor="#161616"
-            size={12}
-          />
+          onPress={() => {
+            if (loggedUser) {
+              setMapaVisible(!mapaVisible);
+            } else {
+              Alert.alert(
+                "Debes estar logeado para ver el Mapa de tu zona",
+                "Desea ir a la pantalla de Login?",
+                [
+                  {
+                    text: "Ahora no",
+                    onPress: () => console.log("No quiere logearse"),
+                    style: "cancel",
+                  },
+                  {
+                    text: "Si, por favor",
+                    onPress: () => navigation.navigate("GlobalLogin"),
+                  },
+                ]
+              );
+            }
+          }}
+        >
+          <Text style={globalStyles.texts}>
+            <Icon
+              reverse
+              name="map-marker-alt"
+              type="font-awesome-5"
+              color="#FDFDFD"
+              reverseColor="#161616"
+              size={12}
+            />
+          </Text>
         </TouchableOpacity>
         {/*----------------------------------------FILTRADO------------------------------------------- */}
         <View>
@@ -441,7 +506,7 @@ export default function Home({ navigation }) {
               editable={false}
               placeholder="Categorias"
               fontSize={15}
-              fontWeight={'bold'}
+              fontWeight={"bold"}
               textAlign="center"
               placeholderTextColor="#161616"
               value={category}
@@ -518,7 +583,9 @@ export default function Home({ navigation }) {
               <ListItem.Content style={{ alignItems: "center" }}>
                 <ListItem.Title
                   style={{
-                    height: 35, color: "#161616", fontSize: 20
+                    height: 35,
+                    color: "#161616",
+                    fontSize: 20,
                   }}
                 >
                   Cancelar
@@ -562,7 +629,6 @@ export default function Home({ navigation }) {
         transparent={true}
         visible={mapaVisible}
         onRequestClose={() => {
-
           setMapaVisible(!mapaVisible);
         }}
       >
@@ -578,35 +644,44 @@ export default function Home({ navigation }) {
               {Object.entries(userLocation).length > 0 && (
                 <MapView
                   ref={mapRef}
-                  userInterfaceStyle='light'
+                  userInterfaceStyle="light"
                   style={styles.googleMaps}
                   initialRegion={{
                     latitude: userLocation.latitude,
                     longitude: userLocation.longitude,
                     latitudeDelta: 0.1,
-                    longitudeDelta: 0.1
+                    longitudeDelta: 0.1,
                   }}
                 >
                   {Object.entries(userLocation).length > 0 && (
                     <Marker
-                      title='Your location'
-                      pinColor='#0072B5'
+                      title="Your location"
+                      pinColor="#0072B5"
                       coordinate={userLocation}
                       identifier="userLocation"
                     />
                   )}
-                  {allRestos.length > 0 && allRestos.map(resto => {
-                    return (
-                      <Marker
-                        key={resto.idResto}
-                        title={resto.title}
-                        description={resto.description}
-                        pinColor="red"
-                        coordinate={resto.location}
-                        identifier={resto.title}
-                      />
-                    )
-                  })}
+                  {allRestos.length > 0 &&
+                    allRestos.map((resto) => {
+                      return (
+                        <Marker
+                          key={resto.idResto}
+                          title={resto.title}
+                          description={resto.description}
+                          pinColor="red"
+                          coordinate={resto.location}
+                          identifier={resto.title}
+                        >
+                          <Callout tooltip>
+                            <CardMaps
+                              key={resto.idResto}
+                              resto={resto}
+                              navigation={navigation}
+                            ></CardMaps>
+                          </Callout>
+                        </Marker>
+                      );
+                    })}
                 </MapView>
               )}
             </View>
@@ -630,12 +705,12 @@ const styles = StyleSheet.create({
   },
   googleMapsContainer: {
     flex: 1,
-    width: '100%',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    width: "100%",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
     borderWidth: 1,
-    borderColor: 'white',
+    borderColor: "white",
     padding: 10,
-    borderRadius: 20
+    borderRadius: 20,
   },
   googleMaps: {
     marginTop: 10,
@@ -658,7 +733,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.58,
     shadowRadius: 16.0,
-    display: 'flex',
+    display: "flex",
     elevation: 100,
   },
   textContainer2: {

@@ -147,14 +147,13 @@ const globalStyles = StyleSheet.create({
     justifyContent: "space-around",
   },
   cardsDescriptionText: {
-    //backgroundColor: 'lightblue',
+    // backgroundColor: 'lightblue',
     textAlign: "center",
     width: "100%",
-    justifyContent: "space-around",
+    height: "38%",
     fontSize: 12,
-    height: 60,
     fontWeight: "bold",
-    maxHeight: "120%",
+    marginBottom: -2
   },
   cardsHomeTitle: {
     // backgroundColor: "#5555",
@@ -286,9 +285,9 @@ const globalStyles = StyleSheet.create({
     elevation: 8,
   },
   descriptionRestoContainer : {
-        borderRadius: 50,
+        borderRadius: 15,
         marginVertical: 15,
-        width: "80%",
+        width: "95%",
         height: "25%",
         alignSelf: "center",
         alignItems: "center",
@@ -411,6 +410,33 @@ const globalStyles = StyleSheet.create({
 
     elevation: 5,
   },
+  estadisticasContainer : {
+    borderRadius: 15,
+    marginVertical: 5,
+    width: "95%",
+    height: "15%",
+    alignSelf: "center",
+    backgroundColor: "#f2f2f2",
+    justifyContent: "space-around",
+    paddingHorizontal: 5,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.27,
+    shadowRadius: 4.65,
+
+    elevation: 6,
+},
+titleEstadistica : {
+  textAlign: "center",
+  fontSize: 20,
+  color: "#161616",
+  fontWeight: 'bold',
+  textTransform: "capitalize"
+},
+
   // ------------------------------------------------------------------------------------------------------
   //------------------------------MODAL PROFILES-----------------------------------------------------------
   centeredView: {
@@ -536,7 +562,28 @@ const globalStyles = StyleSheet.create({
     shadowRadius: 16.0,
     elevation: 100,
   },
-  
+  btnDetail: {
+    backgroundColor: "#fdfdfd",
+    paddingVertical: 5,
+    paddingHorizontal: 9,
+    marginVertical: 7,
+    borderRadius: 15,
+    alignItems: "center",
+    alignSelf: "center",
+    justifyContent: "center",
+    borderWidth: 2,
+    width: "95%",
+    borderColor: "#eccdaa",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    shadowOpacity: 0.34,
+    shadowRadius: 6.27,
+
+    elevation: 6,
+  },
   //------------------------------------------------------------------------------------------------------
   title: {
     fontSize: 25,
@@ -556,7 +603,7 @@ const globalStyles = StyleSheet.create({
   navHome: {
     flexDirection: "row",
     width: "100%",
-    backgroundColor: "#161616",
+    // backgroundColor: "#161616",
   },
   touchLog: {
     marginTop: 10,

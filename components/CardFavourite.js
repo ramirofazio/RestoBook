@@ -37,6 +37,8 @@ const CardFavourite = ({
   const dispatch = useDispatch();
   const [deleting, setDeleting] = useState(false);
   const [hearthColor, setHearthColor] = useState("red");
+
+  // console.log('Resto in cardFavourites: ', resto)
   let infoFavourite = {
     idResto: resto.idResto,
     title: resto.title,
@@ -44,11 +46,11 @@ const CardFavourite = ({
     location: resto.location,
     img: resto.img,
     description: resto.description,
-    reservationsParams: resto.reservationsParams
+    reservationsParams: resto.reservationsParams,
   };
 
   const handleOnPress = () => {
-    console.log("resto", resto);
+    // console.log("resto", resto);
 
     dispatch(empresaDetail(resto));
 
@@ -84,6 +86,7 @@ const CardFavourite = ({
           <Image
             style={globalStyles.cardsHomeimg}
             source={{ uri: CLOUDINARY_CONSTANT + resto.img }}
+            resizeMode="contain"
           />
         </View>
 
@@ -100,32 +103,29 @@ const CardFavourite = ({
             )}
           </View>
 
-          <View style={{margin:4}}>
+          <View style={{ margin: 5 }}>
             <Text style={globalStyles.cardsDescriptionText}>
-              <Icon 
-                marginTop={10}
+              <Icon
                 reverse
                 name="map-marker-alt"
                 type="font-awesome-5"
                 color="#eecdaa"
                 reverseColor="#161616"
                 size={11}
-              />{" "}
-              {resto.location.address.split(",")[0]},
-              {resto.location.address.split(",")[1]}
+                />
+                {resto.location.address.split(",")[0]},
+                {resto.location.address.split(",")[1]}
             </Text>
-          </View>
-          <View>
+
             <Text style={globalStyles.cardsDescriptionText}>
-              <Icon 
-               marginTop={5}
+              <Icon
                 reverse
                 name="phone-alt"
                 type="font-awesome-5"
                 color="#eecdaa"
                 reverseColor="#161616"
                 size={11}
-              />{" "}
+              />
               {resto.phone}
             </Text>
           </View>

@@ -68,6 +68,7 @@ const DetailsResto = ({ navigation }) => {
   const [menuHeader, setMenuHeader] = useState("Menu");
   const [menuCategory, setMenuCategory] = useState();
   const empresaDetail = useSelector((state) => state.empresaDetail);
+  console.log('Empresa detail: ', empresaDetail)
   //--------------------GEOLOCATION-------------------------------
   const { location } = empresaDetail;
   const [distance, setDistance] = useState({});
@@ -94,8 +95,10 @@ const DetailsResto = ({ navigation }) => {
     setModalVisible(false);
     navigation.navigate("WebViewScreen", {
       url: url.data,
-    });
-  };
+      cantLugares,
+      unitPrice: empresaDetail.reservationsParams?.precioPorLugar
+    })
+  }
   useEffect(() => {
     if (Object.entries(userLocation).length === 0 || !location) return;
     //Zoom & fit to markers
@@ -150,10 +153,12 @@ const DetailsResto = ({ navigation }) => {
     if (target === "vegan") {
       filtered = menuArr.filter((element) => element.vegan === true);
       setMenuFiltered(filtered);
+      setMenuHeader("Veggie");
     }
     if (target === "glutenFree") {
       filtered = menuArr.filter((element) => element.glutenFree === true);
       setMenuFiltered(filtered);
+      setMenuHeader("Glutenfree");
     }
   };
 
@@ -176,7 +181,7 @@ const DetailsResto = ({ navigation }) => {
             <Badge status={handleHorarioReserva() ? "success" : "error"}   containerStyle={{ position: 'absolute', top: 20, right: 15}}/>
       </View>
 
-
+    <ScrollView style={globalStyles.Home}>
       <View style={globalStyles.descriptionRestoContainer}>
         <Text  style={globalStyles.textoDescription}>{empresaDetail.description}</Text>
         <Text style={globalStyles.textoDescription}>
@@ -202,9 +207,8 @@ const DetailsResto = ({ navigation }) => {
                 {empresaDetail.location.address},
         </Text>
       </View>
-      <ScrollView style={globalStyles.Home}>
         <View onTouchStart={() => setmodalMenuVisible(!modalMenuVisible)}>
-          <TouchableOpacity style={globalStyles.btnFiltrosHome}>
+          <TouchableOpacity style={globalStyles.btnDetail}>
             <Text style={globalStyles.btnTextFiltro}>
               <MaterialIcons
                 name="restaurant"
@@ -218,7 +222,7 @@ const DetailsResto = ({ navigation }) => {
 
         {handleHorarioReserva() ? (
           <View onTouchStart={() => setModalVisible(!modalVisible)}>
-            <TouchableOpacity style={globalStyles.btnFiltrosHome}>
+            <TouchableOpacity style={globalStyles.btnDetail}>
               <Text style={globalStyles.btnTextFiltro}>
                 <MaterialIcons
                   name="payment"
@@ -231,7 +235,7 @@ const DetailsResto = ({ navigation }) => {
           </View>
         ) : (
           <View>
-            <TouchableOpacity style={globalStyles.btnFiltrosHome}>
+            <TouchableOpacity style={globalStyles.btnDetail}>
               <Text style={globalStyles.btnTextFiltro}>
                 <MaterialIcons
                   name="block"
@@ -273,25 +277,25 @@ const DetailsResto = ({ navigation }) => {
                 identifier="userLocation"
               />
             )}
-            {Object.entries(userLocation).length > 0 && location && (
-              <MapViewDirections
-                lineDashPattern={[0]}
-                apikey={GOOGLE_API_KEY}
-                strokeWidth={1.5}
-                strokeColor="brown"
-                origin={userLocation}
-                destination={{
-                  latitude: location.latitude,
-                  longitude: location.longitude,
-                }}
-                onReady={(resultado) => {
-                  const { distance, duration } = resultado;
-                  const travelTime = Math.round(duration);
-                  // const distanceSpliteado = distance.split('.')
-                  // console.log(distanceSpliteado)
-                  const travelDistance = distance.toString().slice(0, 4);
-                  setDistance({ distance: travelDistance, ETA: travelTime });
-                }}
+           { Object.entries(userLocation).length > 0 && location && (
+            <MapViewDirections
+              lineDashPattern={[0]}
+              apikey={GOOGLE_API_KEY}
+              strokeWidth={1.5}
+              strokeColor="brown"
+              origin={userLocation}
+              destination={{
+                latitude: location.latitude,
+                longitude: location.longitude
+              }}
+              onReady={ resultado => {
+                const { distance, duration } = resultado;
+                const travelTime = Math.round(duration)
+                // const distanceSpliteado = distance.split('.')
+                // console.log(distanceSpliteado)
+                const travelDistance = distance.toString().slice(0, 4)
+                setDistance({distance: travelDistance, ETA: travelTime})
+              }}
               />
             )}
           </MapView>
@@ -363,7 +367,7 @@ const DetailsResto = ({ navigation }) => {
           </View>
         </Modal>
 
-        {/* Nuevo Modal Menu */}
+        {/*----------------------------Nuevo Modal Menu------------------------------------ */}
 
         <Modal
           animationType="slide"
@@ -503,15 +507,14 @@ const DetailsResto = ({ navigation }) => {
             </View>
           </View>
         </Modal>
+      </ScrollView >
         <View style={styles.listReviews}>
           <ListReviews navigation={navigation} reviews={reviews} />
         </View>
-      </ScrollView >
     </View >
   );
 };
 const styles = StyleSheet.create({
-  listReviews: {},
   container: {
     flex: 1,
     backgroundColor: "pink",
