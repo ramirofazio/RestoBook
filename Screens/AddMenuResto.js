@@ -50,6 +50,7 @@ const MenuRestoSchema = yup.object({
 
 const AddMenuResto = ({ navigation }) => {
   const empresaDetail = useSelector((state) => state.empresaDetail);
+  const currentId = useSelector((state) => state.currentId);
   const [spinner, setSpinner] = useState(false);
   const idResto = empresaDetail.idResto;
   const [isVisible, setIsVisible] = useState(false);
@@ -195,6 +196,7 @@ const AddMenuResto = ({ navigation }) => {
           const newValues = {
             foodName: values.foodName.toLowerCase(),
             idResto: idResto,
+            idUser: currentId,
             description: values.description.toLowerCase(),
             price: values.price,
             category: category.toLowerCase(),
@@ -266,7 +268,7 @@ const AddMenuResto = ({ navigation }) => {
                 onBlur={props.handleBlur("price")}
               /> */}
             </View>
-            {console.log("holis")}
+
             {props.touched.price && props.errors.price ? (
               <Text style={globalStyles.errorText}>{props.errors.price}</Text>
             ) : null}
@@ -287,7 +289,7 @@ const AddMenuResto = ({ navigation }) => {
 
             <Image
               source={{ uri: CLOUDINARY_CONSTANT + selectedImage }}
-              style={{ width: 200, height: 200, borderRadius: 15 }}
+              style={{ width: 100, height: 100, borderRadius: 15 }}
             />
 
             <View style={globalStyles.btnTodasComidas}>

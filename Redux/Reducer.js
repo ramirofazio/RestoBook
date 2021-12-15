@@ -75,7 +75,7 @@ const RootReducer = (state = initialState, action) => {
     case SET_COMMERCE:
       return {
         ...state,
-        commerce: commerce + action.payload,
+        commerce: action.payload,
       };
     case USER_FAVOURITES:
       return {
