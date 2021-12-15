@@ -1,6 +1,6 @@
 import React from "react";
-import { Card, Text } from "react-native-elements";
-import { View, Image, StyleSheet, TouchableOpacity } from "react-native";
+import { Card, Text, Icon } from "react-native-elements";
+import { View, Image, StyleSheet, TouchableOpacity, Alert } from "react-native";
 import globalStyles from "../Screens/GlobalStyles";
 import { CLOUDINARY_CONSTANT, DEFAULT_FOOD_IMAGE } from "@env";
 import glutenFree from "../assets/sin-gluten.png";
@@ -53,17 +53,59 @@ const CardMenu = ({ menu, navigation, setmodalMenuVisible }) => {
 
   return (
     <View style={globalStyles.menuCardsContainer}>
+      <View style= {{flexDirection: "row", justifyContent:'flex-end', marginVertical: -15}}>
+        <Icon
+          raised
+          name="close"
+          type="antdesign"
+          color='#161616'
+          size={12}
+          onPress={() => Alert.alert('Desea eliminar', 'permanentemente este item del menu?',
+          [
+            {
+              text: "Eliminar",
+              onPress: () => alert('eliminado')
+            },
+            {
+              text: "Cancelar",
+            },
+          ],
+          {
+            cancelable: true,
+          }
+          )}
+        />
+        <Icon
+          raised
+          name="edit"
+          type="antdesign"
+          color='#161616'
+          size={12}
+          onPress={() => Alert.alert('Desea editar', 'este item del menu?',
+          [
+            {
+              text: "Editar",
+              onPress: () => alert('no se que hara este boton')
+            },
+            {
+              text: "Cancelar",
+            },
+          ]
+          )}
+        />
+      </View>
+      
       <View style={globalStyles.cardsMenuDescriptionContainer}>
         <Card.Title style={globalStyles.cardsMenuTitle}>
           {menu.foodName}{" "}
-          {menu.idUser === currentId ? (
+          {/* {menu.idUser === currentId ? (
             <TouchableOpacity
               onPress={() => updateItem()}
               style={{ backgroundColor: "red", width: 30, height: 30 }}
             >
               <Text> Editar</Text>
             </TouchableOpacity>
-          ) : null}
+          ) : null} */}
         </Card.Title>
         <Card.Divider
           orientation="horizontal"
@@ -85,14 +127,6 @@ const CardMenu = ({ menu, navigation, setmodalMenuVisible }) => {
 
         <Text style={styles.textPrice}>
           $ {menu.price}
-          {menu.idUser === currentId ? (
-            <TouchableOpacity
-              onPress={() => deleteItem()}
-              style={{ backgroundColor: "red", width: 30, height: 30 }}
-            >
-              <Text> Borrar</Text>
-            </TouchableOpacity>
-          ) : null}
           {/* {menu.idUser === currentId ? (
             <TouchableOpacity onPress={() => updateItem()}>
               <Text> J</Text>
