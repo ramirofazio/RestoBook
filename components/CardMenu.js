@@ -1,12 +1,11 @@
 import React from "react";
-
 import { Card, Text } from "react-native-elements";
 import { View, Image, StyleSheet, TouchableOpacity } from "react-native";
 import globalStyles from "../Screens/GlobalStyles";
 import { CLOUDINARY_CONSTANT, DEFAULT_FOOD_IMAGE } from "@env";
 import glutenFree from "../assets/sin-gluten.png";
 import vegan from "../assets/vegano.png";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import firebase from "../database/firebase";
 import {
   doc,
@@ -17,8 +16,11 @@ import {
   where,
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
+import { NavigationContainer } from "@react-navigation/native";
+import ItemToModify from "../Redux/Actions/ItemToModify";
 const auth = getAuth();
-const CardMenu = ({ menu }) => {
+const CardMenu = ({ menu, navigation, setmodalMenuVisible }) => {
+  const dispatch = useDispatch();
   const currentId = useSelector((state) => state.currentId);
 
   const deleteItem = async () => {
@@ -37,14 +39,31 @@ const CardMenu = ({ menu }) => {
           menu: arrayRemove(realTarget),
         });
       }
+      setmodalMenuVisible(false);
     }
+  };
+
+  const updateItem = () => {
+    let itemToModify = menu;
+    dispatch(ItemToModify(itemToModify));
+    deleteItem();
+    setmodalMenuVisible(false);
+    navigation.navigate("ModifyMenuResto");
   };
 
   return (
     <View style={globalStyles.menuCardsContainer}>
       <View style={globalStyles.cardsMenuDescriptionContainer}>
         <Card.Title style={globalStyles.cardsMenuTitle}>
-          {menu.foodName}
+          {menu.foodName}{" "}
+          {menu.idUser === currentId ? (
+            <TouchableOpacity
+              onPress={() => updateItem()}
+              style={{ backgroundColor: "red", width: 30, height: 30 }}
+            >
+              <Text> Editar</Text>
+            </TouchableOpacity>
+          ) : null}
         </Card.Title>
         <Card.Divider
           orientation="horizontal"
@@ -67,10 +86,18 @@ const CardMenu = ({ menu }) => {
         <Text style={styles.textPrice}>
           $ {menu.price}
           {menu.idUser === currentId ? (
-            <TouchableOpacity onPress={() => deleteItem()}>
-              <Text> x</Text>
+            <TouchableOpacity
+              onPress={() => deleteItem()}
+              style={{ backgroundColor: "red", width: 30, height: 30 }}
+            >
+              <Text> Borrar</Text>
             </TouchableOpacity>
           ) : null}
+          {/* {menu.idUser === currentId ? (
+            <TouchableOpacity onPress={() => updateItem()}>
+              <Text> J</Text>
+            </TouchableOpacity>
+          ) : null} */}
         </Text>
       </View>
 

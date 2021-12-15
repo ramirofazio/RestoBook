@@ -449,14 +449,24 @@ const DetailsResto = ({ navigation }) => {
                   {menuFiltered.length
                     ? menuFiltered.map((menu, index) => {
                         return (
-                          <CardMenu key={index} menu={menu}>
+                          <CardMenu
+                            key={index}
+                            menu={menu}
+                            navigation={navigation}
+                            setmodalMenuVisible={setmodalMenuVisible}
+                          >
                             {" "}
                           </CardMenu>
                         );
                       })
                     : menuArr.map((menu, index) => {
                         return (
-                          <CardMenu key={index} menu={menu}>
+                          <CardMenu
+                            key={index}
+                            menu={menu}
+                            navigation={navigation}
+                            setmodalMenuVisible={setmodalMenuVisible}
+                          >
                             {" "}
                           </CardMenu>
                         );
