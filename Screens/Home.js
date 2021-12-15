@@ -158,11 +158,11 @@ export default function Home({ navigation }) {
       const docSnap = await getDoc(docRef);
       // console.log("dsnap", docSnap.exists());
       if (!docSnap.exists()) {
-        // console.log("if de getinfo!");
-        setGoogleUser({ ...googleUser, email: auth.currentUser.email });
-        setVisibleModalGoogle(true);
+        console.log("if de getinfo!");
+        setVisibleModalGoogle(!visibleModalGoogle);
       } else {
-        //console.log("else de getinfo!");
+        console.log("else de getinfo!");
+        console.log("id", auth.currentUser.uid);
         let obj = docSnap.data();
         dispatch(CurrentUser(obj));
         setFlagCards(true);
@@ -236,7 +236,11 @@ export default function Home({ navigation }) {
       </BottomSheet> */}
 
       {/*--------------------MODAL GOOGLE LOGIN--------------------------- */}
-      <Modal visible={false} animationType="slide" transparent={true}>
+      <Modal
+        visible={visibleModalGoogle}
+        animationType="slide"
+        transparent={true}
+      >
         <Formik
           initialValues={{
             name: "",
@@ -337,8 +341,8 @@ export default function Home({ navigation }) {
       {/*--------------FIN MODAL GOOGLE LOGIN------------------------- */}
 
       <View style={styles.textContainer}>
-        {usuarioGlobal !== "" ? (
-          <Text style={styles.text}>{` Bienvenido ${usuarioGlobal}`}</Text>
+        {loggedUser ? (
+          <Text style={styles.text}>{` Bienvenido ${loggedUser.name}`}</Text>
         ) : (
           <Text style={styles.text}>Bienvenido a Resto Book</Text>
         )}
