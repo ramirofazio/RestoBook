@@ -149,7 +149,7 @@ export default function NavHome({ title, navigation }) {
             }
           >
             <Text style={globalStyles.btnText}>
-              {loggedId ? "Salir" : "Iniciar Sesion"}
+              {loggedId ? "Salir" : "Ingresar"}
             </Text>
           </TouchableOpacity>
 

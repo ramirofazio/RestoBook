@@ -236,7 +236,7 @@ export default function Home({ navigation }) {
 
       {/*--------------------MODAL GOOGLE LOGIN--------------------------- */}
       <Modal
-        visible={false}
+        visible={visibleModalGoogle}
         animationType="slide"
         transparent={true}
       >
