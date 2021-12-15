@@ -252,8 +252,8 @@ export default function Home({ navigation }) {
           onSubmit={({ name, lastName, cel }) => {
             firebase.db.collection("Users").doc(auth.currentUser.uid).set({
               id: auth.currentUser.uid,
-              name: name,
-              lastName: lastName,
+              name: name.toLowerCase(),
+              lastName: lastName.toLowerCase(),
               cel: cel,
               email: auth.currentUser.email,
               commerce: false,
@@ -278,7 +278,7 @@ export default function Home({ navigation }) {
                     letterSpacing: 1,
                   }}
                 >
-                  Registrarse
+                  Terminar Registro
                 </Text>
                 <View style={globalStyles.inputComponent}>
                   <TextInput
