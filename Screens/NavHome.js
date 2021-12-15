@@ -50,15 +50,34 @@ export default function NavHome({ title, navigation }) {
   const [commerceId, setcommerceId] = useState([]);
   const loggedId = useSelector((state) => state.currentId);
 
-  useEffect(() => {
-    console.log("effect 54");
-    const getInfo = async () => {
-      const q = query(
-        collection(firebase.db, "Restos"),
-        where("idUser", "==", loggedId)
-      );
+  // useEffect(() => {
+  //   const q = query(
+  //     collection(firebase.db, "Restos"),
+  //     where("idUser", "==", loggedId)
+  //   );
+  //   const unsubscribe = onSnapshot(q, (querySnapshot) => {
+  //     let arr = [];
+  //     console.log("SNAP HOME 84");
+  //     querySnapshot.forEach((doc) => {
+  //       let obj = doc.data();
+  //       obj.idResto = doc.id;
+  //       arr.push(obj);
+  //     });
+  //     setAvailableCommerces(arr);
+  //     setAllRestos(arr);
+  //   });
+  // }, []);
 
-      const querySnapshot = await getDocs(q);
+  useEffect(() => {
+    console.log("effect 72");
+
+    const q = query(
+      collection(firebase.db, "Restos"),
+      where("idUser", "==", loggedId)
+    );
+
+    const querySnapshot = onSnapshot(q, (querySnapshot) => {
+      console.log("entre a querySnap")
       let arr = [];
       querySnapshot.forEach((doc) => {
         let obj = doc.data();
@@ -67,6 +86,7 @@ export default function NavHome({ title, navigation }) {
         };
         arr.push(infoCard);
       });
+      console.log(arr)
       if (arr.length === 1) {
         isCommerce(1);
       }
@@ -74,9 +94,8 @@ export default function NavHome({ title, navigation }) {
         isCommerce(2);
       }
       setcommerceId(arr);
-    };
-    getInfo();
-  }, [loggedId, hasCommerce]);
+    });
+  }, [loggedId]); //ANTES EN [hasCommerce] PERO NO ANDABA!!
 
   useEffect(() => {
     if (commerce === 1) {
@@ -116,7 +135,6 @@ export default function NavHome({ title, navigation }) {
     dispatch(CurrentId(null));
     dispatch(UserFavourites([]));
     dispatch(getCommerceInfo(null));
-    console.log();
   };
 
   return (

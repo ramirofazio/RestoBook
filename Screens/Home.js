@@ -73,14 +73,14 @@ export default function Home({ navigation }) {
   const [mapaVisible, setMapaVisible] = useState(false);
   const userLocation = useSelector((state) => state.userCoordinates);
   const mapRef = useRef(null);
+  const [loggedIdState, setLoggedIdState] = useState(100)
   //--------------FILTRADO MODAL-------------------------
   const [allRestos, setAllRestos] = useState([]);
   const [category, setCategory] = useState();
   const [visibleFiltros, isVisibleFiltros] = useState(false);
   const loggedUser = useSelector((state) => state.currentUser);
   const loggedId = useSelector((state) => state.currentId);
-  const [loggedIdState, setLoggedIdState] = useState(100)
-  const categories = useSelector((state) => state.categoriesResto);
+  let restosFiltered = [];
   //---------------SEARCH BAR-------------------------
   const [selectedValue, setSelectedValue] = useState("");
   const [selectedValu, setSelectedValu] = useState("");
@@ -159,11 +159,11 @@ export default function Home({ navigation }) {
       const docSnap = await getDoc(docRef);
       // console.log("dsnap", docSnap.exists());
       if (!docSnap.exists()) {
-        // console.log("if de getinfo!");
-        // setGoogleUser({ ...googleUser, email: auth.currentUser.email });
+        console.log("if de getinfo!");
         setVisibleModalGoogle(!visibleModalGoogle);
       } else {
-        //console.log("else de getinfo!");
+        console.log("else de getinfo!");
+        console.log("id", auth.currentUser.uid);
         let obj = docSnap.data();
         dispatch(CurrentUser(obj));
         setLoggedIdState(CurrentUser.id)
@@ -264,8 +264,8 @@ export default function Home({ navigation }) {
           onSubmit={({ name, lastName, cel }) => {
             firebase.db.collection("Users").doc(auth.currentUser.uid).set({
               id: auth.currentUser.uid,
-              name: name,
-              lastName: lastName,
+              name: name.toLowerCase(),
+              lastName: lastName.toLowerCase(),
               cel: cel,
               email: auth.currentUser.email,
               commerce: false,
@@ -290,7 +290,7 @@ export default function Home({ navigation }) {
                     letterSpacing: 1,
                   }}
                 >
-                  Registrarse
+                  Terminar Registro
                 </Text>
                 <View style={globalStyles.inputComponent}>
                   <TextInput
@@ -353,8 +353,8 @@ export default function Home({ navigation }) {
       {/*--------------FIN MODAL GOOGLE LOGIN------------------------- */}
 
       <View style={styles.textContainer}>
-        {usuarioGlobal !== "" ? (
-          <Text style={styles.text}>{` Bienvenido ${usuarioGlobal}`}</Text>
+        {loggedUser ? (
+          <Text style={styles.text}>{` Bienvenido ${loggedUser.name}`}</Text>
         ) : (
           <Text style={styles.text}>Bienvenido a Resto Book</Text>
         )}
@@ -529,8 +529,8 @@ export default function Home({ navigation }) {
               );
             }
           }}
-          >
-            <Icon
+        >
+          <Icon
             reverse
             name="map-marker-alt"
             type="font-awesome-5"
@@ -585,36 +585,45 @@ export default function Home({ navigation }) {
                 </ListItem.Title>
               </ListItem.Content>
             </ListItem>
-            {categories.map((categoria, index) => (
-              <ListItem
-                key={index}
-                containerStyle={{ backgroundColor: "rgba(242, 242, 242,0.8)" }}
-                style={{
-                  borderBottomWidth: 1,
-                  borderColor: "#333a",
-                  backgroundColor: "#fff0",
-                }}
-                onPress={() => {
-                  handleCategory(categoria);
-                  isVisibleFiltros(false);
-                }}
-              >
-                <ListItem.Content
-                  style={{ backgroundColor: "#0000", alignItems: "center" }}
-                >
-                  <ListItem.Title
+
+            {allRestos.map((resto, index) => {
+              if (!restosFiltered.includes(resto.category)) {
+                restosFiltered.push(resto.category)
+                return (
+
+                  <ListItem
+                    key={index}
+                    containerStyle={{ backgroundColor: "rgba(242, 242, 242,0.8)" }}
                     style={{
-                      height: 35,
-                      color: "#161616",
-                      paddingVertical: 5,
-                      fontWeight: "bold",
+                      borderBottomWidth: 1,
+                      borderColor: "#333a",
+                      backgroundColor: "#fff0",
+                    }}
+                    onPress={() => {
+                      handleCategory(resto.category);
+                      isVisibleFiltros(false);
                     }}
                   >
-                    {categoria}
-                  </ListItem.Title>
-                </ListItem.Content>
-              </ListItem>
-            ))}
+                    <ListItem.Content
+                      style={{ backgroundColor: "#0000", alignItems: "center" }}
+                    >
+                      <ListItem.Title
+                        style={{
+                          height: 35,
+                          color: "#161616",
+                          paddingVertical: 5,
+                          fontWeight: "bold",
+                        }}
+                      >
+                        {resto.category}
+                      </ListItem.Title>
+                    </ListItem.Content>
+                  </ListItem>
+
+                )
+              }
+              null
+            })}
             <ListItem
               key={999}
               containerStyle={{ backgroundColor: "#eccdaa" }}

@@ -19,7 +19,7 @@ import {
   ActivityIndicator,
   ScrollView,
 } from "react-native";
-import { Divider } from "react-native-elements";
+import { Divider} from "react-native-elements";
 import * as ImagePicker from "expo-image-picker";
 import { MaterialIcons } from "@expo/vector-icons";
 import TagOutlined from "react-native-vector-icons/AntDesign";
@@ -92,13 +92,15 @@ const ProfileResto = ({ navigation }) => {
   const [timeHorarioComInicio, setTimeHorarioComInicio] = useState(0);
   const [timeHorarioComFin, setTimeHorarioComFin] = useState(0);
   const [precioXLugar, setPrecioXLugar] = useState(0);
+  const [reservationsParams, setReservationsParams] = useState()
+  const [commerceTimeRange, setCommerceTimeRange] = useState()
 
   const [newCommerceInfo, setNewCommerceInfo] = useState({});
   const [uploading, setUploading] = useState(false);
 
-//Modal de Reservas
-const [modalReservaVisible, setmodalReservaVisible] = useState(false);
-const [reservas, setReservas] = useState()
+  //Modal de Reservas
+  const [modalReservaVisible, setmodalReservaVisible] = useState(false);
+  const [reservas, setReservas] = useState()
 
   //cantidad de favoritos
   const [favoritesQty, setFavoritesQty] = useState(0);
@@ -125,12 +127,14 @@ const [reservas, setReservas] = useState()
         setImage(obj.restoImage);
         setNewCommerceInfo(obj);
         setReservas(obj.reservations)
+        setReservationsParams(obj.reservationsParams)
+        setCommerceTimeRange(obj.commerceTimeRange)
       } else {
         alert("NO HAY INFO");
       }
     };
     getInfo();
-  }, [commerceInfo]); 
+  }, [commerceInfo]);
 
   const getFavQty = async () => {
     try {
@@ -155,13 +159,17 @@ const [reservas, setReservas] = useState()
     }
   };
 
-  useEffect(() => {
-    console.log("rating", resultRating);
-  }, [resultRating]);
+  // useEffect(() => {
+  //   console.log("rating", resultRating);
+  // }, [resultRating]);
 
-  useEffect(() => {
-    console.log("favs", favoritesQty);
-  }, [favoritesQty]);
+  // useEffect(() => {
+  //   console.log("favs", favoritesQty);
+  // }, [favoritesQty]);
+
+  // useEffect(() => {
+  //   console.log(reservationsParams)
+  // }, [reservationsParams])
 
   useEffect(() => {
     getFavQty();
@@ -224,6 +232,7 @@ const [reservas, setReservas] = useState()
     setTimeReservaFin();
     setSectorState();
     setPlaces();
+    setPrecioXLugar(0);
     setTimeHorarioComInicio();
     setTimeHorarioComFin();
   };
@@ -266,7 +275,7 @@ const [reservas, setReservas] = useState()
       console.log(err);
     }
   };
-console.log(reservas)
+  console.log(reservas)
   return (
     <View style={globalStyles.Perfilcontainer}>
       <View style={globalStyles.imgContainer}>
@@ -420,32 +429,32 @@ console.log(reservas)
           </Modal>
         </View>
       </View>
- 
+
       <View style={globalStyles.estadisticasContainer}>
-          <Text style={globalStyles.titleEstadistica}>Cantidad de favoritos recibidos:</Text>
-            <Icon
-                  name="heart"
-                  type="antdesign"
-                  color='#Ef5050'
-                  size={50}
-                  style={{justifyContent: 'center', marginLeft: -280}}
-            />
-            <Text style={{alignSelf: "center", bottom: 40, fontWeight: "bold", fontSize: 20}}>
-            {favoritesQty}
-             </Text>
+        <Text style={globalStyles.titleEstadistica}>Cantidad de favoritos recibidos:</Text>
+        <Icon
+          name="heart"
+          type="antdesign"
+          color='#Ef5050'
+          size={50}
+          style={{ justifyContent: 'center', marginLeft: -280 }}
+        />
+        <Text style={{ alignSelf: "center", bottom: 40, fontWeight: "bold", fontSize: 20 }}>
+          {favoritesQty}
+        </Text>
       </View>
       <View style={globalStyles.estadisticasContainer}>
-          <Text style={globalStyles.titleEstadistica}>Rating promedio total:</Text>
-            <Icon
-                  name="star"
-                  type="antdesign"
-                  color='#F5ea2c'
-                  size={50}
-                  style={{marginLeft: -280}}
-            />
-          <Text style={{ alignSelf: "center", bottom: 40, fontSize: 20, fontWeight: "bold"}}>
-            {Math.floor(resultRating)}
-          </Text>
+        <Text style={globalStyles.titleEstadistica}>Rating promedio total:</Text>
+        <Icon
+          name="star"
+          type="antdesign"
+          color='#F5ea2c'
+          size={50}
+          style={{ marginLeft: -280 }}
+        />
+        <Text style={{ alignSelf: "center", bottom: 40, fontSize: 20, fontWeight: "bold" }}>
+          {Math.floor(resultRating)}
+        </Text>
       </View>
       {/* MODAL DE ADMINISTRAR RESERVAS */}
       <TouchableOpacity
@@ -510,7 +519,7 @@ console.log(reservas)
                     marginVertical: 10,
                     alignSelf: "center",
                   }}
-                  value={timeReservaInicio}
+                  value={reservationsParams?.timeRange.split("-")[0]}
                   max={24}
                   min={1}
                   buttonFontSize={25}
@@ -548,7 +557,7 @@ console.log(reservas)
                     marginVertical: 10,
                     alignSelf: "center",
                   }}
-                  value={timeReservaFin}
+                  value={reservationsParams?.timeRange.split("-")[1]}
                   max={24}
                   min={1}
                   buttonFontSize={25}
@@ -570,7 +579,7 @@ console.log(reservas)
                 marginVertical: 10,
                 alignSelf: "center",
               }}
-              value={precioXLugar}
+              value={reservationsParams?.precioPorLugar}
               max={1000}
               min={0}
               buttonFontSize={25}
@@ -593,7 +602,7 @@ console.log(reservas)
                 width: "65%",
                 marginVertical: 10,
               }}
-              value={places}
+              value={reservationsParams?.places}
               max={50}
               min={1}
               buttonFontSize={25}
@@ -605,8 +614,9 @@ console.log(reservas)
               fontSize={20}
             />
 
-            <Text style={globalStyles.texts}>Resumen:</Text>
+            { }
 
+            <Text style={globalStyles.texts}>Resumen:</Text>
             <View
               style={{
                 borderWidth: 2,
@@ -619,7 +629,7 @@ console.log(reservas)
                 justifyContent: "center",
               }}
             >
-              <Text
+              {timeReservaInicio !== 0 && timeReservaFin !== 0 ? <Text
                 style={{
                   marginVertical: 5,
                   fontSize: 13,
@@ -627,17 +637,9 @@ console.log(reservas)
                 }}
               >
                 Hora de Reserva: {timesReserva}
-              </Text>
-              <Text
-                style={{
-                  marginVertical: 5,
-                  fontSize: 13,
-                  fontWeight: "bold",
-                }}
-              >
-                Lugares Disponibles: {places}
-              </Text>
-              <Text
+              </Text> : null}
+
+              {precioXLugar !== 0 ? <Text
                 style={{
                   marginVertical: 5,
                   fontSize: 13,
@@ -645,7 +647,19 @@ console.log(reservas)
                 }}
               >
                 Precio Por Lugar: ${precioXLugar}
-              </Text>
+              </Text> : null}
+
+              {places !== 1 ? <Text
+                style={{
+                  marginVertical: 5,
+                  fontSize: 13,
+                  fontWeight: "bold",
+                }}
+              >
+                Lugares Disponibles: {places}
+              </Text> : null}
+
+
             </View>
 
             <TouchableOpacity
@@ -714,7 +728,7 @@ console.log(reservas)
                       marginVertical: 10,
                       alignSelf: "center",
                     }}
-                    value={timeHorarioComInicio}
+                    value={commerceTimeRange?.split("-")[0]}
                     max={24}
                     min={1}
                     buttonFontSize={25}
@@ -752,7 +766,7 @@ console.log(reservas)
                       marginVertical: 10,
                       alignSelf: "center",
                     }}
-                    value={timeHorarioComFin}
+                    value={commerceTimeRange?.split("-")[1]}
                     max={24}
                     min={1}
                     buttonFontSize={25}
@@ -775,19 +789,23 @@ console.log(reservas)
             </TouchableOpacity>
           </View>
         </Modal >
+   </TouchableOpacity >
 
-   {/* MODAL PARA VER RESERVA*/}
+        {/* MODAL PARA VER RESERVA*/}
 
-      </TouchableOpacity >
-      <View onTouchStart={() => setmodalReservaVisible(!modalReservaVisible)}>
-          <TouchableOpacity style={globalStyles.btnFiltrosHome}>
-            <Text style={globalStyles.btnTextFiltro}>
-              Ver Reservas
-            </Text>
-          </TouchableOpacity>
- 
+   <TouchableOpacity
+        onPress={() => setmodalReservaVisible(!modalReservaVisible)}
+        style={globalStyles.btnProfileResto}
+      >
+        <Icon name="tag" type="antdesign" color="#161616" size={24} />
+        <Text style={{ fontSize: 25, color: "#392c28", textAlign: "center" }}>
+          Ver Reservas
+          {/* clock */}
+        </Text>
+</TouchableOpacity>
+    
            {/* Nuevo Modal Reserva */}
-
+<View>
         <Modal
           animationType="slide"
           transparent={true}
@@ -796,7 +814,7 @@ console.log(reservas)
             setmodalReservaVisible(!modalReservaVisible);
           }}
         >
-   <View style={globalStyles.centeredView}>
+          <View style={globalStyles.centeredView}>
             <View style={globalStyles.modalView}>
               <TouchableOpacity
                 style={globalStyles.btnTodasComidas}
@@ -808,17 +826,7 @@ console.log(reservas)
               </TouchableOpacity>
 
               <View>
-            <Text
-              style={{
-                fontSize: 25,
-                color: "#161616",
-                textAlign: "center",
-                marginTop: 5,
-              }}
-            >
-             
-             <Text style={globalStyles.modalText}/>Reservas
-            </Text>
+             <Text style={globalStyles.modalText}>Reservas</Text>
             <Divider
               orientation="horizontal"
               width={2}
@@ -848,7 +856,7 @@ console.log(reservas)
         </View>
           </View>
         </Modal>
-        </View>
+      </View>
     </View >
   );
 };
