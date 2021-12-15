@@ -19,7 +19,7 @@ import {
   ActivityIndicator,
   ScrollView,
 } from "react-native";
-import { Divider } from "react-native-elements";
+import { Divider} from "react-native-elements";
 import * as ImagePicker from "expo-image-picker";
 import { MaterialIcons } from "@expo/vector-icons";
 import TagOutlined from "react-native-vector-icons/AntDesign";
@@ -775,19 +775,23 @@ console.log(reservas)
             </TouchableOpacity>
           </View>
         </Modal >
+   </TouchableOpacity >
 
    {/* MODAL PARA VER RESERVA*/}
 
-      </TouchableOpacity >
-      <View onTouchStart={() => setmodalReservaVisible(!modalReservaVisible)}>
-          <TouchableOpacity style={globalStyles.btnFiltrosHome}>
-            <Text style={globalStyles.btnTextFiltro}>
-              Ver Reservas
-            </Text>
-          </TouchableOpacity>
- 
+   <TouchableOpacity
+        onPress={() => setmodalReservaVisible(!modalReservaVisible)}
+        style={globalStyles.btnProfileResto}
+      >
+        <Icon name="tag" type="antdesign" color="#161616" size={24} />
+        <Text style={{ fontSize: 25, color: "#392c28", textAlign: "center" }}>
+          Ver Reservas
+          {/* clock */}
+        </Text>
+</TouchableOpacity>
+    
            {/* Nuevo Modal Reserva */}
-
+<View>
         <Modal
           animationType="slide"
           transparent={true}
@@ -808,17 +812,7 @@ console.log(reservas)
               </TouchableOpacity>
 
               <View>
-            <Text
-              style={{
-                fontSize: 25,
-                color: "#161616",
-                textAlign: "center",
-                marginTop: 5,
-              }}
-            >
-             
-             <Text style={globalStyles.modalText}/>Reservas
-            </Text>
+             <Text style={globalStyles.modalText}>Reservas</Text>
             <Divider
               orientation="horizontal"
               width={2}
