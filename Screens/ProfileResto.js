@@ -262,7 +262,6 @@ const ProfileResto = ({ navigation }) => {
 
   return (
     <View style={globalStyles.Perfilcontainer}>
-
       <View style={globalStyles.imgContainer}>
         {image && !uploading ? (
           <TouchableOpacity onPress={openImagePickerAsync}>
@@ -271,7 +270,6 @@ const ProfileResto = ({ navigation }) => {
                 uri: CLOUDINARY_CONSTANT + image,
               }}
               style={globalStyles.imgProfile}
-              
             />
           </TouchableOpacity>
         ) : (
@@ -415,11 +413,9 @@ const ProfileResto = ({ navigation }) => {
           </Modal>
         </View>
       </View>
-
-        
+ 
       <View style={globalStyles.estadisticasContainer}>
           <Text style={globalStyles.titleEstadistica}>Cantidad de favoritos recibidos:</Text>
-  
             <Icon
                   name="heart"
                   type="antdesign"
@@ -431,7 +427,6 @@ const ProfileResto = ({ navigation }) => {
             {favoritesQty}
              </Text>
       </View>
-
       <View style={globalStyles.estadisticasContainer}>
           <Text style={globalStyles.titleEstadistica}>Rating promedio total:</Text>
             <Icon
@@ -459,7 +454,6 @@ const ProfileResto = ({ navigation }) => {
         <Text style={{ fontSize: 25, color: "#392c28", textAlign: "center" }}>
           Administrar Reservas
         </Text>
-
       </TouchableOpacity>
 
       <Modal
@@ -485,9 +479,7 @@ const ProfileResto = ({ navigation }) => {
               Administración de reserva
             </Text>
 
-            <Text style={globalStyles.texts}>
-              Horario para reservar(24hs)
-            </Text>
+            <Text style={globalStyles.texts}>Horario para reservar(24hs)</Text>
 
             <View
               style={{
@@ -606,7 +598,6 @@ const ProfileResto = ({ navigation }) => {
               fontSize={20}
             />
 
-
             <Text style={globalStyles.texts}>Resumen:</Text>
 
             <View
@@ -648,7 +639,6 @@ const ProfileResto = ({ navigation }) => {
               >
                 Precio Por Lugar: ${precioXLugar}
               </Text>
-
             </View>
 
             <TouchableOpacity
@@ -663,7 +653,7 @@ const ProfileResto = ({ navigation }) => {
 
       {/* MODAL DE ADMINISTRAR HORARIO COMERCIAL */}
 
-      < TouchableOpacity
+      <TouchableOpacity
         onPress={() => setModalAdminHorarioVisible(!modalAdminHorarioVisible)}
         style={globalStyles.btnProfileResto}
       >
@@ -778,6 +768,7 @@ const ProfileResto = ({ navigation }) => {
             </TouchableOpacity>
           </View>
         </Modal >
+
       </TouchableOpacity>
     </View>
   );
