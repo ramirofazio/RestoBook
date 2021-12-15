@@ -39,7 +39,6 @@ const CardFavourite = ({
   const [deleting, setDeleting] = useState(false);
   const [hearthColor, setHearthColor] = useState("red");
   
-  console.log('Resto in cardFavourites: ', resto)
   let infoFavourite = {
     idResto: resto.idResto,
     title: resto.title,

@@ -68,7 +68,6 @@ const DetailsResto = ({ navigation }) => {
   const [menuHeader, setMenuHeader] = useState("Menu");
   const [menuCategory, setMenuCategory] = useState();
   const empresaDetail = useSelector((state) => state.empresaDetail);
-  console.log('Empresa detail: ', empresaDetail)
   //--------------------GEOLOCATION-------------------------------
   const { location } = empresaDetail;
   const [distance, setDistance] = useState({});

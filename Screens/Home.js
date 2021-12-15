@@ -35,6 +35,8 @@ import globalStyles from "./GlobalStyles.js";
 //
 //---------------------GEOLOCATION-------------------
 import MapView, { Callout, Marker } from "react-native-maps";
+import orderByDistance from 'geolib/es/orderByDistance';
+import getDistance from 'geolib/es/getDistance';
 //----------------------------------------------------
 //
 //-------INITIALIZATIONS-------
@@ -97,8 +99,8 @@ export default function Home({ navigation }) {
         obj.idResto = doc.id;
         arr.push(obj);
       });
-      setAvailableCommerces(arr);
-      setAllRestos(arr);
+        setAvailableCommerces(arr);
+        setAllRestos(arr);
     });
   }, []);
 
@@ -162,8 +164,8 @@ export default function Home({ navigation }) {
       // console.log("dsnap", docSnap.exists());
       if (!docSnap.exists()) {
         // console.log("if de getinfo!");
-        setGoogleUser({ ...googleUser, email: auth.currentUser.email });
-        setVisibleModalGoogle(true);
+        // setGoogleUser({ ...googleUser, email: auth.currentUser.email });
+        setVisibleModalGoogle(!visibleModalGoogle);
       } else {
         //console.log("else de getinfo!");
         let obj = docSnap.data();
@@ -184,6 +186,8 @@ export default function Home({ navigation }) {
     if (loggedId && auth.currentUser.uid) {
       getInfo();
       getUserLocation();
+      showByDistance()
+
     }
     setFlagCards(true);
   }, [loggedId]);
@@ -226,6 +230,16 @@ export default function Home({ navigation }) {
     }
   }
 
+  const showByDistance = () => {
+   const orderedRestos = allRestos.sort(function(a,b){
+      if( getDistance(userLocation, a.location)  > getDistance(userLocation, b.location) ) return 1
+      if( getDistance(userLocation, b.location) > getDistance(userLocation, a.location) ) return -1
+      return 0;
+    })
+    setAvailableCommerces(orderedRestos)
+    console.log('Restos ordenados por distancia: ', orderedRestos)
+  }
+
   return (
     <View style={globalStyles.Home}>
       {/* <BottomSheet isVisible={false}>
@@ -236,7 +250,7 @@ export default function Home({ navigation }) {
 
       {/*--------------------MODAL GOOGLE LOGIN--------------------------- */}
       <Modal
-        visible={false}
+        visible={visibleModalGoogle}
         animationType="slide"
         transparent={true}
       >
@@ -663,7 +677,7 @@ export default function Home({ navigation }) {
                         coordinate={resto.location}
                         identifier={resto.title}
                       >
-                        <Callout tooltip>
+                        <Callout tooltip onPress={() => setMapaVisible(!mapaVisible)}>
                           <CardMaps key={resto.idResto} resto={resto} navigation={navigation} ></CardMaps>
                         </Callout>  
                       </Marker>
