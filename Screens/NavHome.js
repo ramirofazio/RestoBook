@@ -69,7 +69,7 @@ export default function NavHome({ title, navigation }) {
   // }, []);
 
   useEffect(() => {
-    console.log("effect 54");
+    console.log("effect 72");
 
     const q = query(
       collection(firebase.db, "Restos"),
@@ -77,6 +77,7 @@ export default function NavHome({ title, navigation }) {
     );
 
     const querySnapshot = onSnapshot(q, (querySnapshot) => {
+      console.log("entre a querySnap")
       let arr = [];
       querySnapshot.forEach((doc) => {
         let obj = doc.data();
@@ -85,6 +86,7 @@ export default function NavHome({ title, navigation }) {
         };
         arr.push(infoCard);
       });
+      console.log(arr)
       if (arr.length === 1) {
         isCommerce(1);
       }
@@ -93,7 +95,7 @@ export default function NavHome({ title, navigation }) {
       }
       setcommerceId(arr);
     });
-  }, [hasCommerce]);
+  }, [loggedId]); //ANTES EN [hasCommerce] PERO NO ANDABA!!
 
   useEffect(() => {
     if (commerce === 1) {
