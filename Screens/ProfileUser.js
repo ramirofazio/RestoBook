@@ -14,6 +14,8 @@ import {
   Modal,
   ActivityIndicator,
   ScrollView,
+  Keyboard,
+  TouchableWithoutFeedback,
 } from "react-native";
 import { Divider } from "react-native-elements";
 import Carousel from 'react-native-snap-carousel';
@@ -158,7 +160,6 @@ const ProfileUser = ({ navigation }) => {
       </View>
     )
   }
-
   return (
     <View style={globalStyles.Perfilcontainer}>
       <View style={globalStyles.imgContainer}>
@@ -206,6 +207,7 @@ const ProfileUser = ({ navigation }) => {
           >
             <Text style={globalStyles.texts}>Editar</Text>
           </TouchableOpacity>
+
           <Modal
             animationType="slide"
             transparent={true}
@@ -214,106 +216,110 @@ const ProfileUser = ({ navigation }) => {
               setModalVisible(!modalVisible);
             }}
           >
-            <View style={globalStyles.centeredView}>
-              <View style={globalStyles.modalView}>
-                <TouchableOpacity
-                  style={globalStyles.btnTodasComidas}
-                  onPress={() => setModalVisible(!modalVisible)}
-                >
-                  <Text style={globalStyles.texts}>X</Text>
-                </TouchableOpacity>
-                <Text style={globalStyles.modalText}>
-                  Edita tu informacion
-                </Text>
-                <Text style={globalStyles.texts}>Nombre:</Text>
-                <TextInput
-                  style={globalStyles.inputComponent}
-                  placeholder={currentUser?.name}
-                  placeholderTextColor="#666"
-                  textAlign="center"
-                  onChangeText={(value) =>
-                    setNewUserInfo({
-                      ...newUserInfo,
-                      name: value,
-                    })
-                  }
-                />
-                <Text style={globalStyles.texts}>Apellido:</Text>
-                <TextInput
-                  style={globalStyles.inputComponent}
-                  placeholder={currentUser?.lastName}
-                  placeholderTextColor="#666"
-                  textAlign="center"
-                  onChangeText={(value) =>
-                    setNewUserInfo({
-                      ...newUserInfo,
-                      lastName: value,
-                    })
-                  }
-                />
-                <Text style={globalStyles.texts}>Celular:</Text>
-                <TextInput
-                  style={globalStyles.inputComponent}
-                  placeholder={currentUser?.cel}
-                  placeholderTextColor="#666"
-                  textAlign="center"
-                  onChangeText={(value) =>
-                    setNewUserInfo({
-                      ...newUserInfo,
-                      cel: value,
-                    })
-                  }
-                />
-                <TouchableOpacity
-                  style={globalStyles.btnLogin}
-                  onPress={() => {
-                    Alert.alert(
-                      "¿Seguro que quieres cambiar tu contraseña?",
-                      "Cerraremos tu sesión y te enviaremos un email para reestablecerla.",
-                      [
-                        {
-                          style: "cancel",
-                          text: "Cancelar",
-                        },
-                        {
-                          text: "Ok",
-                          onPress: () => {
-                            sendPasswordResetEmail(auth, currentUser?.email)
-                              .then(signOut(auth))
-                              .then(setModalVisible(false))
-                              .then(navigation.navigate("RestoBook"));
-                          },
-                        },
-                      ],
-                      {
-                        cancelable: true,
-                      }
-                    );
-                  }}
-                >
-                  <Text style={globalStyles.texts}>Cambiar contraseña</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={globalStyles.btnLogin}
-                  onPress={() => {
-                    firebase.db
-                      .collection("Users")
-                      .doc(currentUser.id)
-                      .update({
-                        name: newUserInfo.name,
-                        lastName: newUserInfo.lastName,
-                        cel: newUserInfo.cel,
+            <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+              <View style={globalStyles.centeredView}>
+                <View style={globalStyles.modalView}>
+                  <TouchableOpacity
+                    style={globalStyles.btnTodasComidas}
+                    onPress={() => setModalVisible(!modalVisible)}
+                  >
+                    <Text style={globalStyles.texts}>X</Text>
+                  </TouchableOpacity>
+                  <Text style={globalStyles.modalText}>
+                    Edita tu informacion
+                  </Text>
+                  <Text style={globalStyles.texts}>Nombre:</Text>
+                  <TextInput
+                    style={globalStyles.inputComponent}
+                    placeholder={currentUser?.name}
+                    placeholderTextColor="#666"
+                    textAlign="center"
+                    onChangeText={(value) =>
+                      setNewUserInfo({
+                        ...newUserInfo,
+                        name: value,
                       })
-                      .then(alert("cambios guardados!"))
-                      .then(setModalVisible(false))
-                      .catch((error) => alert("error!"));
-                  }}
-                >
-                  <Text style={globalStyles.texts}>Guardar cambios</Text>
-                </TouchableOpacity>
+                    }
+                  />
+                  <Text style={globalStyles.texts}>Apellido:</Text>
+                  <TextInput
+                    style={globalStyles.inputComponent}
+                    placeholder={currentUser?.lastName}
+                    placeholderTextColor="#666"
+                    textAlign="center"
+                    onChangeText={(value) =>
+                      setNewUserInfo({
+                        ...newUserInfo,
+                        lastName: value,
+                      })
+                    }
+                  />
+                  <Text style={globalStyles.texts}>Celular:</Text>
+                  <TextInput
+                    style={globalStyles.inputComponent}
+                    keyboardType="numeric"
+                    placeholder={currentUser?.cel}
+                    placeholderTextColor="#666"
+                    textAlign="center"
+                    onChangeText={(value) =>
+                      setNewUserInfo({
+                        ...newUserInfo,
+                        cel: value,
+                      })
+                    }
+                  />
+                  <TouchableOpacity
+                    style={globalStyles.btnLogin}
+                    onPress={() => {
+                      Alert.alert(
+                        "¿Seguro que quieres cambiar tu contraseña?",
+                        "Cerraremos tu sesión y te enviaremos un email para reestablecerla.",
+                        [
+                          {
+                            style: "cancel",
+                            text: "Cancelar",
+                          },
+                          {
+                            text: "Ok",
+                            onPress: () => {
+                              sendPasswordResetEmail(auth, currentUser?.email)
+                                .then(signOut(auth))
+                                .then(setModalVisible(false))
+                                .then(navigation.navigate("RestoBook"));
+                            },
+                          },
+                        ],
+                        {
+                          cancelable: true,
+                        }
+                      );
+                    }}
+                  >
+                    <Text style={globalStyles.texts}>Cambiar contraseña</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={globalStyles.btnLogin}
+                    onPress={() => {
+                      firebase.db
+                        .collection("Users")
+                        .doc(currentUser.id)
+                        .update({
+                          name: newUserInfo.name,
+                          lastName: newUserInfo.lastName,
+                          cel: newUserInfo.cel,
+                        })
+                        .then(alert("cambios guardados!"))
+                        .then(setModalVisible(false))
+                        .catch((error) => alert("error!"));
+                    }}
+                  >
+                    <Text style={globalStyles.texts}>Guardar cambios</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
-            </View>
+            </TouchableWithoutFeedback>
           </Modal>
+
         </View>
       </View>
      

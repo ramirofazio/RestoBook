@@ -35,7 +35,6 @@ import globalStyles from "./GlobalStyles.js";
 //
 //---------------------GEOLOCATION-------------------
 import MapView, { Callout, Marker } from "react-native-maps";
-import orderByDistance from 'geolib/es/orderByDistance';
 import getDistance from 'geolib/es/getDistance';
 //----------------------------------------------------
 //
@@ -80,8 +79,8 @@ export default function Home({ navigation }) {
   const [visibleFiltros, isVisibleFiltros] = useState(false);
   const loggedUser = useSelector((state) => state.currentUser);
   const loggedId = useSelector((state) => state.currentId);
+  const [loggedIdState, setLoggedIdState] = useState(100)
   const categories = useSelector((state) => state.categoriesResto);
-
   //---------------SEARCH BAR-------------------------
   const [selectedValue, setSelectedValue] = useState("");
   const [selectedValu, setSelectedValu] = useState("");
@@ -167,6 +166,7 @@ export default function Home({ navigation }) {
         //console.log("else de getinfo!");
         let obj = docSnap.data();
         dispatch(CurrentUser(obj));
+        setLoggedIdState(CurrentUser.id)
         setFlagCards(true);
       }
     } catch (e) {
@@ -184,10 +184,9 @@ export default function Home({ navigation }) {
       getInfo();
       getUserLocation();
       showByDistance()
-
     }
     setFlagCards(true);
-  }, [loggedId]);
+  }, [loggedId, loggedIdState]);
 
   onAuthStateChanged(auth, (usuarioFirebase) => {
     if (usuarioFirebase?.emailVerified) {
@@ -203,10 +202,9 @@ export default function Home({ navigation }) {
   });
 
   const handleCategory = async (category) => {
-    setCategory(category);
     if (!category) setAvailableCommerces(allRestos);
-    const result = availableCommerces.filter(
-      (resto) => resto.category === category.toLowerCase()
+    const result = allRestos.filter(
+      (resto) => resto.category.toLowerCase() === category.toLowerCase()
     );
     if (result.length === 0) {
       alert("No hay Empresas con esta Categoria");
@@ -237,8 +235,8 @@ export default function Home({ navigation }) {
       if( getDistance(userLocation, b.location) > getDistance(userLocation, a.location) ) return -1
       return 0;
     })
+    console.log('Mostrando restos by distance..')
     setAvailableCommerces(orderedRestos)
-    console.log('Restos ordenados por distancia: ', orderedRestos)
   }
 
   return (
@@ -429,6 +427,33 @@ export default function Home({ navigation }) {
                   fontWeight: "bold",
                 }}
               >
+                Por Cercania
+              </ListItem.Title>
+            </ListItem.Content>
+          </ListItem>
+          <ListItem
+            containerStyle={{ backgroundColor: "rgba(242, 242, 242,0.8)" }}
+            style={{
+              borderBottomWidth: 1,
+              borderColor: "#333a",
+              backgroundColor: "#fff0",
+            }}
+            onPress={() => {
+              showByDistance()
+              isVisibleFiltro(false);
+            }}
+          >
+            <ListItem.Content
+              style={{ backgroundColor: "#0000", alignItems: "center" }}
+            >
+              <ListItem.Title
+                style={{
+                  height: 35,
+                  color: "#161616",
+                  paddingVertical: 5,
+                  fontWeight: "bold",
+                }}
+              >
                 A-Z
               </ListItem.Title>
             </ListItem.Content>
@@ -460,7 +485,7 @@ export default function Home({ navigation }) {
               </ListItem.Title>
             </ListItem.Content>
           </ListItem>
-
+               
           <ListItem
             key={999}
             containerStyle={{ backgroundColor: "#eccdaa" }}
@@ -688,7 +713,7 @@ export default function Home({ navigation }) {
                           coordinate={resto.location}
                           identifier={resto.title}
                         >
-                          <Callout tooltip>
+                          <Callout onPress={() => setMapaVisible(!mapaVisible)} tooltip>
                             <CardMaps
                               key={resto.idResto}
                               resto={resto}

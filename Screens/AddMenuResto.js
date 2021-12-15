@@ -14,6 +14,8 @@ import {
   Pressable,
   ActivityIndicator,
   Switch,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 import { BottomSheet, ListItem } from "react-native-elements";
 //
@@ -104,6 +106,7 @@ const AddMenuResto = ({ navigation }) => {
   };
 
   return (
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
     <View style={globalStyles.Home}>
       <View style={globalStyles.inputComponent}>
         <Pressable onPress={() => setIsVisible(true)}>
@@ -298,6 +301,7 @@ const AddMenuResto = ({ navigation }) => {
         )}
       </Formik>
     </View>
+    </TouchableWithoutFeedback>
   );
 };
 
