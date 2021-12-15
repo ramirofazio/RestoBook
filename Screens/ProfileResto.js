@@ -95,9 +95,9 @@ const ProfileResto = ({ navigation }) => {
   const [uploading, setUploading] = useState(false);
 
   //cantidad de favoritos
-  const [favoritesQty, setFavoritesQty] = useState(null);
+  const [favoritesQty, setFavoritesQty] = useState(0);
   //promedio del rating
-  const [resultRating, setResultRating] = useState(null);
+  const [resultRating, setResultRating] = useState(0);
   useEffect(() => {
     const getInfo = async () => {
       const docRef = doc(firebase.db, "Restos", commerceInfo);
@@ -413,14 +413,33 @@ const ProfileResto = ({ navigation }) => {
           </Modal>
         </View>
       </View>
-      <View
-        style={{
-          backgroundColor: "red",
-          width: "100%",
-          height: "5%",
-        }}
-      ></View>
-
+ 
+      <View style={globalStyles.estadisticasContainer}>
+          <Text style={globalStyles.titleEstadistica}>Cantidad de favoritos recibidos:</Text>
+            <Icon
+                  name="heart"
+                  type="antdesign"
+                  color='#Ef5050'
+                  size={50}
+                  style={{justifyContent: 'center', marginLeft: -280}}
+            />
+            <Text style={{alignSelf: "center", bottom: 40, fontWeight: "bold", fontSize: 20}}>
+            {favoritesQty}
+             </Text>
+      </View>
+      <View style={globalStyles.estadisticasContainer}>
+          <Text style={globalStyles.titleEstadistica}>Rating promedio total:</Text>
+            <Icon
+                  name="star"
+                  type="antdesign"
+                  color='#F5ea2c'
+                  size={50}
+                  style={{marginLeft: -280}}
+            />
+          <Text style={{ alignSelf: "center", bottom: 40, fontSize: 20, fontWeight: "bold"}}>
+            {Math.floor(resultRating)}
+          </Text>
+      </View>
       {/* MODAL DE ADMINISTRAR RESERVAS */}
       <TouchableOpacity
         onPress={() => setModalAdminReservasVisible(!modalAdminReservasVisible)}
@@ -748,7 +767,8 @@ const ProfileResto = ({ navigation }) => {
               <Text style={globalStyles.texts}>Guardar</Text>
             </TouchableOpacity>
           </View>
-        </Modal>
+        </Modal >
+
       </TouchableOpacity>
     </View>
   );
