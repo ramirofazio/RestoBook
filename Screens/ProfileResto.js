@@ -22,6 +22,7 @@ import {
 import { Divider } from "react-native-elements";
 import * as ImagePicker from "expo-image-picker";
 import { MaterialIcons } from "@expo/vector-icons";
+import TagOutlined from "react-native-vector-icons/AntDesign";
 //------FIREBASE----------------
 import firebase from "../database/firebase";
 import {
@@ -45,7 +46,7 @@ import {
 import globalStyles from "./GlobalStyles";
 //--------------------------------
 //-------COMPONENTS---------------
-import CardReservation from "../components/CardReservation";
+import CardReservationResto from "../components/CardReservationResto";
 import CardFavourite from "../components/CardFavourite";
 //---------------------------------
 
@@ -98,6 +99,7 @@ const ProfileResto = ({ navigation }) => {
 //Modal de Reservas
 const [modalReservaVisible, setmodalReservaVisible] = useState(false);
 const [reservas, setReservas] = useState()
+
   //cantidad de favoritos
   const [favoritesQty, setFavoritesQty] = useState(null);
   //promedio del rating
@@ -129,7 +131,6 @@ const [reservas, setReservas] = useState()
     };
     getInfo();
   }, [commerceInfo]); 
-  console.log(reservas)
 
   const getRating = () => {
     let totalRating = 0;
@@ -273,7 +274,7 @@ const [reservas, setReservas] = useState()
       console.log(err);
     }
   };
-
+console.log(reservas)
   return (
     <View style={globalStyles.Perfilcontainer}>
 
@@ -790,39 +791,56 @@ const [reservas, setReservas] = useState()
             setmodalReservaVisible(!modalReservaVisible);
           }}
         >
-          <View style={globalStyles.centeredMenuView}>
-            <View style={globalStyles.modalMenuView}>
+   <View style={globalStyles.centeredView}>
+            <View style={globalStyles.modalView}>
               <TouchableOpacity
-                style={globalStyles.btnCloseMenu}
-                onPress={() => setmodalReservaVisible(!modalReservaVisible)}
-              >  
-              <Text>     <MaterialIcons
-                  onPress={() => setmodalMenuVisible(false)}
-                  name="arrow-back-ios"
-                  size={20}
-                  color="#161616"
-                ></MaterialIcons></Text>
+                style={globalStyles.btnTodasComidas}
+                onPress={() =>
+                  setmodalReservaVisible(!modalReservaVisible)
+                }
+              >
+                <Text style={globalStyles.texts}>X</Text>
               </TouchableOpacity>
 
-              <View > 
-                      <TouchableOpacity
-                      >
-                        <Text style={globalStyles.categoriesText}>
-                        hola
-                        </Text>
-                      </TouchableOpacity>
-              </View>
-                <Text
-                  style={{
-                    alignSelf: "center",
-                    fontSize: 30,
-                    marginVertical: 30,
-                  }}
-                >
-                  {" "}
-                  Sin reservas
-                </Text>
-              </View>
+              <View>
+            <Text
+              style={{
+                fontSize: 25,
+                color: "#161616",
+                textAlign: "center",
+                marginTop: 5,
+              }}
+            >
+             
+             <Text style={globalStyles.modalText}/>Reservas
+            </Text>
+            <Divider
+              orientation="horizontal"
+              width={2}
+              inset={true}
+              insetType={"middle"}
+              color={"rgba(00, 00, 00, .5)"}
+              style={{ marginVertical: 5 }}
+            />
+          </View>
+          <ScrollView>
+          {reservas?.map((reserva, index) => {
+              // console.log(reserva)
+              return (
+                <CardReservationResto
+                  key={index}
+                  date={reserva.date.date}
+                  time={reserva.date.time}
+                  cantCupos={reserva.cantCupos}
+                  email={reserva.emailUser}
+                  statusReserva={reserva.statusReserva}
+                  precio={reserva.unitPrice}
+                  idReserva={reserva.idReserva}
+                  navigation={navigation}
+                /> );
+              }) }
+          </ScrollView>
+        </View>
           </View>
         </Modal>
         </View>
