@@ -19,7 +19,7 @@ import {
   ActivityIndicator,
   ScrollView,
 } from "react-native";
-import { Divider } from "react-native-elements";
+import { Divider} from "react-native-elements";
 import * as ImagePicker from "expo-image-picker";
 import { MaterialIcons } from "@expo/vector-icons";
 import TagOutlined from "react-native-vector-icons/AntDesign";
@@ -789,19 +789,23 @@ const ProfileResto = ({ navigation }) => {
             </TouchableOpacity>
           </View>
         </Modal >
+   </TouchableOpacity >
 
         {/* MODAL PARA VER RESERVA*/}
 
-      </TouchableOpacity >
-      <View onTouchStart={() => setmodalReservaVisible(!modalReservaVisible)}>
-        <TouchableOpacity style={globalStyles.btnFiltrosHome}>
-          <Text style={globalStyles.btnTextFiltro}>
-            Ver Reservas
-          </Text>
-        </TouchableOpacity>
-
-        {/* Nuevo Modal Reserva */}
-
+   <TouchableOpacity
+        onPress={() => setmodalReservaVisible(!modalReservaVisible)}
+        style={globalStyles.btnProfileResto}
+      >
+        <Icon name="tag" type="antdesign" color="#161616" size={24} />
+        <Text style={{ fontSize: 25, color: "#392c28", textAlign: "center" }}>
+          Ver Reservas
+          {/* clock */}
+        </Text>
+</TouchableOpacity>
+    
+           {/* Nuevo Modal Reserva */}
+<View>
         <Modal
           animationType="slide"
           transparent={true}
@@ -822,44 +826,34 @@ const ProfileResto = ({ navigation }) => {
               </TouchableOpacity>
 
               <View>
-                <Text
-                  style={{
-                    fontSize: 25,
-                    color: "#161616",
-                    textAlign: "center",
-                    marginTop: 5,
-                  }}
-                >
-
-                  <Text style={globalStyles.modalText} />Reservas
-                </Text>
-                <Divider
-                  orientation="horizontal"
-                  width={2}
-                  inset={true}
-                  insetType={"middle"}
-                  color={"rgba(00, 00, 00, .5)"}
-                  style={{ marginVertical: 5 }}
-                />
-              </View>
-              <ScrollView>
-                {reservas?.map((reserva, index) => {
-                  // console.log(reserva)
-                  return (
-                    <CardReservationResto
-                      key={index}
-                      date={reserva.date.date}
-                      time={reserva.date.time}
-                      cantCupos={reserva.cantCupos}
-                      email={reserva.emailUser}
-                      statusReserva={reserva.statusReserva}
-                      precio={reserva.unitPrice}
-                      idReserva={reserva.idReserva}
-                      navigation={navigation}
-                    />);
-                })}
-              </ScrollView>
-            </View>
+             <Text style={globalStyles.modalText}>Reservas</Text>
+            <Divider
+              orientation="horizontal"
+              width={2}
+              inset={true}
+              insetType={"middle"}
+              color={"rgba(00, 00, 00, .5)"}
+              style={{ marginVertical: 5 }}
+            />
+          </View>
+          <ScrollView>
+          {reservas?.map((reserva, index) => {
+              // console.log(reserva)
+              return (
+                <CardReservationResto
+                  key={index}
+                  date={reserva.date.date}
+                  time={reserva.date.time}
+                  cantCupos={reserva.cantCupos}
+                  email={reserva.emailUser}
+                  statusReserva={reserva.statusReserva}
+                  precio={reserva.unitPrice}
+                  idReserva={reserva.idReserva}
+                  navigation={navigation}
+                /> );
+              }) }
+          </ScrollView>
+        </View>
           </View>
         </Modal>
       </View>
