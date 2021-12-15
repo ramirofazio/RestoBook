@@ -68,6 +68,7 @@ const DetailsResto = ({ navigation }) => {
   const [menuHeader, setMenuHeader] = useState("Menu");
   const [menuCategory, setMenuCategory] = useState();
   const empresaDetail = useSelector((state) => state.empresaDetail);
+  console.log('Empresa detail: ', empresaDetail)
   //--------------------GEOLOCATION-------------------------------
   const { location } = empresaDetail;
   const [distance, setDistance] = useState({});
@@ -94,8 +95,10 @@ const DetailsResto = ({ navigation }) => {
     setModalVisible(false);
     navigation.navigate("WebViewScreen", {
       url: url.data,
-    });
-  };
+      cantLugares,
+      unitPrice: empresaDetail.reservationsParams?.precioPorLugar
+    })
+  }
   useEffect(() => {
     if (Object.entries(userLocation).length === 0 || !location) return;
     //Zoom & fit to markers
@@ -274,25 +277,25 @@ const DetailsResto = ({ navigation }) => {
                 identifier="userLocation"
               />
             )}
-            {Object.entries(userLocation).length > 0 && location && (
-              <MapViewDirections
-                lineDashPattern={[0]}
-                apikey={GOOGLE_API_KEY}
-                strokeWidth={1.5}
-                strokeColor="brown"
-                origin={userLocation}
-                destination={{
-                  latitude: location.latitude,
-                  longitude: location.longitude,
-                }}
-                onReady={(resultado) => {
-                  const { distance, duration } = resultado;
-                  const travelTime = Math.round(duration);
-                  // const distanceSpliteado = distance.split('.')
-                  // console.log(distanceSpliteado)
-                  const travelDistance = distance.toString().slice(0, 4);
-                  setDistance({ distance: travelDistance, ETA: travelTime });
-                }}
+           { Object.entries(userLocation).length > 0 && location && (
+            <MapViewDirections
+              lineDashPattern={[0]}
+              apikey={GOOGLE_API_KEY}
+              strokeWidth={1.5}
+              strokeColor="brown"
+              origin={userLocation}
+              destination={{
+                latitude: location.latitude,
+                longitude: location.longitude
+              }}
+              onReady={ resultado => {
+                const { distance, duration } = resultado;
+                const travelTime = Math.round(duration)
+                // const distanceSpliteado = distance.split('.')
+                // console.log(distanceSpliteado)
+                const travelDistance = distance.toString().slice(0, 4)
+                setDistance({distance: travelDistance, ETA: travelTime})
+              }}
               />
             )}
           </MapView>
@@ -364,7 +367,7 @@ const DetailsResto = ({ navigation }) => {
           </View>
         </Modal>
 
-        {/* Nuevo Modal Menu */}
+        {/*----------------------------Nuevo Modal Menu------------------------------------ */}
 
         <Modal
           animationType="slide"
