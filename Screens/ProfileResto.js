@@ -21,6 +21,8 @@ import {
 } from "react-native";
 import { Divider } from "react-native-elements";
 import * as ImagePicker from "expo-image-picker";
+import { MaterialIcons } from "@expo/vector-icons";
+import TagOutlined from "react-native-vector-icons/AntDesign";
 //------FIREBASE----------------
 import firebase from "../database/firebase";
 import {
@@ -44,7 +46,7 @@ import {
 import globalStyles from "./GlobalStyles";
 //--------------------------------
 //-------COMPONENTS---------------
-import CardReservation from "../components/CardReservation";
+import CardReservationResto from "../components/CardReservationResto";
 import CardFavourite from "../components/CardFavourite";
 //---------------------------------
 
@@ -94,6 +96,10 @@ const ProfileResto = ({ navigation }) => {
   const [newCommerceInfo, setNewCommerceInfo] = useState({});
   const [uploading, setUploading] = useState(false);
 
+//Modal de Reservas
+const [modalReservaVisible, setmodalReservaVisible] = useState(false);
+const [reservas, setReservas] = useState()
+
   //cantidad de favoritos
   const [favoritesQty, setFavoritesQty] = useState(0);
   //promedio del rating
@@ -118,12 +124,13 @@ const ProfileResto = ({ navigation }) => {
         setAvailableCommerces(obj);
         setImage(obj.restoImage);
         setNewCommerceInfo(obj);
+        setReservas(obj.reservations)
       } else {
         alert("NO HAY INFO");
       }
     };
     getInfo();
-  }, [commerceInfo]);
+  }, [commerceInfo]); 
 
   const getFavQty = async () => {
     try {
@@ -259,7 +266,7 @@ const ProfileResto = ({ navigation }) => {
       console.log(err);
     }
   };
-
+console.log(reservas)
   return (
     <View style={globalStyles.Perfilcontainer}>
       <View style={globalStyles.imgContainer}>
@@ -769,8 +776,80 @@ const ProfileResto = ({ navigation }) => {
           </View>
         </Modal >
 
-      </TouchableOpacity>
-    </View>
+   {/* MODAL PARA VER RESERVA*/}
+
+      </TouchableOpacity >
+      <View onTouchStart={() => setmodalReservaVisible(!modalReservaVisible)}>
+          <TouchableOpacity style={globalStyles.btnFiltrosHome}>
+            <Text style={globalStyles.btnTextFiltro}>
+              Ver Reservas
+            </Text>
+          </TouchableOpacity>
+ 
+           {/* Nuevo Modal Reserva */}
+
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalReservaVisible}
+          onRequestClose={() => {
+            setmodalReservaVisible(!modalReservaVisible);
+          }}
+        >
+   <View style={globalStyles.centeredView}>
+            <View style={globalStyles.modalView}>
+              <TouchableOpacity
+                style={globalStyles.btnTodasComidas}
+                onPress={() =>
+                  setmodalReservaVisible(!modalReservaVisible)
+                }
+              >
+                <Text style={globalStyles.texts}>X</Text>
+              </TouchableOpacity>
+
+              <View>
+            <Text
+              style={{
+                fontSize: 25,
+                color: "#161616",
+                textAlign: "center",
+                marginTop: 5,
+              }}
+            >
+             
+             <Text style={globalStyles.modalText}/>Reservas
+            </Text>
+            <Divider
+              orientation="horizontal"
+              width={2}
+              inset={true}
+              insetType={"middle"}
+              color={"rgba(00, 00, 00, .5)"}
+              style={{ marginVertical: 5 }}
+            />
+          </View>
+          <ScrollView>
+          {reservas?.map((reserva, index) => {
+              // console.log(reserva)
+              return (
+                <CardReservationResto
+                  key={index}
+                  date={reserva.date.date}
+                  time={reserva.date.time}
+                  cantCupos={reserva.cantCupos}
+                  email={reserva.emailUser}
+                  statusReserva={reserva.statusReserva}
+                  precio={reserva.unitPrice}
+                  idReserva={reserva.idReserva}
+                  navigation={navigation}
+                /> );
+              }) }
+          </ScrollView>
+        </View>
+          </View>
+        </Modal>
+        </View>
+    </View >
   );
 };
 
