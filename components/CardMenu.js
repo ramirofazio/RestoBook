@@ -16,13 +16,13 @@ import {
   where,
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, useFocusEffect } from "@react-navigation/native";
 import ItemToModify from "../Redux/Actions/ItemToModify";
 const auth = getAuth();
 const CardMenu = ({ menu, navigation, setmodalMenuVisible }) => {
   const dispatch = useDispatch();
   const currentId = useSelector((state) => state.currentId);
-
+  
   const deleteItem = async () => {
     let docRef = doc(firebase.db, "Restos", menu.idResto);
     let docSnap = await getDoc(docRef);
@@ -53,50 +53,54 @@ const CardMenu = ({ menu, navigation, setmodalMenuVisible }) => {
 
   return (
     <View style={globalStyles.menuCardsContainer}>
-      <View style= {{flexDirection: "row", justifyContent:'flex-end', marginVertical: -15}}>
-        <Icon
-          raised
-          name="close"
-          type="antdesign"
-          color='#161616'
-          size={12}
-          onPress={() => Alert.alert('Desea eliminar', 'permanentemente este item del menu?',
-          [
+      {currentId === menu.idUser ? 
+          <View style= {{flexDirection: "row", justifyContent:'flex-end', marginVertical: -15}}>
+          <Icon
+            raised
+            name="close"
+            type="antdesign"
+            size={12}
+            onPress={() => Alert.alert('Desea eliminar', 'permanentemente este item del menu?',
+            [
+              {
+                text: "Eliminar",
+                onPress: () => deleteItem()
+              },
+              {
+                text: "Cancelar",
+              },
+            ],
             {
-              text: "Eliminar",
-              onPress: () => deleteItem()
-            },
+              cancelable: true,
+            }
+            )}
+          />
+          <Icon
+            raised
+            name="edit"
+            type="antdesign"
+            color='black'
+            size={12}
+            onPress={() => Alert.alert('Desea editar', 'este item del menu?',
+            [
+              {
+                text: "Editar",
+                onPress: () => updateItem()
+              },
+              {
+                text: "Cancelar",
+              },
+            ],
             {
-              text: "Cancelar",
-            },
-          ],
-          {
-            cancelable: true,
-          }
-          )}
-        />
-        <Icon
-          raised
-          name="edit"
-          type="antdesign"
-          color='#161616'
-          size={12}
-          onPress={() => Alert.alert('Desea editar', 'este item del menu?',
-          [
-            {
-              text: "Editar",
-              onPress: () => updateItem()
-            },
-            {
-              text: "Cancelar",
-            },
-          ],
-          {
-            cancelable: true,
-          }
-          )}
-        />
-      </View>
+              cancelable: true,
+            }
+            )}
+          />
+          </View>  
+        :
+        null }
+        
+      
       
       <View style={globalStyles.cardsMenuDescriptionContainer}>
         <Card.Title style={globalStyles.cardsMenuTitle}>

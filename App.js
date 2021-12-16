@@ -17,6 +17,7 @@ LogBox.ignoreLogs([
 LogBox.ignoreLogs([
   "Can't open url: about:srcdoc",
 ]);
+
 export default function App() {
   // const Stack = createStackNavigator();
 

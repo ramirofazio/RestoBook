@@ -57,7 +57,7 @@ const ModifyMenuResto = ({ navigation }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [category, setCategory] = useState(itemToModify.category);
   const categories = useSelector((state) => state.categoriesMenu);
-  const [selectedImage, setSelectedImage] = useState(DEFAULT_FOOD_IMAGE);
+  const [selectedImage, setSelectedImage] = useState(itemToModify.img);
   const [uploading, setUploading] = useState(false);
   const [vegan, setVegan] = useState(itemToModify.vegan);
   const [glutenFree, setGlutenFree] = useState(itemToModify.glutenFree);
