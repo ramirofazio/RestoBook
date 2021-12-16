@@ -288,6 +288,7 @@ const globalStyles = StyleSheet.create({
     elevation: 8,
   },
   descriptionRestoContainer : {
+        display:'flex',
         borderRadius: 15,
         marginVertical: 15,
         width: "95%",

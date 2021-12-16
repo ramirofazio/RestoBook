@@ -64,7 +64,7 @@ const CardMenu = ({ menu, navigation, setmodalMenuVisible }) => {
           [
             {
               text: "Eliminar",
-              onPress: () => alert('eliminado')
+              onPress: () => deleteItem()
             },
             {
               text: "Cancelar",
@@ -85,12 +85,15 @@ const CardMenu = ({ menu, navigation, setmodalMenuVisible }) => {
           [
             {
               text: "Editar",
-              onPress: () => alert('no se que hara este boton')
+              onPress: () => updateItem()
             },
             {
               text: "Cancelar",
             },
-          ]
+          ],
+          {
+            cancelable: true,
+          }
           )}
         />
       </View>

@@ -508,17 +508,8 @@ const RegisterResto = ({ navigation }) => {
           <MapView ref={mapRef} style={styles.googleMaps} region={userLocation}>
             {userLocation && (
               <Marker
-                draggable
                 title="Your location"
                 coordinate={userLocation}
-                onDragEnd={(event) => {
-                  const { latitude, longitude } = event.nativeEvent.coordinate;
-                  const newLocation = {
-                    lat: latitude,
-                    lng: longitude,
-                  };
-                  setStateAndRegion(newLocation);
-                }}
                 pinColor="#eccdaa"
                 identifier="userLocation"
               />

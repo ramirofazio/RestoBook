@@ -404,33 +404,7 @@ export default function Home({ navigation }) {
           isVisible={visibleFiltro}
           containerStyle={{ backgroundColor: "#333a" }}
         >
-          <ListItem
-            containerStyle={{ backgroundColor: "rgba(242, 242, 242,0.8)" }}
-            style={{
-              borderBottomWidth: 1,
-              borderColor: "#333a",
-              backgroundColor: "#fff0",
-            }}
-            onPress={() => {
-              showByDistance()
-              isVisibleFiltro(false);
-            }}
-          >
-            <ListItem.Content
-              style={{ backgroundColor: "#0000", alignItems: "center" }}
-            >
-              <ListItem.Title
-                style={{
-                  height: 35,
-                  color: "#161616",
-                  paddingVertical: 5,
-                  fontWeight: "bold",
-                }}
-              >
-                Por Cercania
-              </ListItem.Title>
-            </ListItem.Content>
-          </ListItem>
+          
           <ListItem
             containerStyle={{ backgroundColor: "rgba(242, 242, 242,0.8)" }}
             style={{
@@ -455,6 +429,33 @@ export default function Home({ navigation }) {
                 }}
               >
                 Mostrar Todos
+              </ListItem.Title>
+            </ListItem.Content>
+          </ListItem>
+          <ListItem
+            containerStyle={{ backgroundColor: "rgba(242, 242, 242,0.8)" }}
+            style={{
+              borderBottomWidth: 1,
+              borderColor: "#333a",
+              backgroundColor: "#fff0",
+            }}
+            onPress={() => {
+              showByDistance()
+              isVisibleFiltro(false);
+            }}
+          >
+            <ListItem.Content
+              style={{ backgroundColor: "#0000", alignItems: "center" }}
+            >
+              <ListItem.Title
+                style={{
+                  height: 35,
+                  color: "#161616",
+                  paddingVertical: 5,
+                  fontWeight: "bold",
+                }}
+              >
+                Por Cercania
               </ListItem.Title>
             </ListItem.Content>
           </ListItem>

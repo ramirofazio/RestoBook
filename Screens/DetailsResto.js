@@ -187,31 +187,37 @@ const DetailsResto = ({ navigation }) => {
 
       <ScrollView style={globalStyles.Home}>
         <View style={globalStyles.descriptionRestoContainer}>
-          <Text style={globalStyles.textoDescription}>
+          <Text style={styles.textoDescription}>
             {empresaDetail.description}
           </Text>
-          <Text style={globalStyles.textoDescription}>
+          <View style={{flexDirection: 'row', width: '76%', marginRight: 100}}>
             <Icon
-              reverse
-              name="phone-alt"
-              type="font-awesome-5"
-              color="#eecdaa"
-              reverseColor="#161616"
-              size={11}
-            />
-            {empresaDetail.phone}
-          </Text>
-          <Text style={globalStyles.textoDescription}>
+                reverse
+                name="phone-alt"
+                type="font-awesome-5"
+                color="#eecdaa"
+                reverseColor="#161616"
+                size={11}
+                style={styles.IconPhone}
+              />
+            <Text style={styles.textoDescription1}>   
+              {empresaDetail.phone}
+            </Text>
+          </View>
+          <View style={{flexDirection: 'row', width: '76%', marginRight: 100, marginTop: -15}}>
             <Icon
-              reverse
-              name="map-marker-alt"
-              type="font-awesome-5"
-              color="#eecdaa"
-              reverseColor="#161616"
-              size={11}
-            />
-            {empresaDetail.location.address},
-          </Text>
+                style={styles.IconAddress}
+                reverse
+                name="map-marker-alt"
+                type="font-awesome-5"
+                color="#eecdaa"
+                reverseColor="#161616"
+                size={11}
+              />
+            <Text style={styles.textoDescription2}>
+              {empresaDetail.location.address},
+            </Text>
+          </View>
         </View>
         <View onTouchStart={() => setmodalMenuVisible(!modalMenuVisible)}>
           <TouchableOpacity style={globalStyles.btnDetail}>
@@ -635,6 +641,33 @@ const styles = StyleSheet.create({
 
     elevation: 100,
   },
+  textoDescription: {
+    textAlign: "center",
+    fontSize: 17,
+    color: "#161616",
+    fontWeight: 'bold',
+    textTransform: "capitalize"
+  },
+  textoDescription1: {
+    marginTop: 11,
+    textAlign: "center",
+    fontSize: 15,
+    color: "#161616",
+    fontWeight: 'bold',
+    textTransform: "capitalize"
+  },
+  textoDescription2: {
+    textAlign: "center",
+    marginTop: 11,
+    fontSize: 15,
+    color: "#161616",
+    fontWeight: 'bold',
+    textTransform: "capitalize"
+  },
+  IconPhone: {
+  },
+  IconAddress: {
+  }
 });
 
 export default DetailsResto;
