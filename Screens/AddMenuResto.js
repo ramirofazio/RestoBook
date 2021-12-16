@@ -45,9 +45,9 @@ import * as yup from "yup";
 //
 
 const MenuRestoSchema = yup.object({
-  foodName: yup.string().required().min(3).max(25),
-  description: yup.string().required().min(5).max(60),
-  price: yup.number().required().positive().integer().max(2000),
+  foodName: yup.string().required('El nombre debe tener entre 3 y 25 caracteres ').min(3).max(25),
+  description: yup.string().required('La descripcion debe tener entre 5 y 60 caracteres').min(5).max(60),
+  price: yup.number().required().positive().integer(),
 });
 
 const AddMenuResto = ({ navigation }) => {
@@ -295,11 +295,15 @@ const AddMenuResto = ({ navigation }) => {
               style={{ width: 100, height: 100, borderRadius: 15 }}
             />
 
-            <View style={globalStyles.btnTodasComidas}>
-              <TouchableOpacity onPress={() => props.handleSubmit()}>
-                <Text style={globalStyles.texts}>Agregar!</Text>
-              </TouchableOpacity>
-            </View>
+              {spinner ? (
+                <ActivityIndicator size="large" color="#5555" />
+                ) : (
+                <View style={globalStyles.btnTodasComidas}>
+                  <TouchableOpacity onPress={() => props.handleSubmit()}>
+                    <Text style={globalStyles.texts}>Agregar!</Text>
+                  </TouchableOpacity>
+                </View>
+                )}
           </View>
         )}
       </Formik>
