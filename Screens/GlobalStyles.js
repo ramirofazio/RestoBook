@@ -150,6 +150,8 @@ const globalStyles = StyleSheet.create({
     // backgroundColor: 'lightblue',
     textAlign: "center",
     width: "100%",
+    justifyContent: "space-around",
+    backgroundColor: 'green',
     height: "38%",
     fontSize: 12,
     fontWeight: "bold",
@@ -286,6 +288,7 @@ const globalStyles = StyleSheet.create({
     elevation: 8,
   },
   descriptionRestoContainer : {
+        display:'flex',
         borderRadius: 15,
         marginVertical: 15,
         width: "95%",

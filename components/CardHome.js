@@ -37,6 +37,7 @@ import { useIsFocused } from "@react-navigation/native";
 
 const auth = getAuth();
 import { CLOUDINARY_CONSTANT } from "@env";
+import { Alert } from "react-native";
 
 const CardMenu = ({ resto, navigation }) => {
   // const userFavourites = useSelector((state) => state.favourites);
@@ -47,6 +48,7 @@ const CardMenu = ({ resto, navigation }) => {
   const dispatch = useDispatch();
   const categories = useSelector((state) => state.categoriesResto);
   const isFocused = useIsFocused();
+  const currentUser = useSelector((state) => state.currentUser);
 
   const getFavs = async () => {
     if (CurrentId) {
@@ -72,7 +74,6 @@ const CardMenu = ({ resto, navigation }) => {
       setResultRating(totalRating);
     }
   };
-
   useEffect(() => {
     if (isFocused) {
       getFavs();
@@ -117,13 +118,14 @@ const CardMenu = ({ resto, navigation }) => {
 
   const handleWhatsapp = async () => {
     await Linking.openURL(
-      `whatsapp://send?text=Hola ${resto.title}, mi nombre es ${trimmedName} y quiero generar una reserva&phone=${celphone}`
+      `whatsapp://send?text=Hola ${resto.title}, mi nombre es ${currentUser.name} y quiero generar una reserva&phone=${celphone}`
     );
   };
 
   const addToFavourite = async () => {
-    if (auth?.currentUser?.uid) {
+    if (auth?.currentUser?.uid && CurrentId) {
       try {
+        console.log(CurrentId)
         // console.log("consolelog en InfoFavourite: ", infoFavourite);
         setHearthColor("red");
         let docRef = doc(firebase.db, "Users", auth.currentUser.uid);
@@ -135,8 +137,24 @@ const CardMenu = ({ resto, navigation }) => {
         // alert("no estas logueado");
         console.log("error add:", e);
       }
+    } else {
+      Alert.alert(
+        "Debes estar logeado para acceder a tus Favoritos",
+        "Desea ir a la pantalla de Login?",
+          [
+            {
+              text: "Ahora no",
+              onPress: () => console.log("No quiere logearse"),
+              style: "cancel",
+            },
+            {
+              text: "Si, por favor",
+              onPress: () => navigation.navigate("GlobalLogin"),
+            },
+          ]
+        )
+      }
     }
-  };
 
   const removeFromFavourite = async () => {
     if (auth?.currentUser?.uid) {
@@ -227,7 +245,27 @@ const CardMenu = ({ resto, navigation }) => {
 
         <View style={globalStyles.btnContainerCard}>
           <View>
-            <TouchableOpacity onPress={() => handleWhatsapp()}>
+            <TouchableOpacity onPress={() => {
+              if (auth?.currentUser?.uid && CurrentId) {
+                handleWhatsapp()
+              } else {
+                Alert.alert(
+                  "Debes estar logeado para comunicarte con el Resto",
+                  "Desea ir a la pantalla de Login?",
+                  [
+                    {
+                      text: "Ahora no",
+                      onPress: () => console.log("No quiere logearse"),
+                      style: "cancel",
+                    },
+                    {
+                      text: "Si, por favor",
+                      onPress: () => navigation.navigate("GlobalLogin"),
+                    },
+                  ]
+                );
+              }
+            }}>
               <Image
                 style={globalStyles.wspImage}
                 // resizeMode="contain"

@@ -4,6 +4,7 @@ import {
   Image,
   TouchableOpacity,
   Text,
+  StyleSheet,
   ActivityIndicator,
 } from "react-native";
 import { useDispatch } from "react-redux";
@@ -37,8 +38,7 @@ const CardFavourite = ({
   const dispatch = useDispatch();
   const [deleting, setDeleting] = useState(false);
   const [hearthColor, setHearthColor] = useState("red");
-
-  // console.log('Resto in cardFavourites: ', resto)
+  
   let infoFavourite = {
     idResto: resto.idResto,
     title: resto.title,
@@ -103,29 +103,33 @@ const CardFavourite = ({
             )}
           </View>
 
-          <View style={{ margin: 5 }}>
-            <Text style={globalStyles.cardsDescriptionText}>
-              <Icon
+
+          <View style={styles.descriptionContainer}>
+          <Icon
+                style={{position:'absolute'}}
                 reverse
                 name="map-marker-alt"
                 type="font-awesome-5"
-                color="#eecdaa"
-                reverseColor="#161616"
-                size={11}
-                />
-                {resto.location.address.split(",")[0]},
-                {resto.location.address.split(",")[1]}
+                color="black"
+                textAlign="beseline"
+                reverseColor="white"
+                size={9}
+              />
+            <Text style={styles.descriptionAddres}>
+              {resto.location.address.split(",")[0]},
+              {resto.location.address.split(",")[1]}
             </Text>
-
-            <Text style={globalStyles.cardsDescriptionText}>
-              <Icon
+            <Icon
+                style={{position:'absolute'}}
                 reverse
                 name="phone-alt"
                 type="font-awesome-5"
-                color="#eecdaa"
-                reverseColor="#161616"
-                size={11}
+                color="black"
+                reverseColor="white"
+                size={9}
               />
+            <Text style={styles.descriptionCelphone}>
+              
               {resto.phone}
             </Text>
           </View>
@@ -134,6 +138,7 @@ const CardFavourite = ({
         <View style={globalStyles.btnContainerCard}>
           <View>
             <TouchableOpacity
+              style={{position:'absolute', right: '-55%', bottom: 40}}
               onPress={() => {
                 hearthColor === "red" ? removeFromFavourite() : null;
               }}
@@ -154,5 +159,29 @@ const CardFavourite = ({
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  descriptionContainer: {
+    display: 'flex',
+    fontSize: 12,
+    height: 100,
+    fontWeight: "bold",
+  },
+  descriptionAddres: {
+    position: 'absolute',
+    fontSize: 15,
+    top: 8,
+    fontWeight: '600',
+    left: 35
+  },
+  descriptionCelphone: {
+    position: 'absolute',
+    fontSize: 18,
+    bottom: 35,
+    fontWeight: '500',
+    left: 35
+  }
+
+})
 
 export default CardFavourite;

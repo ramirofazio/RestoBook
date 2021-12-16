@@ -36,6 +36,7 @@
     "express": "^4.17.1",
     "firebase": "^9.5.0",
     "formik": "^2.2.9",
+    "geolib": "^3.3.3",
     "mercadopago": "^1.5.9",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.15",

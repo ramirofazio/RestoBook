@@ -35,6 +35,7 @@ import globalStyles from "./GlobalStyles.js";
 //
 //---------------------GEOLOCATION-------------------
 import MapView, { Callout, Marker } from "react-native-maps";
+import getDistance from 'geolib/es/getDistance';
 //----------------------------------------------------
 //
 //-------INITIALIZATIONS-------
@@ -72,6 +73,7 @@ export default function Home({ navigation }) {
   const [mapaVisible, setMapaVisible] = useState(false);
   const userLocation = useSelector((state) => state.userCoordinates);
   const mapRef = useRef(null);
+  const [loggedIdState, setLoggedIdState] = useState(100)
   //--------------FILTRADO MODAL-------------------------
   const [allRestos, setAllRestos] = useState([]);
   const [category, setCategory] = useState();
@@ -94,8 +96,8 @@ export default function Home({ navigation }) {
         obj.idResto = doc.id;
         arr.push(obj);
       });
-      setAvailableCommerces(arr);
-      setAllRestos(arr);
+        setAvailableCommerces(arr);
+        setAllRestos(arr);
     });
   }, []);
 
@@ -164,6 +166,7 @@ export default function Home({ navigation }) {
         console.log("id", auth.currentUser.uid);
         let obj = docSnap.data();
         dispatch(CurrentUser(obj));
+        setLoggedIdState(CurrentUser.id)
         setFlagCards(true);
       }
     } catch (e) {
@@ -180,9 +183,10 @@ export default function Home({ navigation }) {
     if (loggedId && auth.currentUser.uid) {
       getInfo();
       getUserLocation();
+      showByDistance()
     }
     setFlagCards(true);
-  }, [loggedId]);
+  }, [loggedId, loggedIdState]);
 
   onAuthStateChanged(auth, (usuarioFirebase) => {
     if (usuarioFirebase?.emailVerified) {
@@ -198,10 +202,9 @@ export default function Home({ navigation }) {
   });
 
   const handleCategory = async (category) => {
-    setCategory(category);
     if (!category) setAvailableCommerces(allRestos);
     const result = allRestos.filter(
-      (resto) => resto.category === category.toLowerCase()
+      (resto) => resto.category.toLowerCase() === category.toLowerCase()
     );
     if (result.length === 0) {
       alert("No hay Empresas con esta Categoria");
@@ -217,14 +220,24 @@ export default function Home({ navigation }) {
       const result = availableCommerces.sort((a, b) =>
         a.title > b.title ? 1 : -1
       );
-      setSelectedValue(result);
+      setAvailableCommerces(result);
     } else if (itemValue === "Z-A") {
       const resulta = availableCommerces.sort((a, b) =>
         a.title < b.title ? 1 : -1
       );
-      setSelectedValu(resulta);
+      setAvailableCommerces(resulta);
     }
   };
+
+  const showByDistance = () => {
+   const orderedRestos = availableCommerces.sort(function(a,b){
+      if( getDistance(userLocation, a.location)  > getDistance(userLocation, b.location) ) return 1
+      if( getDistance(userLocation, b.location) > getDistance(userLocation, a.location) ) return -1
+      return 0;
+    })
+    console.log('Mostrando restos by distance..')
+    setAvailableCommerces(orderedRestos)
+  }
 
   return (
     <View style={globalStyles.Home}>
@@ -391,6 +404,61 @@ export default function Home({ navigation }) {
           isVisible={visibleFiltro}
           containerStyle={{ backgroundColor: "#333a" }}
         >
+          
+          <ListItem
+            containerStyle={{ backgroundColor: "rgba(242, 242, 242,0.8)" }}
+            style={{
+              borderBottomWidth: 1,
+              borderColor: "#333a",
+              backgroundColor: "#fff0",
+            }}
+            onPress={() => {
+              setAvailableCommerces(allRestos)
+              isVisibleFiltro(false);
+            }}
+          >
+            <ListItem.Content
+              style={{ backgroundColor: "#0000", alignItems: "center" }}
+            >
+              <ListItem.Title
+                style={{
+                  height: 35,
+                  color: "#161616",
+                  paddingVertical: 5,
+                  fontWeight: "bold",
+                }}
+              >
+                Mostrar Todos
+              </ListItem.Title>
+            </ListItem.Content>
+          </ListItem>
+          <ListItem
+            containerStyle={{ backgroundColor: "rgba(242, 242, 242,0.8)" }}
+            style={{
+              borderBottomWidth: 1,
+              borderColor: "#333a",
+              backgroundColor: "#fff0",
+            }}
+            onPress={() => {
+              showByDistance()
+              isVisibleFiltro(false);
+            }}
+          >
+            <ListItem.Content
+              style={{ backgroundColor: "#0000", alignItems: "center" }}
+            >
+              <ListItem.Title
+                style={{
+                  height: 35,
+                  color: "#161616",
+                  paddingVertical: 5,
+                  fontWeight: "bold",
+                }}
+              >
+                Por Cercania
+              </ListItem.Title>
+            </ListItem.Content>
+          </ListItem>
           <ListItem
             containerStyle={{ backgroundColor: "rgba(242, 242, 242,0.8)" }}
             style={{
@@ -445,7 +513,7 @@ export default function Home({ navigation }) {
               </ListItem.Title>
             </ListItem.Content>
           </ListItem>
-
+               
           <ListItem
             key={999}
             containerStyle={{ backgroundColor: "#eccdaa" }}
@@ -682,7 +750,7 @@ export default function Home({ navigation }) {
                           coordinate={resto.location}
                           identifier={resto.title}
                         >
-                          <Callout tooltip>
+                          <Callout onPress={() => setMapaVisible(!mapaVisible)} tooltip>
                             <CardMaps
                               key={resto.idResto}
                               resto={resto}

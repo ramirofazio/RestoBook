@@ -55,12 +55,12 @@ const ModifyMenuResto = ({ navigation }) => {
   const [spinner, setSpinner] = useState(false);
   const idResto = empresaDetail.idResto;
   const [isVisible, setIsVisible] = useState(false);
-  const [category, setCategory] = useState();
+  const [category, setCategory] = useState(itemToModify.category);
   const categories = useSelector((state) => state.categoriesMenu);
   const [selectedImage, setSelectedImage] = useState(DEFAULT_FOOD_IMAGE);
   const [uploading, setUploading] = useState(false);
-  const [vegan, setVegan] = useState(false);
-  const [glutenFree, setGlutenFree] = useState(false);
+  const [vegan, setVegan] = useState(itemToModify.vegan);
+  const [glutenFree, setGlutenFree] = useState(itemToModify.glutenFree);
 
   useEffect(() => {
     console.log("ITEM: ", itemToModify);
