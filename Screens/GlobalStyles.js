@@ -135,7 +135,7 @@ const globalStyles = StyleSheet.create({
   cardsMenuimg: {
     width: 80,
     height: 80,
-    borderRadius: 25,
+    borderRadius: 10,
   },
   cardsDescriptionContainer: {
     // backgroundColor: 'green',
@@ -150,6 +150,8 @@ const globalStyles = StyleSheet.create({
     // backgroundColor: 'lightblue',
     textAlign: "center",
     width: "100%",
+    justifyContent: "space-around",
+    backgroundColor: 'green',
     height: "38%",
     fontSize: 12,
     fontWeight: "bold",
@@ -222,6 +224,7 @@ const globalStyles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "left",
     width: "100%",
+    marginTop: -20
   },
   cardsMenuDescriptionText: {
     width: "90%",
@@ -285,6 +288,7 @@ const globalStyles = StyleSheet.create({
     elevation: 8,
   },
   descriptionRestoContainer : {
+        display:'flex',
         borderRadius: 15,
         marginVertical: 15,
         width: "95%",

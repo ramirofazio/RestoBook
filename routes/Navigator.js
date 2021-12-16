@@ -22,6 +22,7 @@ import ProfileResto from "../Screens/ProfileResto";
 import ListReviews from "../Screens/ListReviews";
 import AddReviewsRestorant from "../Screens/AddReviewsRestorant";
 import ConfirmReservation from "../Screens/ConfirmReservation";
+import ModifyMenuResto from "../Screens/ModifyMenuResto";
 //
 //
 //------------Styles y otros ---------
@@ -63,22 +64,22 @@ export default Navigator = () => {
             },
           })}
         />
-          <Stack.Screen
-            name="AwaitEmail"
-            component={AwaitEmail}
-            options={{
-              headerTitle: "Verify Email",
-              title: "Confirmacion Email",
-              headerTitleAlign: "center",
-              headerStyle: {
-                backgroundColor: "#161616",
-              },  
-              headerTintColor: "#ECCDAA",
-              headerTitleStyle: {
-                fontSize: 25,
-              },
-            }}
-          />
+        <Stack.Screen
+          name="AwaitEmail"
+          component={AwaitEmail}
+          options={{
+            headerTitle: "Verify Email",
+            title: "Confirmacion Email",
+            headerTitleAlign: "center",
+            headerStyle: {
+              backgroundColor: "#161616",
+            },
+            headerTintColor: "#ECCDAA",
+            headerTitleStyle: {
+              fontSize: 25,
+            },
+          }}
+        />
         <Stack.Screen name="RegisterUser" component={AddUserScreen} />
         <Stack.Screen
           name="RegisterResto"
@@ -99,6 +100,22 @@ export default Navigator = () => {
         <Stack.Screen
           name="AddMenuResto"
           component={AddMenuResto}
+          options={{
+            title: "Agregar Menu",
+            headerTitle: "Agregar Menu",
+            headerTitleAlign: "center",
+            headerStyle: {
+              backgroundColor: "#161616",
+            },
+            headerTintColor: "#ECCDAA",
+            headerTitleStyle: {
+              fontSize: 25,
+            },
+          }}
+        />
+        <Stack.Screen
+          name="ModifyMenuResto"
+          component={ModifyMenuResto}
           options={{
             title: "Agregar Menu",
             headerTitle: "Agregar Menu",
@@ -160,7 +177,7 @@ export default Navigator = () => {
           }}
         />
 
-              <Stack.Screen
+        <Stack.Screen
           name="AddReviewsRestorant"
           component={AddReviewsRestorant}
           options={{
@@ -256,7 +273,7 @@ export default Navigator = () => {
         />
 
         <Stack.Screen
-          name='confirmReservation'
+          name="confirmReservation"
           component={ConfirmReservation}
           options={{
             headerTitle: "Su reserva fue confirmada",
