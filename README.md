@@ -11,7 +11,6 @@
 #### Tech Stack :
 
 ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=flat&logo=Javascript&logoColor=%23F7DF1E) 
-![React](https://img.shields.io/badge/react-%2320232a.svg?style=flat&logo=React&logoColor=%2361DAFB) 
 ![Redux](https://img.shields.io/badge/Redux-%23593d88.svg?style=flat&logo=redux&logoColor=white) 
 ![React Native](https://img.shields.io/badge/react%20Native-%2320232a.svg?style=flat&logo=React&logoColor=%2361DAFB) 
 ![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=flat&logo=CSS3&logoColor=white)
