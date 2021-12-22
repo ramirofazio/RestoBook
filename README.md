@@ -31,7 +31,7 @@
 <p align='center'>
 <kbd> 
        <img src="assets/img/restos.jpeg" width="250px">         
-       <img src="assets/img/Register-resto.jpeg" width="250px">    
+       <img src="assets/img/profile%20resto.jpeg" width="250px">    
        <img src="assets/img/Resto-Details.jpeg" width="250px">    
        </kbd>
   </p>
@@ -39,7 +39,7 @@
   <kbd> 
       <img src="assets/img/Menu.jpeg" width="277px">        
       <img src="assets/img/geolocation.jpeg" width="250px"> 
-      <img src="assets/img/UserProfile.jpeg" width="250px"> 
+      <img src="assets/img/perfil.jpeg" width="250px"> 
   </kbd>
 </p>
 
