@@ -42,7 +42,7 @@ Para el Front-End: React-Native, HTML, CSS,
 
 #
 
-#### Algunas imagenes de la app: 
+#### Some images of the app / Algunas imagenes de la app: 
 
 <p align='center'>
 <kbd> 
@@ -61,7 +61,7 @@ Para el Front-End: React-Native, HTML, CSS,
 
 #
 
-#### Developers: 
+#### Developers / Desarrolladores: 
 
 ##### Ramiro Fazio | [Linkedin](https://www.linkedin.com/in/ramiro-fazio-dattoli/) | [Github](https://github.com/ramirofazio)
 ##### Laial Sapaguin Serpa | [Linkedin](https://www.linkedin.com/in/laial-sapaguin-fullstack/) | [Github](https://github.com/Laial-S)
