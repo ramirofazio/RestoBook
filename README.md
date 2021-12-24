@@ -4,7 +4,13 @@
 
 #
 
-#### Aplicacion mobile creada por un grupo de 7 desarolladores incluyendome, app desarollada en react native para el front y firebase para el back, dentro de sus funcionalidades mas importantes estan la geolocalisacion de locales gastronomicos por cercania o zona, la posibilidad de crear tu resto/bar y sus sucursales, hacer reservas, pagarlas. Las reservas tienen un cupo que pone el propio dueño del resto, asi tambien como el valor de la misma y el horario en que se puede hacer las reservas. Restobook cuenta con un perfil de usuario personalizable y es alli donde se puede visualizar las reservas realizadas y los locales favoritos, entre otras funcionalidades mas.
+#### Con un grupo de 7 desarrolladores, desarrollamos una app movil. La idea de la app es resolver el problema de tiempo para decidir donde ir a cenar o ir a tomar algo con amigos.
+ Como Usuario podes buscar la empresa que vos quieras, ordenarlas, filtrarlas, ver los menus, la carta y hacer una reserva en el mismo a traves de mercadoPago,
+como Empresa podes adminstrar tu empresa, modificar el horario de reserva, el precio, agregar o eliminar comidas, y ver estadisticas de tu empresa.
+Para desarrollar RestoBook usamos las siguentes tecnologias: 
+En General: JavaScript, NodeJS, NPM, Expo CLI,
+Para el back-end: FireBase,
+Para el Front-End: React-Native, HTML, CSS,
 
 #
 
