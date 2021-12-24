@@ -4,10 +4,19 @@
 
 #
 #### RESTO BOOK 
- aaaaaaaaaaa
-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+With a group of 7 developers, we developed a mobile app. The idea of the app is to solve the problem of time to decide where to go to dinner or go for a drink with friends.
+ As a User you can search for the company you want, order them, filter them, see the meals, the menu and make a reservation in it through MercadoPago,
+as a Company you can administer your company, modify the reservation schedule, the price, add or eliminate meals, and view your company's statistics.
+To develop RestoBook we use the following technologies:
+In General: JavaScript, NodeJS, NPM, Expo CLI,
+For the backend: FireBase,
+For the Front-End: React-Native, HTML, CSS,
+
+
+
 Con un grupo de 7 desarrolladores, desarrollamos una app movil. La idea de la app es resolver el problema de tiempo para decidir donde ir a cenar o ir a tomar algo con amigos.
- Como Usuario podes buscar la empresa que vos quieras, ordenarlas, filtrarlas, ver los menus, la carta y hacer una reserva en el mismo a traves de mercadoPago,
+ Como Usuario podes buscar la empresa que vos quieras, ordenarlas, filtrarlas, ver las meals, la carta y hacer una reserva en el mismo a traves de mercadoPago,
 como Empresa podes adminstrar tu empresa, modificar el horario de reserva, el precio, agregar o eliminar comidas, y ver estadisticas de tu empresa.
 Para desarrollar RestoBook usamos las siguentes tecnologias: 
 En General: JavaScript, NodeJS, NPM, Expo CLI,
