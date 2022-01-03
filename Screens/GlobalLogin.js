@@ -86,6 +86,10 @@ const GlobalLoginSchema = yup.object({
   password: yup.string().required().min(6).max(12),
 });
 
+const resetPasSchema = yup.object({
+  email: yup.string().required().email(),
+})
+
 const GlobalRegisterSchema = yup.object({
   name: yup.string().required(),
   lastName: yup.string().required(),
@@ -260,27 +264,79 @@ const GlobalLogin = ({ navigation }) => {
                   </Text>
                 </TouchableOpacity>
 
-                <BottomSheet isVisible={visible} style={styles.forgottenPass}>
-                  <View>
-                    <TouchableOpacity onPress={() => isforgottVisible(false)}>
-                      <Text>X</Text>
-                    </TouchableOpacity>
-                    <TextInput
-                      placeholder="........"
-                      style={styles.inputForgotten}
-                      onChangeText={(value) => setForgottedMail(value)}
-                    ></TextInput>
-                    <TouchableOpacity
-                      onPress={() => {
-                        sendPasswordResetEmail(auth, forgottedMail)
-                          .then(alert("Revisa tu casilla!"))
-                          .then(isforgottVisible(false));
-                      }}
-                    >
-                      <Text>Enviar</Text>
-                    </TouchableOpacity>
-                  </View>
-                </BottomSheet>
+                {/*----------------MODAL RESET PASS---------------------- */}
+
+                <Modal
+                  animationType="slide"
+                  transparent={true}
+                  visible={forgottvisible}
+                  onRequestClose={() => {
+                    isforgottVisible(!forgottvisible);
+                  }}
+                >
+                  <Formik
+                    initialValues={{
+                      email: "",
+                    }}
+                    validationSchema={resetPasSchema}
+                    onSubmit={({ email }) => {
+                      sendPasswordResetEmail(auth, email)
+                        .then(alert("Revisa tu casilla!"))
+                        .then(isforgottVisible(!forgottvisible));
+                    }}
+                  >
+                    {(props) => (
+                      <View style={globalStyles.centeredView}>
+                        <View style={globalStyles.modalView}>
+                          <TouchableOpacity
+                            style={globalStyles.btnCloseMenu}
+                            onPress={() => isforgottVisible(!forgottvisible)}
+                          >
+                            <MaterialIcons
+                              name="arrow-back-ios"
+                              size={20}
+                              color="#161616"
+                            ></MaterialIcons>
+                          </TouchableOpacity>
+                          <Text
+                            style={{
+                              textAlign: "center",
+                              fontSize: 30,
+                              paddingVertical: 5,
+                              color: "#161616",
+                              letterSpacing: 1,
+                            }}
+                          >
+                            Recuperar Contraseña
+                          </Text>
+                          <View style={globalStyles.inputComponent}>
+                            <TextInput
+                              style={globalStyles.texts}
+                              placeholder="email"
+                              placeholderTextColor="#666"
+                              textAlign="center"
+                              onChangeText={props.handleChange("email")}
+                              value={props.values.email}
+                              onBlur={props.handleBlur("email")}
+                            />
+                          </View>
+                          {props.touched.email && props.errors.email ? (
+                            <Text style={globalStyles.errorText}>
+                              {props.errors.email}
+                            </Text>
+                          ) : null}
+                          <TouchableOpacity
+                            style={globalStyles.btnTodasComidas}
+                            onPress={() => props.handleSubmit()}
+                          >
+                            <Text style={globalStyles.texts}>Enviar</Text>
+                          </TouchableOpacity>
+                        </View>
+                      </View>
+                    )}
+                  </Formik>
+                </Modal>
+
               </View>
             </View>
           )}
@@ -449,7 +505,7 @@ const GlobalLogin = ({ navigation }) => {
                           />
                         </View>
                         {props.touched.passwordConfirm &&
-                        props.errors.passwordConfirm ? (
+                          props.errors.passwordConfirm ? (
                           <Text style={globalStyles.errorText}>
                             {props.errors.passwordConfirm}
                           </Text>
