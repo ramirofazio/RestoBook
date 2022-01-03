@@ -265,7 +265,6 @@ const AddMenuResto = ({ navigation }) => {
                 onBlur={props.handleBlur("price")}
               /> */}
             </View>
-            {console.log("holis")}
             {props.touched.price && props.errors.price ? (
               <Text style={globalStyles.errorText}>{props.errors.price}</Text>
             ) : null}

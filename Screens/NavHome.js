@@ -116,7 +116,6 @@ export default function NavHome({ title, navigation }) {
     dispatch(CurrentId(null));
     dispatch(UserFavourites([]));
     dispatch(getCommerceInfo(null));
-    console.log();
   };
 
   return (

@@ -40,7 +40,7 @@ export default function AddReviewsRestorant({ navigation, route }) {
     };
 
     try {
-      console.log("New Values =>", newValues)
+      //console.log("New Values =>", newValues)
       let restoRef = doc(firebase.db, "Restos", empresaDetail.idResto);
       await updateDoc(restoRef, {
         reviews: arrayUnion(newValues),
