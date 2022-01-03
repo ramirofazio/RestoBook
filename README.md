@@ -40,16 +40,30 @@ Para desarrollar RestoBook usamos las siguentes tecnologias: JavaScript, NodeJS,
 
 <p align='center'>
 <kbd> 
-       <img src="assets/img/restos.jpeg" width="250px">         
-       <img src="assets/img/profile%20resto.jpeg" width="250px">    
-       <img src="assets/img/Resto-Details.jpeg" width="250px">    
+       <img src="assets/img/home.jpeg" width="250px">         
+       <img src="assets/img/login.jpeg" width="250px">    
+       <img src="assets/img/register.jpeg" width="250px">    
        </kbd>
   </p>
   <p align='center'>
   <kbd> 
-      <img src="assets/img/Menu.jpeg" width="277px">        
-      <img src="assets/img/geolocation.jpeg" width="250px"> 
-      <img src="assets/img/perfil.jpeg" width="250px"> 
+      <img src="assets/img/geolocation.jpeg" width="277px">        
+      <img src="assets/img/perfil-user.jpeg" width="250px"> 
+      <img src="assets/img/register-resto.jpeg" width="250px"> 
+  </kbd>
+</p>
+<p align='center'>
+  <kbd> 
+      <img src="assets/img/perfil-resto.jpeg" width="277px">        
+      <img src="assets/img/adm-reservas.jpeg" width="250px"> 
+      <img src="assets/img/resto-detail.jpeg" width="250px"> 
+  </kbd>
+</p>
+<p align='center'>
+  <kbd> 
+      <img src="assets/img/add-menu.jpeg" width="277px">        
+      <img src="assets/img/menu.jpeg" width="250px"> 
+      <img src="assets/img/MP.jpeg" width="250px"> 
   </kbd>
 </p>
 
