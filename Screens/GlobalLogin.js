@@ -4,6 +4,7 @@ import React, { useState } from "react";
 //
 //----------REDUX UTILS-----------
 //
+import { MaterialIcons } from "@expo/vector-icons";
 //
 //----------FORMIK UTILS-----------
 import { Formik } from "formik";
