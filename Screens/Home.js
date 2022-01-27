@@ -47,18 +47,7 @@ import { Feather } from "@expo/vector-icons";
 
 export default function Home({ navigation }) {
   const dispatch = useDispatch();
-  //------LOGIN JOSE------------
-  const [visibleModalGoogle, setVisibleModalGoogle] = useState(false);
-  const [googleUser, setGoogleUser] = useState({
-    name: "",
-    lastName: "",
-    cel: "",
-    email: "",
-  });
-  const [usuarioGlobal, setUsuarioGlobal] = useState("");
-  const [availableCommerces, setAvailableCommerces] = useState([]);
-  const [flagCards, setFlagCards] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
+
   //-------------------GEOLOCATION---------------------------//
   const [mapaVisible, setMapaVisible] = useState(false)
   const userLocation = useSelector(state => state.userCoordinates)
